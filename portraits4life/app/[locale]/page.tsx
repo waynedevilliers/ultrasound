@@ -1,6 +1,7 @@
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import HowItWorks from '@/components/HowItWorks';
+import Gallery from '@/components/Gallery';
 import PricingTiers from '@/components/PricingTiers';
 import FAQ from '@/components/FAQ';
 import ContactSection from '@/components/ContactSection';
@@ -13,6 +14,7 @@ export default function Home() {
       <main className="flex-1">
         <Hero />
         <HowItWorks />
+        <Gallery />
         <PricingTiers />
         <FAQ />
         <ContactSection />
