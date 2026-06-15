@@ -1,23 +1,29 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 export default function Header() {
+  const [currentLang, setCurrentLang] = useState('EN');
+  const [otherLang, setOtherLang] = useState('DE');
+
+  useEffect(() => {
+    const isDe = window.location.pathname.startsWith('/de');
+    setCurrentLang(isDe ? 'DE' : 'EN');
+    setOtherLang(isDe ? 'EN' : 'DE');
+  }, []);
+
   const handleLanguageSwitch = () => {
-    // Get current URL
     const currentPath = window.location.pathname;
-    // Toggle between /en and /de
     let newPath;
     if (currentPath.startsWith('/en')) {
       newPath = currentPath.replace('/en', '/de');
     } else if (currentPath.startsWith('/de')) {
       newPath = currentPath.replace('/de', '/en');
     } else {
-      newPath = '/de' + currentPath;
+      newPath = '/de';
     }
-    window.location.pathname = newPath;
+    window.location.href = newPath;
   };
-
-  const currentLang = typeof window !== 'undefined' && window.location.pathname.startsWith('/de') ? 'DE' : 'EN';
-  const otherLang = currentLang === 'EN' ? 'DE' : 'EN';
 
   return (
     <header className="bg-white border-b border-gray-200">

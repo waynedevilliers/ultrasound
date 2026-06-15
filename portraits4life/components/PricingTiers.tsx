@@ -3,21 +3,23 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 export default function PricingTiers() {
   const tiers = [
     {
-      title: 'Digital Download',
+      title: 'High-Res Digital JPG',
+      price: '€30 - 50',
+      delivery: '1 Week Delivery',
       items: [
-        'High-res JPG',
-        '€9–15',
-        'Instant Delivery',
+        'High-resolution digital file',
+        'Perfect for digital frames',
+        'Instant download after completion',
       ],
     },
     {
-      title: 'Canvas Print',
+      title: 'Canvas Prints',
       items: [
-        '30×30 cm (€29)',
-        '40×40 cm (€39)',
-        '50×50 cm (€55)',
-        '~2 Weeks Delivery',
+        { size: '30 × 30 cm', price: '€69' },
+        { size: '40 × 40 cm', price: '€89' },
+        { size: '50 × 50 cm', price: '€119' },
       ],
+      delivery: '1 - 2 Weeks Delivery',
     },
   ];
 
@@ -31,40 +33,35 @@ export default function PricingTiers() {
           Formats & Pricing
         </h2>
 
-        <div className="grid md:grid-cols-2 gap-8 mb-16">
-          {tiers.map((tier) => (
-            <Card key={tier.title} className="border-2 border-gray-200 hover:border-pink-300 transition">
-              <CardHeader>
-                <CardTitle className="text-3xl">{tier.title}</CardTitle>
+        <div className="grid md:grid-cols-2 gap-8">
+          {tiers.map((tier, idx) => (
+            <Card key={idx} className="border-2 border-gray-200 hover:border-pink-500 transition overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-gray-50 to-white pb-6">
+                <CardTitle className="text-3xl mb-2">{tier.title}</CardTitle>
+                {tier.price && <p className="text-4xl font-bold text-pink-600">{tier.price}</p>}
+                <p className="text-sm text-gray-600 mt-2">{tier.delivery}</p>
               </CardHeader>
-              <CardContent>
-                <ul className="space-y-3">
-                  {tier.items.map((item, idx) => (
-                    <li key={idx} className="flex items-center gap-3 text-gray-600">
-                      <span className="text-pink-500">✓</span>
-                      {item}
-                    </li>
-                  ))}
+              <CardContent className="pt-6">
+                <ul className="space-y-4">
+                  {tier.items && Array.isArray(tier.items) && typeof tier.items[0] === 'object' ? (
+                    tier.items.map((item, i) => (
+                      <li key={i} className="flex items-center justify-between gap-3 pb-3 border-b border-gray-100 last:border-0">
+                        <span className="text-gray-700 font-medium">{item.size}</span>
+                        <span className="text-2xl font-bold text-pink-600">{item.price}</span>
+                      </li>
+                    ))
+                  ) : (
+                    tier.items?.map((item, i) => (
+                      <li key={i} className="flex items-start gap-3 text-gray-600">
+                        <span className="text-pink-500 mt-1 flex-shrink-0">✓</span>
+                        <span>{item}</span>
+                      </li>
+                    ))
+                  )}
                 </ul>
               </CardContent>
             </Card>
           ))}
-        </div>
-
-        <div className="bg-white rounded-lg p-8 border border-gray-200">
-          <h3 className="text-2xl font-bold mb-6 text-gray-900">
-            Optional Add-ons
-          </h3>
-          <ul className="space-y-3 text-gray-600">
-            <li className="flex items-center gap-3">
-              <span className="text-pink-500">✓</span>
-              Child's name added
-            </li>
-            <li className="flex items-center gap-3">
-              <span className="text-pink-500">✓</span>
-              Number of weeks in the womb
-            </li>
-          </ul>
         </div>
       </div>
     </section>

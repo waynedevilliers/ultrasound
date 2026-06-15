@@ -1,6 +1,3 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
 import {
   Accordion,
   AccordionContent,
@@ -9,40 +6,39 @@ import {
 } from '@/components/ui/accordion';
 
 export default function OrderInfo() {
-  const t = useTranslations('order.info');
-
   const infoSections = [
     {
       id: 'ultrasound',
-      title: t('ultrasound.title'),
+      title: 'Ultrasound Portraits',
       items: [
-        t('ultrasound.item1'),
-        t('ultrasound.item2'),
-        t('ultrasound.item3'),
+        'Choose a clear ultrasound image - profile views work best',
+        'We notify you within 24 hours if the image is usable',
+        'If not suitable, you can resubmit another image at no extra cost',
       ],
     },
     {
       id: 'individual',
-      title: t('individual.title'),
+      title: 'Individual Portraits',
       items: [
-        t('individual.item1'),
-        t('individual.item2'),
+        'Choose a clear photo of the person (300dpi preferred)',
+        'We confirm if the photo meets our quality requirements',
       ],
     },
     {
       id: 'couple',
-      title: t('couple.title'),
+      title: 'Couple Portraits',
       items: [
-        t('couple.item1'),
-        t('couple.item2'),
-        t('couple.item3'),
+        'One profile photo per person - doesn\'t need to be a joint photo',
+        '300dpi quality preferred for best results',
+        'We\'ll notify you if we need adjusted images',
       ],
     },
     {
       id: 'payment',
-      title: t('payment.title'),
+      title: 'Payment',
       items: [
-        t('payment.description'),
+        'After confirmation, you can pay via PayPal, bank transfer, or credit card',
+        'Payment link will be sent via email',
       ],
     },
   ];
