@@ -2,6 +2,7 @@ import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import HowItWorks from '@/components/HowItWorks';
 import PricingTiers from '@/components/PricingTiers';
+import FAQ from '@/components/FAQ';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 
@@ -13,6 +14,7 @@ export default function Home() {
         <Hero />
         <HowItWorks />
         <PricingTiers />
+        <FAQ />
         <ContactSection />
       </main>
       <Footer />
