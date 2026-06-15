@@ -1,0 +1,102 @@
+{
+  "header": {
+    "logo": "Portraits 4 Life",
+    "home": "Start",
+    "order": "Bestellen",
+    "formats": "Formate",
+    "contact": "Kontakt",
+    "language": "DE"
+  },
+  "hero": {
+    "headline": "ULTRASOUND ART",
+    "body": "Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern. Lass dir die allererste Aufnahme deines Kindes verewigen! Ich bearbeite das Ultraschallbild künstlerisch und hebe es farblich hervor.\nAuf Leinwand gedruckt, hast du nicht nur eine wunderschöne Erinnerung, sondern auch eine moderne, anschauliche Deko für deine Wohnung.\nAuf Wunsch mit Namen deines Kindes und Anzahl der Wochen im Mutterleib.",
+    "cta_order": "Jetzt bestellen",
+    "cta_formats": "Formate ansehen"
+  },
+  "howItWorks": {
+    "title": "So funktioniert's",
+    "step1": {
+      "title": "Ultraschallbild hochladen",
+      "description": "Sende mir dein klares Ultraschallbild"
+    },
+    "step2": {
+      "title": "Künstlerisch bearbeitet",
+      "description": "Ich erstelle ein wunderschönes digitales Portrait"
+    },
+    "step3": {
+      "title": "Leinwanddruck oder Digital",
+      "description": "Erhalte deinen Druck oder die digitale Datei"
+    }
+  },
+  "pricing": {
+    "title": "Formate & Preise",
+    "digital": {
+      "title": "Digital Download",
+      "resolution": "Hochauflösendes JPG",
+      "price": "€9–15",
+      "delivery": "Sofortige Zustellung"
+    },
+    "canvas": {
+      "title": "Leinwanddruck",
+      "size30": "30×30 cm — €29",
+      "size40": "40×40 cm — €39",
+      "size50": "50×50 cm — €55",
+      "delivery": "~2 Wochen Lieferung"
+    },
+    "addons": "Optionale Extras",
+    "addon1": "Name deines Kindes hinzufügen",
+    "addon2": "Anzahl der Wochen im Mutterleib"
+  },
+  "contact": {
+    "title": "Lass uns in Kontakt treten",
+    "email": "portraits4life.art@gmail.com",
+    "description": "Schreib mir deine Fragen oder deine Wünsche. Ich melde mich schnellstmöglich bei dir!",
+    "cta": "Jetzt Kontakt aufnehmen"
+  },
+  "footer": {
+    "copyright": "© 2024 Portraits 4 Life. Alle Rechte vorbehalten."
+  },
+  "order": {
+    "title": "Bestellen",
+    "form": {
+      "name": "Dein Name",
+      "email": "E-Mail Adresse",
+      "productType": "Art des Produkts",
+      "productDigital": "Digital Download",
+      "productCanvas": "Leinwanddruck",
+      "canvasSize": "Leinwandgröße",
+      "size30": "30×30 cm (€29)",
+      "size40": "40×40 cm (€39)",
+      "size50": "50×50 cm (€55)",
+      "childName": "Name des Kindes (optional)",
+      "weeksInWomb": "Wochen im Mutterleib (optional)",
+      "photo1": "Ultraschallbild hochladen (max 15 MB)",
+      "photo2": "Zweites Bild (optional, max 15 MB)",
+      "message": "Spezielle Anfragen oder Nachrichten",
+      "submit": "Bestellen"
+    },
+    "info": {
+      "ultrasound": {
+        "title": "Für Ultraschallportrait",
+        "item1": "Wählen Sie ein klares Ultraschallbild — Profilaufnahmen funktionieren am besten",
+        "item2": "Sie werden sofort benachrichtigt, wenn das Bild verwendbar ist",
+        "item3": "Falls nicht, können Sie ein neues Bild einreichen"
+      },
+      "individual": {
+        "title": "Für Individualportrait",
+        "item1": "Wählen Sie ein klares Foto der Person (300dpi bevorzugt)",
+        "item2": "Sie werden benachrichtigt, wenn das Foto die Anforderungen erfüllt"
+      },
+      "couple": {
+        "title": "Für Paarsportrait",
+        "item1": "Wählen Sie ein Profilfoto pro Person — muss keine gemeinsame Aufnahme sein",
+        "item2": "300dpi Qualität bevorzugt",
+        "item3": "Sie werden benachrichtigt und können neue Fotos einreichen, falls nötig"
+      },
+      "payment": {
+        "title": "Zahlung",
+        "description": "Nach der Bestätigung per E-Mail erfolgt die Zahlung per PayPal, Banküberweisung oder Kreditkarte"
+      }
+    }
+  }
+}
