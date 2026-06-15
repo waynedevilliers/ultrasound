@@ -1,6 +1,11 @@
+'use client';
+
 import Image from 'next/image';
+import { usePathname } from 'next/navigation';
 
 export default function Hero() {
+  const pathname = usePathname();
+  const isDE = pathname.startsWith('/de');
 
   return (
     <section className="bg-gradient-to-b from-slate-100 to-white">
@@ -15,25 +20,37 @@ export default function Hero() {
             </h1>
 
             <p className="text-lg text-gray-600 mb-8 whitespace-pre-line leading-relaxed">
-              A tiny black-and-white ultrasound photo is a thing of the past. Let the very first image of your child live forever! I artistically enhance your ultrasound image and bring it to life with colour.
-              {'\n'}
-              Printed on canvas, you'll have not just a beautiful memory, but a modern, striking piece of décor for your home.
-              {'\n'}
-              Optionally personalised with your child's name and number of weeks in the womb.
+              {isDE ? (
+                <>
+                  Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern. Lass dir die allererste Aufnahme deines Kindes verewigen! Ich bearbeite das Ultraschallbild künstlerisch und hebe es farblich hervor.
+                  {'\n'}
+                  Auf Leinwand gedruckt, hast du nicht nur eine wunderschöne Erinnerung, sondern auch eine moderne, anschauliche Deko für deine Wohnung.
+                  {'\n'}
+                  Auf Wunsch mit Namen deines Kindes und Anzahl der Wochen im Mutterleib.
+                </>
+              ) : (
+                <>
+                  A tiny black-and-white ultrasound photo is a thing of the past. Let the very first image of your child live forever! I artistically enhance your ultrasound image and bring it to life with colour.
+                  {'\n'}
+                  Printed on canvas, you'll have not just a beautiful memory, but a modern, striking piece of décor for your home.
+                  {'\n'}
+                  Optionally personalised with your child's name and number of weeks in the womb.
+                </>
+              )}
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
               <a
-                href="/order"
+                href={isDE ? '/de/order' : '/en/order'}
                 className="inline-block bg-pink-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-pink-600 transition text-center"
               >
-                Order Now
+                {isDE ? 'Jetzt bestellen' : 'Order Now'}
               </a>
               <a
                 href="#pricing"
                 className="inline-block border-2 border-gray-900 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-900 hover:text-white transition text-center"
               >
-                View Formats
+                {isDE ? 'Formate ansehen' : 'View Formats'}
               </a>
             </div>
           </div>

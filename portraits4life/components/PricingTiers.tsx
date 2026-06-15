@@ -1,7 +1,33 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function PricingTiers() {
-  const tiers = [
+  const pathname = usePathname();
+  const isDE = pathname.startsWith('/de');
+
+  const tiers = isDE ? [
+    {
+      title: 'Hochauflösendes digitales JPG',
+      price: '€30 - 50',
+      delivery: '1 Woche Lieferung',
+      items: [
+        'Hochauflösende digitale Datei',
+        'Perfekt für digitale Bilderrahmen',
+        'Sofortige Bereitstellung nach Fertigstellung',
+      ],
+    },
+    {
+      title: 'Leinwanddrucke',
+      items: [
+        { size: '30 × 30 cm', price: '€69' },
+        { size: '40 × 40 cm', price: '€89' },
+        { size: '50 × 50 cm', price: '€119' },
+      ],
+      delivery: '1 - 2 Wochen Lieferung',
+    },
+  ] : [
     {
       title: 'High-Res Digital JPG',
       price: '€30 - 50',
@@ -30,7 +56,7 @@ export default function PricingTiers() {
           className="text-5xl font-bold text-center mb-16 text-gray-900"
           style={{ fontFamily: 'var(--font-playfair)' }}
         >
-          Formats & Pricing
+          {isDE ? 'Formate & Preise' : 'Formats & Pricing'}
         </h2>
 
         <div className="grid md:grid-cols-2 gap-8">

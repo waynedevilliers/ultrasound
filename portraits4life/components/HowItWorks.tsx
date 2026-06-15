@@ -1,5 +1,28 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
+
 export default function HowItWorks() {
-  const steps = [
+  const pathname = usePathname();
+  const isDE = pathname.startsWith('/de');
+
+  const steps = isDE ? [
+    {
+      number: 1,
+      title: 'Bild hochladen',
+      description: 'Sende mir dein klares Ultraschallbild oder Portraitfoto. Wir prüfen es innerhalb von 24 Stunden.',
+    },
+    {
+      number: 2,
+      title: 'Künstlerische Bearbeitung',
+      description: 'Unser Künstler erstellt eine wunderschöne verbesserte Version mit Farben und künstlerischen Akzenten.',
+    },
+    {
+      number: 3,
+      title: 'Genießen & Bewahren',
+      description: 'Erhalte deine hochauflösende Datei oder deinen Leinwanddruck. Das perfekte Erinnerungsstück.',
+    },
+  ] : [
     {
       number: 1,
       title: 'Send Your Image',
@@ -24,7 +47,7 @@ export default function HowItWorks() {
           className="text-5xl font-bold text-center mb-20 text-gray-900"
           style={{ fontFamily: 'var(--font-playfair)' }}
         >
-          Simple Process
+          {isDE ? 'Einfacher Prozess' : 'Simple Process'}
         </h2>
 
         <div className="grid md:grid-cols-3 gap-8">
