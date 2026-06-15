@@ -1,11 +1,4 @@
-'use client';
-
-import { useTranslations, useLocale } from 'next-intl';
-import Link from 'next/link';
-
 export default function ContactSection() {
-  const t = useTranslations('contact');
-  const locale = useLocale();
 
   return (
     <section id="contact" className="py-20 lg:py-32 bg-gradient-to-r from-slate-900 to-slate-800">
@@ -14,23 +7,23 @@ export default function ContactSection() {
           className="text-5xl font-bold mb-6 text-white"
           style={{ fontFamily: 'var(--font-playfair)' }}
         >
-          {t('title')}
+          Get in Touch
         </h2>
 
         <p className="text-xl text-gray-200 mb-8">
-          {t('description')}
+          Have questions or special requests? Send me a message and I'll get back to you as soon as possible!
         </p>
 
         <p className="text-2xl font-semibold text-pink-400 mb-10">
-          {t('email')}
+          portraits4life.art@gmail.com
         </p>
 
-        <Link
-          href={`/${locale}/order`}
+        <a
+          href="/order"
           className="inline-block bg-pink-500 text-white px-10 py-4 rounded-lg font-semibold hover:bg-pink-600 transition"
         >
-          {t('cta')}
-        </Link>
+          Contact Me Now
+        </a>
       </div>
     </section>
   );

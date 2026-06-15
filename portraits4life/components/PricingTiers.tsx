@@ -1,27 +1,22 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function PricingTiers() {
-  const t = useTranslations('pricing');
-
   const tiers = [
     {
-      title: t('digital.title'),
+      title: 'Digital Download',
       items: [
-        t('digital.resolution'),
-        t('digital.price'),
-        t('digital.delivery'),
+        'High-res JPG',
+        '€9–15',
+        'Instant Delivery',
       ],
     },
     {
-      title: t('canvas.title'),
+      title: 'Canvas Print',
       items: [
-        t('canvas.size30'),
-        t('canvas.size40'),
-        t('canvas.size50'),
-        t('canvas.delivery'),
+        '30×30 cm (€29)',
+        '40×40 cm (€39)',
+        '50×50 cm (€55)',
+        '~2 Weeks Delivery',
       ],
     },
   ];
@@ -33,7 +28,7 @@ export default function PricingTiers() {
           className="text-5xl font-bold text-center mb-16 text-gray-900"
           style={{ fontFamily: 'var(--font-playfair)' }}
         >
-          {t('title')}
+          Formats & Pricing
         </h2>
 
         <div className="grid md:grid-cols-2 gap-8 mb-16">
@@ -58,16 +53,16 @@ export default function PricingTiers() {
 
         <div className="bg-white rounded-lg p-8 border border-gray-200">
           <h3 className="text-2xl font-bold mb-6 text-gray-900">
-            {t('addons')}
+            Optional Add-ons
           </h3>
           <ul className="space-y-3 text-gray-600">
             <li className="flex items-center gap-3">
               <span className="text-pink-500">✓</span>
-              {t('addon1')}
+              Child's name added
             </li>
             <li className="flex items-center gap-3">
               <span className="text-pink-500">✓</span>
-              {t('addon2')}
+              Number of weeks in the womb
             </li>
           </ul>
         </div>

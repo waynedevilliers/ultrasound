@@ -1,33 +1,24 @@
-'use client';
-
-import { useTranslations, useLocale } from 'next-intl';
-import Link from 'next/link';
-
 export default function Footer() {
-  const t = useTranslations('footer');
-  const contact = useTranslations('contact');
-  const header = useTranslations('header');
-  const locale = useLocale();
 
   return (
     <footer className="bg-gray-900 text-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
-            <Link href={`/${locale}`} className="text-2xl font-bold" style={{ fontFamily: 'var(--font-playfair)' }}>
-              {header('logo')}
-            </Link>
+            <a href="/" className="text-2xl font-bold" style={{ fontFamily: 'var(--font-playfair)' }}>
+              Portraits 4 Life
+            </a>
           </div>
 
           <div>
-            <p className="text-gray-400 mb-4">{contact('email')}</p>
-            <a href={`mailto:${contact('email')}`} className="text-pink-400 hover:text-pink-300 transition">
-              {contact('email')}
+            <p className="text-gray-400 mb-4">portraits4life.art@gmail.com</p>
+            <a href="mailto:portraits4life.art@gmail.com" className="text-pink-400 hover:text-pink-300 transition">
+              portraits4life.art@gmail.com
             </a>
           </div>
 
           <div className="text-gray-400">
-            <p>{t('copyright')}</p>
+            <p>© 2024 Portraits 4 Life. All rights reserved.</p>
           </div>
         </div>
 

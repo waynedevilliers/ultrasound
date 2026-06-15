@@ -1,28 +1,19 @@
-'use client';
-
-import { useTranslations } from 'next-intl';
-
 export default function HowItWorks() {
-  const t = useTranslations('howItWorks');
-
   const steps = [
     {
       number: 1,
-      title: t('step1.title'),
-      description: t('step1.description'),
-      icon: '📤',
+      title: 'Upload Your Image',
+      description: 'Share your clear ultrasound image with me',
     },
     {
       number: 2,
-      title: t('step2.title'),
-      description: t('step2.description'),
-      icon: '✨',
+      title: 'Artistic Enhancement',
+      description: 'I create a beautiful digital portrait for you',
     },
     {
       number: 3,
-      title: t('step3.title'),
-      description: t('step3.description'),
-      icon: '🎨',
+      title: 'Canvas or Digital',
+      description: 'Receive your canvas print or digital file',
     },
   ];
 
@@ -33,14 +24,16 @@ export default function HowItWorks() {
           className="text-5xl font-bold text-center mb-16 text-gray-900"
           style={{ fontFamily: 'var(--font-playfair)' }}
         >
-          {t('title')}
+          How It Works
         </h2>
 
         <div className="grid md:grid-cols-3 gap-12">
           {steps.map((step) => (
             <div key={step.number} className="text-center">
               <div className="mb-6 text-6xl flex justify-center">
-                {step.icon}
+                {step.number === 1 && '📤'}
+                {step.number === 2 && '✨'}
+                {step.number === 3 && '🎨'}
               </div>
               <h3 className="text-2xl font-bold mb-4 text-gray-900">
                 {step.title}

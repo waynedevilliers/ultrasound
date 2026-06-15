@@ -1,12 +1,11 @@
 import { NextIntlClientProvider } from 'next-intl';
-import { getMessages } from 'next-intl/server';
-import { notFound } from 'next/navigation';
+import enMessages from '@/messages/en.json';
+import deMessages from '@/messages/de.json';
 
-const locales = ['en', 'de'];
-
-export function generateStaticParams() {
-  return locales.map((locale) => ({ locale }));
-}
+const messagesMap = {
+  en: enMessages,
+  de: deMessages,
+};
 
 export default async function LocaleLayout({
   children,
@@ -16,15 +15,13 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
-
-  if (!locales.includes(locale as any)) {
-    notFound();
-  }
-
-  const messages = await getMessages({ locale });
+  const messages = messagesMap[locale as keyof typeof messagesMap] || enMessages;
 
   return (
-    <NextIntlClientProvider messages={messages}>
+    <NextIntlClientProvider
+      locale={locale}
+      messages={messages}
+    >
       {children}
     </NextIntlClientProvider>
   );
