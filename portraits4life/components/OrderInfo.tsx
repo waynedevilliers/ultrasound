@@ -1,3 +1,6 @@
+'use client';
+
+import { usePathname } from 'next/navigation';
 import {
   Accordion,
   AccordionContent,
@@ -6,7 +9,45 @@ import {
 } from '@/components/ui/accordion';
 
 export default function OrderInfo() {
-  const infoSections = [
+  const pathname = usePathname();
+  const isDE = pathname.startsWith('/de');
+
+  const infoSections = isDE ? [
+    {
+      id: 'ultrasound',
+      title: 'Ultraschallportraits',
+      items: [
+        'Wähle ein klares Ultraschallbild - Profilaufnahmen funktionieren am besten',
+        'Wir benachrichtigen dich innerhalb von 24 Stunden, ob das Bild verwendbar ist',
+        'Falls nicht geeignet, kannst du ein anderes Bild kostenlos erneut einreichen',
+      ],
+    },
+    {
+      id: 'individual',
+      title: 'Individualportraits',
+      items: [
+        'Wähle ein klares Foto der Person (300dpi bevorzugt)',
+        'Wir bestätigen, ob das Foto unsere Qualitätsanforderungen erfüllt',
+      ],
+    },
+    {
+      id: 'couple',
+      title: 'Paarportraits',
+      items: [
+        'Ein Profilfoto pro Person - muss kein gemeinsames Foto sein',
+        '300dpi Qualität bevorzugt für beste Ergebnisse',
+        'Wir benachrichtigen dich, wenn wir angepasste Bilder benötigen',
+      ],
+    },
+    {
+      id: 'payment',
+      title: 'Zahlung',
+      items: [
+        'Nach der Bestätigung kannst du per PayPal, Banküberweisung oder Kreditkarte zahlen',
+        'Der Zahlungslink wird dir per E-Mail zugesandt',
+      ],
+    },
+  ] : [
     {
       id: 'ultrasound',
       title: 'Ultrasound Portraits',
@@ -45,7 +86,9 @@ export default function OrderInfo() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">Information</h2>
+      <h2 className="text-3xl font-bold text-gray-900 mb-8">
+        {isDE ? 'Informationen' : 'Information'}
+      </h2>
 
       <Accordion className="w-full border border-gray-200 rounded-lg">
         {infoSections.map((section, idx) => (
