@@ -116,7 +116,7 @@ export async function POST(request: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: 'noreply@portraits4life.art',
+        from: 'onboarding@resend.dev',
         to: adminEmails,
         subject: `New Order #${orderId} - ${orderData.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`,
         html: `
@@ -148,7 +148,7 @@ export async function POST(request: NextRequest) {
 
     try {
       await resend.emails.send({
-        from: 'noreply@portraits4life.art',
+        from: 'onboarding@resend.dev',
         to: orderData.email,
         subject: 'Order Confirmed - Portraits 4 Life',
         html: `
