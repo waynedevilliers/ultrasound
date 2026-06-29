@@ -10,6 +10,9 @@ export default function Footer() {
   const copyright = isDE
     ? '© 2024 Portraits 4 Life. Alle Rechte vorbehalten.'
     : '© 2024 Portraits 4 Life. All rights reserved.';
+  const tagline = isDE
+    ? 'Mit Liebe für Eltern und ihre schönsten Erinnerungen'
+    : 'Made with care for new parents & their memories';
 
   return (
     <footer className="bg-gray-900 text-white py-12">
@@ -34,7 +37,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-          <p>Made with care for new parents & their memories</p>
+          <p>{tagline}</p>
         </div>
       </div>
     </footer>
