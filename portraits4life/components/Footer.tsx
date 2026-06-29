@@ -1,9 +1,15 @@
 'use client';
 
-import { useTranslations } from 'next-intl';
+import { usePathname } from 'next/navigation';
 
 export default function Footer() {
-  const t = useTranslations();
+  const pathname = usePathname();
+  const isDE = pathname.startsWith('/de');
+
+  const contactUs = isDE ? 'Kontaktiere uns' : 'Contact Us';
+  const copyright = isDE
+    ? '© 2024 Portraits 4 Life. Alle Rechte vorbehalten.'
+    : '© 2024 Portraits 4 Life. All rights reserved.';
 
   return (
     <footer className="bg-gray-900 text-white py-12">
@@ -16,19 +22,19 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-gray-400 mb-4">{t('footer.contactUs')}</p>
+            <p className="text-gray-400 mb-4">{contactUs}</p>
             <a href="mailto:portraits4life.art@gmail.com" className="text-pink-400 hover:text-pink-300 transition">
               portraits4life.art@gmail.com
             </a>
           </div>
 
           <div className="text-gray-400">
-            <p>© 2024 Portraits 4 Life. All rights reserved.</p>
+            <p>{copyright}</p>
           </div>
         </div>
 
         <div className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-          <p>{t('footer.copyright')}</p>
+          <p>Made with care for new parents & their memories</p>
         </div>
       </div>
     </footer>
