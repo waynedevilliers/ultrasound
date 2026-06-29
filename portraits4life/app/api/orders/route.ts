@@ -64,7 +64,7 @@ export async function POST(request: NextRequest) {
         const buffer = await file.arrayBuffer();
         const blob = new Blob([buffer], { type: file.type });
         const uploaded = await put(`orders/${Date.now()}-${prefix}-${file.name}`, blob, {
-          access: 'private',
+          access: 'public',
         });
         return uploaded.url;
       } catch (error) {
