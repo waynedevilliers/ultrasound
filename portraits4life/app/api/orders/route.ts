@@ -110,49 +110,61 @@ export async function POST(request: NextRequest) {
 
     const orderId = result.rows[0]?.id;
 
-    // Send admin email to both team members
+    // Send emails
     const resend = new Resend(process.env.RESEND_API_KEY);
-    await resend.emails.send({
-      from: 'orders@portraits4life.art',
-      to: ['portraits4life.art@gmail.com', 'wrdevilliers@gmail.com'],
-      subject: `New Order #${orderId} - ${orderData.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`,
-      html: `
-        <h2>New Order Received</h2>
-        <p><strong>Order ID:</strong> ${orderId}</p>
-        <p><strong>Customer Name:</strong> ${orderData.name}</p>
-        <p><strong>Email:</strong> ${orderData.email}</p>
-        <p><strong>Product:</strong> ${orderData.product === 'canvas' ? `Canvas Print (${orderData.canvasSize})` : 'Digital JPEG'}</p>
-        ${orderData.childName ? `<p><strong>Child's Name:</strong> ${orderData.childName}</p>` : ''}
-        ${orderData.weeksInWomb ? `<p><strong>Weeks in Womb:</strong> ${orderData.weeksInWomb}</p>` : ''}
-        ${orderData.specialRequests ? `<p><strong>Special Requests:</strong> ${orderData.specialRequests}</p>` : ''}
-        ${orderData.shippingAddress ? `
-          <h3>Shipping Address</h3>
-          <p>${orderData.shippingAddress.fullName}<br/>
-          ${orderData.shippingAddress.street}<br/>
-          ${orderData.shippingAddress.city}, ${orderData.shippingAddress.state} ${orderData.shippingAddress.postalCode}<br/>
-          ${orderData.shippingAddress.country}</p>
-        ` : ''}
-        ${ultrasoundImageUrl ? `<p><a href="${ultrasoundImageUrl}">Ultrasound Image</a></p>` : ''}
-        ${referenceImageUrl ? `<p><a href="${referenceImageUrl}">Reference Image</a></p>` : ''}
-      `,
-    });
+    const adminEmails = ['portraits4life.art@gmail.com', 'wrdevilliers@gmail.com'];
 
-    // Send customer confirmation email
-    await resend.emails.send({
-      from: 'orders@portraits4life.art',
-      to: orderData.email,
-      subject: 'Order Confirmed - Portraits 4 Life',
-      html: `
-        <h2>Thank You for Your Order!</h2>
-        <p>Hi ${orderData.name},</p>
-        <p>We've received your order and will review your images shortly.</p>
-        <p><strong>Order ID:</strong> ${orderId}</p>
-        <p><strong>Product:</strong> ${orderData.product === 'canvas' ? `Canvas Print (${orderData.canvasSize})` : 'Digital JPEG'}</p>
-        <p><strong>Expected Delivery:</strong> ${orderData.product === 'canvas' ? '1-2 weeks' : '1 week'}</p>
-        <p>We'll contact you within 24 hours to confirm your images are suitable for processing.</p>
-        <p>Best regards,<br/>Portraits 4 Life Team</p>
-      `,
-    });
+    try {
+      await resend.emails.send({
+        from: 'noreply@portraits4life.art',
+        to: adminEmails,
+        subject: `New Order #${orderId} - ${orderData.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`,
+        html: `
+          <h2>New Order Received</h2>
+          <p><strong>Order ID:</strong> ${orderId}</p>
+          <p><strong>Customer Name:</strong> ${orderData.name}</p>
+          <p><strong>Email:</strong> ${orderData.email}</p>
+          <p><strong>Product:</strong> ${orderData.product === 'canvas' ? `Canvas Print (${orderData.canvasSize})` : 'Digital JPEG'}</p>
+          ${orderData.childName ? `<p><strong>Child's Name:</strong> ${orderData.childName}</p>` : ''}
+          ${orderData.weeksInWomb ? `<p><strong>Weeks in Womb:</strong> ${orderData.weeksInWomb}</p>` : ''}
+          ${orderData.specialRequests ? `<p><strong>Special Requests:</strong> ${orderData.specialRequests}</p>` : ''}
+          ${orderData.shippingAddress ? `
+            <h3>Shipping Address</h3>
+            <p>${orderData.shippingAddress.fullName}<br/>
+            ${orderData.shippingAddress.street}<br/>
+            ${orderData.shippingAddress.city}, ${orderData.shippingAddress.state} ${orderData.shippingAddress.postalCode}<br/>
+            ${orderData.shippingAddress.country}</p>
+          ` : ''}
+          ${ultrasoundImageUrl ? `<p><a href="${ultrasoundImageUrl}">Ultrasound Image</a></p>` : ''}
+          ${referenceImageUrl ? `<p><a href="${referenceImageUrl}">Reference Image</a></p>` : ''}
+        `,
+      });
+    } catch (emailError) {
+      return NextResponse.json(
+        { error: 'Order saved but email notification failed', details: emailError instanceof Error ? emailError.message : 'Unknown error' },
+        { status: 201 }
+      );
+    }
+
+    try {
+      await resend.emails.send({
+        from: 'noreply@portraits4life.art',
+        to: orderData.email,
+        subject: 'Order Confirmed - Portraits 4 Life',
+        html: `
+          <h2>Thank You for Your Order!</h2>
+          <p>Hi ${orderData.name},</p>
+          <p>We've received your order and will review your images shortly.</p>
+          <p><strong>Order ID:</strong> ${orderId}</p>
+          <p><strong>Product:</strong> ${orderData.product === 'canvas' ? `Canvas Print (${orderData.canvasSize})` : 'Digital JPEG'}</p>
+          <p><strong>Expected Delivery:</strong> ${orderData.product === 'canvas' ? '1-2 weeks' : '1 week'}</p>
+          <p>We'll contact you within 24 hours to confirm your images are suitable for processing.</p>
+          <p>Best regards,<br/>Portraits 4 Life Team</p>
+        `,
+      });
+    } catch (emailError) {
+      // Customer email failed but order is saved
+    }
 
     return NextResponse.json(
       {
