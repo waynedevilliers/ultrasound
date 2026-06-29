@@ -1,10 +1,11 @@
-import { neon } from '@neondatabase/serverless';
+require('dotenv').config({ path: '.env.development.local' });
+const { neon } = require('@neondatabase/serverless');
 
 async function initDatabase() {
-  const sql = neon(process.env.DATABASE_URL);
-  
   try {
-    await sql(`
+    const sql = neon(process.env.DATABASE_URL);
+
+    await sql`
       CREATE TABLE IF NOT EXISTS orders (
         id SERIAL PRIMARY KEY,
         name VARCHAR(255) NOT NULL,
@@ -20,16 +21,17 @@ async function initDatabase() {
         status VARCHAR(50) DEFAULT 'pending',
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP DEFAULT NOW()
-      );
-    `);
-    
-    await sql(`CREATE INDEX IF NOT EXISTS idx_orders_email ON orders(email);`);
-    await sql(`CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);`);
-    await sql(`CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);`);
-    
+      )`;
+
+    await sql`CREATE INDEX IF NOT EXISTS idx_orders_email ON orders(email)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status)`;
+    await sql`CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC)`;
+
     console.log('✓ Database initialized successfully');
+    process.exit(0);
   } catch (error) {
     console.error('✗ Database initialization failed:', error);
+    process.exit(1);
   }
 }
 
