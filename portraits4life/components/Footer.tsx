@@ -11,7 +11,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-gray-400 mb-4">portraits4life.art@gmail.com</p>
+            <p className="text-gray-400 mb-4">Contact us</p>
             <a href="mailto:portraits4life.art@gmail.com" className="text-pink-400 hover:text-pink-300 transition">
               portraits4life.art@gmail.com
             </a>
