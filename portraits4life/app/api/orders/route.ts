@@ -3,22 +3,26 @@ import { put } from '@vercel/blob';
 import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
 
+type Product = 'digital' | 'canvas';
+
+interface ShippingAddress {
+  fullName: string;
+  street: string;
+  city: string;
+  state: string;
+  postalCode: string;
+  country: string;
+}
+
 interface OrderData {
   name: string;
   email: string;
-  product: 'digital' | 'canvas';
+  product: Product;
   canvasSize?: string;
   childName?: string;
   weeksInWomb?: string;
   specialRequests?: string;
-  shippingAddress?: {
-    fullName: string;
-    street: string;
-    city: string;
-    state: string;
-    postalCode: string;
-    country: string;
-  };
+  shippingAddress?: ShippingAddress;
 }
 
 export async function POST(request: NextRequest) {
@@ -54,56 +58,32 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    // Handle file uploads
-    const ultrasoundFile = formData.get('ultrasoundImage') as File | null;
-    const referenceFile = formData.get('referenceImage') as File | null;
-
-    let ultrasoundImageUrl = '';
-    let referenceImageUrl = '';
-
-    if (ultrasoundFile && ultrasoundFile.size > 0 && ultrasoundFile instanceof File) {
+    const uploadFile = async (file: File | null, prefix: string): Promise<string> => {
+      if (!file || file.size === 0 || !(file instanceof File)) return '';
       try {
-        const buffer = await ultrasoundFile.arrayBuffer();
-        const blob = new Blob([buffer], { type: ultrasoundFile.type });
-        const ultrasoundBlob = await put(
-          `orders/${Date.now()}-ultrasound-${ultrasoundFile.name}`,
-          blob,
-          { access: 'private' }
-        );
-        ultrasoundImageUrl = ultrasoundBlob.url;
-      } catch (fileError) {
-        const errorMsg = fileError instanceof Error ? fileError.message : 'Unknown error';
-        console.error('Ultrasound file upload error:', errorMsg);
-        if (errorMsg.includes('blob credentials') || errorMsg.includes('BLOB_READ_WRITE_TOKEN')) {
-          console.warn('Blob storage not configured, proceeding without file upload');
-          ultrasoundImageUrl = '';
-        } else {
-          throw new Error(`Failed to upload ultrasound image: ${errorMsg}`);
+        const buffer = await file.arrayBuffer();
+        const blob = new Blob([buffer], { type: file.type });
+        const uploaded = await put(`orders/${Date.now()}-${prefix}-${file.name}`, blob, {
+          access: 'private',
+        });
+        return uploaded.url;
+      } catch (error) {
+        const msg = error instanceof Error ? error.message : 'Unknown error';
+        if (msg.includes('blob credentials') || msg.includes('BLOB_READ_WRITE_TOKEN')) {
+          return '';
         }
+        throw new Error(`Failed to upload ${prefix}: ${msg}`);
       }
-    }
+    };
 
-    if (referenceFile && referenceFile.size > 0 && referenceFile instanceof File) {
-      try {
-        const buffer = await referenceFile.arrayBuffer();
-        const blob = new Blob([buffer], { type: referenceFile.type });
-        const referenceBlob = await put(
-          `orders/${Date.now()}-reference-${referenceFile.name}`,
-          blob,
-          { access: 'private' }
-        );
-        referenceImageUrl = referenceBlob.url;
-      } catch (fileError) {
-        const errorMsg = fileError instanceof Error ? fileError.message : 'Unknown error';
-        console.error('Reference file upload error:', errorMsg);
-        if (errorMsg.includes('blob credentials') || errorMsg.includes('BLOB_READ_WRITE_TOKEN')) {
-          console.warn('Blob storage not configured, proceeding without file upload');
-          referenceImageUrl = '';
-        } else {
-          throw new Error(`Failed to upload reference image: ${errorMsg}`);
-        }
-      }
-    }
+    const ultrasoundImageUrl = await uploadFile(
+      formData.get('ultrasoundImage') as File | null,
+      'ultrasound'
+    );
+    const referenceImageUrl = await uploadFile(
+      formData.get('referenceImage') as File | null,
+      'reference'
+    );
 
     // Save to database
     const result = await sql`
@@ -183,13 +163,10 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    const errorMessage = error instanceof Error ? error.message : String(error);
-    const errorStack = error instanceof Error ? error.stack : '';
-    console.error('Order submission error:', { errorMessage, errorStack, error });
+    const message = error instanceof Error ? error.message : 'Unknown error';
     return NextResponse.json(
-      { error: 'Failed to process order', details: errorMessage },
+      { error: 'Failed to process order', details: message },
       { status: 500 }
     );
   }
 }
-// Cache bust at 1782730342
