@@ -110,11 +110,11 @@ export async function POST(request: NextRequest) {
 
     const orderId = result.rows[0]?.id;
 
-    // Send admin email
+    // Send admin email to both team members
     const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
       from: 'orders@portraits4life.art',
-      to: 'portraits4life.art@gmail.com',
+      to: ['portraits4life.art@gmail.com', 'wrdevilliers@gmail.com'],
       subject: `New Order #${orderId} - ${orderData.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`,
       html: `
         <h2>New Order Received</h2>
