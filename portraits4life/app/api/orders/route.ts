@@ -112,12 +112,11 @@ export async function POST(request: NextRequest) {
 
     // Send emails
     const resend = new Resend(process.env.RESEND_API_KEY);
-    const adminEmails = ['portraits4life.art@gmail.com', 'wrdevilliers@gmail.com'];
 
     try {
       await resend.emails.send({
         from: 'onboarding@resend.dev',
-        to: adminEmails,
+        to: 'portraits4life.art@gmail.com',
         subject: `New Order #${orderId} - ${orderData.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`,
         html: `
           <h2>New Order Received</h2>
@@ -140,10 +139,36 @@ export async function POST(request: NextRequest) {
         `,
       });
     } catch (emailError) {
-      return NextResponse.json(
-        { error: 'Order saved but email notification failed', details: emailError instanceof Error ? emailError.message : 'Unknown error' },
-        { status: 201 }
-      );
+      // Admin email to primary address failed - continue to try secondary
+    }
+
+    try {
+      await resend.emails.send({
+        from: 'onboarding@resend.dev',
+        to: 'wrdevilliers@gmail.com',
+        subject: `New Order #${orderId} - ${orderData.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`,
+        html: `
+          <h2>New Order Received</h2>
+          <p><strong>Order ID:</strong> ${orderId}</p>
+          <p><strong>Customer Name:</strong> ${orderData.name}</p>
+          <p><strong>Email:</strong> ${orderData.email}</p>
+          <p><strong>Product:</strong> ${orderData.product === 'canvas' ? `Canvas Print (${orderData.canvasSize})` : 'Digital JPEG'}</p>
+          ${orderData.childName ? `<p><strong>Child's Name:</strong> ${orderData.childName}</p>` : ''}
+          ${orderData.weeksInWomb ? `<p><strong>Weeks in Womb:</strong> ${orderData.weeksInWomb}</p>` : ''}
+          ${orderData.specialRequests ? `<p><strong>Special Requests:</strong> ${orderData.specialRequests}</p>` : ''}
+          ${orderData.shippingAddress ? `
+            <h3>Shipping Address</h3>
+            <p>${orderData.shippingAddress.fullName}<br/>
+            ${orderData.shippingAddress.street}<br/>
+            ${orderData.shippingAddress.city}, ${orderData.shippingAddress.state} ${orderData.shippingAddress.postalCode}<br/>
+            ${orderData.shippingAddress.country}</p>
+          ` : ''}
+          ${ultrasoundImageUrl ? `<p><a href="${ultrasoundImageUrl}">Ultrasound Image</a></p>` : ''}
+          ${referenceImageUrl ? `<p><a href="${referenceImageUrl}">Reference Image</a></p>` : ''}
+        `,
+      });
+    } catch (emailError) {
+      // Secondary admin email failed - continue
     }
 
     try {
