@@ -3,8 +3,6 @@ import { put } from '@vercel/blob';
 import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
 
-const resend = new Resend(process.env.RESEND_API_KEY);
-
 interface OrderData {
   name: string;
   email: string;
@@ -57,28 +55,42 @@ export async function POST(request: NextRequest) {
     }
 
     // Handle file uploads
-    const ultrasoundFile = formData.get('ultrasoundImage') as File;
-    const referenceFile = formData.get('referenceImage') as File;
+    const ultrasoundFile = formData.get('ultrasoundImage') as File | null;
+    const referenceFile = formData.get('referenceImage') as File | null;
 
     let ultrasoundImageUrl = '';
     let referenceImageUrl = '';
 
-    if (ultrasoundFile && ultrasoundFile.size > 0) {
-      const ultrasoundBlob = await put(
-        `orders/${Date.now()}-ultrasound-${ultrasoundFile.name}`,
-        ultrasoundFile,
-        { access: 'public' }
-      );
-      ultrasoundImageUrl = ultrasoundBlob.url;
+    if (ultrasoundFile && ultrasoundFile.size > 0 && ultrasoundFile instanceof File) {
+      try {
+        const buffer = await ultrasoundFile.arrayBuffer();
+        const blob = new Blob([buffer], { type: ultrasoundFile.type });
+        const ultrasoundBlob = await put(
+          `orders/${Date.now()}-ultrasound-${ultrasoundFile.name}`,
+          blob,
+          { access: 'public' }
+        );
+        ultrasoundImageUrl = ultrasoundBlob.url;
+      } catch (fileError) {
+        console.error('Ultrasound file upload error:', fileError);
+        throw new Error(`Failed to upload ultrasound image: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+      }
     }
 
-    if (referenceFile && referenceFile.size > 0) {
-      const referenceBlob = await put(
-        `orders/${Date.now()}-reference-${referenceFile.name}`,
-        referenceFile,
-        { access: 'public' }
-      );
-      referenceImageUrl = referenceBlob.url;
+    if (referenceFile && referenceFile.size > 0 && referenceFile instanceof File) {
+      try {
+        const buffer = await referenceFile.arrayBuffer();
+        const blob = new Blob([buffer], { type: referenceFile.type });
+        const referenceBlob = await put(
+          `orders/${Date.now()}-reference-${referenceFile.name}`,
+          blob,
+          { access: 'public' }
+        );
+        referenceImageUrl = referenceBlob.url;
+      } catch (fileError) {
+        console.error('Reference file upload error:', fileError);
+        throw new Error(`Failed to upload reference image: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+      }
     }
 
     // Save to database
@@ -107,6 +119,7 @@ export async function POST(request: NextRequest) {
     const orderId = result.rows[0]?.id;
 
     // Send admin email
+    const resend = new Resend(process.env.RESEND_API_KEY);
     await resend.emails.send({
       from: 'orders@portraits4life.art',
       to: 'portraits4life.art@gmail.com',
@@ -158,9 +171,11 @@ export async function POST(request: NextRequest) {
       { status: 201 }
     );
   } catch (error) {
-    console.error('Order submission error:', error);
+    const errorMessage = error instanceof Error ? error.message : String(error);
+    const errorStack = error instanceof Error ? error.stack : '';
+    console.error('Order submission error:', { errorMessage, errorStack, error });
     return NextResponse.json(
-      { error: 'Failed to process order' },
+      { error: 'Failed to process order', details: errorMessage },
       { status: 500 }
     );
   }
