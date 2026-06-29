@@ -15,7 +15,6 @@ export async function GET(
 
     return NextResponse.json(result.rows[0]);
   } catch (error) {
-    console.error('Get order error:', error);
     return NextResponse.json(
       { error: 'Failed to fetch order' },
       { status: 500 }
