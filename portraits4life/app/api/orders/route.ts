@@ -68,7 +68,7 @@ export async function POST(request: NextRequest) {
         const ultrasoundBlob = await put(
           `orders/${Date.now()}-ultrasound-${ultrasoundFile.name}`,
           blob,
-          { access: 'public' }
+          { access: 'private' }
         );
         ultrasoundImageUrl = ultrasoundBlob.url;
       } catch (fileError) {
