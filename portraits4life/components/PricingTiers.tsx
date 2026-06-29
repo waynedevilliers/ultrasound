@@ -70,19 +70,25 @@ export default function PricingTiers() {
               <CardContent className="pt-6">
                 <ul className="space-y-4">
                   {tier.items && Array.isArray(tier.items) && typeof tier.items[0] === 'object' ? (
-                    tier.items.map((item, i) => (
-                      <li key={i} className="flex items-center justify-between gap-3 pb-3 border-b border-gray-100 last:border-0">
-                        <span className="text-gray-700 font-medium">{item.size}</span>
-                        <span className="text-2xl font-bold text-pink-600">{item.price}</span>
-                      </li>
-                    ))
+                    tier.items.map((item, i) => {
+                      const obj = item as { size: string; price: string };
+                      return (
+                        <li key={i} className="flex items-center justify-between gap-3 pb-3 border-b border-gray-100 last:border-0">
+                          <span className="text-gray-700 font-medium">{obj.size}</span>
+                          <span className="text-2xl font-bold text-pink-600">{obj.price}</span>
+                        </li>
+                      );
+                    })
                   ) : (
-                    tier.items?.map((item, i) => (
-                      <li key={i} className="flex items-start gap-3 text-gray-600">
-                        <span className="text-pink-500 mt-1 flex-shrink-0">✓</span>
-                        <span>{item}</span>
-                      </li>
-                    ))
+                    tier.items?.map((item, i) => {
+                      const str = item as string;
+                      return (
+                        <li key={i} className="flex items-start gap-3 text-gray-600">
+                          <span className="text-pink-500 mt-1 flex-shrink-0">✓</span>
+                          <span>{str}</span>
+                        </li>
+                      );
+                    })
                   )}
                 </ul>
               </CardContent>
