@@ -72,8 +72,14 @@ export async function POST(request: NextRequest) {
         );
         ultrasoundImageUrl = ultrasoundBlob.url;
       } catch (fileError) {
-        console.error('Ultrasound file upload error:', fileError);
-        throw new Error(`Failed to upload ultrasound image: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+        const errorMsg = fileError instanceof Error ? fileError.message : 'Unknown error';
+        console.error('Ultrasound file upload error:', errorMsg);
+        if (errorMsg.includes('blob credentials') || errorMsg.includes('BLOB_READ_WRITE_TOKEN')) {
+          console.warn('Blob storage not configured, proceeding without file upload');
+          ultrasoundImageUrl = '';
+        } else {
+          throw new Error(`Failed to upload ultrasound image: ${errorMsg}`);
+        }
       }
     }
 
@@ -88,8 +94,14 @@ export async function POST(request: NextRequest) {
         );
         referenceImageUrl = referenceBlob.url;
       } catch (fileError) {
-        console.error('Reference file upload error:', fileError);
-        throw new Error(`Failed to upload reference image: ${fileError instanceof Error ? fileError.message : 'Unknown error'}`);
+        const errorMsg = fileError instanceof Error ? fileError.message : 'Unknown error';
+        console.error('Reference file upload error:', errorMsg);
+        if (errorMsg.includes('blob credentials') || errorMsg.includes('BLOB_READ_WRITE_TOKEN')) {
+          console.warn('Blob storage not configured, proceeding without file upload');
+          referenceImageUrl = '';
+        } else {
+          throw new Error(`Failed to upload reference image: ${errorMsg}`);
+        }
       }
     }
 
