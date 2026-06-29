@@ -90,7 +90,7 @@ export async function POST(request: NextRequest) {
         const referenceBlob = await put(
           `orders/${Date.now()}-reference-${referenceFile.name}`,
           blob,
-          { access: 'public' }
+          { access: 'private' }
         );
         referenceImageUrl = referenceBlob.url;
       } catch (fileError) {
