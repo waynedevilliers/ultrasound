@@ -1,4 +1,9 @@
+'use client';
+
+import { useTranslations } from 'next-intl';
+
 export default function Footer() {
+  const t = useTranslations();
 
   return (
     <footer className="bg-gray-900 text-white py-12">
@@ -11,7 +16,7 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-gray-400 mb-4">Contact us</p>
+            <p className="text-gray-400 mb-4">{t('footer.contactUs')}</p>
             <a href="mailto:portraits4life.art@gmail.com" className="text-pink-400 hover:text-pink-300 transition">
               portraits4life.art@gmail.com
             </a>
@@ -23,7 +28,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-800 pt-8 text-center text-gray-500 text-sm">
-          <p>Made with care for new parents & their memories</p>
+          <p>{t('footer.copyright')}</p>
         </div>
       </div>
     </footer>
