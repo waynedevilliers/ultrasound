@@ -6,13 +6,13 @@ A bilingual (German/English) Next.js application for ordering artistic ultrasoun
 
 ## Features
 
-- ✅ **Bilingual Support** - German and English with automatic locale routing
-- ✅ **Order Management** - Customers place orders with image uploads
-- ✅ **Email Notifications** - Admin + customer confirmation emails via Resend
-- ✅ **File Storage** - Vercel Blob for image storage
-- ✅ **Database** - Vercel Postgres for order data
-- ✅ **Responsive Design** - Tailwind CSS with mobile-first approach
-- ✅ **API Endpoints** - POST orders, GET order by ID
+- - **Bilingual Support** - German and English with automatic locale routing
+- - **Order Management** - Customers place orders with image uploads
+- - **Email Notifications** - Admin + customer confirmation emails via Resend
+- - **File Storage** - Vercel Blob for image storage
+- - **Database** - Vercel Postgres for order data
+- - **Responsive Design** - Tailwind CSS with mobile-first approach
+- - **API Endpoints** - POST orders, GET order by ID
 
 ## Tech Stack
 
@@ -215,8 +215,8 @@ CREATE INDEX idx_orders_created_at ON orders(created_at DESC);
 ## Internationalization
 
 **Supported Languages:**
-- 🇩🇪 German (de)
-- 🇬🇧 English (en)
+- German (de)
+- English (en)
 
 **Default:** German (`/de/`)
 
@@ -236,4 +236,4 @@ Translations in `messages/{locale}.json`. Access via `usePathname()` to detect c
 
 ---
 
-**Built with ❤️ for new parents and their precious memories.**
+**Built with  for new parents and their precious memories.**
