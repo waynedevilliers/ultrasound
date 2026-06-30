@@ -6,13 +6,13 @@ A bilingual (German/English) Next.js application for ordering artistic ultrasoun
 
 ## Features
 
-- - **Bilingual Support** - German and English with automatic locale routing
-- - **Order Management** - Customers place orders with image uploads
-- - **Email Notifications** - Admin + customer confirmation emails via Resend
-- - **File Storage** - Vercel Blob for image storage
-- - **Database** - Vercel Postgres for order data
-- - **Responsive Design** - Tailwind CSS with mobile-first approach
-- - **API Endpoints** - POST orders, GET order by ID
+- Bilingual Support - German and English with automatic locale routing
+- Order Management - Customers place orders with image uploads
+- Email Notifications - Admin + customer confirmation emails via Resend
+- File Storage - Vercel Blob for image storage
+- Database - Vercel Postgres for order data
+- Responsive Design - Tailwind CSS with mobile-first approach
+- API Endpoints - POST orders, GET order by ID
 
 ## Tech Stack
 
@@ -147,12 +147,12 @@ Retrieve an order by ID.
 
 When an order is placed:
 
-1. **Admin Notification** → portraits4life.art@gmail.com, wrdevilliers@gmail.com
+1. **Admin Notification** - portraits4life.art@gmail.com, wrdevilliers@gmail.com
    - Order details, customer info
    - Clickable links to uploaded images
    - Used to start artwork immediately
 
-2. **Customer Confirmation** → customer's email
+2. **Customer Confirmation** - customer's email
    - Order confirmation with ID
    - Expected delivery timeframe
    - Next steps
@@ -168,24 +168,24 @@ Deployed on **Vercel** with automatic deployments on `main` branch push.
 - `BLOB_READ_WRITE_TOKEN` - Vercel Blob storage token
 - `BLOB_STORE_ID` - Blob store identifier
 
-Set these in Vercel Project Settings → Environment Variables.
+Set these in Vercel Project Settings > Environment Variables.
 
 ## Development Workflow
 
-1. **Create feature branch** - `git checkout -b feature/description`
-2. **Make changes** - Edit code
-3. **Test locally** - `npm run dev`
-4. **Build check** - `npm run build`
-5. **Commit** - `git commit -m "description"`
-6. **Push** - `git push origin feature/description`
-7. **Deploy** - Merge to main (Vercel auto-deploys)
+1. Create feature branch - `git checkout -b feature/description`
+2. Make changes - Edit code
+3. Test locally - `npm run dev`
+4. Build check - `npm run build`
+5. Commit - `git commit -m "description"`
+6. Push - `git push origin feature/description`
+7. Deploy - Merge to main (Vercel auto-deploys)
 
 ## Code Quality
 
-- **Type Safety** - Full TypeScript coverage
-- **Efficient** - Minimal dependencies, optimized bundle
-- **Clean** - No dead code, console logs removed
-- **Bilingual** - All user-facing text translated
+- Type Safety - Full TypeScript coverage
+- Efficient - Minimal dependencies, optimized bundle
+- Clean - No dead code, console logs removed
+- Bilingual - All user-facing text translated
 
 ## Database Schema
 
@@ -231,9 +231,7 @@ Translations in `messages/{locale}.json`. Access via `usePathname()` to detect c
 
 ## Contact & Support
 
-**Business Email:** portraits4life.art@gmail.com  
-**Alternative:** wrdevilliers@gmail.com
+Business Email: portraits4life.art@gmail.com
+Alternative: wrdevilliers@gmail.com
 
----
-
-**Built with  for new parents and their precious memories.**
+Built for new parents and their precious memories.
