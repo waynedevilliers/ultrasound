@@ -33,14 +33,13 @@
     "digital": {
       "title": "Digital Download",
       "resolution": "High-res JPG",
-      "price": "€9–15",
       "delivery": "Instant Delivery"
     },
     "canvas": {
       "title": "Canvas Print",
-      "size30": "30×30 cm — €29",
-      "size40": "40×40 cm — €39",
-      "size50": "50×50 cm — €55",
+      "size30": "30×30 cm",
+      "size40": "40×40 cm",
+      "size50": "50×50 cm",
       "delivery": "~2 Weeks Delivery"
     },
     "addons": "Optional Add-ons",
@@ -67,9 +66,9 @@
       "productDigital": "Digital Download",
       "productCanvas": "Canvas Print",
       "canvasSize": "Canvas Size",
-      "size30": "30×30 cm (€29)",
-      "size40": "40×40 cm (€39)",
-      "size50": "50×50 cm (€55)",
+      "size30": "30×30 cm",
+      "size40": "40×40 cm",
+      "size50": "50×50 cm",
       "childName": "Child's Name (optional)",
       "weeksInWomb": "Weeks in the Womb (optional)",
       "photo1": "Upload Ultrasound Image (max 15 MB)",
@@ -99,6 +98,16 @@
         "title": "Payment",
         "description": "After confirmation email, payment via PayPal, bank transfer, or credit card"
       }
+    }
+  },
+  "legal": {
+    "impressum": {
+      "title": "Legal Notice",
+      "intro": "TODO(client): Legal notice required under German law (§ 5 DDG). Provider name and address, contact (email, phone if any), VAT ID if applicable, person responsible for content. This page is a placeholder and must be completed with the operator's details before launch."
+    },
+    "datenschutz": {
+      "title": "Privacy Policy",
+      "intro": "TODO(client): Privacy policy under the GDPR. Controller, purpose and legal basis for processing order data and images, retention period, recipients (hosting, email delivery), data subject rights and privacy contact. This page is a placeholder."
     }
   }
 }

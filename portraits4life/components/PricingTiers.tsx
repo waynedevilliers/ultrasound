@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { canvasSizes, digitalProduct } from '@/content/products';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function PricingTiers() {
@@ -10,7 +11,7 @@ export default function PricingTiers() {
   const tiers = isDE ? [
     {
       title: 'Hochauflösendes digitales JPG',
-      price: '€30 - 50',
+      price: `€${digitalProduct.priceFrom} - ${digitalProduct.priceTo}`,
       delivery: '1 Woche Lieferung',
       items: [
         'Hochauflösende digitale Datei',
@@ -21,16 +22,14 @@ export default function PricingTiers() {
     {
       title: 'Leinwanddrucke',
       items: [
-        { size: '30 × 30 cm', price: '€69' },
-        { size: '40 × 40 cm', price: '€89' },
-        { size: '50 × 50 cm', price: '€119' },
+        ...canvasSizes.map((size) => ({ size: `${size.widthCm} × ${size.heightCm} cm`, price: `€${size.price}` })),
       ],
       delivery: '1 - 2 Wochen Lieferung',
     },
   ] : [
     {
       title: 'High-Res Digital JPG',
-      price: '€30 - 50',
+      price: `€${digitalProduct.priceFrom} - ${digitalProduct.priceTo}`,
       delivery: '1 Week Delivery',
       items: [
         'High-resolution digital file',
@@ -41,9 +40,7 @@ export default function PricingTiers() {
     {
       title: 'Canvas Prints',
       items: [
-        { size: '30 × 30 cm', price: '€69' },
-        { size: '40 × 40 cm', price: '€89' },
-        { size: '50 × 50 cm', price: '€119' },
+        ...canvasSizes.map((size) => ({ size: `${size.widthCm} × ${size.heightCm} cm`, price: `€${size.price}` })),
       ],
       delivery: '1 - 2 Weeks Delivery',
     },
@@ -60,10 +57,10 @@ export default function PricingTiers() {
 
         <div className="grid md:grid-cols-2 gap-8">
           {tiers.map((tier, idx) => (
-            <Card key={idx} className="border-2 border-gray-200 hover:border-pink-500 transition overflow-hidden">
+            <Card key={idx} className="border-2 border-gray-200 hover:border-brand transition overflow-hidden">
               <CardHeader className="bg-gradient-to-r from-gray-50 to-white pb-6">
                 <CardTitle className="text-3xl mb-2">{tier.title}</CardTitle>
-                {tier.price && <p className="text-4xl font-bold text-pink-600">{tier.price}</p>}
+                {tier.price && <p className="text-4xl font-bold text-brand-strong">{tier.price}</p>}
                 <p className="text-sm text-gray-600 mt-2">{tier.delivery}</p>
               </CardHeader>
               <CardContent className="pt-6">
@@ -74,7 +71,7 @@ export default function PricingTiers() {
                       return (
                         <li key={i} className="flex items-center justify-between gap-3 pb-3 border-b border-gray-100 last:border-0">
                           <span className="text-gray-700 font-medium">{obj.size}</span>
-                          <span className="text-2xl font-bold text-pink-600">{obj.price}</span>
+                          <span className="text-2xl font-bold text-brand-strong">{obj.price}</span>
                         </li>
                       );
                     })
@@ -83,7 +80,7 @@ export default function PricingTiers() {
                       const str = item as string;
                       return (
                         <li key={i} className="flex items-start gap-3 text-gray-600">
-                          <span className="text-pink-500 mt-1 flex-shrink-0">✓</span>
+                          <span className="text-brand mt-1 flex-shrink-0">✓</span>
                           <span>{str}</span>
                         </li>
                       );
