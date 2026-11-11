@@ -49,3 +49,8 @@ Read `docs/DECISIONS.md` before changing design, colors, navigation or page stru
 - Screenshots for every visual change.
 - Colors, fonts and image sizes unchanged unless the owner asked.
 - `docs/DECISIONS.md` updated. Client TODOs listed.
+
+## Review
+- Before opening a pull request, run the reviewer subagent on the branch changes. Fix Critical and Important findings first.
+- The reviewer never changes code. The builder never skips the review.
+- Never run a second Claude Code session that writes to this folder while the builder is working. The reviewer runs as a subagent.
