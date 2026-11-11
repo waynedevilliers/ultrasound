@@ -1,0 +1,62 @@
+# Decisions
+
+One entry per decision someone could later question. Each entry: date, status (`done` or `open`), Decision, Why, Considered.
+
+---
+
+## 2026-11-11: Colors stay as they are
+
+- **Status:** done
+- **Decision:** No color value changes until the owner decides the brand colors. Brand tokens (`--color-brand`, `--color-brand-strong`) point at the Tailwind v4 default pink that the site renders today.
+- **Why:** The owner asked to keep every current color. The pink in `tailwind.config.ts` was never active (Tailwind v4 needs `@config` to load it), so it was removed to avoid two sources of truth.
+- **Considered:** Moving the `tailwind.config.ts` hex values (`#ec4899`, `#db2777`) into tokens. Rejected: it would change how the site looks.
+
+## 2026-11-11: Font families stay as they are, loading changes
+
+- **Status:** done
+- **Decision:** Geist, Geist Mono and Playfair Display stay. Each is loaded with `next/font` and `display: swap`. Fonts are self-hosted at build time, so no request goes to Google at runtime.
+- **Why:** DSGVO. Visitors' browsers should not contact Google servers.
+- **Considered:** Hand-downloaded font files in `public/`. Not needed, because `next/font` already self-hosts at build.
+
+## 2026-11-11: Body text font is an open question
+
+- **Status:** open
+- **Decision:** None yet. Body text currently renders in the browser's default serif. `globals.css` sets `--font-sans: var(--font-sans)`, which refers to itself and is invalid, so Geist is not applied to body text.
+- **Why:** The owner said to keep the current font families. The current rendering is a serif, which is probably not what was intended.
+- **Considered:** Pointing `--font-sans` at Geist. Not done in Step 1, because it changes every paragraph on the site. Needs the owner's answer.
+
+## 2026-11-11: Text lives in `content/`
+
+- **Status:** done
+- **Decision:** All visible text goes in `content/`, not in components. Existing text in `messages/*.json` and inside components moves there as each component is touched in its own step. Step 1 changes no text.
+- **Why:** Salon77 rule. Text changes must not require editing components.
+- **Considered:** Keeping `messages/*.json` for next-intl. Rejected by the owner in favour of the Salon77 rule.
+
+## 2026-11-11: One price set
+
+- **Status:** done (price values to be confirmed by the owner in Step 2)
+- **Decision:** Use the prices visitors see today: digital €30–50; canvas 30×30 cm €69, 40×40 cm €89, 50×50 cm €119. The other set in `messages/*.json` (€9–15, €29/39/55) is dropped.
+- **Why:** The owner said the price question is not blocking, and asked for one consistent price set.
+- **Considered:** Asking for the owner's choice before Step 2. Not needed, since the owner can change the values in the single data file.
+
+## 2026-11-11: Workflow
+
+- **Status:** done
+- **Decision:** One step at a time. After each step: screenshots at 390x844 and 1440x900, a list of changed files, then stop. "ok" = commit and push. "revert" = discard that step.
+- **Why:** Owner request. Screenshots are the proof that a step is done.
+- **Considered:** Several steps per commit. Rejected, because a revert must affect one step only.
+
+## 2026-11-11: Branch and commit naming
+
+- **Status:** done
+- **Decision:** Branch `feat/salon77-patterns`. Conventional Commits with scopes, for example `feat(hero): ...`.
+- **Why:** Salon77 guide.
+- **Considered:** The plan's `feature/` prefix. Replaced by the guide's `feat/`.
+
+## 2026-11-11: Patterns adopted from Salon77
+
+One line per step, added as each step lands.
+
+- Step 0: Audit against the Salon77 guide (`docs/reviews/2026-11-11-audit.md`).
+- Step 1: Foundation. `CLAUDE.md` standards, this file, `next/font` with `display: swap`, brand tokens.
+- Sticky menu bar, one primary button per page, content container, facts box and layout rules come in later steps.
