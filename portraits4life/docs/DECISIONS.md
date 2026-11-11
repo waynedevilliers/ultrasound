@@ -78,9 +78,15 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 Questions the owner has not answered yet. Remove an item and log the answer as a decision once answered.
 
-- Brand colors: decided later. Colors stay as they are until then.
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
+
+## 2026-11-12: Brand color: darker pink
+
+- **Status:** done
+- **Decision:** Brand accent is Tailwind pink-600 (`--color-brand`), hover and strong text is pink-700 (`--color-brand-strong`). Footer tagline uses gray-400 instead of gray-500.
+- **Why:** Owner decision. The bright pink-500 button failed contrast (white text about 3.5:1). pink-600 with white text is about 4.6:1. This replaces the earlier "colors stay as they are" rule for brand colors only. Other colors are unchanged.
+- **Considered:** Dark text on the bright pink (about 6:1, but looks different from the rest of the site). A new rose from the design guide (more change than needed).
 
 ## 2026-11-11: Tooling and CI (Step 2)
 

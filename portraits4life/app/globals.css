@@ -10,8 +10,8 @@
  * tailwind.config.ts was never loaded (Tailwind v4 needs @config) and is removed.
  */
 @theme {
-  --color-brand: var(--color-pink-500);
-  --color-brand-strong: var(--color-pink-600);
+  --color-brand: var(--color-pink-600);
+  --color-brand-strong: var(--color-pink-700);
   --font-display: var(--font-playfair);
   --button-min-height: 3rem;
   --spacing-section: 5rem;
