@@ -7,7 +7,7 @@ export default function ContactSection() {
   const isDE = pathname.startsWith('/de');
 
   return (
-    <section id="contact" className="py-20 lg:py-32 bg-gradient-to-r from-slate-900 to-slate-800">
+    <section id="contact" className="py-20 lg:py-32 bg-gradient-to-r from-dark-deep to-dark-alt">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2
           className="font-display text-5xl font-bold mb-6 text-white"
@@ -15,7 +15,7 @@ export default function ContactSection() {
           {isDE ? 'Kontakt' : 'Get in Touch'}
         </h2>
 
-        <p className="text-xl text-gray-200 mb-8">
+        <p className="text-xl text-on-dark-soft mb-8">
           {isDE ? (
             'Hast du Fragen oder besondere Wünsche? Schreib mir eine Nachricht und ich antworte dir so schnell wie möglich!'
           ) : (
@@ -23,7 +23,7 @@ export default function ContactSection() {
           )}
         </p>
 
-        <p className="text-2xl font-semibold text-pink-400 mb-10">
+        <p className="text-2xl font-semibold text-brand-light mb-10">
           portraits4life.art@gmail.com
         </p>
 

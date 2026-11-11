@@ -22,7 +22,7 @@ Read `docs/DECISIONS.md` before changing design, colors, navigation or page stru
 - TypeScript strict. No `any` without a comment explaining why.
 - Server Components by default. Client Components only for real interactivity.
 - Small components with typed props. No duplicated code or styles.
-- Colors and fonts only from tokens. Product data only from the product data file (Step 2).
+- Colors and fonts only from tokens. Use the palette names in `app/globals.css` (`text-ink`, `bg-canvas`, `border-line`, `text-brand`, ...). Never use raw Tailwind colors such as `gray-600` or `pink-400` in components. Product data only from the product data file (Step 2).
 - ESLint and Prettier pass with zero warnings. Remove unused files, exports and dependencies. Every new dependency needs a reason.
 - Reuse existing components, hooks, utilities and tokens. Do not rewrite working code.
 

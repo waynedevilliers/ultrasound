@@ -47,21 +47,21 @@ export default function PricingTiers() {
   ];
 
   return (
-    <section id="pricing" className="py-20 lg:py-32 bg-gray-50">
+    <section id="pricing" className="py-20 lg:py-32 bg-canvas">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2
-          className="font-display text-5xl font-bold text-center mb-16 text-gray-900"
+          className="font-display text-5xl font-bold text-center mb-16 text-ink"
         >
           {isDE ? 'Formate & Preise' : 'Formats & Pricing'}
         </h2>
 
         <div className="grid md:grid-cols-2 gap-8">
           {tiers.map((tier, idx) => (
-            <Card key={idx} className="border-2 border-gray-200 hover:border-brand transition overflow-hidden">
-              <CardHeader className="bg-gradient-to-r from-gray-50 to-white pb-6">
+            <Card key={idx} className="border-2 border-line hover:border-brand transition overflow-hidden">
+              <CardHeader className="bg-gradient-to-r from-canvas to-surface pb-6">
                 <CardTitle className="text-3xl mb-2">{tier.title}</CardTitle>
                 {tier.price && <p className="text-4xl font-bold text-brand-strong">{tier.price}</p>}
-                <p className="text-sm text-gray-600 mt-2">{tier.delivery}</p>
+                <p className="text-sm text-copy mt-2">{tier.delivery}</p>
               </CardHeader>
               <CardContent className="pt-6">
                 <ul className="space-y-4">
@@ -69,8 +69,8 @@ export default function PricingTiers() {
                     tier.items.map((item, i) => {
                       const obj = item as { size: string; price: string };
                       return (
-                        <li key={i} className="flex items-center justify-between gap-3 pb-3 border-b border-gray-100 last:border-0">
-                          <span className="text-gray-700 font-medium">{obj.size}</span>
+                        <li key={i} className="flex items-center justify-between gap-3 pb-3 border-b border-line-soft last:border-0">
+                          <span className="text-body font-medium">{obj.size}</span>
                           <span className="text-2xl font-bold text-brand-strong">{obj.price}</span>
                         </li>
                       );
@@ -79,7 +79,7 @@ export default function PricingTiers() {
                     tier.items?.map((item, i) => {
                       const str = item as string;
                       return (
-                        <li key={i} className="flex items-start gap-3 text-gray-600">
+                        <li key={i} className="flex items-start gap-3 text-copy">
                           <span className="text-brand mt-1 flex-shrink-0">✓</span>
                           <span>{str}</span>
                         </li>

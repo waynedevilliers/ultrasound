@@ -10,10 +10,10 @@ export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
-    <section className="py-20 lg:py-32 bg-gray-50">
+    <section className="py-20 lg:py-32 bg-canvas">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2
-          className="font-display text-5xl font-bold text-center mb-16 text-gray-900"
+          className="font-display text-5xl font-bold text-center mb-16 text-ink"
         >
           {isDE ? 'Unsere Arbeiten' : 'Our Work'}
         </h2>
@@ -58,7 +58,7 @@ export default function Gallery() {
               />
               <button
                 onClick={() => setSelectedImage(null)}
-                className="absolute top-4 right-4 bg-white text-black rounded-full w-10 h-10 flex items-center justify-center hover:bg-gray-200 transition"
+                className="absolute top-4 right-4 bg-surface text-black rounded-full w-10 h-10 flex items-center justify-center hover:bg-surface-strong transition"
               >
                 ✕
               </button>
@@ -67,7 +67,7 @@ export default function Gallery() {
         )}
 
         <div className="mt-12 text-center">
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-copy">
             {isDE ? (
               'Sehe die Schönheit in jedem Detail. Verwandle dein Ultraschallbild in ein Kunstwerk.'
             ) : (

@@ -41,24 +41,24 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="py-20 lg:py-32 bg-gray-50">
+    <section className="py-20 lg:py-32 bg-canvas">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2
-          className="font-display text-5xl font-bold text-center mb-20 text-gray-900"
+          className="font-display text-5xl font-bold text-center mb-20 text-ink"
         >
           {isDE ? 'Einfacher Prozess' : 'Simple Process'}
         </h2>
 
         <div className="grid md:grid-cols-3 gap-8">
           {steps.map((step) => (
-            <div key={step.number} className="bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition">
-              <div className="mb-6 flex items-center justify-center w-12 h-12 rounded-full bg-pink-100">
+            <div key={step.number} className="bg-surface rounded-lg p-8 shadow-sm hover:shadow-md transition">
+              <div className="mb-6 flex items-center justify-center w-12 h-12 rounded-full bg-brand-tint">
                 <span className="text-xl font-bold text-brand-strong">{step.number}</span>
               </div>
-              <h3 className="text-xl font-bold mb-3 text-gray-900">
+              <h3 className="text-xl font-bold mb-3 text-ink">
                 {step.title}
               </h3>
-              <p className="text-gray-600 leading-relaxed">
+              <p className="text-copy leading-relaxed">
                 {step.description}
               </p>
             </div>

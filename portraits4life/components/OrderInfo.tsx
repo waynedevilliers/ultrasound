@@ -86,20 +86,20 @@ export default function OrderInfo() {
 
   return (
     <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-gray-900 mb-8">
+      <h2 className="text-3xl font-bold text-ink mb-8">
         {isDE ? 'Informationen' : 'Information'}
       </h2>
 
-      <Accordion className="w-full border border-gray-200 rounded-lg">
+      <Accordion className="w-full border border-line rounded-lg">
         {infoSections.map((section) => (
           <AccordionItem key={section.id} value={section.id}>
-            <AccordionTrigger className="px-6 py-4 hover:bg-gray-50">
+            <AccordionTrigger className="px-6 py-4 hover:bg-canvas">
               {section.title}
             </AccordionTrigger>
-            <AccordionContent className="px-6 py-4 bg-gray-50">
+            <AccordionContent className="px-6 py-4 bg-canvas">
               <ul className="space-y-3">
                 {section.items.map((item, itemIdx) => (
-                  <li key={itemIdx} className="flex gap-3 text-gray-700">
+                  <li key={itemIdx} className="flex gap-3 text-body">
                     <span className="text-brand mt-1">›</span>
                     <span>{item}</span>
                   </li>

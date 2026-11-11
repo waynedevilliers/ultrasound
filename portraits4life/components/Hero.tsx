@@ -8,17 +8,17 @@ export default function Hero() {
   const isDE = pathname.startsWith('/de');
 
   return (
-    <section className="bg-gradient-to-b from-slate-100 to-white">
+    <section className="bg-gradient-to-b from-hero to-surface">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="min-w-0">
             <h1
-              className="font-display text-5xl lg:text-6xl font-bold mb-6 text-gray-900 leading-tight"
+              className="font-display text-5xl lg:text-6xl font-bold mb-6 text-ink leading-tight"
             >
               ULTRASOUND ART
             </h1>
 
-            <p className="text-lg text-gray-600 mb-8 whitespace-pre-line leading-relaxed">
+            <p className="text-lg text-copy mb-8 whitespace-pre-line leading-relaxed">
               {isDE ? (
                 <>
                   Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern. Lass dir die allererste Aufnahme deines Kindes verewigen! Ich bearbeite das Ultraschallbild künstlerisch und hebe es farblich hervor.
@@ -47,7 +47,7 @@ export default function Hero() {
               </a>
               <a
                 href="#pricing"
-                className="inline-block border-2 border-gray-900 text-gray-900 px-8 py-3 rounded-lg font-semibold hover:bg-gray-900 hover:text-white transition text-center"
+                className="inline-block border-2 border-ink text-ink px-8 py-3 rounded-lg font-semibold hover:bg-dark hover:text-white transition text-center"
               >
                 {isDE ? 'Formate ansehen' : 'View Formats'}
               </a>

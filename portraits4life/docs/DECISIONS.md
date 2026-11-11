@@ -81,6 +81,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-12: One site palette
+
+- **Status:** done
+- **Decision:** All colors are defined once, in the `@theme` block of `app/globals.css`. Components use palette names (`text-ink`, `text-copy`, `bg-canvas`, `border-line`, `text-success`, ...), never raw Tailwind colors. Each palette value points at the Tailwind color it rendered before, so the refactor changed no pixels (verified pixel-for-pixel on landing, order and legal pages at 375x667 and 1440x900). Only white and black remain as constants.
+- **Why:** Owner request. One place to change colors, and no hidden colors scattered across components.
+- **Considered:** Keeping raw Tailwind classes in components (rejected: colors could not be changed in one place).
+
 ## 2026-11-12: Brand color: darker pink
 
 - **Status:** done

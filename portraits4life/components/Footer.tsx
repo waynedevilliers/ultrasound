@@ -19,7 +19,7 @@ export default function Footer() {
     : 'Made with care for new parents & their memories';
 
   return (
-    <footer className="bg-gray-900 text-white py-12">
+    <footer className="bg-dark text-white py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
@@ -29,26 +29,26 @@ export default function Footer() {
           </div>
 
           <div>
-            <p className="text-gray-400 mb-4">{contactUs}</p>
-            <a href="mailto:portraits4life.art@gmail.com" className="text-pink-400 hover:text-pink-300 transition">
+            <p className="text-caption mb-4">{contactUs}</p>
+            <a href="mailto:portraits4life.art@gmail.com" className="text-brand-light hover:text-brand-on-dark transition">
               portraits4life.art@gmail.com
             </a>
           </div>
 
-          <div className="text-gray-400">
+          <div className="text-caption">
             <p>{copyright}</p>
             <nav aria-label={isDE ? 'Rechtliches' : 'Legal'} className="mt-4 flex flex-col gap-2">
-              <Link href={isDE ? '/de/impressum' : '/en/impressum'} className="hover:text-gray-200 transition">
+              <Link href={isDE ? '/de/impressum' : '/en/impressum'} className="hover:text-on-dark-soft transition">
                 {legal.impressum.title}
               </Link>
-              <Link href={isDE ? '/de/datenschutz' : '/en/datenschutz'} className="hover:text-gray-200 transition">
+              <Link href={isDE ? '/de/datenschutz' : '/en/datenschutz'} className="hover:text-on-dark-soft transition">
                 {legal.datenschutz.title}
               </Link>
             </nav>
           </div>
         </div>
 
-        <div className="border-t border-gray-800 pt-8 text-center text-gray-400 text-sm">
+        <div className="border-t border-line-dark pt-8 text-center text-caption text-sm">
           <p>{tagline}</p>
         </div>
       </div>

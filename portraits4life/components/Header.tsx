@@ -33,7 +33,7 @@ export default function Header() {
   ];
 
   return (
-    <header className="bg-white border-b border-gray-200">
+    <header className="bg-surface border-b border-line">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center justify-between">
           <a href={isDE ? '/de' : '/en'} className="flex items-center gap-3 hover:opacity-90 transition">
@@ -46,14 +46,14 @@ export default function Header() {
                 className="w-full h-full object-contain"
               />
             </div>
-            <span className="font-display text-xl sm:text-2xl font-bold text-gray-900 whitespace-nowrap">
+            <span className="font-display text-xl sm:text-2xl font-bold text-ink whitespace-nowrap">
               Portraits 4 Life
             </span>
           </a>
 
           <nav aria-label={isDE ? 'Hauptmenü' : 'Main menu'} className="hidden md:flex items-center gap-8">
             {links.map((link) => (
-              <a key={link.label} href={link.href} className="text-gray-600 hover:text-gray-900 transition">
+              <a key={link.label} href={link.href} className="text-copy hover:text-ink transition">
                 {link.label}
               </a>
             ))}
@@ -62,7 +62,7 @@ export default function Header() {
           <div className="flex items-center gap-2 sm:gap-4">
             <button
               onClick={handleLanguageSwitch}
-              className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-brand bg-pink-50 hover:bg-pink-100 text-brand-strong font-semibold text-sm sm:text-base transition"
+              className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-brand bg-brand-soft hover:bg-brand-tint text-brand-strong font-semibold text-sm sm:text-base transition"
               type="button"
             >
               {isDE ? 'EN' : 'DE'}
@@ -70,7 +70,7 @@ export default function Header() {
 
             <button
               type="button"
-              className="md:hidden h-11 w-11 flex items-center justify-center text-gray-600 hover:text-gray-900"
+              className="md:hidden h-11 w-11 flex items-center justify-center text-copy hover:text-ink"
               aria-expanded={menuOpen}
               aria-controls={menuId}
               aria-label={menuOpen ? (isDE ? 'Menü schließen' : 'Close menu') : (isDE ? 'Menü öffnen' : 'Open menu')}
@@ -91,7 +91,7 @@ export default function Header() {
           <nav
             id={menuId}
             aria-label={isDE ? 'Hauptmenü' : 'Main menu'}
-            className="md:hidden mt-4 border-t border-gray-200 pt-2"
+            className="md:hidden mt-4 border-t border-line pt-2"
             onClick={(event) => {
               if ((event.target as HTMLElement).closest('a')) setMenuOpen(false);
             }}
@@ -100,7 +100,7 @@ export default function Header() {
               <a
                 key={link.label}
                 href={link.href}
-                className="flex min-h-12 items-center text-lg text-gray-700 hover:text-gray-900"
+                className="flex min-h-12 items-center text-lg text-body hover:text-ink"
               >
                 {link.label}
               </a>
