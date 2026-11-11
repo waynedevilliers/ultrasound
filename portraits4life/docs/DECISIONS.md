@@ -18,12 +18,19 @@ One entry per decision someone could later question. Each entry: date, status (`
 - **Why:** DSGVO. Visitors' browsers should not contact Google servers.
 - **Considered:** Hand-downloaded font files in `public/`. Not needed, because `next/font` already self-hosts at build.
 
-## 2026-11-11: Body text font is an open question
+## 2026-11-11: Body text uses Geist
 
-- **Status:** open
-- **Decision:** None yet. Body text currently renders in the browser's default serif. `globals.css` sets `--font-sans: var(--font-sans)`, which refers to itself and is invalid, so Geist is not applied to body text.
-- **Why:** The owner said to keep the current font families. The current rendering is a serif, which is probably not what was intended.
-- **Considered:** Pointing `--font-sans` at Geist. Not done in Step 1, because it changes every paragraph on the site. Needs the owner's answer.
+- **Status:** done
+- **Decision:** Body text uses Geist. `--font-sans` in `app/globals.css` points at `--font-geist-sans`. Before this change, body text rendered in the browser's default serif because the variable referred to itself.
+- **Why:** Owner decision. The code always declared Geist as the body font; the serif was a bug. This is the only intended change to how text looks in this step.
+- **Considered:** Keeping the browser default serif to keep current rendering. Rejected by the owner.
+
+## 2026-11-11: Public order lookup endpoint removed
+
+- **Status:** done
+- **Decision:** `GET /api/orders/[id]` is removed, along with the unused `getOrder` helper in `lib/db.ts` and its README section. Orders are read from the database and admin emails only.
+- **Why:** The endpoint returned names, emails, addresses and image URLs for any sequential ID, with no check on who asked. Nothing on the site used it.
+- **Considered:** Requiring a secret token from the owner's emails. Rejected: the owner does not need an API for orders.
 
 ## 2026-11-11: Text lives in `content/` (superseded)
 
@@ -71,7 +78,6 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 Questions the owner has not answered yet. Remove an item and log the answer as a decision once answered.
 
-- Body text font: should body text use Geist (declared, not applied today) or stay on the browser default serif? See "Body text font" above.
 - Brand colors: decided later. Colors stay as they are until then.
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
