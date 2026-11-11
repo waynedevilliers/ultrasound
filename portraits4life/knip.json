@@ -1,0 +1,5 @@
+{
+  "entry": ["app/**/{page,layout,route}.{ts,tsx}", "middleware.ts", "proxy.ts", "i18n.ts", "next.config.ts", "vitest.config.ts", "vitest.setup.ts", "playwright.config.ts", "e2e/**/*.ts", "scripts/**/*.js"],
+  "project": ["**/*.{ts,tsx,js}"],
+  "ignore": [".next/**", "node_modules/**"]
+}
