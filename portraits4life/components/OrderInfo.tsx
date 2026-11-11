@@ -91,7 +91,7 @@ export default function OrderInfo() {
       </h2>
 
       <Accordion className="w-full border border-gray-200 rounded-lg">
-        {infoSections.map((section, idx) => (
+        {infoSections.map((section) => (
           <AccordionItem key={section.id} value={section.id}>
             <AccordionTrigger className="px-6 py-4 hover:bg-gray-50">
               {section.title}

@@ -2,7 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { canvasSizes, digitalProduct } from '@/content/products';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function PricingTiers() {
   const pathname = usePathname();
