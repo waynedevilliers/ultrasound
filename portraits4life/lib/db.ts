@@ -50,8 +50,3 @@ export async function initializeDatabase() {
   await sql`CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status);`;
   await sql`CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC);`;
 }
-
-export async function getOrder(id: number): Promise<Order | null> {
-  const result = await sql`SELECT * FROM orders WHERE id = ${id}`;
-  return (result.rows[0] as Order) || null;
-}

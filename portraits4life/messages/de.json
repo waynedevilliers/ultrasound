@@ -33,14 +33,13 @@
     "digital": {
       "title": "Digital Download",
       "resolution": "Hochauflösendes JPG",
-      "price": "€9–15",
       "delivery": "Sofortige Zustellung"
     },
     "canvas": {
       "title": "Leinwanddruck",
-      "size30": "30×30 cm — €29",
-      "size40": "40×40 cm — €39",
-      "size50": "50×50 cm — €55",
+      "size30": "30×30 cm",
+      "size40": "40×40 cm",
+      "size50": "50×50 cm",
       "delivery": "~2 Wochen Lieferung"
     },
     "addons": "Optionale Extras",
@@ -67,9 +66,9 @@
       "productDigital": "Digital Download",
       "productCanvas": "Leinwanddruck",
       "canvasSize": "Leinwandgröße",
-      "size30": "30×30 cm (€29)",
-      "size40": "40×40 cm (€39)",
-      "size50": "50×50 cm (€55)",
+      "size30": "30×30 cm",
+      "size40": "40×40 cm",
+      "size50": "50×50 cm",
       "childName": "Name des Kindes (optional)",
       "weeksInWomb": "Wochen im Mutterleib (optional)",
       "photo1": "Ultraschallbild hochladen (max 15 MB)",
@@ -99,6 +98,16 @@
         "title": "Zahlung",
         "description": "Nach der Bestätigung per E-Mail erfolgt die Zahlung per PayPal, Banküberweisung oder Kreditkarte"
       }
+    }
+  },
+  "legal": {
+    "impressum": {
+      "title": "Impressum",
+      "intro": "TODO(client): Angaben gemäß § 5 DDG. Name und Anschrift des Anbieters, Kontakt (E-Mail, ggf. Telefon), Umsatzsteuer-ID falls vorhanden, Verantwortlicher für redaktionelle Inhalte. Diese Seite ist ein Platzhalter und muss vor dem Start mit den Angaben der Betreiberin gefüllt werden."
+    },
+    "datenschutz": {
+      "title": "Datenschutzerklärung",
+      "intro": "TODO(client): Datenschutzerklärung nach DSGVO. Verantwortliche Stelle, Zweck und Rechtsgrundlage der Verarbeitung der Bestelldaten und Bilder, Speicherdauer, Empfänger (Hosting, E-Mail-Versand), Betroffenenrechte und Kontakt zum Datenschutz. Diese Seite ist ein Platzhalter."
     }
   }
 }

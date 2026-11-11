@@ -126,22 +126,7 @@ shippingCountry?: string (for canvas)
 }
 ```
 
-### GET `/api/orders/[id]`
-
-Retrieve an order by ID.
-
-**Response:**
-```json
-{
-  "id": 1,
-  "name": "John Doe",
-  "email": "john@example.com",
-  "product": "digital",
-  "ultrasound_image_url": "https://...",
-  "status": "pending",
-  "created_at": "2024-06-29T09:24:31.227Z"
-}
-```
+There is no public endpoint to read orders. Orders are read from the database and the admin emails.
 
 ## Email Workflow
 

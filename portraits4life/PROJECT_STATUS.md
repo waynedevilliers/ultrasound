@@ -42,7 +42,7 @@ Last Updated: 2026-07-02
 
 ### Backend API
 - [x] POST /api/orders - Order submission endpoint
-- [x] GET /api/orders/[id] - Order retrieval endpoint
+- [ ] GET /api/orders/[id] - Removed: it returned every order to anyone who knew the ID
 - [x] File upload to Vercel Blob storage
 - [x] Image storage with public access for email links
 - [x] Order data storage in Vercel Postgres

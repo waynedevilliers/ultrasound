@@ -10,8 +10,7 @@ export default function OrderPage() {
       <main className="flex-1 py-16 lg:py-24 bg-gray-50">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
           <h1
-            className="text-5xl font-bold mb-4 text-gray-900 text-center"
-            style={{ fontFamily: 'var(--font-playfair)' }}
+            className="font-display text-5xl font-bold mb-4 text-gray-900 text-center"
           >
             Bestellen / Order
           </h1>

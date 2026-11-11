@@ -1,10 +1,14 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import de from '@/messages/de.json';
+import en from '@/messages/en.json';
 
 export default function Footer() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
+  const legal = (isDE ? de : en).legal;
 
   const contactUs = isDE ? 'Kontaktiere uns' : 'Contact Us';
   const copyright = isDE
@@ -19,9 +23,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
-            <a href="/" className="text-2xl font-bold" style={{ fontFamily: 'var(--font-playfair)' }}>
+            <Link href={isDE ? '/de' : '/en'} className="font-display text-2xl font-bold">
               Portraits 4 Life
-            </a>
+            </Link>
           </div>
 
           <div>
@@ -33,6 +37,14 @@ export default function Footer() {
 
           <div className="text-gray-400">
             <p>{copyright}</p>
+            <nav aria-label={isDE ? 'Rechtliches' : 'Legal'} className="mt-4 flex flex-col gap-2">
+              <Link href={isDE ? '/de/impressum' : '/en/impressum'} className="hover:text-gray-200 transition">
+                {legal.impressum.title}
+              </Link>
+              <Link href={isDE ? '/de/datenschutz' : '/en/datenschutz'} className="hover:text-gray-200 transition">
+                {legal.datenschutz.title}
+              </Link>
+            </nav>
           </div>
         </div>
 
