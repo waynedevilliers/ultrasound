@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-require-imports -- plain Node CommonJS script, not app code */
 require('dotenv').config({ path: '.env.development.local' });
 const { neon } = require('@neondatabase/serverless');
 
