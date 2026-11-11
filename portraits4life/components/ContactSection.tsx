@@ -29,7 +29,7 @@ export default function ContactSection() {
 
         <a
           href={isDE ? '/de/order' : '/en/order'}
-          className="inline-block bg-pink-500 text-white px-10 py-4 rounded-lg font-semibold hover:bg-pink-600 transition"
+          className="inline-block bg-brand text-white px-10 py-4 rounded-lg font-semibold hover:bg-brand-strong transition"
         >
           {isDE ? 'Jetzt Kontakt aufnehmen' : 'Contact Me Now'}
         </a>

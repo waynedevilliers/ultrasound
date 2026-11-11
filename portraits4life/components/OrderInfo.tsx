@@ -100,7 +100,7 @@ export default function OrderInfo() {
               <ul className="space-y-3">
                 {section.items.map((item, itemIdx) => (
                   <li key={itemIdx} className="flex gap-3 text-gray-700">
-                    <span className="text-pink-500 mt-1">›</span>
+                    <span className="text-brand mt-1">›</span>
                     <span>{item}</span>
                   </li>
                 ))}

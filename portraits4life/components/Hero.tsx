@@ -11,7 +11,7 @@ export default function Hero() {
     <section className="bg-gradient-to-b from-slate-100 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div>
+          <div className="min-w-0">
             <h1
               className="font-display text-5xl lg:text-6xl font-bold mb-6 text-gray-900 leading-tight"
             >
@@ -41,7 +41,7 @@ export default function Hero() {
             <div className="flex flex-col sm:flex-row gap-4">
               <a
                 href={isDE ? '/de/order' : '/en/order'}
-                className="inline-block bg-pink-500 text-white px-8 py-3 rounded-lg font-semibold hover:bg-pink-600 transition text-center"
+                className="inline-block bg-brand text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-strong transition text-center"
               >
                 {isDE ? 'Jetzt bestellen' : 'Order Now'}
               </a>
@@ -54,7 +54,7 @@ export default function Hero() {
             </div>
           </div>
 
-          <div className="relative h-96 lg:h-96">
+          <div className="relative h-96 lg:h-96 min-w-0">
             <Image
               src="/images/ultrasound.avif"
               alt="Ultrasound artwork example"

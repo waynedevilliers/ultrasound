@@ -53,7 +53,7 @@ export default function HowItWorks() {
           {steps.map((step) => (
             <div key={step.number} className="bg-white rounded-lg p-8 shadow-sm hover:shadow-md transition">
               <div className="mb-6 flex items-center justify-center w-12 h-12 rounded-full bg-pink-100">
-                <span className="text-xl font-bold text-pink-600">{step.number}</span>
+                <span className="text-xl font-bold text-brand-strong">{step.number}</span>
               </div>
               <h3 className="text-xl font-bold mb-3 text-gray-900">
                 {step.title}

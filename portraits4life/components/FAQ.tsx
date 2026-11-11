@@ -73,7 +73,7 @@ export default function FAQ() {
                 </h3>
                 <div className="flex-shrink-0 ml-4">
                   <svg
-                    className={`w-6 h-6 text-pink-600 transition-transform ${
+                    className={`w-6 h-6 text-brand-strong transition-transform ${
                       openIndex === index ? 'rotate-180' : ''
                     }`}
                     fill="none"
@@ -104,11 +104,11 @@ export default function FAQ() {
           <p className="text-gray-700">
             {isDE ? (
               <>
-                Noch Fragen? <a href="#contact" className="text-pink-600 font-semibold hover:text-pink-700">Kontaktiere uns</a>
+                Noch Fragen? <a href="#contact" className="text-brand-strong font-semibold hover:text-pink-700">Kontaktiere uns</a>
               </>
             ) : (
               <>
-                More questions? <a href="#contact" className="text-pink-600 font-semibold hover:text-pink-700">Get in touch</a>
+                More questions? <a href="#contact" className="text-brand-strong font-semibold hover:text-pink-700">Get in touch</a>
               </>
             )}
           </p>
