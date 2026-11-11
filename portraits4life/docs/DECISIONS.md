@@ -25,12 +25,19 @@ One entry per decision someone could later question. Each entry: date, status (`
 - **Why:** The owner said to keep the current font families. The current rendering is a serif, which is probably not what was intended.
 - **Considered:** Pointing `--font-sans` at Geist. Not done in Step 1, because it changes every paragraph on the site. Needs the owner's answer.
 
-## 2026-11-11: Text lives in `content/`
+## 2026-11-11: Text lives in `content/` (superseded)
+
+- **Status:** superseded by "Text split: prose in messages, data in content" below
+- **Decision:** All visible text goes in `content/`.
+- **Why:** Salon77 rule.
+- **Considered:** Keeping `messages/*.json` for next-intl.
+
+## 2026-11-11: Text split: prose in messages, data in content
 
 - **Status:** done
-- **Decision:** All visible text goes in `content/`, not in components. Existing text in `messages/*.json` and inside components moves there as each component is touched in its own step. Step 1 changes no text.
-- **Why:** Salon77 rule. Text changes must not require editing components.
-- **Considered:** Keeping `messages/*.json` for next-intl. Rejected by the owner in favour of the Salon77 rule.
+- **Decision:** Prose (all visible text) lives in `messages/de.json` and `messages/en.json`, used through next-intl. Data that is not prose (products, prices, routes, links, image paths) lives in `content/`. Components only take props. Nothing is hardcoded in components. Each component moves its text when that component is touched in its step. Step 1 changes no text.
+- **Why:** Owner's plan v2. Translations stay in the standard next-intl files, and product and route data has one source.
+- **Considered:** Putting all text in `content/` (the earlier decision, superseded).
 
 ## 2026-11-11: One price set
 
@@ -52,6 +59,22 @@ One entry per decision someone could later question. Each entry: date, status (`
 - **Decision:** Branch `feat/salon77-patterns`. Conventional Commits with scopes, for example `feat(hero): ...`.
 - **Why:** Salon77 guide.
 - **Considered:** The plan's `feature/` prefix. Replaced by the guide's `feat/`.
+
+## 2026-11-11: Stack and workflow rules (plan v2)
+
+- **Status:** done
+- **Decision:** Next.js (App Router), React, TypeScript strict, Tailwind CSS 4 with tokens in `app/globals.css`, next/image, next/font. Vitest and Testing Library for unit tests, Playwright with `@axe-core/playwright` for one e2e spec, ESLint, Prettier, `tsc --noEmit`. knip and jscpd later. Workflow: one step, screenshots at 375x667 and 1440x900, "ok" commits, "revert" discards. Branch `feat/salon77-patterns`. Conventional Commits with scope. Never commit to `main`. Merge `main` into the branch, do not rebase pushed branches. Reviewer subagent runs before each PR.
+- **Why:** Owner's plan v2, based on the Salon77 project.
+- **Considered:** Other test runners and rebasing workflows. Not used.
+
+## 2026-11-11: Open questions
+
+Questions the owner has not answered yet. Remove an item and log the answer as a decision once answered.
+
+- Body text font: should body text use Geist (declared, not applied today) or stay on the browser default serif? See "Body text font" above.
+- Brand colors: decided later. Colors stay as they are until then.
+- Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
+- Order form: email with attachments or upload-and-link (Step 11, part A).
 
 ## 2026-11-11: Patterns adopted from Salon77
 

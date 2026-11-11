@@ -15,7 +15,7 @@ Read `docs/DECISIONS.md` before changing design, colors, navigation or page stru
 - Keep all current colors and font families. Do not add, remove or change color values. Hardcoded values move into tokens with the same value, and each replacement is reported.
 - Do not change image sizes, crops or aspect ratios unless a step says so.
 - Do not change anything not listed in the current step. Note other findings and report them at the end of the step.
-- All visible text lives in `content/` (Salon77 rule). Never hardcode text in components. Every change exists in German and English. German uses "du", lowercase in UI labels.
+- Prose (all visible text) lives in `messages/de.json` and `messages/en.json` (next-intl). Data that is not prose (products, prices, routes, links, image paths) lives in `content/`. Components only take props. Never hardcode text in components. Every change exists in German and English. German uses "du", lowercase in UI labels.
 - No emojis in the UI.
 
 ## Code

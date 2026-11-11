@@ -1,18 +1,11 @@
 'use client';
 
-import { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
 export default function Header() {
   const pathname = usePathname();
-  const [isDE, setIsDE] = useState(false);
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-    setIsDE(pathname.startsWith('/de'));
-  }, [pathname]);
+  const isDE = pathname.startsWith('/de');
 
   const handleLanguageSwitch = () => {
     const newLang = isDE ? 'en' : 'de';
@@ -34,7 +27,7 @@ export default function Header() {
                 className="w-full h-full object-contain"
               />
             </div>
-            <span className="text-2xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-playfair)' }}>
+            <span className="font-display text-2xl font-bold text-gray-900">
               Portraits 4 Life
             </span>
           </a>
@@ -60,7 +53,7 @@ export default function Header() {
               className="px-4 py-2 rounded-full border-2 border-pink-500 bg-pink-50 hover:bg-pink-100 text-pink-600 font-semibold transition"
               type="button"
             >
-              {mounted ? (isDE ? 'EN' : 'DE') : 'EN'}
+              {isDE ? 'EN' : 'DE'}
             </button>
 
             <button className="md:hidden text-gray-600 hover:text-gray-900">

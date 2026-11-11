@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 
 export default function Footer() {
@@ -19,9 +20,9 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
-            <a href="/" className="text-2xl font-bold" style={{ fontFamily: 'var(--font-playfair)' }}>
+            <Link href="/" className="font-display text-2xl font-bold">
               Portraits 4 Life
-            </a>
+            </Link>
           </div>
 
           <div>
