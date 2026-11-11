@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { canvasSizes } from '@/content/products';
+import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/order-schema';
 import { usePathname } from 'next/navigation';
 
 export default function OrderForm() {
@@ -44,12 +46,22 @@ export default function OrderForm() {
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'ultrasound' | 'reference') => {
     const file = e.target.files?.[0];
-    if (file && file.size <= 15 * 1024 * 1024) {
-      setFiles(prev => ({
-        ...prev,
-        [type]: file,
-      }));
+    if (!file) return;
+    if (file.size > MAX_IMAGE_BYTES) {
+      setError(isDE ? 'Die Datei ist größer als 15 MB. Bitte ein kleineres Bild wählen.' : 'The file is larger than 15 MB. Please choose a smaller image.');
+      e.target.value = '';
+      return;
     }
+    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
+      setError(isDE ? 'Nur JPG, PNG, WebP oder HEIC.' : 'Only JPG, PNG, WebP or HEIC.');
+      e.target.value = '';
+      return;
+    }
+    setError('');
+    setFiles(prev => ({
+      ...prev,
+      [type]: file,
+    }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -79,6 +91,10 @@ export default function OrderForm() {
       submitFormData.append('weeksInWomb', formData.weeksInWomb);
       submitFormData.append('specialRequests', formData.specialRequests);
 
+      // Honeypot: hidden from visitors, must stay empty.
+      const honeypot = ((e.currentTarget as HTMLFormElement).elements.namedItem('website') as HTMLInputElement | null)?.value ?? '';
+      submitFormData.append('website', honeypot);
+
       // Files
       if (files.ultrasound) {
         submitFormData.append('ultrasoundImage', files.ultrasound);
@@ -95,7 +111,8 @@ export default function OrderForm() {
       const data = await response.json();
 
       if (!response.ok) {
-        throw new Error(data.error || 'Failed to submit order');
+        const details = Array.isArray(data.issues) ? data.issues.map((issue: { message: string }) => issue.message).join(' ') : '';
+        throw new Error(details || data.error || 'Failed to submit order');
       }
 
       setOrderId(data.orderId);
@@ -154,6 +171,12 @@ export default function OrderForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
+      <div className="absolute -left-[9999px] h-0 overflow-hidden" aria-hidden="true">
+        <label>
+          Website
+          <input type="text" name="website" tabIndex={-1} autoComplete="off" />
+        </label>
+      </div>
       {error && (
         <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
           {error}
@@ -171,7 +194,7 @@ export default function OrderForm() {
           value={formData.name}
           onChange={handleChange}
           required
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
       </div>
 
@@ -185,7 +208,7 @@ export default function OrderForm() {
           value={formData.email}
           onChange={handleChange}
           required
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
       </div>
 
@@ -197,7 +220,7 @@ export default function OrderForm() {
           name="product"
           value={formData.product}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         >
           <option value="digital">{isDE ? 'Digitales JPEG' : 'Digital JPEG'}</option>
           <option value="canvas">{isDE ? 'Leinwanddruck' : 'Canvas Print'}</option>
@@ -213,11 +236,13 @@ export default function OrderForm() {
             name="canvasSize"
             value={formData.canvasSize}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
           >
-            <option value="30x30cm">30 × 30 cm - €69</option>
-            <option value="40x40cm">40 × 40 cm - €89</option>
-            <option value="50x50cm">50 × 50 cm - €119</option>
+            {canvasSizes.map((size) => (
+              <option key={size.id} value={size.id}>
+                {size.widthCm} × {size.heightCm} cm - €{size.price}
+              </option>
+            ))}
           </select>
         </div>
       )}
@@ -232,7 +257,7 @@ export default function OrderForm() {
           name="childName"
           value={formData.childName}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
       </div>
 
@@ -245,7 +270,7 @@ export default function OrderForm() {
           name="weeksInWomb"
           value={formData.weeksInWomb}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
       </div>
 
@@ -266,7 +291,7 @@ export default function OrderForm() {
               value={formData.shippingFullName}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
             />
           </div>
 
@@ -280,7 +305,7 @@ export default function OrderForm() {
               value={formData.shippingStreet}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
             />
           </div>
 
@@ -295,7 +320,7 @@ export default function OrderForm() {
                 value={formData.shippingCity}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
             </div>
             <div>
@@ -308,7 +333,7 @@ export default function OrderForm() {
                 value={formData.shippingState}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
             </div>
           </div>
@@ -324,7 +349,7 @@ export default function OrderForm() {
                 value={formData.shippingPostalCode}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
             </div>
             <div>
@@ -337,7 +362,7 @@ export default function OrderForm() {
                 value={formData.shippingCountry}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
             </div>
           </div>
@@ -384,7 +409,7 @@ export default function OrderForm() {
           value={formData.specialRequests}
           onChange={handleChange}
           rows={4}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-pink-500 focus:border-transparent"
+          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
       </div>
 
@@ -392,7 +417,7 @@ export default function OrderForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-pink-600 text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-700 disabled:opacity-50"
+        className="w-full bg-brand-strong text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-700 disabled:opacity-50"
       >
         {loading ? (isDE ? 'Wird eingereicht...' : 'Submitting...') : isDE ? 'Jetzt Bestellen' : 'Submit Order'}
       </button>

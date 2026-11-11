@@ -2,106 +2,132 @@ import { sql } from '@vercel/postgres';
 import { put } from '@vercel/blob';
 import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
+import { canvasSizes, digitalProduct, canvasProduct, type CanvasSizeId } from '@/content/products';
+import { escapeHtml } from '@/lib/escape-html';
+import { isRateLimited } from '@/lib/rate-limit';
+import { orderFieldsSchema, validateImageFile, type OrderFields } from '@/lib/order-schema';
 
-type Product = 'digital' | 'canvas';
+const DEFAULT_FROM = 'onboarding@resend.dev';
+const DEFAULT_ORDER_EMAIL = 'portraits4life.art@gmail.com';
 
-interface ShippingAddress {
-  fullName: string;
-  street: string;
-  city: string;
-  state: string;
-  postalCode: string;
-  country: string;
+function clientKey(request: NextRequest): string {
+  const forwarded = request.headers.get('x-forwarded-for');
+  return forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown';
 }
 
-interface OrderData {
-  name: string;
-  email: string;
-  product: Product;
-  canvasSize?: string;
-  childName?: string;
-  weeksInWomb?: string;
-  specialRequests?: string;
-  shippingAddress?: ShippingAddress;
+function productLabel(order: OrderFields): string {
+  if (order.product === 'canvas') {
+    const size = canvasSizes.find((item) => item.id === (order.canvasSize as CanvasSizeId));
+    return `Canvas Print (${size ? `${size.widthCm} × ${size.heightCm} cm` : order.canvasSize})`;
+  }
+  return 'Digital JPEG';
+}
+
+function orderEmailHtml(order: OrderFields, orderId: unknown, links: { ultrasound: string; reference: string }): string {
+  const row = (label: string, value: string) =>
+    `<p><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</p>`;
+
+  const shipping =
+    order.product === 'canvas'
+      ? `<h3>Shipping Address</h3>
+         <p>${escapeHtml(order.shippingFullName)}<br/>
+         ${escapeHtml(order.shippingStreet)}<br/>
+         ${escapeHtml(order.shippingCity)}, ${escapeHtml(order.shippingState)} ${escapeHtml(order.shippingPostalCode)}<br/>
+         ${escapeHtml(order.shippingCountry)}</p>`
+      : '';
+
+  return `
+    <h2>New Order Received</h2>
+    ${row('Order ID', String(orderId))}
+    ${row('Customer Name', order.name)}
+    ${row('Email', order.email)}
+    ${row('Product', productLabel(order))}
+    ${order.childName ? row("Child's Name", order.childName) : ''}
+    ${order.weeksInWomb ? row('Weeks in Womb', order.weeksInWomb) : ''}
+    ${order.specialRequests ? row('Special Requests', order.specialRequests) : ''}
+    ${shipping}
+    ${links.ultrasound ? `<p><a href="${escapeHtml(links.ultrasound)}">Ultrasound Image</a></p>` : ''}
+    ${links.reference ? `<p><a href="${escapeHtml(links.reference)}">Reference Image</a></p>` : ''}
+  `;
 }
 
 export async function POST(request: NextRequest) {
   try {
-    const formData = await request.formData();
-
-    const orderData: OrderData = {
-      name: formData.get('name') as string,
-      email: formData.get('email') as string,
-      product: formData.get('product') as 'digital' | 'canvas',
-      canvasSize: formData.get('canvasSize') as string,
-      childName: formData.get('childName') as string,
-      weeksInWomb: formData.get('weeksInWomb') as string,
-      specialRequests: formData.get('specialRequests') as string,
-    };
-
-    if (orderData.product === 'canvas') {
-      orderData.shippingAddress = {
-        fullName: formData.get('shippingFullName') as string,
-        street: formData.get('shippingStreet') as string,
-        city: formData.get('shippingCity') as string,
-        state: formData.get('shippingState') as string,
-        postalCode: formData.get('shippingPostalCode') as string,
-        country: formData.get('shippingCountry') as string,
-      };
+    if (isRateLimited(clientKey(request))) {
+      return NextResponse.json({ error: 'Too many requests. Please try again later.' }, { status: 429 });
     }
 
-    // Validate required fields
-    if (!orderData.name || !orderData.email || !orderData.product) {
+    const formData = await request.formData();
+    const raw = Object.fromEntries(
+      [...formData.entries()].filter(([, value]) => typeof value === 'string')
+    );
+
+    const parsed = orderFieldsSchema.safeParse(raw);
+    if (!parsed.success) {
+      const issues = parsed.error.issues.map((issue) => ({ field: issue.path.join('.'), message: issue.message }));
+      return NextResponse.json({ error: 'Invalid order data', issues }, { status: 400 });
+    }
+    const order = parsed.data;
+
+    // Honeypot filled: treat as a bot. Same generic error as validation.
+    if (order.website !== '') {
+      return NextResponse.json({ error: 'Invalid order data' }, { status: 400 });
+    }
+
+    const ultrasoundFile = formData.get('ultrasoundImage');
+    const referenceFile = formData.get('referenceImage');
+    const imageError =
+      validateImageFile(ultrasoundFile, true) ?? validateImageFile(referenceFile, false);
+    if (imageError) {
+      return NextResponse.json({ error: imageError }, { status: 400 });
+    }
+
+    // Uploads must succeed before the order is saved. No order is stored without its images.
+    let ultrasoundImageUrl: string;
+    let referenceImageUrl = '';
+    try {
+      const upload = async (file: File, prefix: string) => {
+        const result = await put(`orders/${prefix}`, file, {
+          access: 'public',
+          addRandomSuffix: true,
+        });
+        return result.url;
+      };
+      ultrasoundImageUrl = await upload(ultrasoundFile as File, 'ultrasound');
+      if (referenceFile && typeof referenceFile !== 'string' && referenceFile.size > 0) {
+        referenceImageUrl = await upload(referenceFile, 'reference');
+      }
+    } catch (uploadError) {
+      console.error('Order upload failed', uploadError);
       return NextResponse.json(
-        { error: 'Missing required fields' },
-        { status: 400 }
+        { error: 'Upload failed. Please try again.' },
+        { status: 503 }
       );
     }
 
-    const uploadFile = async (file: File | null, prefix: string): Promise<string> => {
-      if (!file || file.size === 0 || !(file instanceof File)) return '';
-      try {
-        const buffer = await file.arrayBuffer();
-        const blob = new Blob([buffer], { type: file.type });
-        const uploaded = await put(`orders/${Date.now()}-${prefix}-${file.name}`, blob, {
-          access: 'public',
-        });
-        return uploaded.url;
-      } catch (error) {
-        const msg = error instanceof Error ? error.message : 'Unknown error';
-        if (msg.includes('blob credentials') || msg.includes('BLOB_READ_WRITE_TOKEN')) {
-          return '';
-        }
-        throw new Error(`Failed to upload ${prefix}: ${msg}`);
-      }
-    };
-
-    const ultrasoundImageUrl = await uploadFile(
-      formData.get('ultrasoundImage') as File | null,
-      'ultrasound'
-    );
-    const referenceImageUrl = await uploadFile(
-      formData.get('referenceImage') as File | null,
-      'reference'
-    );
-
-    // Save to database
     const result = await sql`
       INSERT INTO orders (
         name, email, product, canvas_size, child_name, weeks_in_womb,
         special_requests, ultrasound_image_url, reference_image_url,
         shipping_address, status, created_at
       ) VALUES (
-        ${orderData.name},
-        ${orderData.email},
-        ${orderData.product},
-        ${orderData.canvasSize || null},
-        ${orderData.childName || null},
-        ${orderData.weeksInWomb || null},
-        ${orderData.specialRequests || null},
+        ${order.name},
+        ${order.email},
+        ${order.product},
+        ${order.canvasSize || null},
+        ${order.childName || null},
+        ${order.weeksInWomb || null},
+        ${order.specialRequests || null},
         ${ultrasoundImageUrl},
         ${referenceImageUrl},
-        ${JSON.stringify(orderData.shippingAddress || null)},
+        ${JSON.stringify(order.product === 'canvas' ? {
+          fullName: order.shippingFullName,
+          street: order.shippingStreet,
+          city: order.shippingCity,
+          state: order.shippingState,
+          postalCode: order.shippingPostalCode,
+          country: order.shippingCountry,
+        } : null)},
         ${'pending'},
         ${new Date().toISOString()}
       )
@@ -109,101 +135,50 @@ export async function POST(request: NextRequest) {
     `;
 
     const orderId = result.rows[0]?.id;
-
-    // Send emails
+    const subject = `New Order #${orderId} - ${order.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`;
+    const links = { ultrasound: ultrasoundImageUrl, reference: referenceImageUrl };
+    const from = process.env.ORDER_FROM_EMAIL || DEFAULT_FROM;
     const resend = new Resend(process.env.RESEND_API_KEY);
 
-    try {
-      await resend.emails.send({
-        from: 'onboarding@resend.dev',
-        to: 'portraits4life.art@gmail.com',
-        subject: `New Order #${orderId} - ${orderData.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`,
-        html: `
-          <h2>New Order Received</h2>
-          <p><strong>Order ID:</strong> ${orderId}</p>
-          <p><strong>Customer Name:</strong> ${orderData.name}</p>
-          <p><strong>Email:</strong> ${orderData.email}</p>
-          <p><strong>Product:</strong> ${orderData.product === 'canvas' ? `Canvas Print (${orderData.canvasSize})` : 'Digital JPEG'}</p>
-          ${orderData.childName ? `<p><strong>Child's Name:</strong> ${orderData.childName}</p>` : ''}
-          ${orderData.weeksInWomb ? `<p><strong>Weeks in Womb:</strong> ${orderData.weeksInWomb}</p>` : ''}
-          ${orderData.specialRequests ? `<p><strong>Special Requests:</strong> ${orderData.specialRequests}</p>` : ''}
-          ${orderData.shippingAddress ? `
-            <h3>Shipping Address</h3>
-            <p>${orderData.shippingAddress.fullName}<br/>
-            ${orderData.shippingAddress.street}<br/>
-            ${orderData.shippingAddress.city}, ${orderData.shippingAddress.state} ${orderData.shippingAddress.postalCode}<br/>
-            ${orderData.shippingAddress.country}</p>
-          ` : ''}
-          ${ultrasoundImageUrl ? `<p><a href="${ultrasoundImageUrl}">Ultrasound Image</a></p>` : ''}
-          ${referenceImageUrl ? `<p><a href="${referenceImageUrl}">Reference Image</a></p>` : ''}
-        `,
-      });
-    } catch (emailError) {
-      // Admin email to primary address failed - continue to try secondary
-    }
+    // Emails are sent after the order is saved. A failed email is logged, not shown to the visitor.
+    const adminEmail = {
+      from,
+      to: process.env.ORDER_EMAIL || DEFAULT_ORDER_EMAIL,
+      replyTo: order.email,
+      subject,
+      html: orderEmailHtml(order, orderId, links),
+    };
+    const customerEmail = {
+      from,
+      to: order.email,
+      subject: 'Order Confirmed - Portraits 4 Life',
+      html: `
+        <h2>Thank You for Your Order!</h2>
+        <p>Hi ${escapeHtml(order.name)},</p>
+        <p>We've received your order and will review your images shortly.</p>
+        <p><strong>Order ID:</strong> ${escapeHtml(String(orderId))}</p>
+        <p><strong>Product:</strong> ${escapeHtml(productLabel(order))}</p>
+        <p><strong>Expected Delivery:</strong> ${order.product === 'canvas' ? `${canvasProduct.deliveryWeeksMin}-${canvasProduct.deliveryWeeksMax} weeks` : `${digitalProduct.deliveryWeeks} week`}</p>
+        <p>We'll contact you within 24 hours to confirm your images are suitable for processing.</p>
+        <p>Best regards,<br/>Portraits 4 Life Team</p>
+      `,
+    };
 
-    try {
-      await resend.emails.send({
-        from: 'onboarding@resend.dev',
-        to: 'wrdevilliers@gmail.com',
-        subject: `New Order #${orderId} - ${orderData.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`,
-        html: `
-          <h2>New Order Received</h2>
-          <p><strong>Order ID:</strong> ${orderId}</p>
-          <p><strong>Customer Name:</strong> ${orderData.name}</p>
-          <p><strong>Email:</strong> ${orderData.email}</p>
-          <p><strong>Product:</strong> ${orderData.product === 'canvas' ? `Canvas Print (${orderData.canvasSize})` : 'Digital JPEG'}</p>
-          ${orderData.childName ? `<p><strong>Child's Name:</strong> ${orderData.childName}</p>` : ''}
-          ${orderData.weeksInWomb ? `<p><strong>Weeks in Womb:</strong> ${orderData.weeksInWomb}</p>` : ''}
-          ${orderData.specialRequests ? `<p><strong>Special Requests:</strong> ${orderData.specialRequests}</p>` : ''}
-          ${orderData.shippingAddress ? `
-            <h3>Shipping Address</h3>
-            <p>${orderData.shippingAddress.fullName}<br/>
-            ${orderData.shippingAddress.street}<br/>
-            ${orderData.shippingAddress.city}, ${orderData.shippingAddress.state} ${orderData.shippingAddress.postalCode}<br/>
-            ${orderData.shippingAddress.country}</p>
-          ` : ''}
-          ${ultrasoundImageUrl ? `<p><a href="${ultrasoundImageUrl}">Ultrasound Image</a></p>` : ''}
-          ${referenceImageUrl ? `<p><a href="${referenceImageUrl}">Reference Image</a></p>` : ''}
-        `,
-      });
-    } catch (emailError) {
-      // Secondary admin email failed - continue
-    }
-
-    try {
-      await resend.emails.send({
-        from: 'onboarding@resend.dev',
-        to: orderData.email,
-        subject: 'Order Confirmed - Portraits 4 Life',
-        html: `
-          <h2>Thank You for Your Order!</h2>
-          <p>Hi ${orderData.name},</p>
-          <p>We've received your order and will review your images shortly.</p>
-          <p><strong>Order ID:</strong> ${orderId}</p>
-          <p><strong>Product:</strong> ${orderData.product === 'canvas' ? `Canvas Print (${orderData.canvasSize})` : 'Digital JPEG'}</p>
-          <p><strong>Expected Delivery:</strong> ${orderData.product === 'canvas' ? '1-2 weeks' : '1 week'}</p>
-          <p>We'll contact you within 24 hours to confirm your images are suitable for processing.</p>
-          <p>Best regards,<br/>Portraits 4 Life Team</p>
-        `,
-      });
-    } catch (emailError) {
-      // Customer email failed but order is saved
+    for (const email of [adminEmail, customerEmail]) {
+      try {
+        const sent = await resend.emails.send(email);
+        if (sent.error) console.error('Order email rejected', sent.error);
+      } catch (emailError) {
+        console.error('Order email failed', emailError);
+      }
     }
 
     return NextResponse.json(
-      {
-        success: true,
-        orderId,
-        message: 'Order submitted successfully',
-      },
+      { success: true, orderId, message: 'Order submitted successfully' },
       { status: 201 }
     );
   } catch (error) {
-    const message = error instanceof Error ? error.message : 'Unknown error';
-    return NextResponse.json(
-      { error: 'Failed to process order', details: message },
-      { status: 500 }
-    );
+    console.error('Order processing failed', error);
+    return NextResponse.json({ error: 'Failed to process order' }, { status: 500 });
   }
 }
