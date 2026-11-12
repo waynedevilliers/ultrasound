@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 
+// TODO(client): hero image alt text is English only; add a German alt text.
 export default function Hero() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');

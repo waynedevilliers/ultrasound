@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
+// TODO(client): alt texts for the example images are generic; describe each artwork in German and English.
 export default function Gallery() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');

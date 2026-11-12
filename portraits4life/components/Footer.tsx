@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import de from '@/messages/de.json';
 import en from '@/messages/en.json';
 
+// TODO(client): confirm contact email, copyright year and the legal page links before launch.
 export default function Footer() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');

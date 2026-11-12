@@ -3,6 +3,7 @@ import en from '@/messages/en.json';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 
+// TODO(client): Impressum and Datenschutz text is a placeholder. Needs the operator's legal entity, address, contact and privacy details (see messages legal.*).
 export type LegalKey = 'impressum' | 'datenschutz';
 
 export default function LegalPage({ locale, page }: { locale: string; page: LegalKey }) {

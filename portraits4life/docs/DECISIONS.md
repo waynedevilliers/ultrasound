@@ -109,5 +109,5 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 One line per step, added as each step lands.
 
 - Step 0: Audit against the Salon77 guide (`docs/reviews/2026-11-11-audit.md`).
-- Step 1: Foundation. `CLAUDE.md` standards, this file, `next/font` with `display: swap`, brand tokens.
+- Step 1: Foundation, complete. CLAUDE.md standards, decisions log, env and editor configs, fonts via next/font with display swap, one site palette, button and section variables, TODO(client) markers on missing client content (grep TODO(client) for the list).
 - Sticky menu bar, one primary button per page, content container, facts box and layout rules come in later steps.
