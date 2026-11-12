@@ -5,13 +5,55 @@
 @custom-variant dark (&:is(.dark *));
 
 /*
- * Brand tokens. Each one points at the Tailwind v4 default palette value that
- * the site renders today, so nothing changes visually. The pink in
- * tailwind.config.ts was never loaded (Tailwind v4 needs @config) and is removed.
+ * Site palette. This is the only place colors are defined.
+ * Components use these names (text-ink, bg-canvas, border-line, ...), never raw
+ * Tailwind colors. Each value points at the Tailwind default it renders today,
+ * except brand, which is the decided darker pink (see docs/DECISIONS.md).
  */
 @theme {
-  --color-brand: var(--color-pink-500);
-  --color-brand-strong: var(--color-pink-600);
+  /* Brand */
+  --color-brand: var(--color-pink-600);
+  --color-brand-strong: var(--color-pink-700);
+  --color-brand-soft: var(--color-pink-50);
+  --color-brand-tint: var(--color-pink-100);
+  --color-brand-edge: var(--color-pink-200);
+  --color-brand-light: var(--color-pink-400);
+  --color-brand-on-dark: var(--color-pink-300);
+
+  /* Text */
+  --color-ink: var(--color-gray-900);
+  --color-body: var(--color-gray-700);
+  --color-copy: var(--color-gray-600);
+  --color-caption: var(--color-gray-400);
+  --color-on-dark-soft: var(--color-gray-200);
+
+  /* Lines and fields */
+  --color-line: var(--color-gray-200);
+  --color-line-soft: var(--color-gray-100);
+  --color-field: var(--color-gray-300);
+  --color-line-dark: var(--color-gray-800);
+
+  /* Surfaces and sections */
+  --color-surface: var(--color-white);
+  --color-surface-muted: var(--color-gray-100);
+  --color-surface-strong: var(--color-gray-200);
+  --color-canvas: var(--color-gray-50);
+  --color-dark: var(--color-gray-900);
+  --color-dark-deep: var(--color-slate-900);
+  --color-dark-alt: var(--color-slate-800);
+  --color-hero: var(--color-slate-100);
+
+  /* Status */
+  --color-success: var(--color-green-600);
+  --color-success-strong: var(--color-green-700);
+  --color-success-text: var(--color-green-800);
+  --color-success-soft: var(--color-green-50);
+  --color-success-edge: var(--color-green-200);
+  --color-danger-text: var(--color-red-700);
+  --color-danger-soft: var(--color-red-50);
+  --color-danger-edge: var(--color-red-200);
+
+  /* Other */
   --font-display: var(--font-playfair);
   --button-min-height: 3rem;
   --spacing-section: 5rem;

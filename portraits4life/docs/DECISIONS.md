@@ -78,14 +78,36 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 Questions the owner has not answered yet. Remove an item and log the answer as a decision once answered.
 
-- Brand colors: decided later. Colors stay as they are until then.
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
+
+## 2026-11-12: One site palette
+
+- **Status:** done
+- **Decision:** All colors are defined once, in the `@theme` block of `app/globals.css`. Components use palette names (`text-ink`, `text-copy`, `bg-canvas`, `border-line`, `text-success`, ...), never raw Tailwind colors. Each palette value points at the Tailwind color it rendered before, so the refactor changed no pixels (verified pixel-for-pixel on landing, order and legal pages at 375x667 and 1440x900). Only white and black remain as constants.
+- **Why:** Owner request. One place to change colors, and no hidden colors scattered across components.
+- **Considered:** Keeping raw Tailwind classes in components (rejected: colors could not be changed in one place).
+
+## 2026-11-12: Brand color: darker pink
+
+- **Status:** done
+- **Decision:** Brand accent is Tailwind pink-600 (`--color-brand`), hover and strong text is pink-700 (`--color-brand-strong`). Footer tagline uses gray-400 instead of gray-500.
+- **Why:** Owner decision. The bright pink-500 button failed contrast (white text about 3.5:1). pink-600 with white text is about 4.6:1. This replaces the earlier "colors stay as they are" rule for brand colors only. Other colors are unchanged.
+- **Considered:** Dark text on the bright pink (about 6:1, but looks different from the rest of the site). A new rose from the design guide (more change than needed).
+
+## 2026-11-11: Tooling and CI (Step 2)
+
+- **Status:** done
+- **Decision:** Vitest with Testing Library replaces Jest (no Jest tests existed). Playwright runs one spec file in Chromium, at 375x667 and 1440x900, with axe (WCAG 2.2 AA). knip and jscpd run as local scripts. CI jobs: lint-and-types, test, audit, e2e, and lighthouse (main only). Node 22 is used everywhere. Packages are pinned to releases at least two weeks old at install time.
+- **Audit scope:** `npm run audit` checks production dependencies only (`--omit=dev`). The remaining dev-only advisories (11 high at the last full run) come from `@lhci/cli`, which pins `lighthouse` 12.6.1. The patched lighthouse releases are 13.4 and later, and forcing one would likely break Lighthouse CI. Revisit when `@lhci/cli` updates.
+- **Known failing check:** e2e axe test fails on `color-contrast` (white on the pink button, and two other pairs listed in the reviewer report). Fixing needs the owner's color decision (see "Brand colors").
+- **Why:** Owner plan, Step 2. Blocking vulnerabilities in shipped code must be zero.
+- **Considered:** Blocking the audit on dev-only advisories (rejected: they do not ship). Removing Lighthouse CI (kept as the plan requires it).
 
 ## 2026-11-11: Patterns adopted from Salon77
 
 One line per step, added as each step lands.
 
 - Step 0: Audit against the Salon77 guide (`docs/reviews/2026-11-11-audit.md`).
-- Step 1: Foundation. `CLAUDE.md` standards, this file, `next/font` with `display: swap`, brand tokens.
+- Step 1: Foundation, complete. CLAUDE.md standards, decisions log, env and editor configs, fonts via next/font with display swap, one site palette, button and section variables, TODO(client) markers on missing client content (grep TODO(client) for the list).
 - Sticky menu bar, one primary button per page, content container, facts box and layout rules come in later steps.

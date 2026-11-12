@@ -7,6 +7,7 @@ import { escapeHtml } from '@/lib/escape-html';
 import { isRateLimited } from '@/lib/rate-limit';
 import { orderFieldsSchema, validateImageFile, type OrderFields } from '@/lib/order-schema';
 
+// TODO(client): set ORDER_FROM_EMAIL to a sender on the verified business domain; the Resend test sender is only for development.
 const DEFAULT_FROM = 'onboarding@resend.dev';
 const DEFAULT_ORDER_EMAIL = 'portraits4life.art@gmail.com';
 

@@ -142,26 +142,26 @@ export default function OrderForm() {
 
   if (submitted) {
     return (
-      <div className="max-w-2xl mx-auto p-8 bg-green-50 rounded-lg border border-green-200">
-        <h3 className="text-2xl font-bold text-green-800 mb-4">
+      <div className="max-w-2xl mx-auto p-8 bg-success-soft rounded-lg border border-success-edge">
+        <h3 className="text-2xl font-bold text-success-text mb-4">
           {isDE ? 'Danke für deine Bestellung!' : 'Thank You for Your Order!'}
         </h3>
-        <p className="text-green-700 mb-2">
+        <p className="text-success-strong mb-2">
           {isDE
             ? 'Deine Bestellung wurde erfolgreich eingereicht.'
             : 'Your order has been submitted successfully.'}
         </p>
-        <p className="text-green-700 mb-4">
+        <p className="text-success-strong mb-4">
           <strong>{isDE ? 'Bestellnummer:' : 'Order ID:'}</strong> #{orderId}
         </p>
-        <p className="text-green-700 mb-4">
+        <p className="text-success-strong mb-4">
           {isDE
             ? 'Wir werden dich innerhalb von 24 Stunden kontaktieren, um deine Bilder zu bestätigen.'
             : 'We will contact you within 24 hours to confirm your images.'}
         </p>
         <button
           onClick={() => setSubmitted(false)}
-          className="bg-green-600 text-white px-6 py-2 rounded-lg hover:bg-green-700"
+          className="bg-success text-white px-6 py-2 rounded-lg hover:bg-success-strong"
         >
           {isDE ? 'Neue Bestellung' : 'New Order'}
         </button>
@@ -178,49 +178,49 @@ export default function OrderForm() {
         </label>
       </div>
       {error && (
-        <div className="p-4 bg-red-50 border border-red-200 rounded-lg text-red-700">
+        <div className="p-4 bg-danger-soft border border-danger-edge rounded-lg text-danger-text">
           {error}
         </div>
       )}
 
       {/* Basic Fields */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-body mb-2" htmlFor="name">
           {isDE ? 'Dein Name *' : 'Your Name *'}
         </label>
-        <input
+        <input id="name"
           type="text"
           name="name"
           value={formData.name}
           onChange={handleChange}
           required
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-body mb-2" htmlFor="email">
           {isDE ? 'Deine E-Mail *' : 'Your Email *'}
         </label>
-        <input
+        <input id="email"
           type="email"
           name="email"
           value={formData.email}
           onChange={handleChange}
           required
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-body mb-2" htmlFor="product">
           {isDE ? 'Produkt *' : 'Product *'}
         </label>
-        <select
+        <select id="product"
           name="product"
           value={formData.product}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         >
           <option value="digital">{isDE ? 'Digitales JPEG' : 'Digital JPEG'}</option>
           <option value="canvas">{isDE ? 'Leinwanddruck' : 'Canvas Print'}</option>
@@ -229,14 +229,14 @@ export default function OrderForm() {
 
       {formData.product === 'canvas' && (
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-body mb-2" htmlFor="canvasSize">
             {isDE ? 'Größe *' : 'Size *'}
           </label>
-          <select
+          <select id="canvasSize"
             name="canvasSize"
             value={formData.canvasSize}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
           >
             {canvasSizes.map((size) => (
               <option key={size.id} value={size.id}>
@@ -249,28 +249,28 @@ export default function OrderForm() {
 
       {/* Optional Fields */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-body mb-2" htmlFor="childName">
           {isDE ? "Babys Name" : "Child's Name"}
         </label>
-        <input
+        <input id="childName"
           type="text"
           name="childName"
           value={formData.childName}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-body mb-2" htmlFor="weeksInWomb">
           {isDE ? 'Wochen im Mutterleib' : 'Weeks in Womb'}
         </label>
-        <input
+        <input id="weeksInWomb"
           type="text"
           name="weeksInWomb"
           value={formData.weeksInWomb}
           onChange={handleChange}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
       </div>
 
@@ -282,87 +282,87 @@ export default function OrderForm() {
           </h3>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingFullName">
               {isDE ? 'Vollständiger Name *' : 'Full Name *'}
             </label>
-            <input
+            <input id="shippingFullName"
               type="text"
               name="shippingFullName"
               value={formData.shippingFullName}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+              className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
             />
           </div>
 
           <div className="mt-4">
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingStreet">
               {isDE ? 'Straße *' : 'Street *'}
             </label>
-            <input
+            <input id="shippingStreet"
               type="text"
               name="shippingStreet"
               value={formData.shippingStreet}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+              className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingCity">
                 {isDE ? 'Stadt *' : 'City *'}
               </label>
-              <input
+              <input id="shippingCity"
                 type="text"
                 name="shippingCity"
                 value={formData.shippingCity}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingState">
                 {isDE ? 'Bundesland *' : 'State *'}
               </label>
-              <input
+              <input id="shippingState"
                 type="text"
                 name="shippingState"
                 value={formData.shippingState}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingPostalCode">
                 {isDE ? 'Postleitzahl *' : 'Postal Code *'}
               </label>
-              <input
+              <input id="shippingPostalCode"
                 type="text"
                 name="shippingPostalCode"
                 value={formData.shippingPostalCode}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingCountry">
                 {isDE ? 'Land *' : 'Country *'}
               </label>
-              <input
+              <input id="shippingCountry"
                 type="text"
                 name="shippingCountry"
                 value={formData.shippingCountry}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
             </div>
           </div>
@@ -372,44 +372,44 @@ export default function OrderForm() {
       {/* File Uploads */}
       <div className="border-t pt-6">
         <div>
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-body mb-2" htmlFor="ultrasoundImage">
             {isDE ? 'Ultraschallbild hochladen *' : 'Upload Ultrasound Image *'}
           </label>
-          <input
+          <input id="ultrasoundImage"
             type="file"
             accept="image/*"
             onChange={(e) => handleFileChange(e, 'ultrasound')}
             required
             className="w-full"
           />
-          {files.ultrasound && <p className="text-sm text-green-600 mt-1">{files.ultrasound.name}</p>}
+          {files.ultrasound && <p className="text-sm text-success mt-1">{files.ultrasound.name}</p>}
         </div>
 
         <div className="mt-4">
-          <label className="block text-sm font-medium text-gray-700 mb-2">
+          <label className="block text-sm font-medium text-body mb-2" htmlFor="referenceImage">
             {isDE ? 'Referenzbild hochladen' : 'Upload Reference Image'}
           </label>
-          <input
+          <input id="referenceImage"
             type="file"
             accept="image/*"
             onChange={(e) => handleFileChange(e, 'reference')}
             className="w-full"
           />
-          {files.reference && <p className="text-sm text-green-600 mt-1">{files.reference.name}</p>}
+          {files.reference && <p className="text-sm text-success mt-1">{files.reference.name}</p>}
         </div>
       </div>
 
       {/* Special Requests */}
       <div>
-        <label className="block text-sm font-medium text-gray-700 mb-2">
+        <label className="block text-sm font-medium text-body mb-2" htmlFor="specialRequests">
           {isDE ? 'Besondere Wünsche' : 'Special Requests'}
         </label>
-        <textarea
+        <textarea id="specialRequests"
           name="specialRequests"
           value={formData.specialRequests}
           onChange={handleChange}
           rows={4}
-          className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
       </div>
 
@@ -417,7 +417,7 @@ export default function OrderForm() {
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-brand-strong text-white px-6 py-3 rounded-lg font-semibold hover:bg-pink-700 disabled:opacity-50"
+        className="w-full bg-brand-strong text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-strong disabled:opacity-50"
       >
         {loading ? (isDE ? 'Wird eingereicht...' : 'Submitting...') : isDE ? 'Jetzt Bestellen' : 'Submit Order'}
       </button>

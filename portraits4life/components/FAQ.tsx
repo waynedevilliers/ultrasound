@@ -53,22 +53,22 @@ export default function FAQ() {
   ];
 
   return (
-    <section className="py-20 lg:py-32 bg-white">
+    <section className="py-20 lg:py-32 bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2
-          className="font-display text-5xl font-bold text-center mb-16 text-gray-900"
+          className="font-display text-5xl font-bold text-center mb-16 text-ink"
         >
           {isDE ? 'Häufig gestellte Fragen' : 'Frequently Asked Questions'}
         </h2>
 
         <div className="space-y-4">
           {faqItems.map((item, index) => (
-            <div key={index} className="border border-gray-200 rounded-lg overflow-hidden">
+            <div key={index} className="border border-line rounded-lg overflow-hidden">
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
-                className="w-full px-6 py-4 flex items-center justify-between bg-gray-50 hover:bg-gray-100 transition"
+                className="w-full px-6 py-4 flex items-center justify-between bg-canvas hover:bg-surface-muted transition"
               >
-                <h3 className="text-lg font-semibold text-gray-900 text-left">
+                <h3 className="text-lg font-semibold text-ink text-left">
                   {item.question}
                 </h3>
                 <div className="flex-shrink-0 ml-4">
@@ -90,8 +90,8 @@ export default function FAQ() {
                 </div>
               </button>
               {openIndex === index && (
-                <div className="px-6 py-4 bg-white border-t border-gray-200">
-                  <p className="text-gray-600 leading-relaxed">
+                <div className="px-6 py-4 bg-surface border-t border-line">
+                  <p className="text-copy leading-relaxed">
                     {item.answer}
                   </p>
                 </div>
@@ -100,15 +100,15 @@ export default function FAQ() {
           ))}
         </div>
 
-        <div className="mt-16 p-8 bg-pink-50 rounded-lg border border-pink-200 text-center">
-          <p className="text-gray-700">
+        <div className="mt-16 p-8 bg-brand-soft rounded-lg border border-brand-edge text-center">
+          <p className="text-body">
             {isDE ? (
               <>
-                Noch Fragen? <a href="#contact" className="text-brand-strong font-semibold hover:text-pink-700">Kontaktiere uns</a>
+                Noch Fragen? <a href="#contact" className="text-brand-strong font-semibold hover:text-brand-strong">Kontaktiere uns</a>
               </>
             ) : (
               <>
-                More questions? <a href="#contact" className="text-brand-strong font-semibold hover:text-pink-700">Get in touch</a>
+                More questions? <a href="#contact" className="text-brand-strong font-semibold hover:text-brand-strong">Get in touch</a>
               </>
             )}
           </p>

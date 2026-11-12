@@ -1,7 +1,16 @@
-export default function LocaleLayout({
+import { fontClassNames } from '@/lib/fonts';
+
+export default async function LocaleLayout({
   children,
+  params,
 }: {
   children: React.ReactNode;
+  params: Promise<{ locale: string }>;
 }) {
-  return children;
+  const { locale } = await params;
+  return (
+    <html lang={locale} className={fontClassNames} suppressHydrationWarning>
+      <body className="min-h-full flex flex-col bg-surface">{children}</body>
+    </html>
+  );
 }
