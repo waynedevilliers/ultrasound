@@ -31,3 +31,16 @@ for (const path of ['/en', '/en/order']) {
     expect(results.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
   });
 }
+
+for (const path of pages) {
+  test(`${path} logs no console errors`, async ({ page }) => {
+    const errors: string[] = [];
+    page.on('console', (message) => {
+      if (message.type() === 'error') errors.push(message.text());
+    });
+    page.on('pageerror', (error) => errors.push(error.message));
+    await page.goto(path);
+    await page.waitForLoadState('networkidle');
+    expect(errors).toEqual([]);
+  });
+}
