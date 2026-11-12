@@ -81,6 +81,14 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-12: Security headers and CSP (Step 3)
+
+- **Status:** done
+- **Decision:** Headers come from `lib/security-headers.ts`, applied in `next.config.ts`: Content-Security-Policy (default-src self, explicit lists for scripts, styles, images, fonts, frames and forms, frame-ancestors none, object-src none, base-uri self, form-action self, upgrade-insecure-requests in production), HSTS in production, X-Content-Type-Options nosniff, X-Frame-Options DENY, Referrer-Policy strict-origin-when-cross-origin, and Permissions-Policy with camera, microphone, geolocation, payment, usb and interest-cohort off.
+- **Known trade-off:** script-src and style-src allow 'unsafe-inline' because Next.js hydration and JSON-LD need it. Nonces are the later fix. Development also allows 'unsafe-eval' for Turbopack.
+- **Why:** Owner plan, Step 3.
+- **Considered:** Nonces now (rejected for this step: needs per-request rendering, which would change how pages are built).
+
 ## 2026-11-12: One site palette
 
 - **Status:** done
