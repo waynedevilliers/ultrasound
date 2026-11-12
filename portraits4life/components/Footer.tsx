@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import de from '@/messages/de.json';
 import en from '@/messages/en.json';
+import { footerRoutes, routeHref } from '@/content/routes';
 
 // TODO(client): confirm contact email, copyright year and the legal page links before launch.
 export default function Footer() {
@@ -39,12 +40,11 @@ export default function Footer() {
           <div className="text-caption">
             <p>{copyright}</p>
             <nav aria-label={isDE ? 'Rechtliches' : 'Legal'} className="mt-4 flex flex-col gap-2">
-              <Link href={isDE ? '/de/impressum' : '/en/impressum'} className="hover:text-on-dark-soft transition">
-                {legal.impressum.title}
-              </Link>
-              <Link href={isDE ? '/de/datenschutz' : '/en/datenschutz'} className="hover:text-on-dark-soft transition">
-                {legal.datenschutz.title}
-              </Link>
+              {footerRoutes().filter((route) => route.id === 'impressum' || route.id === 'datenschutz').map((route) => (
+                <Link key={route.id} href={routeHref(isDE ? 'de' : 'en', route)} className="hover:text-on-dark-soft transition">
+                  {route.id === 'impressum' ? legal.impressum.title : legal.datenschutz.title}
+                </Link>
+              ))}
             </nav>
           </div>
         </div>

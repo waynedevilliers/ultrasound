@@ -41,6 +41,6 @@ describe('Header mobile menu', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
     const panel = document.querySelectorAll('nav[aria-label="Main menu"]')[1] as HTMLElement;
     const hrefs = Array.from(panel.querySelectorAll('a')).map((a) => a.getAttribute('href'));
-    expect(hrefs).toEqual(['/en', '/en/order', '#pricing', '#contact']);
+    expect(hrefs).toEqual(['/en', '/en/order', '/en#pricing', '/en#contact']);
   });
 });
