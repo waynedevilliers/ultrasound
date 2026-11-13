@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { canvasSizes } from '@/content/products';
+import { buttonClasses } from '@/components/ActionLink';
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/order-schema';
 import { usePathname } from 'next/navigation';
 
@@ -416,8 +417,9 @@ export default function OrderForm() {
       {/* Submit Button */}
       <button
         type="submit"
+        data-variant="primary"
         disabled={loading}
-        className="w-full bg-brand-strong text-white px-6 py-3 rounded-lg font-semibold hover:bg-brand-strong disabled:opacity-50"
+        className={buttonClasses('primary', 'w-full disabled:opacity-50')}
       >
         {loading ? (isDE ? 'Wird eingereicht...' : 'Submitting...') : isDE ? 'Jetzt Bestellen' : 'Submit Order'}
       </button>

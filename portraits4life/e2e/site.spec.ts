@@ -44,3 +44,16 @@ for (const path of pages) {
     expect(errors).toEqual([]);
   });
 }
+
+test('landing page has exactly one primary action', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'desktop project only');
+  await page.goto('/en');
+  await expect(page.locator('[data-variant="primary"]')).toHaveCount(1);
+});
+
+test('order page has exactly one primary action (the submit button)', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'desktop project only');
+  await page.goto('/en/order');
+  await expect(page.locator('[data-variant="primary"]')).toHaveCount(1);
+  await expect(page.locator('button[type="submit"][data-variant="primary"]')).toHaveCount(1);
+});
