@@ -81,6 +81,15 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-13: One button component and one primary action (Step 5)
+
+- **Status:** done
+- **Decision:** `components/ActionLink.tsx` is the only button style. Primary is filled brand; secondary is outlined brand with a 1.5px border. Internal paths use next/link, anchors and mailto use plain links, external URLs open in a new tab with rel noopener noreferrer, an icon and screen reader text. Each page has one primary action: the landing page has "Order now" in the hero; the order page has the submit button. Other buttons on the landing page are secondary.
+- **Changes:** the hero secondary button moved from dark to brand outline; the contact button on the landing page became secondary and its label is now "Contact me".
+- **Contrast:** white on pink-600 about 4.6:1; pink-600 on white about 4.6:1. Both pass 4.5:1 in the default state; axe passes both pages. The hover shade (pink-700) is not measured separately.
+- **Why:** Owner plan, Step 5: one primary action per page.
+- **Considered:** Keeping the old dark secondary (rejected: the plan asks for the accent colour).
+
 ## 2026-11-12: One route list and one product file (Step 4)
 
 - **Status:** done

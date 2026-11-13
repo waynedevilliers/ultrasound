@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import ActionLink from '@/components/ActionLink';
 
 export default function ContactSection() {
   const pathname = usePathname();
@@ -27,12 +28,9 @@ export default function ContactSection() {
           portraits4life.art@gmail.com
         </p>
 
-        <a
-          href={isDE ? '/de/order' : '/en/order'}
-          className="inline-block bg-brand text-white px-10 py-4 rounded-lg font-semibold hover:bg-brand-strong transition"
-        >
-          {isDE ? 'Jetzt Kontakt aufnehmen' : 'Contact Me Now'}
-        </a>
+        <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="secondary">
+          {isDE ? 'Jetzt Kontakt aufnehmen' : 'Contact me'}
+        </ActionLink>
       </div>
     </section>
   );

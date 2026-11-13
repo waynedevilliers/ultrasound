@@ -1,6 +1,7 @@
 'use client';
 
 import Image from 'next/image';
+import ActionLink from '@/components/ActionLink';
 import { usePathname } from 'next/navigation';
 
 // TODO(client): hero image alt text is English only; add a German alt text.
@@ -40,18 +41,12 @@ export default function Hero() {
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
-              <a
-                href={isDE ? '/de/order' : '/en/order'}
-                className="inline-block bg-brand text-white px-8 py-3 rounded-lg font-semibold hover:bg-brand-strong transition text-center"
-              >
-                {isDE ? 'Jetzt bestellen' : 'Order Now'}
-              </a>
-              <a
-                href="#pricing"
-                className="inline-block border-2 border-ink text-ink px-8 py-3 rounded-lg font-semibold hover:bg-dark hover:text-white transition text-center"
-              >
-                {isDE ? 'Formate ansehen' : 'View Formats'}
-              </a>
+              <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
+                {isDE ? 'Jetzt bestellen' : 'Order now'}
+              </ActionLink>
+              <ActionLink href={isDE ? '/de#pricing' : '/en#pricing'} variant="secondary">
+                {isDE ? 'Formate ansehen' : 'View formats'}
+              </ActionLink>
             </div>
           </div>
 
