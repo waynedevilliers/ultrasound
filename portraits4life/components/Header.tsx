@@ -62,10 +62,14 @@ export default function Header() {
   const navLabel = isDE ? 'Hauptmenü' : 'Main menu';
 
   return (
-    <>
-      <header className="bg-surface">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-          <a href={isDE ? '/de' : '/en'} className="inline-flex items-center gap-3 hover:opacity-90 transition">
+    <header className="sticky top-0 z-50 bg-surface border-b border-line">
+      <nav
+        ref={navRef}
+        aria-label={navLabel}
+        className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8"
+      >
+        <div className="h-[var(--menu-bar-height)] flex items-center justify-between gap-4">
+          <a href={isDE ? '/de' : '/en'} className="inline-flex items-center gap-3 hover:opacity-90 transition shrink-0">
             <div className="w-10 h-10 sm:w-12 sm:h-12 relative">
               <Image
                 src="/images/logo.avif"
@@ -79,72 +83,66 @@ export default function Header() {
               Portraits 4 Life
             </span>
           </a>
-        </div>
-      </header>
 
-      <nav
-        ref={navRef}
-        aria-label={navLabel}
-        className="sticky top-0 z-50 bg-surface border-b border-line"
-      >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[var(--menu-bar-height)] flex items-center justify-between gap-4">
-          <ul className="hidden lg:flex items-center gap-3">
-            {links.map((link, index) => (
-              <li key={link.id} className="flex items-center gap-3">
-                {index > 0 && (
-                  <span aria-hidden="true" className="text-field">
-                    |
-                  </span>
-                )}
-                <a
-                  href={link.href}
-                  aria-current={link.active ? 'page' : undefined}
-                  className={
-                    link.active
-                      ? 'text-brand-strong font-semibold underline underline-offset-4'
-                      : 'text-copy hover:text-ink transition'
-                  }
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-          </ul>
+          <div className="flex items-center gap-4 sm:gap-6">
+            <ul className="hidden lg:flex items-center gap-3">
+              {links.map((link, index) => (
+                <li key={link.id} className="flex items-center gap-3">
+                  {index > 0 && (
+                    <span aria-hidden="true" className="text-field">
+                      |
+                    </span>
+                  )}
+                  <a
+                    href={link.href}
+                    aria-current={link.active ? 'page' : undefined}
+                    className={
+                      link.active
+                        ? 'text-brand-strong font-semibold underline underline-offset-4'
+                        : 'text-copy hover:text-ink transition'
+                    }
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
 
-          <div className="flex items-center gap-2 sm:gap-4 ml-auto">
-            <button
-              onClick={handleLanguageSwitch}
-              aria-label={isDE ? 'Sprache auf Englisch wechseln' : 'Switch language to German'}
-              className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-brand bg-brand-soft hover:bg-brand-tint text-brand-strong font-semibold text-sm sm:text-base transition"
-              type="button"
-            >
-              {isDE ? 'EN' : 'DE'}
-            </button>
+            <div className="flex items-center gap-2 sm:gap-4">
+              <button
+                onClick={handleLanguageSwitch}
+                aria-label={isDE ? 'Sprache auf Englisch wechseln' : 'Switch language to German'}
+                className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-brand bg-brand-soft hover:bg-brand-tint text-brand-strong font-semibold text-sm sm:text-base transition"
+                type="button"
+              >
+                {isDE ? 'EN' : 'DE'}
+              </button>
 
-            <button
-              ref={toggleRef}
-              type="button"
-              className="lg:hidden h-11 w-11 flex items-center justify-center text-copy hover:text-ink"
-              aria-expanded={menuOpen}
-              aria-controls={menuId}
-              aria-label={menuOpen ? (isDE ? 'Menü schließen' : 'Close menu') : (isDE ? 'Menü öffnen' : 'Open menu')}
-              onClick={() => setMenuOpen((open) => !open)}
-            >
-              <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-                {menuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 6l12 12M18 6L6 18" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
-                )}
-              </svg>
-            </button>
+              <button
+                ref={toggleRef}
+                type="button"
+                className="lg:hidden h-11 w-11 flex items-center justify-center text-copy hover:text-ink"
+                aria-expanded={menuOpen}
+                aria-controls={menuId}
+                aria-label={menuOpen ? (isDE ? 'Menü schließen' : 'Close menu') : (isDE ? 'Menü öffnen' : 'Open menu')}
+                onClick={() => setMenuOpen((open) => !open)}
+              >
+                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  {menuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 6l12 12M18 6L6 18" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                  )}
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 
         {menuOpen && (
           <ul
             id={menuId}
-            className="lg:hidden max-w-7xl mx-auto px-4 sm:px-6 pb-2 border-t border-line"
+            className="lg:hidden pb-2 border-t border-line"
             onClick={(event) => {
               if ((event.target as HTMLElement).closest('a')) setMenuOpen(false);
             }}
@@ -163,6 +161,6 @@ export default function Header() {
           </ul>
         )}
       </nav>
-    </>
+    </header>
   );
 }
