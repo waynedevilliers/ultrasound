@@ -3,6 +3,14 @@
 import { useEffect, useId, useState } from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
+import { menuRoutes, routeHref, type SiteRoute } from '@/content/routes';
+
+const menuLabels: Record<string, { de: string; en: string }> = {
+  home: { de: 'Start', en: 'Home' },
+  order: { de: 'Bestellen', en: 'Order' },
+  formats: { de: 'Formate', en: 'Formats' },
+  contact: { de: 'Kontakt', en: 'Contact' },
+};
 
 export default function Header() {
   const pathname = usePathname();
@@ -25,12 +33,12 @@ export default function Header() {
     window.location.href = newPath || `/${newLang}`;
   };
 
-  const links = [
-    { href: isDE ? '/de' : '/en', label: isDE ? 'Start' : 'Home' },
-    { href: isDE ? '/de/order' : '/en/order', label: isDE ? 'Bestellen' : 'Order' },
-    { href: '#pricing', label: isDE ? 'Formate' : 'Formats' },
-    { href: '#contact', label: isDE ? 'Kontakt' : 'Contact' },
-  ];
+  const locale = isDE ? 'de' : 'en';
+  const links = menuRoutes().map((route: SiteRoute) => ({
+    id: route.id,
+    href: routeHref(locale, route),
+    label: menuLabels[route.id]?.[locale] ?? route.id,
+  }));
 
   return (
     <header className="bg-surface border-b border-line">
@@ -53,7 +61,7 @@ export default function Header() {
 
           <nav aria-label={isDE ? 'Hauptmenü' : 'Main menu'} className="hidden md:flex items-center gap-8">
             {links.map((link) => (
-              <a key={link.label} href={link.href} className="text-copy hover:text-ink transition">
+              <a key={link.id} href={link.href} className="text-copy hover:text-ink transition">
                 {link.label}
               </a>
             ))}
@@ -98,7 +106,7 @@ export default function Header() {
           >
             {links.map((link) => (
               <a
-                key={link.label}
+                key={link.id}
                 href={link.href}
                 className="flex min-h-12 items-center text-lg text-body hover:text-ink"
               >

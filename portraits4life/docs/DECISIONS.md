@@ -81,6 +81,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-12: One route list and one product file (Step 4)
+
+- **Status:** done
+- **Decision:** `content/routes.ts` is the one list of routes (menu, footer, sitemap flags, anchors). The header menu and footer legal links read it. Anchor links are locale-aware (`/en#pricing`), so they also work from the order page. `content/products.ts` stays the only source of prices and sizes; its tests check every product has a price. The sitemap itself is built in Step 13 and reads the same list.
+- **Why:** Owner plan, Step 4. One list means the menu, footer and sitemap cannot drift apart.
+- **Considered:** Plain `#pricing` anchors (rejected: they break from other pages). Moving menu labels to messages (later, with Step 6a).
+
 ## 2026-11-12: Security headers and CSP (Step 3)
 
 - **Status:** done
