@@ -1,9 +1,10 @@
 'use client';
 
-import { useEffect, useId, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { menuRoutes, routeHref, type SiteRoute } from '@/content/routes';
+import { isActiveItem } from '@/lib/is-active-item';
 
 const menuLabels: Record<string, { de: string; en: string }> = {
   home: { de: 'Start', en: 'Home' },
@@ -12,19 +13,36 @@ const menuLabels: Record<string, { de: string; en: string }> = {
   contact: { de: 'Kontakt', en: 'Contact' },
 };
 
+// The logo row scrolls away with the page. The menu bar is sticky: it never changes
+// size and has no scroll listeners, so it cannot flicker.
 export default function Header() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
+  const locale = isDE ? 'de' : 'en';
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
+  const navRef = useRef<HTMLElement>(null);
+  const toggleRef = useRef<HTMLButtonElement>(null);
 
+  // Escape closes the panel and returns focus to the menu button.
+  // A click outside the menu closes it too.
   useEffect(() => {
     if (!menuOpen) return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.key === 'Escape') setMenuOpen(false);
+      if (event.key === 'Escape') {
+        setMenuOpen(false);
+        toggleRef.current?.focus();
+      }
+    };
+    const onPointerDown = (event: PointerEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) setMenuOpen(false);
     };
     document.addEventListener('keydown', onKeyDown);
-    return () => document.removeEventListener('keydown', onKeyDown);
+    document.addEventListener('pointerdown', onPointerDown);
+    return () => {
+      document.removeEventListener('keydown', onKeyDown);
+      document.removeEventListener('pointerdown', onPointerDown);
+    };
   }, [menuOpen]);
 
   const handleLanguageSwitch = () => {
@@ -33,18 +51,21 @@ export default function Header() {
     window.location.href = newPath || `/${newLang}`;
   };
 
-  const locale = isDE ? 'de' : 'en';
   const links = menuRoutes().map((route: SiteRoute) => ({
     id: route.id,
     href: routeHref(locale, route),
     label: menuLabels[route.id]?.[locale] ?? route.id,
+    // Anchor-only items (sections) are never the current page.
+    active: !route.anchor && isActiveItem(route.path, pathname, locale),
   }));
 
+  const navLabel = isDE ? 'Hauptmenü' : 'Main menu';
+
   return (
-    <header className="bg-surface border-b border-line">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-        <div className="flex items-center justify-between">
-          <a href={isDE ? '/de' : '/en'} className="flex items-center gap-3 hover:opacity-90 transition">
+    <>
+      <header className="bg-surface">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
+          <a href={isDE ? '/de' : '/en'} className="inline-flex items-center gap-3 hover:opacity-90 transition">
             <div className="w-10 h-10 sm:w-12 sm:h-12 relative">
               <Image
                 src="/images/logo.avif"
@@ -58,18 +79,42 @@ export default function Header() {
               Portraits 4 Life
             </span>
           </a>
+        </div>
+      </header>
 
-          <nav aria-label={isDE ? 'Hauptmenü' : 'Main menu'} className="hidden md:flex items-center gap-8">
-            {links.map((link) => (
-              <a key={link.id} href={link.href} className="text-copy hover:text-ink transition">
-                {link.label}
-              </a>
+      <nav
+        ref={navRef}
+        aria-label={navLabel}
+        className="sticky top-0 z-50 bg-surface border-b border-line"
+      >
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[var(--menu-bar-height)] flex items-center justify-between gap-4">
+          <ul className="hidden lg:flex items-center gap-3">
+            {links.map((link, index) => (
+              <li key={link.id} className="flex items-center gap-3">
+                {index > 0 && (
+                  <span aria-hidden="true" className="text-field">
+                    |
+                  </span>
+                )}
+                <a
+                  href={link.href}
+                  aria-current={link.active ? 'page' : undefined}
+                  className={
+                    link.active
+                      ? 'text-brand-strong font-semibold underline underline-offset-4'
+                      : 'text-copy hover:text-ink transition'
+                  }
+                >
+                  {link.label}
+                </a>
+              </li>
             ))}
-          </nav>
+          </ul>
 
-          <div className="flex items-center gap-2 sm:gap-4">
+          <div className="flex items-center gap-2 sm:gap-4 ml-auto">
             <button
               onClick={handleLanguageSwitch}
+              aria-label={isDE ? 'Sprache auf Englisch wechseln' : 'Switch language to German'}
               className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-brand bg-brand-soft hover:bg-brand-tint text-brand-strong font-semibold text-sm sm:text-base transition"
               type="button"
             >
@@ -77,8 +122,9 @@ export default function Header() {
             </button>
 
             <button
+              ref={toggleRef}
               type="button"
-              className="md:hidden h-11 w-11 flex items-center justify-center text-copy hover:text-ink"
+              className="lg:hidden h-11 w-11 flex items-center justify-center text-copy hover:text-ink"
               aria-expanded={menuOpen}
               aria-controls={menuId}
               aria-label={menuOpen ? (isDE ? 'Menü schließen' : 'Close menu') : (isDE ? 'Menü öffnen' : 'Open menu')}
@@ -96,26 +142,27 @@ export default function Header() {
         </div>
 
         {menuOpen && (
-          <nav
+          <ul
             id={menuId}
-            aria-label={isDE ? 'Hauptmenü' : 'Main menu'}
-            className="md:hidden mt-4 border-t border-line pt-2"
+            className="lg:hidden max-w-7xl mx-auto px-4 sm:px-6 pb-2 border-t border-line"
             onClick={(event) => {
               if ((event.target as HTMLElement).closest('a')) setMenuOpen(false);
             }}
           >
             {links.map((link) => (
-              <a
-                key={link.id}
-                href={link.href}
-                className="flex min-h-12 items-center text-lg text-body hover:text-ink"
-              >
-                {link.label}
-              </a>
+              <li key={link.id}>
+                <a
+                  href={link.href}
+                  aria-current={link.active ? 'page' : undefined}
+                  className={`flex min-h-12 items-center text-lg hover:text-ink ${link.active ? 'text-brand-strong font-semibold' : 'text-body'}`}
+                >
+                  {link.label}
+                </a>
+              </li>
             ))}
-          </nav>
+          </ul>
         )}
-      </div>
-    </header>
+      </nav>
+    </>
   );
 }

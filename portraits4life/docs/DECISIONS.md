@@ -81,6 +81,14 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-13: Sticky menu bar instead of a shrinking header (Step 6a)
+
+- **Status:** done
+- **Decision:** The logo row scrolls away. The menu bar is a separate sticky element (top 0, z 50) with a fixed height of 4rem. It never changes size and has no scroll listeners. Desktop (lg and up): links separated by aria-hidden bars, current page underlined with aria-current. Below lg: a 44px menu button with aria-expanded and aria-controls; the panel closes on link click, on Escape (focus returns to the button), and on a click outside. One navigation landmark serves desktop and mobile. The language switcher sits in the bar on every size. Smooth scroll is on, off with reduced motion, and anchor targets clear the bar.
+- **Why:** A shrinking header flickers when it changes size during scroll; a bar that never changes size cannot.
+- **Not done yet:** Focus trap inside the open panel (in the earlier plan, not in 6a). Real touch and touchpad flicker testing needs a physical device; headless browsers cannot reproduce it.
+- **Considered:** A header that shrinks on scroll (rejected: flicker).
+
 ## 2026-11-13: One button component and one primary action (Step 5)
 
 - **Status:** done
