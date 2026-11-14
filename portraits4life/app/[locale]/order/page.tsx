@@ -2,15 +2,25 @@ import Header from '@/components/Header';
 import OrderForm from '@/components/OrderForm';
 import OrderInfo from '@/components/OrderInfo';
 import Footer from '@/components/Footer';
+import Breadcrumb from '@/components/Breadcrumb';
 
-export default function OrderPage() {
+export default async function OrderPage({ params }: { params: Promise<{ locale: string }> }) {
+  const { locale } = await params;
+  const isDE = locale === 'de';
   return (
     <div className="min-h-screen flex flex-col">
       <Header />
-      <main className="flex-1 py-16 lg:py-24 bg-canvas">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <main className="flex-1 section-y bg-canvas">
+        <Breadcrumb
+          label={isDE ? 'Brotkrumen' : 'Breadcrumb'}
+          items={[
+            { label: isDE ? 'Startseite' : 'Home', href: `/${locale}` },
+            { label: isDE ? 'Bestellen' : 'Order' },
+          ]}
+        />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           <h1
-            className="font-display text-5xl font-bold mb-4 text-ink text-center"
+            className="font-display heading-xl font-bold mb-4 text-ink text-center"
           >
             Bestellen / Order
           </h1>

@@ -100,7 +100,7 @@ export default function Header() {
         aria-label={navLabel}
         className="sticky top-0 z-50 bg-surface border-b border-line"
       >
-        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[var(--menu-bar-height)] flex items-center justify-center">
+        <div className="relative container-site h-[var(--menu-bar-height)] flex items-center justify-center">
           <ul className="hidden lg:flex items-center gap-6">
             {links.map((link, index) => (
               <li key={link.id} className="flex items-center gap-6">
@@ -138,7 +138,7 @@ export default function Header() {
             <button
               onClick={handleLanguageSwitch}
               aria-label={isDE ? 'Sprache auf Englisch wechseln' : 'Switch language to German'}
-              className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-brand bg-brand-soft hover:bg-brand-tint text-brand-strong font-semibold text-sm sm:text-base transition"
+              className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-brand bg-brand-soft hover:bg-brand-tint text-brand-strong font-semibold text-base sm:text-base transition"
               type="button"
             >
               {isDE ? 'EN' : 'DE'}

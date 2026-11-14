@@ -81,6 +81,14 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-14: Layout system (Step 7)
+
+- **Status:** done
+- **Decision:** One content container (`.container-site`, max width 80rem, padding 1rem / 1.5rem / 2rem). One section rhythm (`.section-y`: 2.5rem on phones, 5rem from 640px, 8rem from 1024px). Headings scale with clamp (`.heading-xl`, `.heading-hero`). Long text sits in a 68ch column (`.reading-column`). Breadcrumbs on every subpage (Startseite | Bestellen, Home | Order). Cards in a row are equal height. Small text is 16px everywhere (no text-sm or text-xs). Landing sections fade in with `Reveal` (about 12% visible, once, off with reduced motion and without JavaScript).
+- **Why:** Owner plan, Step 7: one layout, one rhythm, readable text on phones.
+- **Not done yet:** The order page heading still mixes German and English ("Bestellen / Order") and is not yet locale-specific; that belongs to the order work in Step 11. The breadcrumb JSON-LD is Step 13.
+- **Considered:** Keeping fixed heading sizes (rejected: too large on phones).
+
 ## 2026-11-14: Small logo in the sticky bar (Step 6b)
 
 - **Status:** done
