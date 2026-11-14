@@ -109,5 +109,23 @@
       "title": "Privacy Policy",
       "intro": "TODO(client): Privacy policy under the GDPR. Controller, purpose and legal basis for processing order data and images, retention period, recipients (hosting, email delivery), data subject rights and privacy contact. This page is a placeholder."
     }
+  },
+  "seo": {
+    "home": {
+      "title": "Portraits 4 Life – Ultrasound images as art",
+      "description": "Artistically enhanced ultrasound images, printed on canvas. A special keepsake for expecting parents."
+    },
+    "order": {
+      "title": "Order – Portraits 4 Life",
+      "description": "Upload your ultrasound image and place your order."
+    },
+    "impressum": {
+      "title": "Legal Notice – Portraits 4 Life",
+      "description": "Provider information for Portraits 4 Life."
+    },
+    "datenschutz": {
+      "title": "Privacy Policy – Portraits 4 Life",
+      "description": "How personal data is handled."
+    }
   }
 }

@@ -12,6 +12,12 @@ export default function Footer() {
   const isDE = pathname.startsWith('/de');
   const legal = (isDE ? de : en).legal;
 
+  const handleLanguageSwitch = () => {
+    const newLang = isDE ? 'en' : 'de';
+    const newPath = pathname.replace(/^\/(en|de)/, `/${newLang}`);
+    window.location.href = newPath || `/${newLang}`;
+  };
+
   const contactUs = isDE ? 'Kontaktiere uns' : 'Contact Us';
   const copyright = isDE
     ? '© 2024 Portraits 4 Life. Alle Rechte vorbehalten.'
@@ -39,6 +45,14 @@ export default function Footer() {
 
           <div className="text-caption">
             <p>{copyright}</p>
+            <button
+              type="button"
+              onClick={handleLanguageSwitch}
+              aria-label={isDE ? 'Sprache auf Englisch wechseln' : 'Switch language to German'}
+              className="mt-4 px-4 py-2 rounded-full border-2 border-brand-light text-brand-on-dark font-semibold hover:text-brand-on-dark transition"
+            >
+              {isDE ? 'EN' : 'DE'}
+            </button>
             <nav aria-label={isDE ? 'Rechtliches' : 'Legal'} className="mt-4 flex flex-col gap-2">
               {footerRoutes().filter((route) => route.id === 'impressum' || route.id === 'datenschutz').map((route) => (
                 <Link key={route.id} href={routeHref(isDE ? 'de' : 'en', route)} className="hover:text-on-dark-soft transition">

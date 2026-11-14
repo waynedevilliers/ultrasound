@@ -125,6 +125,17 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Owner choice (option B): photos never pass through the order endpoint, so the request size limit does not apply, and each photo is stored once.
 - **Considered:** Email attachments (rejected: request size limit, mailbox copies of health-related photos).
 
+## 2026-11-14: Footer, SEO and legal (Step 13)
+
+- **Status:** done, with open items
+- **Decision:** Every page has a title, description, Open Graph and Twitter tags, a canonical link and German and English alternates, from one helper (`lib/metadata.ts`). Titles and descriptions are in the message files (seo.*). Structured data (JSON-LD, escaped) comes from `lib/structured-data.ts`: Organization (name, email) on every page; Product with Offers for the digital download and each canvas size on the landing page, with prices from `content/products.ts` and offer names in both languages; BreadcrumbList on subpages. The sitemap and robots file are built from `content/routes.ts`. The footer has a language switch.
+- **Open items:**
+  - Absolute links (canonical, sitemap, breadcrumb data, alternates) need SITE_URL to be set to the live domain on Vercel; without it, those are relative or left out.
+  - Impressum and Datenschutz text are still placeholders (TODO(client)) until the operator's details are supplied.
+  - No redirects for old Wix URLs: the domain has not moved yet (TODO(client)).
+- **Why:** Owner plan, Step 13.
+- **Considered:** Structured data written inline in pages (rejected: one place, escaped data only).
+
 ## 2026-11-14: Links (Step 12)
 
 - **Status:** done
