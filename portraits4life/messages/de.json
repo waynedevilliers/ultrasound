@@ -20,19 +20,21 @@
     "imageAlt": "Künstlerisch bearbeitetes Ultraschallbild als Beispiel"
   },
   "howItWorks": {
-    "title": "So funktioniert's",
-    "step1": {
-      "title": "Ultraschallbild hochladen",
-      "description": "Sende mir dein klares Ultraschallbild"
-    },
-    "step2": {
-      "title": "Künstlerisch bearbeitet",
-      "description": "Ich erstelle ein wunderschönes digitales Portrait"
-    },
-    "step3": {
-      "title": "Leinwanddruck oder Digital",
-      "description": "Erhalte deinen Druck oder die digitale Datei"
-    }
+    "title": "Einfacher Prozess",
+    "steps": [
+      {
+        "title": "Bild hochladen",
+        "description": "Sende mir dein klares Ultraschallbild oder Portraitfoto. Wir prüfen es innerhalb von 24 Stunden."
+      },
+      {
+        "title": "Künstlerische Bearbeitung",
+        "description": "Unser Künstler erstellt eine wunderschöne verbesserte Version mit Farben und künstlerischen Akzenten."
+      },
+      {
+        "title": "Genießen & Bewahren",
+        "description": "Erhalte deine hochauflösende Datei oder deinen Leinwanddruck. Das perfekte Erinnerungsstück."
+      }
+    ]
   },
   "pricing": {
     "title": "Formate & Preise",

@@ -20,19 +20,21 @@
     "imageAlt": "Example of an artistically enhanced ultrasound image"
   },
   "howItWorks": {
-    "title": "How It Works",
-    "step1": {
-      "title": "Upload Your Image",
-      "description": "Share your clear ultrasound image with me"
-    },
-    "step2": {
-      "title": "Artistic Enhancement",
-      "description": "I create a beautiful digital portrait for you"
-    },
-    "step3": {
-      "title": "Canvas or Digital",
-      "description": "Receive your canvas print or digital file"
-    }
+    "title": "Simple Process",
+    "steps": [
+      {
+        "title": "Send Your Image",
+        "description": "Upload a clear ultrasound photo or personal portrait. We review it within 24 hours."
+      },
+      {
+        "title": "Artistic Enhancement",
+        "description": "Our artist creates a beautiful enhanced version with color and artistic touches."
+      },
+      {
+        "title": "Receive & Enjoy",
+        "description": "Get your high-quality digital file or canvas print. Perfect keepsake for your home."
+      }
+    ]
   },
   "pricing": {
     "title": "Formats & Pricing",
