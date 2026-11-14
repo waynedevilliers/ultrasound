@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
 import { routeHref, routes } from '@/content/routes';
 
+// TODO(client): the questions and answers are drafts. Confirm each answer (shipping, preview, refund, file requirements) with the client; see docs/faq-client-review.md. No FAQPage structured data until they are confirmed.
 export default function FAQ() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
@@ -16,7 +17,7 @@ export default function FAQ() {
   const faqItems = faq.items;
 
   return (
-    <section className="section-y bg-surface">
+    <section id="faq" className="section-y bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2
           className="font-display heading-xl font-bold text-center mb-16 text-ink"

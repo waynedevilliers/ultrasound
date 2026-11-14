@@ -59,7 +59,7 @@ describe('Header menu bar', () => {
     render(<Header />);
     fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
     const hrefs = panelLinks().map((a) => a.getAttribute('href'));
-    expect(hrefs).toEqual(['/en', '/en/order', '/en#pricing', '/en#contact']);
+    expect(hrefs).toEqual(['/en', '/en/order', '/en#pricing', '/en#beispiele', '/en#contact']);
   });
 
   it('marks the current page with aria-current on the home page', () => {

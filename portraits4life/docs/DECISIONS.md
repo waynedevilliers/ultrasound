@@ -81,6 +81,21 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-15: Five menu items, the rest reached by scrolling (owner request)
+
+- **Status:** done
+- **Decision:** The main menu keeps five items: Start, Bestellen, Formate, Beispiele and Kontakt. How it works, About and FAQ are on the home page and reached by scrolling, not from the menu. Their anchors stay in the route list. The menu limit is five again, as in the original plan. The desktop menu uses the lg breakpoint.
+- **Why:** The owner asked to keep only the most important items in the menu. Eight items were too many, and at 1024px they collided with the language switch.
+- **Considered:** Keeping all eight and moving the switch (rejected: crowded at every width).
+
+## 2026-11-15: FAQ answers are drafts for the client (plan v3, step 9)
+
+- **Status:** done, answers pending client confirmation
+- **Decision:** The five FAQ answers stay as drafts, marked TODO(client) in the component. The client gets a plain German list with each answer and the open points (`docs/faq-client-review.md`). No FAQPage structured data until the answers are confirmed. The German question about formats now uses "du" (it was "Sie").
+- **Why:** Plan v3 step 9. Shipping costs, preview, refund and file rules are business promises that the owner has not confirmed.
+- **Open:** The delivery start differs between the FAQ ("nach Bestätigung") and the pricing lines ("nach Zahlungseingang"). Shipping costs are not in the price data.
+- **Considered:** Removing the open questions (rejected: the owner asked to keep them as drafts).
+
 ## 2026-11-15: About section with photo placeholder (plan v3, step 8)
 
 - **Status:** done, copy and photo pending client

@@ -9,7 +9,11 @@
     "switchLanguage": "DE",
     "switchLanguageLabel": "Switch language to German",
     "openMenu": "Open menu",
-    "closeMenu": "Close menu"
+    "closeMenu": "Close menu",
+    "howItWorks": "How it works",
+    "examples": "Examples",
+    "about": "About",
+    "faq": "FAQ"
   },
   "hero": {
     "headline": "ULTRASOUND ART",
@@ -152,7 +156,7 @@
         "answer": "Digital artwork typically takes 1 week. Canvas prints take 1-2 weeks from confirmation."
       },
       {
-        "question": "What image formats do you accept?",
+        "question": "Which image formats can I upload?",
         "answer": "We accept JPG, PNG and other common image formats. High-resolution images (at least 300dpi) produce the best results."
       },
       {

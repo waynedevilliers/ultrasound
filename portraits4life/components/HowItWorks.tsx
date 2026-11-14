@@ -17,7 +17,7 @@ export default function HowItWorks() {
   const steps = howItWorks.steps.map((step, index) => ({ number: index + 1, ...step, icon: icons[index] }));
 
   return (
-    <section className="section-y bg-canvas">
+    <section id="so-funktionierts" className="section-y bg-canvas">
       <div className="container-site">
         <h2
           className="font-display heading-xl font-bold text-center mb-20 text-ink"
