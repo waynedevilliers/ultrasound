@@ -9,7 +9,11 @@
     "switchLanguage": "EN",
     "switchLanguageLabel": "Sprache auf Englisch wechseln",
     "openMenu": "Menü öffnen",
-    "closeMenu": "Menü schließen"
+    "closeMenu": "Menü schließen",
+    "howItWorks": "So funktioniert’s",
+    "examples": "Beispiele",
+    "about": "Über mich",
+    "faq": "FAQ"
   },
   "hero": {
     "headline": "ULTRASOUND ART",
@@ -152,7 +156,7 @@
         "answer": "Die digitale Bearbeitung dauert normalerweise 1 Woche. Der Leinwanddruck dauert 1-2 Wochen nach Bestätigung."
       },
       {
-        "question": "Welche Bildformate akzeptieren Sie?",
+        "question": "Welche Bildformate kann ich hochladen?",
         "answer": "Wir akzeptieren JPG, PNG und andere gängige Bildformate. High-Resolution-Bilder (mindestens 300dpi) geben die besten Ergebnisse."
       },
       {
