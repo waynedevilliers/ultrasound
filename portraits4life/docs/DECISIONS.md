@@ -125,6 +125,15 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Owner choice (option B): photos never pass through the order endpoint, so the request size limit does not apply, and each photo is stored once.
 - **Considered:** Email attachments (rejected: request size limit, mailbox copies of health-related photos).
 
+## 2026-11-14: Links (Step 12)
+
+- **Status:** done
+- **Decision:** Internal links are relative and locale-aware (menu, footer, buttons, FAQ). The FAQ contact links were bare #contact anchors and are now locale-aware. The order route no longer falls back to localhost: it uses SITE_URL if set, otherwise the address of the request. External links must use ActionLink (new tab, rel noopener noreferrer, icon, screen reader text). The site currently has no external links; email links are plain mailto links, with the address also shown as text.
+- **Search results:** no localhost or hard-coded own-domain links in application code. No links to luiseschwarze.wixsite.com exist in the project, so there is no Wix TODO list to write.
+- **Tests:** an e2e check crawls every link on the landing, order and legal pages in both languages and verifies internal pages return 200, anchors exist, mailto addresses are valid, and external links (if any) are safe.
+- **Why:** Owner plan, Step 12.
+- **Considered:** Adding a placeholder external link (rejected: nothing to link to yet).
+
 ## 2026-11-14: Layout system (Step 7)
 
 - **Status:** done

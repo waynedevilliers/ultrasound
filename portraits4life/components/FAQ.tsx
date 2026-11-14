@@ -2,11 +2,14 @@
 
 import { useState } from 'react';
 import { usePathname } from 'next/navigation';
+import { routeHref, routes } from '@/content/routes';
 
 export default function FAQ() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
   const [openIndex, setOpenIndex] = useState<number | null>(null);
+  const contactRoute = routes.find((route) => route.id === 'contact');
+  const contactHref = contactRoute ? routeHref(isDE ? 'de' : 'en', contactRoute) : '#contact';
 
   const faqItems = isDE ? [
     {
@@ -104,11 +107,11 @@ export default function FAQ() {
           <p className="text-body">
             {isDE ? (
               <>
-                Noch Fragen? <a href="#contact" className="text-brand-strong font-semibold hover:text-brand-strong">Kontaktiere uns</a>
+                Noch Fragen? <a href={contactHref} className="text-brand-strong font-semibold hover:text-brand-strong">Kontaktiere uns</a>
               </>
             ) : (
               <>
-                More questions? <a href="#contact" className="text-brand-strong font-semibold hover:text-brand-strong">Get in touch</a>
+                More questions? <a href={contactHref} className="text-brand-strong font-semibold hover:text-brand-strong">Get in touch</a>
               </>
             )}
           </p>
