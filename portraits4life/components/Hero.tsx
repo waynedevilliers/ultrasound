@@ -4,7 +4,6 @@ import Image from 'next/image';
 import ActionLink from '@/components/ActionLink';
 import { usePathname } from 'next/navigation';
 
-// TODO(client): hero image alt text is English only; add a German alt text.
 export default function Hero() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
@@ -59,10 +58,11 @@ export default function Hero() {
           <div className="relative h-96 lg:h-96 min-w-0">
             <Image
               src="/images/ultrasound.avif"
-              alt="Ultrasound artwork example"
+              alt={isDE ? 'Künstlerisch bearbeitetes Ultraschallbild als Beispiel' : 'Example of an artistically enhanced ultrasound image'}
               fill
               className="object-cover rounded-lg shadow-lg"
               priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
             />
           </div>
         </div>
