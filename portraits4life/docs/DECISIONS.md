@@ -81,6 +81,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-14: FAQ accessibility and lint fixes (review follow-up)
+
+- **Status:** done
+- **Decision:** Each FAQ question is a heading with a button inside it (WAI-ARIA accordion). The button has aria-expanded and aria-controls; the answer panel uses the hidden attribute. The chevron is decorative. The German answer now says "eine Vorschau". The lint warnings in HowItWorks.tsx and Footer.tsx (unused variables and imports) are removed, so lint is clean.
+- **Why:** Reviewer findings on feat/faq: screen readers could not tell open from closed, and a heading inside a button is not valid markup.
+- **Considered:** Keeping the answers out of the DOM when closed (rejected: aria-controls needs the panel to exist).
+
 ## 2026-11-14: Final call to action with id kontakt (plan v3, step 10)
 
 - **Status:** done, copy pending client approval

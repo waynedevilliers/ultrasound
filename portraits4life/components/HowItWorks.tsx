@@ -5,8 +5,6 @@ import { getCopy, localeOf } from '@/lib/copy';
 
 export default function HowItWorks() {
   const pathname = usePathname();
-  const isDE = pathname.startsWith('/de');
-
   const { howItWorks } = getCopy(localeOf(pathname));
   const icons = [
     <path key="upload" strokeLinecap="round" strokeLinejoin="round" d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3" />,
