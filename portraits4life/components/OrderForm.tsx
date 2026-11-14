@@ -9,6 +9,7 @@ import type { FormatChoice } from '@/lib/format-param';
 import { getCopy, localeOf } from '@/lib/copy';
 import { formatPrice } from '@/lib/price';
 import { upload } from '@vercel/blob/client';
+import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 
 export default function OrderForm({ initialFormat = null }: { initialFormat?: FormatChoice | null }) {
   const pathname = usePathname();
@@ -18,6 +19,8 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [error, setError] = useState('');
+  // Errors for single fields, keyed by field name; cleared when the field changes.
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   const [orderId, setOrderId] = useState('');
 
   const [formData, setFormData] = useState({
@@ -42,12 +45,23 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
     reference: null as File | null,
   });
 
+  // Spread onto an input: marks it invalid and links it to its message.
+  const invalid = (key: string) =>
+    fieldErrors[key] ? { 'aria-invalid': true, 'aria-describedby': `${key}-error` } : {};
+  const fieldError = (key: string) =>
+    fieldErrors[key] ? (
+      <p id={`${key}-error`} className="mt-1 text-base text-danger-text">
+        {fieldErrors[key]}
+      </p>
+    ) : null;
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({
       ...prev,
       [name]: value,
     }));
+    setFieldErrors(prev => clearFieldError(prev, name));
   };
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'ultrasound' | 'reference') => {
@@ -64,6 +78,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
       return;
     }
     setError('');
+    setFieldErrors(prev => clearFieldError(prev, type));
     setFiles(prev => ({
       ...prev,
       [type]: file,
@@ -84,10 +99,13 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
     e.preventDefault();
     setLoading(true);
     setError('');
+    setFieldErrors({});
 
     try {
       if (!files.ultrasound) {
-        throw new Error(orderForm.ultrasoundRequired);
+        setFieldErrors({ ultrasound: orderForm.ultrasoundRequired });
+        setError(orderForm.checkFields);
+        return;
       }
 
       // Honeypot: hidden from visitors, must stay empty.
@@ -128,8 +146,14 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
       const data = await response.json();
 
       if (!response.ok) {
-        const details = Array.isArray(data.issues) ? data.issues.map((issue: { message: string }) => issue.message).join(' ') : '';
-        throw new Error(details || data.message || data.error || 'Failed to submit order');
+        const issues = Array.isArray(data.issues) ? data.issues : [];
+        const errors = fieldErrorsFromIssues(issues, orderForm.fieldInvalid);
+        if (Object.keys(errors).length > 0) {
+          setFieldErrors(errors);
+          setError(orderForm.checkFields);
+          return;
+        }
+        throw new Error(orderForm.genericError);
       }
 
       setOrderId(data.orderId);
@@ -150,8 +174,8 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
         shippingCountry: '',
       });
       setFiles({ ultrasound: null, reference: null });
-    } catch (err) {
-      setError(err instanceof Error ? err.message : 'An error occurred');
+    } catch {
+      setError(orderForm.genericError);
     } finally {
       setLoading(false);
     }
@@ -202,6 +226,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
           {orderForm.nameLabel}
         </label>
         <input id="name"
+          {...invalid('name')}
           type="text"
           name="name" autoComplete="name"
           value={formData.name}
@@ -209,6 +234,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
           required
           className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
+        {fieldError('name')}
       </div>
 
       <div>
@@ -216,6 +242,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
           {orderForm.emailLabel}
         </label>
         <input id="email"
+          {...invalid('email')}
           type="email"
           name="email" autoComplete="email"
           value={formData.email}
@@ -223,6 +250,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
           required
           className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
+        {fieldError('email')}
       </div>
 
       <div>
@@ -230,6 +258,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
           {orderForm.productLabel}
         </label>
         <select id="product"
+          {...invalid('product')}
           name="product"
           value={formData.product}
           onChange={handleChange}
@@ -238,6 +267,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
           <option value="digital">{orderForm.productDigital}</option>
           <option value="canvas">{orderForm.productCanvas}</option>
         </select>
+        {fieldError('product')}
       </div>
 
       {formData.product === 'canvas' && (
@@ -246,6 +276,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
             {orderForm.canvasSizeLabel}
           </label>
           <select id="canvasSize"
+          {...invalid('canvasSize')}
             name="canvasSize"
             value={formData.canvasSize}
             onChange={handleChange}
@@ -257,6 +288,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
               </option>
             ))}
           </select>
+        {fieldError('canvasSize')}
         </div>
       )}
 
@@ -266,12 +298,14 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
           {orderForm.childNameLabel}
         </label>
         <input id="childName"
+          {...invalid('childName')}
           type="text"
           name="childName"
           value={formData.childName}
           onChange={handleChange}
           className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
+        {fieldError('childName')}
       </div>
 
       <div>
@@ -279,12 +313,14 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
           {orderForm.weeksLabel}
         </label>
         <input id="weeksInWomb"
+          {...invalid('weeksInWomb')}
           type="text"
           name="weeksInWomb"
           value={formData.weeksInWomb}
           onChange={handleChange}
           className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
+        {fieldError('weeksInWomb')}
       </div>
 
       {/* Shipping Address (Canvas Only) */}
@@ -299,6 +335,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
               {orderForm.shippingFullName}
             </label>
             <input id="shippingFullName"
+          {...invalid('shippingFullName')}
               type="text"
               name="shippingFullName" autoComplete="name"
               value={formData.shippingFullName}
@@ -306,6 +343,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
               required
               className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
             />
+        {fieldError('shippingFullName')}
           </div>
 
           <div className="mt-4">
@@ -313,6 +351,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
               {orderForm.shippingStreet}
             </label>
             <input id="shippingStreet"
+          {...invalid('shippingStreet')}
               type="text"
               name="shippingStreet" autoComplete="street-address"
               value={formData.shippingStreet}
@@ -320,6 +359,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
               required
               className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
             />
+        {fieldError('shippingStreet')}
           </div>
 
           <div className="grid grid-cols-2 gap-4 mt-4">
@@ -328,6 +368,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
                 {orderForm.shippingCity}
               </label>
               <input id="shippingCity"
+          {...invalid('shippingCity')}
                 type="text"
                 name="shippingCity" autoComplete="address-level2"
                 value={formData.shippingCity}
@@ -335,12 +376,14 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
                 required
                 className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
+        {fieldError('shippingCity')}
             </div>
             <div>
               <label className="block text-base font-medium text-body mb-2" htmlFor="shippingState">
                 {orderForm.shippingState}
               </label>
               <input id="shippingState"
+          {...invalid('shippingState')}
                 type="text"
                 name="shippingState" autoComplete="address-level1"
                 value={formData.shippingState}
@@ -348,6 +391,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
                 required
                 className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
+        {fieldError('shippingState')}
             </div>
           </div>
 
@@ -357,6 +401,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
                 {orderForm.shippingPostalCode}
               </label>
               <input id="shippingPostalCode"
+          {...invalid('shippingPostalCode')}
                 type="text"
                 name="shippingPostalCode" autoComplete="postal-code"
                 value={formData.shippingPostalCode}
@@ -364,12 +409,14 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
                 required
                 className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
+        {fieldError('shippingPostalCode')}
             </div>
             <div>
               <label className="block text-base font-medium text-body mb-2" htmlFor="shippingCountry">
                 {orderForm.shippingCountry}
               </label>
               <input id="shippingCountry"
+          {...invalid('shippingCountry')}
                 type="text"
                 name="shippingCountry" autoComplete="country-name"
                 value={formData.shippingCountry}
@@ -377,6 +424,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
                 required
                 className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
+        {fieldError('shippingCountry')}
             </div>
           </div>
         </div>
@@ -389,12 +437,14 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
             {orderForm.ultrasoundLabel}
           </label>
           <input id="ultrasoundImage"
+          {...invalid('ultrasound')}
             type="file"
             accept="image/*"
             onChange={(e) => handleFileChange(e, 'ultrasound')}
             required
             className="w-full"
           />
+        {fieldError('ultrasound')}
           {files.ultrasound && <p className="text-base text-success mt-1">{files.ultrasound.name}</p>}
         </div>
 
@@ -403,11 +453,13 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
             {orderForm.referenceLabel}
           </label>
           <input id="referenceImage"
+          {...invalid('reference')}
             type="file"
             accept="image/*"
             onChange={(e) => handleFileChange(e, 'reference')}
             className="w-full"
           />
+        {fieldError('reference')}
           {files.reference && <p className="text-base text-success mt-1">{files.reference.name}</p>}
         </div>
       </div>
@@ -418,12 +470,14 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
           {orderForm.specialRequests}
         </label>
         <textarea id="specialRequests"
+          {...invalid('specialRequests')}
           name="specialRequests"
           value={formData.specialRequests}
           onChange={handleChange}
           rows={4}
           className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
+        {fieldError('specialRequests')}
       </div>
 
       {/* Submit Button */}

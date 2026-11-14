@@ -242,7 +242,10 @@
     "fileType": "Only JPG, PNG, WebP or HEIC.",
     "ultrasoundRequired": "Please upload an ultrasound image.",
     "submitting": "Submitting...",
-    "submit": "Submit Order"
+    "submit": "Submit Order",
+    "fieldInvalid": "Please check this field.",
+    "checkFields": "Please check the highlighted fields.",
+    "genericError": "The order could not be sent. Please try again."
   },
   "common": {
     "home": "Home",

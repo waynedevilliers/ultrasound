@@ -81,6 +81,14 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-14: Field-level errors on the order form (plan v3, step 11)
+
+- **Status:** done
+- **Decision:** A problem with one field marks that field (aria-invalid, aria-describedby) and shows a short message under it. A summary above the form says to check the marked fields. Server issues map to fields (photo paths map to the upload fields); the server's English messages are not shown. The error clears when the field changes. Network or upload failures show one German or English message.
+- **Why:** Plan v3 step 11: visitors should see which field to fix.
+- **Open:** Rate limits per instance and on the upload route stay open (storage for limits needs a decision).
+- **Considered:** Showing the server's messages as they are (rejected: English text in the German form).
+
 ## 2026-11-14: FAQ accessibility and lint fixes (review follow-up)
 
 - **Status:** done
