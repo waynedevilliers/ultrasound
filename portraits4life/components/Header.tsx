@@ -126,9 +126,10 @@ export default function Header() {
             data-testid="compact-logo"
             aria-hidden={!compact}
             tabIndex={compact ? 0 : -1}
-            className={`absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 h-10 w-10 transition-opacity duration-200 motion-reduce:transition-none ${compact ? 'opacity-100' : 'opacity-0'}`}
+            // TODO(client): simplified logo that is readable at 32px; the name is shown for now.
+            className={`absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 font-display text-2xl font-bold text-ink whitespace-nowrap transition-opacity duration-200 motion-reduce:transition-none ${compact ? 'opacity-100' : 'opacity-0'}`}
           >
-            <Image src="/images/logo.avif" alt="Portraits 4 Life" width={40} height={40} className="w-full h-full object-contain" />
+            {copy.header.logo}
           </a>
 
           <div className="absolute right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4">

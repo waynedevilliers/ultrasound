@@ -6,6 +6,7 @@ import { buttonClasses } from '@/components/ActionLink';
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/order-schema';
 import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
+import { formatPrice } from '@/lib/price';
 import { upload } from '@vercel/blob/client';
 
 export default function OrderForm() {
@@ -251,7 +252,7 @@ export default function OrderForm() {
           >
             {canvasSizes.map((size) => (
               <option key={size.id} value={size.id}>
-                {size.widthCm} × {size.heightCm} cm - €{size.price}
+                {size.widthCm} × {size.heightCm} cm - {formatPrice(size.price, locale)}
               </option>
             ))}
           </select>
