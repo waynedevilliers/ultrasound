@@ -81,6 +81,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-15: One price format and a text logo in the bar (plan v3, step 3)
+
+- **Status:** done
+- **Decision:** All prices go through formatPrice (lib/price.ts): German "30 €" with a non-breaking space, English "€30", whole amounts without decimals. Ranges are two formatted prices joined by an en dash. Replaced hard-coded euro signs in the format cards, the order form size options and the facts strip; JSON-LD keeps the plain number. The small logo in the sticky bar is the text "Portraits 4 Life" in the logo font, with the same fade and reserved space, linking to the current language home page. TODO(client): a simplified logo that reads at 32px.
+- **Why:** Plan v3 step 3: one price format for both languages, and a logo that stays legible in the bar.
+- **Considered:** Keeping the small logo image (rejected: the plan asks for the text).
+
 ## 2026-11-14: Facts strip under the hero (plan v3, decision 1)
 
 - **Status:** done (replaces the earlier facts box and its removal)

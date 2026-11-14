@@ -2,7 +2,8 @@
 
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-import { canvasProduct, canvasSizes, CURRENCY, lowestPrice } from '@/content/products';
+import { canvasProduct, canvasSizes, lowestPrice } from '@/content/products';
+import { formatPrice } from '@/lib/price';
 import { getCopy, localeOf } from '@/lib/copy';
 
 const icon = (path: string) => (
@@ -11,15 +12,15 @@ const icon = (path: string) => (
   </svg>
 );
 
-const symbol = CURRENCY === 'EUR' ? '€' : CURRENCY;
 
 // Key facts for a parent at a glance. Prices, sizes and delivery come from content/products.ts.
 export default function FactsBox() {
   const pathname = usePathname();
-  const copy = getCopy(localeOf(pathname));
+  const locale = localeOf(pathname);
+  const copy = getCopy(locale);
   const f = copy.facts;
   const sizes = canvasSizes.map((size) => `${size.widthCm}×${size.heightCm}`).join(", ");
-  const price = `${symbol}${lowestPrice()}`;
+  const price = formatPrice(lowestPrice(), locale);
 
   const facts: { label: string; value: string; icon: ReactNode }[] = [
     {

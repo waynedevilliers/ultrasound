@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
+import { formatPrice } from '@/lib/price';
 import { canvasSizes, digitalProduct } from '@/content/products';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -9,17 +10,18 @@ export default function PricingTiers() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
 
-  const { pricing } = getCopy(localeOf(pathname));
+  const locale = localeOf(pathname);
+  const { pricing } = getCopy(locale);
   const tiers = [
     {
       title: pricing.digital.title,
-      price: `€${digitalProduct.priceFrom} - ${digitalProduct.priceTo}`,
+      price: `${formatPrice(digitalProduct.priceFrom, locale)} – ${formatPrice(digitalProduct.priceTo, locale)}`,
       delivery: pricing.digital.delivery,
       items: pricing.digital.items,
     },
     {
       title: pricing.canvas.title,
-      items: canvasSizes.map((size) => ({ size: `${size.widthCm} × ${size.heightCm} cm`, price: `€${size.price}` })),
+      items: canvasSizes.map((size) => ({ size: `${size.widthCm} × ${size.heightCm} cm`, price: formatPrice(size.price, locale) })),
       delivery: pricing.canvas.delivery,
     },
   ];
