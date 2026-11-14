@@ -221,5 +221,27 @@
     "ultrasoundRequired": "Please upload an ultrasound image.",
     "submitting": "Submitting...",
     "submit": "Submit Order"
+  },
+  "common": {
+    "home": "Home",
+    "breadcrumb": "Breadcrumb",
+    "order": "Order",
+    "newTab": "(opens in new tab)"
+  },
+  "orderPage": {
+    "intro": "Upload your ultrasound image and place your order here."
+  },
+  "facts": {
+    "label": "Key facts",
+    "formats": "Formats",
+    "formatsValue": "Digital or canvas ({sizes} cm)",
+    "price": "Price",
+    "priceValue": "from {price}",
+    "delivery": "Delivery",
+    "deliveryValue": "about {weeks} weeks after payment",
+    "payment": "Payment",
+    "paymentValue": "PayPal, bank transfer, credit card",
+    "optional": "Optional",
+    "optionalValue": "Child's name and week of pregnancy"
   }
 }

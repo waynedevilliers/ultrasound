@@ -5,6 +5,7 @@ import OrderInfo from '@/components/OrderInfo';
 import Footer from '@/components/Footer';
 import Breadcrumb from '@/components/Breadcrumb';
 import JsonLd from '@/components/JsonLd';
+import { getCopy } from '@/lib/copy';
 import { pageMetadata, seoCopy, SITE_URL } from '@/lib/metadata';
 import { breadcrumbJsonLd, organizationJsonLd } from '@/lib/structured-data';
 
@@ -15,8 +16,8 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function OrderPage({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
-  const isDE = locale === 'de';
-  const home = { label: isDE ? 'Startseite' : 'Home', href: `/${locale}` };
+  const copy = getCopy(locale === 'de' ? 'de' : 'en');
+  const home = { label: copy.common.home, href: `/${locale}` };
   return (
     <div className="min-h-screen flex flex-col">
       <JsonLd data={organizationJsonLd(SITE_URL)} />
@@ -24,24 +25,17 @@ export default async function OrderPage({ params }: { params: Promise<{ locale: 
         <JsonLd
           data={breadcrumbJsonLd([
             { name: home.label, url: `${SITE_URL}${home.href}` },
-            { name: isDE ? 'Bestellen' : 'Order', url: `${SITE_URL}/${locale}/order` },
+            { name: copy.common.order, url: `${SITE_URL}/${locale}/order` },
           ])}
         />
       )}
       <Header />
       <main className="flex-1 section-y bg-canvas">
-        <Breadcrumb
-          label={isDE ? 'Brotkrumen' : 'Breadcrumb'}
-          items={[home, { label: isDE ? 'Bestellen' : 'Order' }]}
-        />
+        <Breadcrumb label={copy.common.breadcrumb} items={[home, { label: copy.common.order }]} />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          <h1 className="font-display heading-xl font-bold mb-4 text-ink text-center">{isDE ? 'Bestellen' : 'Order'}</h1>
+          <h1 className="font-display heading-xl font-bold mb-4 text-ink text-center">{copy.order.title}</h1>
 
-          <p className="text-center text-copy mb-12 max-w-2xl mx-auto">
-            {isDE
-              ? 'Hier können Sie Ihr Ultraschallbild hochladen und Ihre Bestellung aufgeben.'
-              : 'Upload your ultrasound image and place your order here.'}
-          </p>
+          <p className="text-center text-copy mb-12 max-w-2xl mx-auto">{copy.orderPage.intro}</p>
 
           <div className="bg-surface rounded-lg shadow-lg p-8 mb-12">
             <OrderForm />

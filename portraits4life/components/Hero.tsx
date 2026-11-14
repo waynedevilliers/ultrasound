@@ -12,7 +12,7 @@ export default function Hero() {
 
   return (
     <section className="bg-gradient-to-b from-hero to-surface">
-      <div className="container-site section-y">
+      <div className="container-site section-y pb-6 sm:pb-8 lg:pb-12">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="min-w-0">
             <h1 className="font-display heading-hero font-bold mb-6 text-ink leading-tight">
@@ -39,7 +39,7 @@ export default function Hero() {
 
           <div className="relative h-96 lg:h-96 min-w-0">
             <Image
-              src="/images/ultrasound.avif"
+              src="/images/ultrasound2.avif"
               alt={hero.imageAlt}
               fill
               className="object-cover rounded-lg shadow-lg"

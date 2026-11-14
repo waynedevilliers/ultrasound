@@ -221,5 +221,27 @@
     "ultrasoundRequired": "Bitte lade ein Ultraschallbild hoch.",
     "submitting": "Wird eingereicht...",
     "submit": "Jetzt Bestellen"
+  },
+  "common": {
+    "home": "Startseite",
+    "breadcrumb": "Brotkrumen",
+    "order": "Bestellen",
+    "newTab": "(öffnet in neuem Tab)"
+  },
+  "orderPage": {
+    "intro": "Hier können Sie Ihr Ultraschallbild hochladen und Ihre Bestellung aufgeben."
+  },
+  "facts": {
+    "label": "Die wichtigsten Fakten",
+    "formats": "Formate",
+    "formatsValue": "Digital oder Leinwand ({sizes} cm)",
+    "price": "Preis",
+    "priceValue": "ab {price}",
+    "delivery": "Lieferzeit",
+    "deliveryValue": "ca. {weeks} Wochen nach Zahlungseingang",
+    "payment": "Bezahlung",
+    "paymentValue": "PayPal, Überweisung, Kreditkarte",
+    "optional": "Optional",
+    "optionalValue": "Name des Kindes und Schwangerschaftswoche"
   }
 }

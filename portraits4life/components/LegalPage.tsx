@@ -12,7 +12,8 @@ export type LegalKey = 'impressum' | 'datenschutz';
 
 export default function LegalPage({ locale, page }: { locale: string; page: LegalKey }) {
   const copy = (locale === 'de' ? de : en).legal[page];
-  const homeLabel = locale === 'de' ? 'Startseite' : 'Home';
+  const common = (locale === 'de' ? de : en).common;
+  const homeLabel = common.home;
   return (
     <div className="min-h-screen flex flex-col">
       <JsonLd data={organizationJsonLd(SITE_URL)} />
@@ -26,9 +27,9 @@ export default function LegalPage({ locale, page }: { locale: string; page: Lega
       )}
       <Header />
       <Breadcrumb
-        label={locale === 'de' ? 'Brotkrumen' : 'Breadcrumb'}
+        label={common.breadcrumb}
         items={[
-          { label: locale === 'de' ? 'Startseite' : 'Home', href: `/${locale}` },
+          { label: homeLabel, href: `/${locale}` },
           { label: copy.title },
         ]}
       />
