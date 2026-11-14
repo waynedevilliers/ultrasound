@@ -6,11 +6,17 @@ import { usePathname } from 'next/navigation';
 import { menuRoutes, routeHref, type SiteRoute } from '@/content/routes';
 import { isActiveItem } from '@/lib/is-active-item';
 import { getCopy, localeOf } from '@/lib/copy';
+import ActionLink from '@/components/ActionLink';
 
 
 
 // The logo row scrolls away with the page. The menu bar is sticky: it never changes
 // size and has no scroll listeners, so it cannot flicker.
+// Moves the browser to another address. Kept outside the component.
+function navigateTo(url: string) {
+  window.location.href = url;
+}
+
 export default function Header() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
@@ -53,11 +59,11 @@ export default function Header() {
     };
   }, [menuOpen]);
 
-  const handleLanguageSwitch = () => {
-    const newLang = isDE ? 'en' : 'de';
-    const newPath = pathname.replace(/^\/(en|de)/, `/${newLang}`);
-    window.location.href = newPath || `/${newLang}`;
+  // Switching keeps the current page; only the language prefix changes.
+  const switchTo = (newLang: 'de' | 'en') => {
+    navigateTo(pathname.replace(/^\/(en|de)/, `/${newLang}`) || `/${newLang}`);
   };
+  const onOrderPage = pathname.endsWith('/order');
 
   const links = menuRoutes().map((route: SiteRoute) => ({
     id: route.id,
@@ -133,14 +139,32 @@ export default function Header() {
           </a>
 
           <div className="absolute right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4">
-            <button
-              onClick={handleLanguageSwitch}
-              aria-label={copy.header.switchLanguageLabel}
-              className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-brand bg-brand-soft hover:bg-brand-tint text-brand-strong font-semibold text-base sm:text-base transition"
-              type="button"
-            >
-              {copy.header.switchLanguage}
-            </button>
+            <nav aria-label={copy.header.switchLanguageLabel} className="flex items-center gap-2 text-base font-semibold">
+              {(["de", "en"] as const).map((code, index) => (
+                <span key={code} className="flex items-center gap-2">
+                  {index > 0 && <span aria-hidden="true" className="text-field">|</span>}
+                  {code === locale ? (
+                    <span aria-current="true" className="text-brand-strong underline underline-offset-4">
+                      {code.toUpperCase()}
+                    </span>
+                  ) : (
+                    <button
+                      type="button"
+                      onClick={() => switchTo(code)}
+                      className="text-copy hover:text-ink transition"
+                    >
+                      {code.toUpperCase()}
+                    </button>
+                  )}
+                </span>
+              ))}
+            </nav>
+
+            {!onOrderPage && (
+              <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary" className="lg:hidden min-h-11 px-4 py-2 text-base">
+                {copy.header.order}
+              </ActionLink>
+            )}
 
             <button
               ref={toggleRef}

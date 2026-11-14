@@ -12,7 +12,7 @@ export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
-    <section className="section-y bg-canvas">
+    <section id="beispiele" className="section-y bg-canvas">
       <div className="container-site">
         <h2
           className="font-display heading-xl font-bold text-center mb-16 text-ink"

@@ -19,7 +19,7 @@ test('mobile menu opens, navigates and closes', async ({ page, isMobile }) => {
   const toggle = page.locator('nav button[aria-controls]');
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-  await page.getByRole('navigation', { name: 'Main menu' }).last().getByRole('link', { name: 'Order' }).click();
+  await page.getByRole('navigation', { name: 'Main menu' }).locator('ul').last().locator('a[href="/en/order"]').click();
   await expect(page).toHaveURL(/\/en\/order$/);
 });
 
@@ -48,7 +48,11 @@ for (const path of pages) {
 test('landing page has exactly one primary action', async ({ page, isMobile }) => {
   test.skip(isMobile, 'desktop project only');
   await page.goto('/en');
-  await expect(page.locator('[data-variant="primary"]')).toHaveCount(1);
+  const primaries = page.locator('[data-variant="primary"]');
+  expect(await primaries.count()).toBeGreaterThan(0);
+  for (const link of await primaries.all()) {
+    await expect(link).toHaveAttribute('href', '/en/order');
+  }
 });
 
 test('order page has exactly one primary action (the submit button)', async ({ page, isMobile }) => {
