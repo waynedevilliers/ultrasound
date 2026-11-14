@@ -4,13 +4,15 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import de from '@/messages/de.json';
 import en from '@/messages/en.json';
+import { getCopy, localeOf } from '@/lib/copy';
 import { footerRoutes, routeHref } from '@/content/routes';
 
 // TODO(client): confirm contact email, copyright year and the legal page links before launch.
 export default function Footer() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
-  const legal = (isDE ? de : en).legal;
+  const copy = getCopy(localeOf(pathname));
+  const legal = copy.legal;
 
   const handleLanguageSwitch = () => {
     const newLang = isDE ? 'en' : 'de';
@@ -18,13 +20,9 @@ export default function Footer() {
     window.location.href = newPath || `/${newLang}`;
   };
 
-  const contactUs = isDE ? 'Kontaktiere uns' : 'Contact Us';
-  const copyright = isDE
-    ? '© 2024 Portraits 4 Life. Alle Rechte vorbehalten.'
-    : '© 2024 Portraits 4 Life. All rights reserved.';
-  const tagline = isDE
-    ? 'Mit Liebe für Eltern und ihre schönsten Erinnerungen'
-    : 'Made with care for new parents & their memories';
+  const contactUs = copy.footer.contactUs;
+  const copyright = copy.footer.copyright;
+  const tagline = copy.footer.tagline;
 
   return (
     <footer className="bg-dark text-white py-12">
@@ -48,12 +46,12 @@ export default function Footer() {
             <button
               type="button"
               onClick={handleLanguageSwitch}
-              aria-label={isDE ? 'Sprache auf Englisch wechseln' : 'Switch language to German'}
+              aria-label={copy.header.switchLanguageLabel}
               className="mt-4 px-4 py-2 rounded-full border-2 border-brand-light text-brand-on-dark font-semibold hover:text-brand-on-dark transition"
             >
-              {isDE ? 'EN' : 'DE'}
+              {copy.header.switchLanguage}
             </button>
-            <nav aria-label={isDE ? 'Rechtliches' : 'Legal'} className="mt-4 flex flex-col gap-2">
+            <nav aria-label={copy.footer.legalNav} className="mt-4 flex flex-col gap-2">
               {footerRoutes().filter((route) => route.id === 'impressum' || route.id === 'datenschutz').map((route) => (
                 <Link key={route.id} href={routeHref(isDE ? 'de' : 'en', route)} className="hover:text-on-dark-soft transition">
                   {route.id === 'impressum' ? legal.impressum.title : legal.datenschutz.title}
