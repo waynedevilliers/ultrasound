@@ -24,7 +24,9 @@ describe('fieldErrorsFromIssues', () => {
   });
 
   it('ignores fields the form does not show, such as the honeypot', () => {
-    expect(fieldErrorsFromIssues([{ field: 'website' }, { field: 'unknown' }], MESSAGE)).toEqual({});
+    expect(fieldErrorsFromIssues([{ field: 'website' }, { field: 'unknown' }], MESSAGE)).toEqual(
+      {},
+    );
   });
 });
 

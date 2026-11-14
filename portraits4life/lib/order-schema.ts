@@ -2,7 +2,13 @@ import { z } from 'zod';
 import { canvasSizeIds } from '@/content/products';
 
 export const MAX_IMAGE_BYTES = 15 * 1024 * 1024;
-export const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/heic', 'image/heif'];
+export const ALLOWED_IMAGE_TYPES = [
+  'image/jpeg',
+  'image/png',
+  'image/webp',
+  'image/heic',
+  'image/heif',
+];
 
 const optionalText = (max: number) => z.string().trim().max(max).default('');
 
@@ -25,9 +31,13 @@ export const orderFieldsSchema = z
     weeksInWomb: z
       .string()
       .trim()
-      .refine((value) => value === '' || (/^\d{1,2}$/.test(value) && Number(value) >= 1 && Number(value) <= 42), {
-        message: 'weeksInWomb must be empty or between 1 and 42',
-      })
+      .refine(
+        (value) =>
+          value === '' || (/^\d{1,2}$/.test(value) && Number(value) >= 1 && Number(value) <= 42),
+        {
+          message: 'weeksInWomb must be empty or between 1 and 42',
+        },
+      )
       .default(''),
     specialRequests: optionalText(1000),
     // Honeypot: real visitors never fill this field.
@@ -51,14 +61,21 @@ export const orderFieldsSchema = z
         }
       }
     } else if (value.canvasSize !== '') {
-      ctx.addIssue({ code: 'custom', path: ['canvasSize'], message: 'Canvas size only applies to canvas prints' });
+      ctx.addIssue({
+        code: 'custom',
+        path: ['canvasSize'],
+        message: 'Canvas size only applies to canvas prints',
+      });
     }
   });
 
 export type OrderFields = z.infer<typeof orderFieldsSchema>;
 
 // Checks an uploaded file on the server. Returns an error message, or null when valid.
-export function validateImageFile(file: FormDataEntryValue | null, required: boolean): string | null {
+export function validateImageFile(
+  file: FormDataEntryValue | null,
+  required: boolean,
+): string | null {
   if (!file || typeof file === 'string' || file.size === 0) {
     return required ? 'Ultrasound image is required' : null;
   }
@@ -72,14 +89,17 @@ export function validateImageFile(file: FormDataEntryValue | null, required: boo
 }
 
 // Photos are uploaded to storage first; the order then carries their paths.
-const storedPath = z.string().regex(/^orders\/[A-Za-z0-9._-]+$/, 'Invalid file path').max(200);
+const storedPath = z
+  .string()
+  .regex(/^orders\/[A-Za-z0-9._-]+$/, 'Invalid file path')
+  .max(200);
 
 export const orderSubmitSchema = z.intersection(
   orderFieldsSchema,
   z.object({
     ultrasoundPath: storedPath,
-    referencePath: z.string().max(200).default(''),
-  })
+    referencePath: storedPath.or(z.literal('')).default(''),
+  }),
 );
 
 export type OrderSubmit = z.infer<typeof orderSubmitSchema>;
@@ -87,6 +107,7 @@ export type OrderSubmit = z.infer<typeof orderSubmitSchema>;
 // Checks a stored photo's metadata on the server. Returns an error message, or null when valid.
 export function validateStoredImage(meta: { size: number; contentType: string }): string | null {
   if (meta.size > MAX_IMAGE_BYTES) return 'Image is larger than 15 MB';
-  if (!ALLOWED_IMAGE_TYPES.includes(meta.contentType)) return 'Image must be JPG, PNG, WebP or HEIC';
+  if (!ALLOWED_IMAGE_TYPES.includes(meta.contentType))
+    return 'Image must be JPG, PNG, WebP or HEIC';
   return null;
 }

@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { canvasSizes } from '@/content/products';
 import { buttonClasses } from '@/components/ActionLink';
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/order-schema';
@@ -11,7 +11,28 @@ import { formatPrice } from '@/lib/price';
 import { upload } from '@vercel/blob/client';
 import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 
-export default function OrderForm({ initialFormat = null }: { initialFormat?: FormatChoice | null }) {
+// Empty values for every field except product and size, which may come from the URL.
+const EMPTY_FORM = {
+  name: '',
+  email: '',
+  product: 'digital',
+  canvasSize: '30x30cm',
+  childName: '',
+  weeksInWomb: '',
+  specialRequests: '',
+  shippingFullName: '',
+  shippingStreet: '',
+  shippingCity: '',
+  shippingState: '',
+  shippingPostalCode: '',
+  shippingCountry: '',
+} as const;
+
+export default function OrderForm({
+  initialFormat = null,
+}: {
+  initialFormat?: FormatChoice | null;
+}) {
   const pathname = usePathname();
   const locale = localeOf(pathname);
   const orderForm = getCopy(locale).orderForm;
@@ -21,23 +42,17 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
   const [error, setError] = useState('');
   // Errors for single fields, keyed by field name; cleared when the field changes.
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  // Screen readers announce the summary (role=alert); focus moves there after a failed submit.
+  const summaryRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (error) summaryRef.current?.focus();
+  }, [error]);
   const [orderId, setOrderId] = useState('');
 
   const [formData, setFormData] = useState({
-    name: '',
-    email: '',
+    ...EMPTY_FORM,
     product: initialFormat?.product ?? 'digital',
     canvasSize: initialFormat?.product === 'canvas' ? initialFormat.canvasSize : '30x30cm',
-    childName: '',
-    weeksInWomb: '',
-    specialRequests: '',
-    // Shipping address fields (only for canvas)
-    shippingFullName: '',
-    shippingStreet: '',
-    shippingCity: '',
-    shippingState: '',
-    shippingPostalCode: '',
-    shippingCountry: '',
   });
 
   const [files, setFiles] = useState({
@@ -55,31 +70,38 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
       </p>
     ) : null;
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
       [name]: value,
     }));
-    setFieldErrors(prev => clearFieldError(prev, name));
+    setFieldErrors((prev) => clearFieldError(prev, name));
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: 'ultrasound' | 'reference') => {
+  const handleFileChange = (
+    e: React.ChangeEvent<HTMLInputElement>,
+    type: 'ultrasound' | 'reference',
+  ) => {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > MAX_IMAGE_BYTES) {
       setError(orderForm.fileTooLarge);
+      setFieldErrors((prev) => ({ ...prev, [type]: orderForm.fileTooLarge }));
       e.target.value = '';
       return;
     }
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
       setError(orderForm.fileType);
+      setFieldErrors((prev) => ({ ...prev, [type]: orderForm.fileType }));
       e.target.value = '';
       return;
     }
     setError('');
-    setFieldErrors(prev => clearFieldError(prev, type));
-    setFiles(prev => ({
+    setFieldErrors((prev) => clearFieldError(prev, type));
+    setFiles((prev) => ({
       ...prev,
       [type]: file,
     }));
@@ -109,7 +131,8 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
       }
 
       // Honeypot: hidden from visitors, must stay empty.
-      const honeypot = (e.currentTarget.elements.namedItem('website') as HTMLInputElement | null)?.value ?? '';
+      const honeypot =
+        (e.currentTarget.elements.namedItem('website') as HTMLInputElement | null)?.value ?? '';
 
       const ultrasoundPath = await uploadPhoto(files.ultrasound, 'ultrasound');
       const referencePath = files.reference ? await uploadPhoto(files.reference, 'reference') : '';
@@ -143,7 +166,11 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
         body: JSON.stringify(payload),
       });
 
-      const data = await response.json();
+      const data: {
+        orderId?: string;
+        message?: string;
+        issues?: { field: string; message: string }[];
+      } = await response.json();
 
       if (!response.ok) {
         const issues = Array.isArray(data.issues) ? data.issues : [];
@@ -156,25 +183,12 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
         throw new Error(orderForm.genericError);
       }
 
-      setOrderId(data.orderId);
+      setOrderId(data.orderId ?? '');
       setSubmitted(true);
-      setFormData({
-        name: '',
-        email: '',
-        product: 'digital',
-        canvasSize: '30x30cm',
-        childName: '',
-        weeksInWomb: '',
-        specialRequests: '',
-        shippingFullName: '',
-        shippingStreet: '',
-        shippingCity: '',
-        shippingState: '',
-        shippingPostalCode: '',
-        shippingCountry: '',
-      });
+      setFormData(EMPTY_FORM);
       setFiles({ ultrasound: null, reference: null });
-    } catch {
+    } catch (err) {
+      console.error('Order submit failed', err);
       setError(orderForm.genericError);
     } finally {
       setLoading(false);
@@ -184,18 +198,12 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
   if (submitted) {
     return (
       <div className="max-w-2xl mx-auto p-8 bg-success-soft rounded-lg border border-success-edge">
-        <h3 className="text-2xl font-bold text-success-text mb-4">
-          {orderForm.successTitle}
-        </h3>
-        <p className="text-success-strong mb-2">
-          {orderForm.submitted}
-        </p>
+        <h3 className="text-2xl font-bold text-success-text mb-4">{orderForm.successTitle}</h3>
+        <p className="text-success-strong mb-2">{orderForm.submitted}</p>
         <p className="text-success-strong mb-4">
           <strong>{orderForm.orderIdLabel}</strong> #{orderId}
         </p>
-        <p className="text-success-strong mb-4">
-          {orderForm.contactWithin24h}
-        </p>
+        <p className="text-success-strong mb-4">{orderForm.contactWithin24h}</p>
         <button
           onClick={() => setSubmitted(false)}
           className="bg-success text-white px-6 py-2 rounded-lg hover:bg-success-strong"
@@ -207,7 +215,8 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
   }
 
   return (
-    <form onSubmit={handleSubmit} className="space-y-6 max-w-2xl">
+    // noValidate: the browser's own required-field bubbles would hide our field messages.
+    <form onSubmit={handleSubmit} noValidate className="space-y-6 max-w-2xl">
       <div className="absolute -left-[9999px] h-0 overflow-hidden" aria-hidden="true">
         <label>
           Website
@@ -215,7 +224,12 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
         </label>
       </div>
       {error && (
-        <div className="p-4 bg-danger-soft border border-danger-edge rounded-lg text-danger-text">
+        <div
+          ref={summaryRef}
+          role="alert"
+          tabIndex={-1}
+          className="p-4 bg-danger-soft border border-danger-edge rounded-lg text-danger-text focus-visible:outline-2 focus-visible:outline-brand"
+        >
           {error}
         </div>
       )}
@@ -225,10 +239,12 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
         <label className="block text-base font-medium text-body mb-2" htmlFor="name">
           {orderForm.nameLabel}
         </label>
-        <input id="name"
+        <input
+          id="name"
           {...invalid('name')}
           type="text"
-          name="name" autoComplete="name"
+          name="name"
+          autoComplete="name"
           value={formData.name}
           onChange={handleChange}
           required
@@ -241,10 +257,12 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
         <label className="block text-base font-medium text-body mb-2" htmlFor="email">
           {orderForm.emailLabel}
         </label>
-        <input id="email"
+        <input
+          id="email"
           {...invalid('email')}
           type="email"
-          name="email" autoComplete="email"
+          name="email"
+          autoComplete="email"
           value={formData.email}
           onChange={handleChange}
           required
@@ -257,7 +275,8 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
         <label className="block text-base font-medium text-body mb-2" htmlFor="product">
           {orderForm.productLabel}
         </label>
-        <select id="product"
+        <select
+          id="product"
           {...invalid('product')}
           name="product"
           value={formData.product}
@@ -275,8 +294,9 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
           <label className="block text-base font-medium text-body mb-2" htmlFor="canvasSize">
             {orderForm.canvasSizeLabel}
           </label>
-          <select id="canvasSize"
-          {...invalid('canvasSize')}
+          <select
+            id="canvasSize"
+            {...invalid('canvasSize')}
             name="canvasSize"
             value={formData.canvasSize}
             onChange={handleChange}
@@ -288,7 +308,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
               </option>
             ))}
           </select>
-        {fieldError('canvasSize')}
+          {fieldError('canvasSize')}
         </div>
       )}
 
@@ -297,7 +317,8 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
         <label className="block text-base font-medium text-body mb-2" htmlFor="childName">
           {orderForm.childNameLabel}
         </label>
-        <input id="childName"
+        <input
+          id="childName"
           {...invalid('childName')}
           type="text"
           name="childName"
@@ -312,7 +333,8 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
         <label className="block text-base font-medium text-body mb-2" htmlFor="weeksInWomb">
           {orderForm.weeksLabel}
         </label>
-        <input id="weeksInWomb"
+        <input
+          id="weeksInWomb"
           {...invalid('weeksInWomb')}
           type="text"
           name="weeksInWomb"
@@ -326,40 +348,45 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
       {/* Shipping Address (Canvas Only) */}
       {formData.product === 'canvas' && (
         <div className="border-t pt-6">
-          <h3 className="text-lg font-bold mb-4">
-            {orderForm.shippingHeading}
-          </h3>
+          <h3 className="text-lg font-bold mb-4">{orderForm.shippingHeading}</h3>
 
           <div>
-            <label className="block text-base font-medium text-body mb-2" htmlFor="shippingFullName">
+            <label
+              className="block text-base font-medium text-body mb-2"
+              htmlFor="shippingFullName"
+            >
               {orderForm.shippingFullName}
             </label>
-            <input id="shippingFullName"
-          {...invalid('shippingFullName')}
+            <input
+              id="shippingFullName"
+              {...invalid('shippingFullName')}
               type="text"
-              name="shippingFullName" autoComplete="name"
+              name="shippingFullName"
+              autoComplete="name"
               value={formData.shippingFullName}
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
             />
-        {fieldError('shippingFullName')}
+            {fieldError('shippingFullName')}
           </div>
 
           <div className="mt-4">
             <label className="block text-base font-medium text-body mb-2" htmlFor="shippingStreet">
               {orderForm.shippingStreet}
             </label>
-            <input id="shippingStreet"
-          {...invalid('shippingStreet')}
+            <input
+              id="shippingStreet"
+              {...invalid('shippingStreet')}
               type="text"
-              name="shippingStreet" autoComplete="street-address"
+              name="shippingStreet"
+              autoComplete="street-address"
               value={formData.shippingStreet}
               onChange={handleChange}
               required
               className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
             />
-        {fieldError('shippingStreet')}
+            {fieldError('shippingStreet')}
           </div>
 
           <div className="grid grid-cols-2 gap-4 mt-4">
@@ -367,64 +394,78 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
               <label className="block text-base font-medium text-body mb-2" htmlFor="shippingCity">
                 {orderForm.shippingCity}
               </label>
-              <input id="shippingCity"
-          {...invalid('shippingCity')}
+              <input
+                id="shippingCity"
+                {...invalid('shippingCity')}
                 type="text"
-                name="shippingCity" autoComplete="address-level2"
+                name="shippingCity"
+                autoComplete="address-level2"
                 value={formData.shippingCity}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
-        {fieldError('shippingCity')}
+              {fieldError('shippingCity')}
             </div>
             <div>
               <label className="block text-base font-medium text-body mb-2" htmlFor="shippingState">
                 {orderForm.shippingState}
               </label>
-              <input id="shippingState"
-          {...invalid('shippingState')}
+              <input
+                id="shippingState"
+                {...invalid('shippingState')}
                 type="text"
-                name="shippingState" autoComplete="address-level1"
+                name="shippingState"
+                autoComplete="address-level1"
                 value={formData.shippingState}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
-        {fieldError('shippingState')}
+              {fieldError('shippingState')}
             </div>
           </div>
 
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="block text-base font-medium text-body mb-2" htmlFor="shippingPostalCode">
+              <label
+                className="block text-base font-medium text-body mb-2"
+                htmlFor="shippingPostalCode"
+              >
                 {orderForm.shippingPostalCode}
               </label>
-              <input id="shippingPostalCode"
-          {...invalid('shippingPostalCode')}
+              <input
+                id="shippingPostalCode"
+                {...invalid('shippingPostalCode')}
                 type="text"
-                name="shippingPostalCode" autoComplete="postal-code"
+                name="shippingPostalCode"
+                autoComplete="postal-code"
                 value={formData.shippingPostalCode}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
-        {fieldError('shippingPostalCode')}
+              {fieldError('shippingPostalCode')}
             </div>
             <div>
-              <label className="block text-base font-medium text-body mb-2" htmlFor="shippingCountry">
+              <label
+                className="block text-base font-medium text-body mb-2"
+                htmlFor="shippingCountry"
+              >
                 {orderForm.shippingCountry}
               </label>
-              <input id="shippingCountry"
-          {...invalid('shippingCountry')}
+              <input
+                id="shippingCountry"
+                {...invalid('shippingCountry')}
                 type="text"
-                name="shippingCountry" autoComplete="country-name"
+                name="shippingCountry"
+                autoComplete="country-name"
                 value={formData.shippingCountry}
                 onChange={handleChange}
                 required
                 className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
               />
-        {fieldError('shippingCountry')}
+              {fieldError('shippingCountry')}
             </div>
           </div>
         </div>
@@ -436,30 +477,34 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
           <label className="block text-base font-medium text-body mb-2" htmlFor="ultrasoundImage">
             {orderForm.ultrasoundLabel}
           </label>
-          <input id="ultrasoundImage"
-          {...invalid('ultrasound')}
+          <input
+            id="ultrasoundImage"
+            {...invalid('ultrasound')}
             type="file"
             accept="image/*"
             onChange={(e) => handleFileChange(e, 'ultrasound')}
             required
             className="w-full"
           />
-        {fieldError('ultrasound')}
-          {files.ultrasound && <p className="text-base text-success mt-1">{files.ultrasound.name}</p>}
+          {fieldError('ultrasound')}
+          {files.ultrasound && (
+            <p className="text-base text-success mt-1">{files.ultrasound.name}</p>
+          )}
         </div>
 
         <div className="mt-4">
           <label className="block text-base font-medium text-body mb-2" htmlFor="referenceImage">
             {orderForm.referenceLabel}
           </label>
-          <input id="referenceImage"
-          {...invalid('reference')}
+          <input
+            id="referenceImage"
+            {...invalid('reference')}
             type="file"
             accept="image/*"
             onChange={(e) => handleFileChange(e, 'reference')}
             className="w-full"
           />
-        {fieldError('reference')}
+          {fieldError('reference')}
           {files.reference && <p className="text-base text-success mt-1">{files.reference.name}</p>}
         </div>
       </div>
@@ -469,7 +514,8 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
         <label className="block text-base font-medium text-body mb-2" htmlFor="specialRequests">
           {orderForm.specialRequests}
         </label>
-        <textarea id="specialRequests"
+        <textarea
+          id="specialRequests"
           {...invalid('specialRequests')}
           name="specialRequests"
           value={formData.specialRequests}
@@ -487,7 +533,7 @@ export default function OrderForm({ initialFormat = null }: { initialFormat?: Fo
         disabled={loading}
         className={buttonClasses('primary', 'w-full disabled:opacity-50')}
       >
-        {loading ? (orderForm.submitting) : orderForm.submit}
+        {loading ? orderForm.submitting : orderForm.submit}
       </button>
     </form>
   );
