@@ -67,3 +67,16 @@ test('small logo in the bar fades in after the big logo scrolls away', async ({ 
   await page.evaluate(() => window.scrollTo(0, 900));
   await expect(compact).toHaveCSS('opacity', '1');
 });
+
+test('hero shows heading, supporting line and primary button without scrolling (375x667)', async ({ page, isMobile }) => {
+  test.skip(!isMobile, 'mobile project only');
+  await page.goto('/en');
+  const heading = page.locator('h1');
+  const primary = page.locator('[data-variant="primary"]').first();
+  const support = page.locator('section p').first();
+  for (const element of [heading, support, primary]) {
+    const box = await element.boundingBox();
+    expect(box).not.toBeNull();
+    expect((box?.y ?? 0) + (box?.height ?? 0)).toBeLessThanOrEqual(667);
+  }
+});

@@ -81,6 +81,14 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-14: Hero (Step 8)
+
+- **Status:** done
+- **Decision:** The heading stays "ULTRASOUND ART". The supporting line is the first sentence of the existing copy (18px below 600px, 20px from 600px, max width 640px, body colour). Primary "Order now" and secondary "View formats" follow, so the heading, supporting line and primary button are visible at 375x667 without scrolling (checked by an e2e test). The rest of the copy moves below the buttons, so no sentence is rendered twice. The hero image keeps its size, crop and priority loading.
+- **Why:** Owner plan, Step 8: a clear first screen on phones.
+- **Not done yet:** The hero copy is still written in the component, not in the message files (text move comes with the rest of the text work).
+- **Considered:** Keeping all the copy above the buttons (rejected: the primary button would fall below the fold on phones).
+
 ## 2026-11-14: Layout system (Step 7)
 
 - **Status:** done

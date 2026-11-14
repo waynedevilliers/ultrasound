@@ -9,21 +9,36 @@ export default function Hero() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
 
+  const supporting = isDE
+    ? 'Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern.'
+    : 'A tiny black-and-white ultrasound photo is a thing of the past.';
+
   return (
     <section className="bg-gradient-to-b from-hero to-surface">
       <div className="container-site section-y">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="min-w-0">
-            <h1
-              className="font-display heading-hero font-bold mb-6 text-ink leading-tight"
-            >
+            <h1 className="font-display heading-hero font-bold mb-6 text-ink leading-tight">
               ULTRASOUND ART
             </h1>
 
-            <p className="text-lg text-copy mb-8 whitespace-pre-line leading-relaxed">
+            <p className="text-[1.125rem] min-[600px]:text-[1.25rem] text-body leading-relaxed max-w-[640px] mb-8">
+              {supporting}
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+              <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
+                {isDE ? 'Jetzt bestellen' : 'Order now'}
+              </ActionLink>
+              <ActionLink href={isDE ? '/de#pricing' : '/en#pricing'} variant="secondary">
+                {isDE ? 'Formate ansehen' : 'View formats'}
+              </ActionLink>
+            </div>
+
+            <div className="reading-column text-base text-copy leading-relaxed whitespace-pre-line">
               {isDE ? (
                 <>
-                  Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern. Lass dir die allererste Aufnahme deines Kindes verewigen! Ich bearbeite das Ultraschallbild künstlerisch und hebe es farblich hervor.
+                  Lass dir die allererste Aufnahme deines Kindes verewigen! Ich bearbeite das Ultraschallbild künstlerisch und hebe es farblich hervor.
                   {'\n'}
                   Auf Leinwand gedruckt, hast du nicht nur eine wunderschöne Erinnerung, sondern auch eine moderne, anschauliche Deko für deine Wohnung.
                   {'\n'}
@@ -31,22 +46,13 @@ export default function Hero() {
                 </>
               ) : (
                 <>
-                  A tiny black-and-white ultrasound photo is a thing of the past. Let the very first image of your child live forever! I artistically enhance your ultrasound image and bring it to life with colour.
+                  Let the very first image of your child live forever! I artistically enhance your ultrasound image and bring it to life with colour.
                   {'\n'}
                   Printed on canvas, you&apos;ll have not just a beautiful memory, but a modern, striking piece of décor for your home.
                   {'\n'}
                   Optionally personalised with your child&apos;s name and number of weeks in the womb.
                 </>
               )}
-            </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
-                {isDE ? 'Jetzt bestellen' : 'Order now'}
-              </ActionLink>
-              <ActionLink href={isDE ? '/de#pricing' : '/en#pricing'} variant="secondary">
-                {isDE ? 'Formate ansehen' : 'View formats'}
-              </ActionLink>
             </div>
           </div>
 
