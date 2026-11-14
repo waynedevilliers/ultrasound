@@ -109,5 +109,23 @@
       "title": "Datenschutzerklärung",
       "intro": "TODO(client): Datenschutzerklärung nach DSGVO. Verantwortliche Stelle, Zweck und Rechtsgrundlage der Verarbeitung der Bestelldaten und Bilder, Speicherdauer, Empfänger (Hosting, E-Mail-Versand), Betroffenenrechte und Kontakt zum Datenschutz. Diese Seite ist ein Platzhalter."
     }
+  },
+  "seo": {
+    "home": {
+      "title": "Portraits 4 Life – Ultraschallbilder als Kunstwerk",
+      "description": "Künstlerisch bearbeitete Ultraschallbilder, gedruckt auf Leinwand. Ein besonderes Andenken für werdende Eltern."
+    },
+    "order": {
+      "title": "Bestellen – Portraits 4 Life",
+      "description": "Ultraschallbild hochladen und Bestellung aufgeben."
+    },
+    "impressum": {
+      "title": "Impressum – Portraits 4 Life",
+      "description": "Angaben zum Anbieter von Portraits 4 Life."
+    },
+    "datenschutz": {
+      "title": "Datenschutz – Portraits 4 Life",
+      "description": "Informationen zum Umgang mit personenbezogenen Daten."
+    }
   }
 }

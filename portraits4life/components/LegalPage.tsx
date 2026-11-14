@@ -3,14 +3,27 @@ import en from '@/messages/en.json';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import Breadcrumb from '@/components/Breadcrumb';
+import JsonLd from '@/components/JsonLd';
+import { SITE_URL } from '@/lib/metadata';
+import { breadcrumbJsonLd, organizationJsonLd } from '@/lib/structured-data';
 
 // TODO(client): Impressum and Datenschutz text is a placeholder. Needs the operator's legal entity, address, contact and privacy details (see messages legal.*).
 export type LegalKey = 'impressum' | 'datenschutz';
 
 export default function LegalPage({ locale, page }: { locale: string; page: LegalKey }) {
   const copy = (locale === 'de' ? de : en).legal[page];
+  const homeLabel = locale === 'de' ? 'Startseite' : 'Home';
   return (
     <div className="min-h-screen flex flex-col">
+      <JsonLd data={organizationJsonLd(SITE_URL)} />
+      {SITE_URL && (
+        <JsonLd
+          data={breadcrumbJsonLd([
+            { name: homeLabel, url: `${SITE_URL}/${locale}` },
+            { name: copy.title, url: `${SITE_URL}/${locale}/${page}` },
+          ])}
+        />
+      )}
       <Header />
       <Breadcrumb
         label={locale === 'de' ? 'Brotkrumen' : 'Breadcrumb'}

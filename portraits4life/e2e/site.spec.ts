@@ -140,3 +140,19 @@ for (const path of linkPages) {
     expect(broken).toEqual([]);
   });
 }
+
+const seoPages = ['/en', '/de', '/en/order', '/de/order', '/en/impressum', '/de/impressum', '/en/datenschutz', '/de/datenschutz'];
+
+for (const path of seoPages) {
+  test(`${path} has title, description, canonical, alternates and organization data`, async ({ page, isMobile }) => {
+    test.skip(isMobile, 'desktop project only');
+    await page.goto(path);
+    await expect(page).toHaveTitle(/\S/);
+    await expect(page.locator('meta[name="description"]')).toHaveAttribute('content', /\S/);
+    await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
+    await expect(page.locator('link[rel="alternate"][hreflang="de"]')).toHaveCount(1);
+    await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(1);
+    const jsonLd = await page.$$eval('script[type="application/ld+json"]', (scripts) => scripts.map((s) => s.textContent ?? ''));
+    expect(jsonLd.some((text) => text.includes('"Organization"'))).toBe(true);
+  });
+}
