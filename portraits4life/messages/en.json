@@ -66,23 +66,6 @@
   },
   "order": {
     "title": "Order",
-    "form": {
-      "name": "Your Name",
-      "email": "Email Address",
-      "productType": "Product Type",
-      "productDigital": "Digital Download",
-      "productCanvas": "Canvas Print",
-      "canvasSize": "Canvas Size",
-      "size30": "30×30 cm",
-      "size40": "40×40 cm",
-      "size50": "50×50 cm",
-      "childName": "Child's Name (optional)",
-      "weeksInWomb": "Weeks in the Womb (optional)",
-      "photo1": "Upload Ultrasound Image (max 15 MB)",
-      "photo2": "Second Image (optional, max 15 MB)",
-      "message": "Special Requests or Message",
-      "submit": "Place Order"
-    },
     "info": {
       "ultrasound": {
         "title": "For Ultrasound Portrait",
@@ -208,5 +191,35 @@
         ]
       }
     ]
+  },
+  "orderForm": {
+    "successTitle": "Thank You for Your Order!",
+    "submitted": "Your order has been submitted successfully.",
+    "orderIdLabel": "Order ID:",
+    "contactWithin24h": "We will contact you within 24 hours to confirm your images.",
+    "newOrder": "New Order",
+    "nameLabel": "Your Name *",
+    "emailLabel": "Your Email *",
+    "productLabel": "Product *",
+    "productDigital": "Digital JPEG",
+    "productCanvas": "Canvas Print",
+    "canvasSizeLabel": "Size *",
+    "childNameLabel": "Child's Name",
+    "weeksLabel": "Weeks in Womb",
+    "shippingHeading": "Shipping Address *",
+    "shippingFullName": "Full Name *",
+    "shippingStreet": "Street *",
+    "shippingCity": "City *",
+    "shippingState": "State *",
+    "shippingPostalCode": "Postal Code *",
+    "shippingCountry": "Country *",
+    "ultrasoundLabel": "Upload Ultrasound Image *",
+    "referenceLabel": "Upload Reference Image",
+    "specialRequests": "Special Requests",
+    "fileTooLarge": "The file is larger than 15 MB. Please choose a smaller image.",
+    "fileType": "Only JPG, PNG, WebP or HEIC.",
+    "ultrasoundRequired": "Please upload an ultrasound image.",
+    "submitting": "Submitting...",
+    "submit": "Submit Order"
   }
 }

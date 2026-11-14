@@ -66,23 +66,6 @@
   },
   "order": {
     "title": "Bestellen",
-    "form": {
-      "name": "Dein Name",
-      "email": "E-Mail Adresse",
-      "productType": "Art des Produkts",
-      "productDigital": "Digital Download",
-      "productCanvas": "Leinwanddruck",
-      "canvasSize": "Leinwandgröße",
-      "size30": "30×30 cm",
-      "size40": "40×40 cm",
-      "size50": "50×50 cm",
-      "childName": "Name des Kindes (optional)",
-      "weeksInWomb": "Wochen im Mutterleib (optional)",
-      "photo1": "Ultraschallbild hochladen (max 15 MB)",
-      "photo2": "Zweites Bild (optional, max 15 MB)",
-      "message": "Spezielle Anfragen oder Nachrichten",
-      "submit": "Bestellen"
-    },
     "info": {
       "ultrasound": {
         "title": "Für Ultraschallportrait",
@@ -208,5 +191,35 @@
         ]
       }
     ]
+  },
+  "orderForm": {
+    "successTitle": "Danke für deine Bestellung!",
+    "submitted": "Deine Bestellung wurde erfolgreich eingereicht.",
+    "orderIdLabel": "Bestellnummer:",
+    "contactWithin24h": "Wir werden dich innerhalb von 24 Stunden kontaktieren, um deine Bilder zu bestätigen.",
+    "newOrder": "Neue Bestellung",
+    "nameLabel": "Dein Name *",
+    "emailLabel": "Deine E-Mail *",
+    "productLabel": "Produkt *",
+    "productDigital": "Digitales JPEG",
+    "productCanvas": "Leinwanddruck",
+    "canvasSizeLabel": "Größe *",
+    "childNameLabel": "Babys Name",
+    "weeksLabel": "Wochen im Mutterleib",
+    "shippingHeading": "Lieferadresse *",
+    "shippingFullName": "Vollständiger Name *",
+    "shippingStreet": "Straße *",
+    "shippingCity": "Stadt *",
+    "shippingState": "Bundesland *",
+    "shippingPostalCode": "Postleitzahl *",
+    "shippingCountry": "Land *",
+    "ultrasoundLabel": "Ultraschallbild hochladen *",
+    "referenceLabel": "Referenzbild hochladen",
+    "specialRequests": "Besondere Wünsche",
+    "fileTooLarge": "Die Datei ist größer als 15 MB. Bitte ein kleineres Bild wählen.",
+    "fileType": "Nur JPG, PNG, WebP oder HEIC.",
+    "ultrasoundRequired": "Bitte lade ein Ultraschallbild hoch.",
+    "submitting": "Wird eingereicht...",
+    "submit": "Jetzt Bestellen"
   }
 }
