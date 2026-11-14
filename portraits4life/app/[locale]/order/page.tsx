@@ -35,10 +35,12 @@ export default async function OrderPage({ params }: { params: Promise<{ locale: 
           items={[home, { label: isDE ? 'Bestellen' : 'Order' }]}
         />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          <h1 className="font-display heading-xl font-bold mb-4 text-ink text-center">Bestellen / Order</h1>
+          <h1 className="font-display heading-xl font-bold mb-4 text-ink text-center">{isDE ? 'Bestellen' : 'Order'}</h1>
 
           <p className="text-center text-copy mb-12 max-w-2xl mx-auto">
-            Hier können Sie Ihr Ultraschallbild hochladen und Ihre Bestellung aufgeben. / Upload your ultrasound image and place your order here.
+            {isDE
+              ? 'Hier können Sie Ihr Ultraschallbild hochladen und Ihre Bestellung aufgeben.'
+              : 'Upload your ultrasound image and place your order here.'}
           </p>
 
           <div className="bg-surface rounded-lg shadow-lg p-8 mb-12">
