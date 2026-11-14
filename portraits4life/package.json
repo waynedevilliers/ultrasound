@@ -70,6 +70,7 @@
     "jscpd": "5.4.2",
     "jsdom": "30.1.3",
     "knip": "6.43.0",
+    "prettier": "3.9.10",
     "shadcn": "4.23.0",
     "tailwindcss": "^4",
     "typescript": "^5",

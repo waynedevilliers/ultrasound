@@ -26,8 +26,13 @@ function productLabel(order: OrderSubmit): string {
   return 'Digital JPEG';
 }
 
-function orderEmailHtml(order: OrderSubmit, orderId: unknown, links: { ultrasound: string; reference: string }): string {
-  const row = (label: string, value: string) => `<p><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</p>`;
+function orderEmailHtml(
+  order: OrderSubmit,
+  orderId: unknown,
+  links: { ultrasound: string; reference: string },
+): string {
+  const row = (label: string, value: string) =>
+    `<p><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</p>`;
   const shipping =
     order.product === 'canvas'
       ? `<h3>Shipping Address</h3>
@@ -55,7 +60,10 @@ function orderEmailHtml(order: OrderSubmit, orderId: unknown, links: { ultrasoun
 export async function POST(request: NextRequest) {
   try {
     if (isRateLimited(clientKey(request))) {
-      return NextResponse.json({ success: false, message: 'Too many requests. Please try again later.' }, { status: 429 });
+      return NextResponse.json(
+        { success: false, message: 'Too many requests. Please try again later.' },
+        { status: 429 },
+      );
     }
 
     let body: unknown;
@@ -67,8 +75,14 @@ export async function POST(request: NextRequest) {
 
     const parsed = orderSubmitSchema.safeParse(body);
     if (!parsed.success) {
-      const issues = parsed.error.issues.map((issue) => ({ field: issue.path.join('.'), message: issue.message }));
-      return NextResponse.json({ success: false, message: 'Invalid order data', issues }, { status: 400 });
+      const issues = parsed.error.issues.map((issue) => ({
+        field: issue.path.join('.'),
+        message: issue.message,
+      }));
+      return NextResponse.json(
+        { success: false, message: 'Invalid order data', issues },
+        { status: 400 },
+      );
     }
     const order = parsed.data;
 
@@ -78,14 +92,23 @@ export async function POST(request: NextRequest) {
     }
 
     // Every photo must exist in private storage and pass the same checks as the browser.
-    const paths = [order.ultrasoundPath, order.referencePath].filter(Boolean);
-    for (const pathname of paths) {
+    const photos = [
+      { field: 'ultrasoundPath', pathname: order.ultrasoundPath },
+      { field: 'referencePath', pathname: order.referencePath },
+    ].filter((photo) => photo.pathname !== '');
+    for (const photo of photos) {
+      let error: string | null;
       try {
-        const meta = await head(pathname);
-        const error = validateStoredImage({ size: meta.size, contentType: meta.contentType });
-        if (error) return NextResponse.json({ success: false, message: error }, { status: 400 });
+        const meta = await head(photo.pathname);
+        error = validateStoredImage({ size: meta.size, contentType: meta.contentType });
       } catch {
-        return NextResponse.json({ success: false, message: 'Upload missing. Please upload the photo again.' }, { status: 400 });
+        error = 'Upload missing. Please upload the photo again.';
+      }
+      if (error) {
+        return NextResponse.json(
+          { success: false, message: error, issues: [{ field: photo.field, message: error }] },
+          { status: 400 },
+        );
       }
     }
 
@@ -104,14 +127,18 @@ export async function POST(request: NextRequest) {
         ${order.specialRequests || null},
         ${order.ultrasoundPath},
         ${order.referencePath || ''},
-        ${JSON.stringify(order.product === 'canvas' ? {
-          fullName: order.shippingFullName,
-          street: order.shippingStreet,
-          city: order.shippingCity,
-          state: order.shippingState,
-          postalCode: order.shippingPostalCode,
-          country: order.shippingCountry,
-        } : null)},
+        ${JSON.stringify(
+          order.product === 'canvas'
+            ? {
+                fullName: order.shippingFullName,
+                street: order.shippingStreet,
+                city: order.shippingCity,
+                state: order.shippingState,
+                postalCode: order.shippingPostalCode,
+                country: order.shippingCountry,
+              }
+            : null,
+        )},
         ${'pending'},
         ${new Date().toISOString()}
       )
@@ -124,7 +151,9 @@ export async function POST(request: NextRequest) {
     const secret = process.env.ORDER_LINK_SECRET;
     const links = {
       ultrasound: buildFileLink(siteUrl, order.ultrasoundPath, expires, secret),
-      reference: order.referencePath ? buildFileLink(siteUrl, order.referencePath, expires, secret) : '',
+      reference: order.referencePath
+        ? buildFileLink(siteUrl, order.referencePath, expires, secret)
+        : '',
     };
     const subject = `New Order #${orderId} - ${order.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`;
     const from = process.env.ORDER_FROM_EMAIL || DEFAULT_FROM;
@@ -163,9 +192,15 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({ success: true, orderId, message: 'Order submitted successfully' }, { status: 201 });
+    return NextResponse.json(
+      { success: true, orderId, message: 'Order submitted successfully' },
+      { status: 201 },
+    );
   } catch (error) {
     console.error('Order processing failed', error);
-    return NextResponse.json({ success: false, message: 'Failed to process order' }, { status: 500 });
+    return NextResponse.json(
+      { success: false, message: 'Failed to process order' },
+      { status: 500 },
+    );
   }
 }
