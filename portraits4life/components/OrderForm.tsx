@@ -186,7 +186,7 @@ export default function OrderForm() {
 
       {/* Basic Fields */}
       <div>
-        <label className="block text-sm font-medium text-body mb-2" htmlFor="name">
+        <label className="block text-base font-medium text-body mb-2" htmlFor="name">
           {isDE ? 'Dein Name *' : 'Your Name *'}
         </label>
         <input id="name"
@@ -200,7 +200,7 @@ export default function OrderForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-body mb-2" htmlFor="email">
+        <label className="block text-base font-medium text-body mb-2" htmlFor="email">
           {isDE ? 'Deine E-Mail *' : 'Your Email *'}
         </label>
         <input id="email"
@@ -214,7 +214,7 @@ export default function OrderForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-body mb-2" htmlFor="product">
+        <label className="block text-base font-medium text-body mb-2" htmlFor="product">
           {isDE ? 'Produkt *' : 'Product *'}
         </label>
         <select id="product"
@@ -230,7 +230,7 @@ export default function OrderForm() {
 
       {formData.product === 'canvas' && (
         <div>
-          <label className="block text-sm font-medium text-body mb-2" htmlFor="canvasSize">
+          <label className="block text-base font-medium text-body mb-2" htmlFor="canvasSize">
             {isDE ? 'Größe *' : 'Size *'}
           </label>
           <select id="canvasSize"
@@ -250,7 +250,7 @@ export default function OrderForm() {
 
       {/* Optional Fields */}
       <div>
-        <label className="block text-sm font-medium text-body mb-2" htmlFor="childName">
+        <label className="block text-base font-medium text-body mb-2" htmlFor="childName">
           {isDE ? "Babys Name" : "Child's Name"}
         </label>
         <input id="childName"
@@ -263,7 +263,7 @@ export default function OrderForm() {
       </div>
 
       <div>
-        <label className="block text-sm font-medium text-body mb-2" htmlFor="weeksInWomb">
+        <label className="block text-base font-medium text-body mb-2" htmlFor="weeksInWomb">
           {isDE ? 'Wochen im Mutterleib' : 'Weeks in Womb'}
         </label>
         <input id="weeksInWomb"
@@ -283,7 +283,7 @@ export default function OrderForm() {
           </h3>
 
           <div>
-            <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingFullName">
+            <label className="block text-base font-medium text-body mb-2" htmlFor="shippingFullName">
               {isDE ? 'Vollständiger Name *' : 'Full Name *'}
             </label>
             <input id="shippingFullName"
@@ -297,7 +297,7 @@ export default function OrderForm() {
           </div>
 
           <div className="mt-4">
-            <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingStreet">
+            <label className="block text-base font-medium text-body mb-2" htmlFor="shippingStreet">
               {isDE ? 'Straße *' : 'Street *'}
             </label>
             <input id="shippingStreet"
@@ -312,7 +312,7 @@ export default function OrderForm() {
 
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingCity">
+              <label className="block text-base font-medium text-body mb-2" htmlFor="shippingCity">
                 {isDE ? 'Stadt *' : 'City *'}
               </label>
               <input id="shippingCity"
@@ -325,7 +325,7 @@ export default function OrderForm() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingState">
+              <label className="block text-base font-medium text-body mb-2" htmlFor="shippingState">
                 {isDE ? 'Bundesland *' : 'State *'}
               </label>
               <input id="shippingState"
@@ -341,7 +341,7 @@ export default function OrderForm() {
 
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div>
-              <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingPostalCode">
+              <label className="block text-base font-medium text-body mb-2" htmlFor="shippingPostalCode">
                 {isDE ? 'Postleitzahl *' : 'Postal Code *'}
               </label>
               <input id="shippingPostalCode"
@@ -354,7 +354,7 @@ export default function OrderForm() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-body mb-2" htmlFor="shippingCountry">
+              <label className="block text-base font-medium text-body mb-2" htmlFor="shippingCountry">
                 {isDE ? 'Land *' : 'Country *'}
               </label>
               <input id="shippingCountry"
@@ -373,7 +373,7 @@ export default function OrderForm() {
       {/* File Uploads */}
       <div className="border-t pt-6">
         <div>
-          <label className="block text-sm font-medium text-body mb-2" htmlFor="ultrasoundImage">
+          <label className="block text-base font-medium text-body mb-2" htmlFor="ultrasoundImage">
             {isDE ? 'Ultraschallbild hochladen *' : 'Upload Ultrasound Image *'}
           </label>
           <input id="ultrasoundImage"
@@ -383,11 +383,11 @@ export default function OrderForm() {
             required
             className="w-full"
           />
-          {files.ultrasound && <p className="text-sm text-success mt-1">{files.ultrasound.name}</p>}
+          {files.ultrasound && <p className="text-base text-success mt-1">{files.ultrasound.name}</p>}
         </div>
 
         <div className="mt-4">
-          <label className="block text-sm font-medium text-body mb-2" htmlFor="referenceImage">
+          <label className="block text-base font-medium text-body mb-2" htmlFor="referenceImage">
             {isDE ? 'Referenzbild hochladen' : 'Upload Reference Image'}
           </label>
           <input id="referenceImage"
@@ -396,13 +396,13 @@ export default function OrderForm() {
             onChange={(e) => handleFileChange(e, 'reference')}
             className="w-full"
           />
-          {files.reference && <p className="text-sm text-success mt-1">{files.reference.name}</p>}
+          {files.reference && <p className="text-base text-success mt-1">{files.reference.name}</p>}
         </div>
       </div>
 
       {/* Special Requests */}
       <div>
-        <label className="block text-sm font-medium text-body mb-2" htmlFor="specialRequests">
+        <label className="block text-base font-medium text-body mb-2" htmlFor="specialRequests">
           {isDE ? 'Besondere Wünsche' : 'Special Requests'}
         </label>
         <textarea id="specialRequests"

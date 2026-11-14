@@ -11,11 +11,11 @@ export default function Hero() {
 
   return (
     <section className="bg-gradient-to-b from-hero to-surface">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
+      <div className="container-site section-y">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="min-w-0">
             <h1
-              className="font-display text-5xl lg:text-6xl font-bold mb-6 text-ink leading-tight"
+              className="font-display heading-hero font-bold mb-6 text-ink leading-tight"
             >
               ULTRASOUND ART
             </h1>

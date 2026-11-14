@@ -47,21 +47,21 @@ export default function PricingTiers() {
   ];
 
   return (
-    <section id="pricing" className="py-20 lg:py-32 bg-canvas">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section id="pricing" className="section-y bg-canvas">
+      <div className="container-site">
         <h2
-          className="font-display text-5xl font-bold text-center mb-16 text-ink"
+          className="font-display heading-xl font-bold text-center mb-16 text-ink"
         >
           {isDE ? 'Formate & Preise' : 'Formats & Pricing'}
         </h2>
 
         <div className="grid md:grid-cols-2 gap-8">
           {tiers.map((tier, idx) => (
-            <Card key={idx} className="border-2 border-line hover:border-brand transition overflow-hidden">
+            <Card key={idx} className="h-full border-2 border-line hover:border-brand transition overflow-hidden">
               <CardHeader className="bg-gradient-to-r from-canvas to-surface pb-6">
                 <CardTitle className="text-3xl mb-2">{tier.title}</CardTitle>
                 {tier.price && <p className="text-4xl font-bold text-brand-strong">{tier.price}</p>}
-                <p className="text-sm text-copy mt-2">{tier.delivery}</p>
+                <p className="text-base text-copy mt-2">{tier.delivery}</p>
               </CardHeader>
               <CardContent className="pt-6">
                 <ul className="space-y-4">

@@ -6,6 +6,7 @@ import PricingTiers from '@/components/PricingTiers';
 import FAQ from '@/components/FAQ';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
+import Reveal from '@/components/Reveal';
 
 export default function Home() {
   return (
@@ -13,11 +14,21 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
-        <HowItWorks />
-        <Gallery />
-        <PricingTiers />
-        <FAQ />
-        <ContactSection />
+        <Reveal>
+          <HowItWorks />
+        </Reveal>
+        <Reveal>
+          <Gallery />
+        </Reveal>
+        <Reveal>
+          <PricingTiers />
+        </Reveal>
+        <Reveal>
+          <FAQ />
+        </Reveal>
+        <Reveal>
+          <ContactSection />
+        </Reveal>
       </main>
       <Footer />
     </div>

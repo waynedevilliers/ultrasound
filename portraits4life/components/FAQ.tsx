@@ -53,10 +53,10 @@ export default function FAQ() {
   ];
 
   return (
-    <section className="py-20 lg:py-32 bg-surface">
+    <section className="section-y bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <h2
-          className="font-display text-5xl font-bold text-center mb-16 text-ink"
+          className="font-display heading-xl font-bold text-center mb-16 text-ink"
         >
           {isDE ? 'Häufig gestellte Fragen' : 'Frequently Asked Questions'}
         </h2>

@@ -49,7 +49,7 @@ export default function Footer() {
           </div>
         </div>
 
-        <div className="border-t border-line-dark pt-8 text-center text-caption text-sm">
+        <div className="border-t border-line-dark pt-8 text-center text-caption text-base">
           <p>{tagline}</p>
         </div>
       </div>

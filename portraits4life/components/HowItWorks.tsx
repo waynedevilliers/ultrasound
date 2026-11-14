@@ -41,17 +41,17 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="py-20 lg:py-32 bg-canvas">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="section-y bg-canvas">
+      <div className="container-site">
         <h2
-          className="font-display text-5xl font-bold text-center mb-20 text-ink"
+          className="font-display heading-xl font-bold text-center mb-20 text-ink"
         >
           {isDE ? 'Einfacher Prozess' : 'Simple Process'}
         </h2>
 
         <div className="grid md:grid-cols-3 gap-8">
           {steps.map((step) => (
-            <div key={step.number} className="bg-surface rounded-lg p-8 shadow-sm hover:shadow-md transition">
+            <div key={step.number} className="h-full bg-surface rounded-lg p-8 shadow-sm hover:shadow-md transition">
               <div className="mb-6 flex items-center justify-center w-12 h-12 rounded-full bg-brand-tint">
                 <span className="text-xl font-bold text-brand-strong">{step.number}</span>
               </div>

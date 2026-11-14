@@ -11,10 +11,10 @@ export default function Gallery() {
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
-    <section className="py-20 lg:py-32 bg-canvas">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="section-y bg-canvas">
+      <div className="container-site">
         <h2
-          className="font-display text-5xl font-bold text-center mb-16 text-ink"
+          className="font-display heading-xl font-bold text-center mb-16 text-ink"
         >
           {isDE ? 'Unsere Arbeiten' : 'Our Work'}
         </h2>
