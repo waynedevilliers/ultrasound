@@ -23,6 +23,17 @@ export default function Header() {
   const menuId = useId();
   const navRef = useRef<HTMLElement>(null);
   const toggleRef = useRef<HTMLButtonElement>(null);
+  const logoRef = useRef<HTMLAnchorElement>(null);
+  // The small logo in the bar appears once the big logo has scrolled out of view.
+  const [compact, setCompact] = useState(false);
+
+  useEffect(() => {
+    const element = logoRef.current;
+    if (!element || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(([entry]) => setCompact(!entry.isIntersecting), { threshold: 0 });
+    observer.observe(element);
+    return () => observer.disconnect();
+  }, []);
 
   // Escape closes the panel and returns focus to the menu button.
   // A click outside the menu closes it too.
@@ -65,6 +76,7 @@ export default function Header() {
     <>
       <header className="bg-surface">
         <a
+          ref={logoRef}
           href={isDE ? '/de' : '/en'}
           className="flex items-center justify-center gap-3 py-4 hover:opacity-90 transition"
         >
@@ -111,6 +123,16 @@ export default function Header() {
               </li>
             ))}
           </ul>
+
+          <a
+            href={isDE ? '/de' : '/en'}
+            data-testid="compact-logo"
+            aria-hidden={!compact}
+            tabIndex={compact ? 0 : -1}
+            className={`absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 h-10 w-10 transition-opacity duration-200 motion-reduce:transition-none ${compact ? 'opacity-100' : 'opacity-0'}`}
+          >
+            <Image src="/images/logo.avif" alt="Portraits 4 Life" width={40} height={40} className="w-full h-full object-contain" />
+          </a>
 
           <div className="absolute right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4">
             <button

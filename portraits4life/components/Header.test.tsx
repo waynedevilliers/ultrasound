@@ -70,3 +70,14 @@ describe('Header menu bar', () => {
     expect(desktop.querySelector('a[href="/en/order"]')).not.toHaveAttribute('aria-current');
   });
 });
+
+describe('Header small logo', () => {
+  it('reserves space for the small logo and keeps it hidden until the big logo scrolls away', () => {
+    render(<Header />);
+    const compact = screen.getByTestId('compact-logo');
+    expect(compact).toHaveAttribute('href', '/en');
+    expect(compact).toHaveAttribute('aria-hidden', 'true');
+    expect(compact).toHaveAttribute('tabindex', '-1');
+    expect(compact.className).toContain('opacity-0');
+  });
+});
