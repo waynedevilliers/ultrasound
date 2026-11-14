@@ -56,7 +56,7 @@
     "title": "Get in Touch",
     "email": "portraits4life.art@gmail.com",
     "description": "Have questions or special requests? Send me a message and I'll get back to you as soon as possible!",
-    "cta": "Contact Me Now"
+    "cta": "Contact me"
   },
   "footer": {
     "contactUs": "Contact Us",
@@ -142,5 +142,32 @@
     "fullSizeAlt": "Full-size image",
     "close": "Close",
     "caption": "See the beauty in every detail. Transform your ultrasound into a work of art."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "How long does the artwork take?",
+        "answer": "Digital artwork typically takes 1 week. Canvas prints take 1-2 weeks from confirmation."
+      },
+      {
+        "question": "What image formats do you accept?",
+        "answer": "We accept JPG, PNG and other common image formats. High-resolution images (at least 300dpi) produce the best results."
+      },
+      {
+        "question": "Can I review the image before printing?",
+        "answer": "Yes! We send you a preview before final production. You can request changes if needed."
+      },
+      {
+        "question": "What are the shipping costs?",
+        "answer": "Shipping costs depend on your location. They will be clearly shown before payment."
+      },
+      {
+        "question": "What if I'm not satisfied with the result?",
+        "answer": "If you're not happy with the result, we can make adjustments or offer a refund."
+      }
+    ],
+    "moreQuestions": "More questions?",
+    "moreLink": "Get in touch"
   }
 }

@@ -53,9 +53,9 @@
     }
   },
   "contact": {
-    "title": "Lass uns in Kontakt treten",
+    "title": "Kontakt",
     "email": "portraits4life.art@gmail.com",
-    "description": "Schreib mir deine Fragen oder deine Wünsche. Ich melde mich schnellstmöglich bei dir!",
+    "description": "Hast du Fragen oder besondere Wünsche? Schreib mir eine Nachricht und ich antworte dir so schnell wie möglich!",
     "cta": "Jetzt Kontakt aufnehmen"
   },
   "footer": {
@@ -142,5 +142,32 @@
     "fullSizeAlt": "Vollbild",
     "close": "Schließen",
     "caption": "Sehe die Schönheit in jedem Detail. Verwandle dein Ultraschallbild in ein Kunstwerk."
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "items": [
+      {
+        "question": "Wie lange dauert die Bearbeitung?",
+        "answer": "Die digitale Bearbeitung dauert normalerweise 1 Woche. Der Leinwanddruck dauert 1-2 Wochen nach Bestätigung."
+      },
+      {
+        "question": "Welche Bildformate akzeptieren Sie?",
+        "answer": "Wir akzeptieren JPG, PNG und andere gängige Bildformate. High-Resolution-Bilder (mindestens 300dpi) geben die besten Ergebnisse."
+      },
+      {
+        "question": "Kann ich das Bild vor dem Druck überprüfen?",
+        "answer": "Ja! Wir senden dir einen Vorschau vor der endgültigen Produktion. Du kannst Änderungen anfordern, wenn nötig."
+      },
+      {
+        "question": "Wie sind die Versandkosten?",
+        "answer": "Die Versandkosten hängen von deinem Standort ab. Sie werden vor der Zahlung klar angezeigt."
+      },
+      {
+        "question": "Was ist, wenn mir das Endergebnis nicht gefällt?",
+        "answer": "Wenn du mit dem Ergebnis nicht zufrieden bist, können wir Anpassungen vornehmen oder die Bestellung erstatten."
+      }
+    ],
+    "moreQuestions": "Noch Fragen?",
+    "moreLink": "Kontaktiere uns"
   }
 }

@@ -2,9 +2,11 @@
 
 import { usePathname } from 'next/navigation';
 import ActionLink from '@/components/ActionLink';
+import { getCopy, localeOf } from '@/lib/copy';
 
 export default function ContactSection() {
   const pathname = usePathname();
+  const { contact } = getCopy(localeOf(pathname));
   const isDE = pathname.startsWith('/de');
 
   return (
@@ -13,23 +15,19 @@ export default function ContactSection() {
         <h2
           className="font-display heading-xl font-bold mb-6 text-white"
         >
-          {isDE ? 'Kontakt' : 'Get in Touch'}
+          {contact.title}
         </h2>
 
         <p className="text-xl text-on-dark-soft mb-8">
-          {isDE ? (
-            'Hast du Fragen oder besondere Wünsche? Schreib mir eine Nachricht und ich antworte dir so schnell wie möglich!'
-          ) : (
-            'Have questions or special requests? Send me a message and I\'ll get back to you as soon as possible!'
-          )}
+          {contact.description}
         </p>
 
         <p className="text-2xl font-semibold text-brand-light mb-10">
-          portraits4life.art@gmail.com
+          {contact.email}
         </p>
 
         <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="secondary">
-          {isDE ? 'Jetzt Kontakt aufnehmen' : 'Contact me'}
+          {contact.cta}
         </ActionLink>
       </div>
     </section>
