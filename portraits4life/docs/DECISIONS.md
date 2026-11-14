@@ -81,6 +81,29 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-14: Facts strip under the hero (plan v3, decision 1)
+
+- **Status:** done (replaces the earlier facts box and its removal)
+- **Decision:** A slim facts strip stays directly under the hero, with four items: Preis, Lieferzeit, Bezahlung, Formate. No card borders or shadows. Each item is icon, label and one line of text on the section background. Desktop: one row. Below sm: two columns. Values come from content/products.ts. "Optional" is removed; it is a benefit point in the hero.
+- **Why:** Price, delivery and payment at a glance remove doubt before ordering. It is slimmed down so it does not look clickable and does not delay the examples.
+- **Considered:** Removing the strip and moving payment methods below the format cards (rejected: the strip is kept, and payment text also goes below the cards in the format section).
+
+## 2026-11-14: Resend for order email (plan v3, decision 2)
+
+- **Status:** done
+- **Decision:** Order emails are sent with Resend. The variables are RESEND_API_KEY, ORDER_FROM_EMAIL and ORDER_EMAIL. No SMTP (EMAIL_HOST and similar).
+- **Why:** Owner decision. Resend is already in use and set up.
+- **Considered:** SMTP with the EMAIL_* variables from the earlier plan (rejected).
+
+## 2026-11-14: Route handler for the order (plan v3, decision 3)
+
+- **Status:** done; open gaps listed below, to be fixed in step 11
+- **Decision:** The order is sent to a route handler (app/api/orders), not a server action. This keeps room for 15 MB uploads: photos go directly to private storage through a token route, and the order itself is JSON.
+- **Why:** Owner decision. Server validation, escaping, honeypot and rate limiting are in place.
+- **Present:** server-side Zod validation of every field; the stored photo is checked for existence, size (15 MB) and type on the server; every value in the email is HTML-escaped; honeypot field; rate limit on the order endpoint.
+- **Missing (fix in step 11):** the rate limit is per server instance and trusts x-forwarded-for; the upload token route has no rate limit; field-level error messages (errors are listed above the button, not under each field).
+- **Considered:** A server action (rejected for the reason above).
+
 ## 2026-11-14: Images and content blocks (Step 10)
 
 - **Status:** done, with one open item
