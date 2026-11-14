@@ -97,6 +97,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Not done yet:** The hero copy is still written in the component, not in the message files (text move comes with the rest of the text work).
 - **Considered:** Keeping all the copy above the buttons (rejected: the primary button would fall below the fold on phones).
 
+## 2026-11-14: German is the starting language
+
+- **Status:** done
+- **Decision:** The site opens in German. The root address redirects to /de, and the middleware default is German with browser language detection turned off, so English browsers also start in German. The language switch still moves between German and English.
+- **Why:** Owner request. The German audience is the main one.
+- **Considered:** Detecting the browser language (rejected by the owner: German always starts).
+
 ## 2026-11-14: Layout system (Step 7)
 
 - **Status:** done
