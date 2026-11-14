@@ -5,77 +5,67 @@
     "order": "Bestellen",
     "formats": "Formate",
     "contact": "Kontakt",
-    "language": "DE"
+    "mainMenu": "Hauptmenü",
+    "switchLanguage": "EN",
+    "switchLanguageLabel": "Sprache auf Englisch wechseln",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen"
   },
   "hero": {
     "headline": "ULTRASOUND ART",
-    "body": "Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern. Lass dir die allererste Aufnahme deines Kindes verewigen! Ich bearbeite das Ultraschallbild künstlerisch und hebe es farblich hervor.\nAuf Leinwand gedruckt, hast du nicht nur eine wunderschöne Erinnerung, sondern auch eine moderne, anschauliche Deko für deine Wohnung.\nAuf Wunsch mit Namen deines Kindes und Anzahl der Wochen im Mutterleib.",
     "cta_order": "Jetzt bestellen",
-    "cta_formats": "Formate ansehen"
+    "cta_formats": "Formate ansehen",
+    "supporting": "Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern.",
+    "bodyRest": "Lass dir die allererste Aufnahme deines Kindes verewigen! Ich bearbeite das Ultraschallbild künstlerisch und hebe es farblich hervor.\nAuf Leinwand gedruckt, hast du nicht nur eine wunderschöne Erinnerung, sondern auch eine moderne, anschauliche Deko für deine Wohnung.\nAuf Wunsch mit Namen deines Kindes und Anzahl der Wochen im Mutterleib.",
+    "imageAlt": "Künstlerisch bearbeitetes Ultraschallbild als Beispiel"
   },
   "howItWorks": {
-    "title": "So funktioniert's",
-    "step1": {
-      "title": "Ultraschallbild hochladen",
-      "description": "Sende mir dein klares Ultraschallbild"
-    },
-    "step2": {
-      "title": "Künstlerisch bearbeitet",
-      "description": "Ich erstelle ein wunderschönes digitales Portrait"
-    },
-    "step3": {
-      "title": "Leinwanddruck oder Digital",
-      "description": "Erhalte deinen Druck oder die digitale Datei"
-    }
+    "title": "Einfacher Prozess",
+    "steps": [
+      {
+        "title": "Bild hochladen",
+        "description": "Sende mir dein klares Ultraschallbild oder Portraitfoto. Wir prüfen es innerhalb von 24 Stunden."
+      },
+      {
+        "title": "Künstlerische Bearbeitung",
+        "description": "Unser Künstler erstellt eine wunderschöne verbesserte Version mit Farben und künstlerischen Akzenten."
+      },
+      {
+        "title": "Genießen & Bewahren",
+        "description": "Erhalte deine hochauflösende Datei oder deinen Leinwanddruck. Das perfekte Erinnerungsstück."
+      }
+    ]
   },
   "pricing": {
     "title": "Formate & Preise",
     "digital": {
-      "title": "Digital Download",
-      "resolution": "Hochauflösendes JPG",
-      "delivery": "Sofortige Zustellung"
+      "title": "Hochauflösendes digitales JPG",
+      "delivery": "1 Woche Lieferung",
+      "items": [
+        "Hochauflösende digitale Datei",
+        "Perfekt für digitale Bilderrahmen",
+        "Sofortige Bereitstellung nach Fertigstellung"
+      ]
     },
     "canvas": {
-      "title": "Leinwanddruck",
-      "size30": "30×30 cm",
-      "size40": "40×40 cm",
-      "size50": "50×50 cm",
-      "delivery": "~2 Wochen Lieferung"
-    },
-    "addons": "Optionale Extras",
-    "addon1": "Name deines Kindes hinzufügen",
-    "addon2": "Anzahl der Wochen im Mutterleib"
+      "title": "Leinwanddrucke",
+      "delivery": "1 - 2 Wochen Lieferung"
+    }
   },
   "contact": {
-    "title": "Lass uns in Kontakt treten",
+    "title": "Kontakt",
     "email": "portraits4life.art@gmail.com",
-    "description": "Schreib mir deine Fragen oder deine Wünsche. Ich melde mich schnellstmöglich bei dir!",
+    "description": "Hast du Fragen oder besondere Wünsche? Schreib mir eine Nachricht und ich antworte dir so schnell wie möglich!",
     "cta": "Jetzt Kontakt aufnehmen"
   },
   "footer": {
     "contactUs": "Kontaktiere uns",
     "copyright": "© 2024 Portraits 4 Life. Alle Rechte vorbehalten.",
-    "tagline": "Mit Liebe für Eltern und ihre schönsten Erinnerungen"
+    "tagline": "Mit Liebe für Eltern und ihre schönsten Erinnerungen",
+    "legalNav": "Rechtliches"
   },
   "order": {
     "title": "Bestellen",
-    "form": {
-      "name": "Dein Name",
-      "email": "E-Mail Adresse",
-      "productType": "Art des Produkts",
-      "productDigital": "Digital Download",
-      "productCanvas": "Leinwanddruck",
-      "canvasSize": "Leinwandgröße",
-      "size30": "30×30 cm",
-      "size40": "40×40 cm",
-      "size50": "50×50 cm",
-      "childName": "Name des Kindes (optional)",
-      "weeksInWomb": "Wochen im Mutterleib (optional)",
-      "photo1": "Ultraschallbild hochladen (max 15 MB)",
-      "photo2": "Zweites Bild (optional, max 15 MB)",
-      "message": "Spezielle Anfragen oder Nachrichten",
-      "submit": "Bestellen"
-    },
     "info": {
       "ultrasound": {
         "title": "Für Ultraschallportrait",
@@ -127,5 +117,131 @@
       "title": "Datenschutz – Portraits 4 Life",
       "description": "Informationen zum Umgang mit personenbezogenen Daten."
     }
+  },
+  "gallery": {
+    "title": "Unsere Arbeiten",
+    "alt1": "Künstlerisch bearbeitetes Ultraschallbild, Beispiel 1",
+    "alt2": "Künstlerisch bearbeitetes Ultraschallbild, Beispiel 2",
+    "fullSizeAlt": "Vollbild",
+    "close": "Schließen",
+    "caption": "Sehe die Schönheit in jedem Detail. Verwandle dein Ultraschallbild in ein Kunstwerk."
+  },
+  "faq": {
+    "title": "Häufig gestellte Fragen",
+    "items": [
+      {
+        "question": "Wie lange dauert die Bearbeitung?",
+        "answer": "Die digitale Bearbeitung dauert normalerweise 1 Woche. Der Leinwanddruck dauert 1-2 Wochen nach Bestätigung."
+      },
+      {
+        "question": "Welche Bildformate akzeptieren Sie?",
+        "answer": "Wir akzeptieren JPG, PNG und andere gängige Bildformate. High-Resolution-Bilder (mindestens 300dpi) geben die besten Ergebnisse."
+      },
+      {
+        "question": "Kann ich das Bild vor dem Druck überprüfen?",
+        "answer": "Ja! Wir senden dir einen Vorschau vor der endgültigen Produktion. Du kannst Änderungen anfordern, wenn nötig."
+      },
+      {
+        "question": "Wie sind die Versandkosten?",
+        "answer": "Die Versandkosten hängen von deinem Standort ab. Sie werden vor der Zahlung klar angezeigt."
+      },
+      {
+        "question": "Was ist, wenn mir das Endergebnis nicht gefällt?",
+        "answer": "Wenn du mit dem Ergebnis nicht zufrieden bist, können wir Anpassungen vornehmen oder die Bestellung erstatten."
+      }
+    ],
+    "moreQuestions": "Noch Fragen?",
+    "moreLink": "Kontaktiere uns"
+  },
+  "orderInfo": {
+    "title": "Informationen",
+    "sections": [
+      {
+        "id": "ultrasound",
+        "title": "Ultraschallportraits",
+        "items": [
+          "Wähle ein klares Ultraschallbild - Profilaufnahmen funktionieren am besten",
+          "Wir benachrichtigen dich innerhalb von 24 Stunden, ob das Bild verwendbar ist",
+          "Falls nicht geeignet, kannst du ein anderes Bild kostenlos erneut einreichen"
+        ]
+      },
+      {
+        "id": "individual",
+        "title": "Individualportraits",
+        "items": [
+          "Wähle ein klares Foto der Person (300dpi bevorzugt)",
+          "Wir bestätigen, ob das Foto unsere Qualitätsanforderungen erfüllt"
+        ]
+      },
+      {
+        "id": "couple",
+        "title": "Paarportraits",
+        "items": [
+          "Ein Profilfoto pro Person - muss kein gemeinsames Foto sein",
+          "300dpi Qualität bevorzugt für beste Ergebnisse",
+          "Wir benachrichtigen dich, wenn wir angepasste Bilder benötigen"
+        ]
+      },
+      {
+        "id": "payment",
+        "title": "Zahlung",
+        "items": [
+          "Nach der Bestätigung kannst du per PayPal, Banküberweisung oder Kreditkarte zahlen",
+          "Der Zahlungslink wird dir per E-Mail zugesandt"
+        ]
+      }
+    ]
+  },
+  "orderForm": {
+    "successTitle": "Danke für deine Bestellung!",
+    "submitted": "Deine Bestellung wurde erfolgreich eingereicht.",
+    "orderIdLabel": "Bestellnummer:",
+    "contactWithin24h": "Wir werden dich innerhalb von 24 Stunden kontaktieren, um deine Bilder zu bestätigen.",
+    "newOrder": "Neue Bestellung",
+    "nameLabel": "Dein Name *",
+    "emailLabel": "Deine E-Mail *",
+    "productLabel": "Produkt *",
+    "productDigital": "Digitales JPEG",
+    "productCanvas": "Leinwanddruck",
+    "canvasSizeLabel": "Größe *",
+    "childNameLabel": "Babys Name",
+    "weeksLabel": "Wochen im Mutterleib",
+    "shippingHeading": "Lieferadresse *",
+    "shippingFullName": "Vollständiger Name *",
+    "shippingStreet": "Straße *",
+    "shippingCity": "Stadt *",
+    "shippingState": "Bundesland *",
+    "shippingPostalCode": "Postleitzahl *",
+    "shippingCountry": "Land *",
+    "ultrasoundLabel": "Ultraschallbild hochladen *",
+    "referenceLabel": "Referenzbild hochladen",
+    "specialRequests": "Besondere Wünsche",
+    "fileTooLarge": "Die Datei ist größer als 15 MB. Bitte ein kleineres Bild wählen.",
+    "fileType": "Nur JPG, PNG, WebP oder HEIC.",
+    "ultrasoundRequired": "Bitte lade ein Ultraschallbild hoch.",
+    "submitting": "Wird eingereicht...",
+    "submit": "Jetzt Bestellen"
+  },
+  "common": {
+    "home": "Startseite",
+    "breadcrumb": "Brotkrumen",
+    "order": "Bestellen",
+    "newTab": "(öffnet in neuem Tab)"
+  },
+  "orderPage": {
+    "intro": "Hier können Sie Ihr Ultraschallbild hochladen und Ihre Bestellung aufgeben."
+  },
+  "facts": {
+    "label": "Die wichtigsten Fakten",
+    "formats": "Formate",
+    "formatsValue": "Digital oder Leinwand ({sizes} cm)",
+    "price": "Preis",
+    "priceValue": "ab {price}",
+    "delivery": "Lieferzeit",
+    "deliveryValue": "ca. {weeks} Wochen nach Zahlungseingang",
+    "payment": "Bezahlung",
+    "paymentValue": "PayPal, Überweisung, Kreditkarte",
+    "optional": "Optional",
+    "optionalValue": "Name des Kindes und Schwangerschaftswoche"
   }
 }

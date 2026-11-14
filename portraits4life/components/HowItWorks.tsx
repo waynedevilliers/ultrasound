@@ -1,44 +1,14 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { getCopy, localeOf } from '@/lib/copy';
 
 export default function HowItWorks() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
 
-  const steps = isDE ? [
-    {
-      number: 1,
-      title: 'Bild hochladen',
-      description: 'Sende mir dein klares Ultraschallbild oder Portraitfoto. Wir prüfen es innerhalb von 24 Stunden.',
-    },
-    {
-      number: 2,
-      title: 'Künstlerische Bearbeitung',
-      description: 'Unser Künstler erstellt eine wunderschöne verbesserte Version mit Farben und künstlerischen Akzenten.',
-    },
-    {
-      number: 3,
-      title: 'Genießen & Bewahren',
-      description: 'Erhalte deine hochauflösende Datei oder deinen Leinwanddruck. Das perfekte Erinnerungsstück.',
-    },
-  ] : [
-    {
-      number: 1,
-      title: 'Send Your Image',
-      description: 'Upload a clear ultrasound photo or personal portrait. We review it within 24 hours.',
-    },
-    {
-      number: 2,
-      title: 'Artistic Enhancement',
-      description: 'Our artist creates a beautiful enhanced version with color and artistic touches.',
-    },
-    {
-      number: 3,
-      title: 'Receive & Enjoy',
-      description: 'Get your high-quality digital file or canvas print. Perfect keepsake for your home.',
-    },
-  ];
+  const { howItWorks } = getCopy(localeOf(pathname));
+  const steps = howItWorks.steps.map((step, index) => ({ number: index + 1, ...step }));
 
   return (
     <section className="section-y bg-canvas">
@@ -46,7 +16,7 @@ export default function HowItWorks() {
         <h2
           className="font-display heading-xl font-bold text-center mb-20 text-ink"
         >
-          {isDE ? 'Einfacher Prozess' : 'Simple Process'}
+          {howItWorks.title}
         </h2>
 
         <div className="grid md:grid-cols-3 gap-8">

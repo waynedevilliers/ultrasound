@@ -5,20 +5,17 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { menuRoutes, routeHref, type SiteRoute } from '@/content/routes';
 import { isActiveItem } from '@/lib/is-active-item';
+import { getCopy, localeOf } from '@/lib/copy';
 
-const menuLabels: Record<string, { de: string; en: string }> = {
-  home: { de: 'Start', en: 'Home' },
-  order: { de: 'Bestellen', en: 'Order' },
-  formats: { de: 'Formate', en: 'Formats' },
-  contact: { de: 'Kontakt', en: 'Contact' },
-};
+
 
 // The logo row scrolls away with the page. The menu bar is sticky: it never changes
 // size and has no scroll listeners, so it cannot flicker.
 export default function Header() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
-  const locale = isDE ? 'de' : 'en';
+  const locale = localeOf(pathname);
+  const copy = getCopy(locale);
   const [menuOpen, setMenuOpen] = useState(false);
   const menuId = useId();
   const navRef = useRef<HTMLElement>(null);
@@ -65,12 +62,12 @@ export default function Header() {
   const links = menuRoutes().map((route: SiteRoute) => ({
     id: route.id,
     href: routeHref(locale, route),
-    label: menuLabels[route.id]?.[locale] ?? route.id,
+    label: copy.header[route.id as 'home' | 'order' | 'formats' | 'contact'] ?? route.id,
     // Anchor-only items (sections) are never the current page.
     active: !route.anchor && isActiveItem(route.path, pathname, locale),
   }));
 
-  const navLabel = isDE ? 'Hauptmenü' : 'Main menu';
+  const navLabel = copy.header.mainMenu;
 
   return (
     <>
@@ -137,11 +134,11 @@ export default function Header() {
           <div className="absolute right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4">
             <button
               onClick={handleLanguageSwitch}
-              aria-label={isDE ? 'Sprache auf Englisch wechseln' : 'Switch language to German'}
+              aria-label={copy.header.switchLanguageLabel}
               className="px-3 py-1.5 sm:px-4 sm:py-2 rounded-full border-2 border-brand bg-brand-soft hover:bg-brand-tint text-brand-strong font-semibold text-base sm:text-base transition"
               type="button"
             >
-              {isDE ? 'EN' : 'DE'}
+              {copy.header.switchLanguage}
             </button>
 
             <button
@@ -150,7 +147,7 @@ export default function Header() {
               className="lg:hidden h-11 w-11 flex items-center justify-center text-copy hover:text-ink"
               aria-expanded={menuOpen}
               aria-controls={menuId}
-              aria-label={menuOpen ? (isDE ? 'Menü schließen' : 'Close menu') : (isDE ? 'Menü öffnen' : 'Open menu')}
+              aria-label={menuOpen ? copy.header.closeMenu : copy.header.openMenu}
               onClick={() => setMenuOpen((open) => !open)}
             >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

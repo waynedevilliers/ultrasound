@@ -5,11 +5,13 @@ import { canvasSizes } from '@/content/products';
 import { buttonClasses } from '@/components/ActionLink';
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/order-schema';
 import { usePathname } from 'next/navigation';
+import { getCopy, localeOf } from '@/lib/copy';
 import { upload } from '@vercel/blob/client';
 
 export default function OrderForm() {
   const pathname = usePathname();
-  const isDE = pathname.startsWith('/de');
+  const locale = localeOf(pathname);
+  const orderForm = getCopy(locale).orderForm;
 
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -50,12 +52,12 @@ export default function OrderForm() {
     const file = e.target.files?.[0];
     if (!file) return;
     if (file.size > MAX_IMAGE_BYTES) {
-      setError(isDE ? 'Die Datei ist größer als 15 MB. Bitte ein kleineres Bild wählen.' : 'The file is larger than 15 MB. Please choose a smaller image.');
+      setError(orderForm.fileTooLarge);
       e.target.value = '';
       return;
     }
     if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      setError(isDE ? 'Nur JPG, PNG, WebP oder HEIC.' : 'Only JPG, PNG, WebP or HEIC.');
+      setError(orderForm.fileType);
       e.target.value = '';
       return;
     }
@@ -83,7 +85,7 @@ export default function OrderForm() {
 
     try {
       if (!files.ultrasound) {
-        throw new Error(isDE ? 'Bitte lade ein Ultraschallbild hoch.' : 'Please upload an ultrasound image.');
+        throw new Error(orderForm.ultrasoundRequired);
       }
 
       // Honeypot: hidden from visitors, must stay empty.
@@ -157,26 +159,22 @@ export default function OrderForm() {
     return (
       <div className="max-w-2xl mx-auto p-8 bg-success-soft rounded-lg border border-success-edge">
         <h3 className="text-2xl font-bold text-success-text mb-4">
-          {isDE ? 'Danke für deine Bestellung!' : 'Thank You for Your Order!'}
+          {orderForm.successTitle}
         </h3>
         <p className="text-success-strong mb-2">
-          {isDE
-            ? 'Deine Bestellung wurde erfolgreich eingereicht.'
-            : 'Your order has been submitted successfully.'}
+          {orderForm.submitted}
         </p>
         <p className="text-success-strong mb-4">
-          <strong>{isDE ? 'Bestellnummer:' : 'Order ID:'}</strong> #{orderId}
+          <strong>{orderForm.orderIdLabel}</strong> #{orderId}
         </p>
         <p className="text-success-strong mb-4">
-          {isDE
-            ? 'Wir werden dich innerhalb von 24 Stunden kontaktieren, um deine Bilder zu bestätigen.'
-            : 'We will contact you within 24 hours to confirm your images.'}
+          {orderForm.contactWithin24h}
         </p>
         <button
           onClick={() => setSubmitted(false)}
           className="bg-success text-white px-6 py-2 rounded-lg hover:bg-success-strong"
         >
-          {isDE ? 'Neue Bestellung' : 'New Order'}
+          {orderForm.newOrder}
         </button>
       </div>
     );
@@ -199,7 +197,7 @@ export default function OrderForm() {
       {/* Basic Fields */}
       <div>
         <label className="block text-base font-medium text-body mb-2" htmlFor="name">
-          {isDE ? 'Dein Name *' : 'Your Name *'}
+          {orderForm.nameLabel}
         </label>
         <input id="name"
           type="text"
@@ -213,7 +211,7 @@ export default function OrderForm() {
 
       <div>
         <label className="block text-base font-medium text-body mb-2" htmlFor="email">
-          {isDE ? 'Deine E-Mail *' : 'Your Email *'}
+          {orderForm.emailLabel}
         </label>
         <input id="email"
           type="email"
@@ -227,7 +225,7 @@ export default function OrderForm() {
 
       <div>
         <label className="block text-base font-medium text-body mb-2" htmlFor="product">
-          {isDE ? 'Produkt *' : 'Product *'}
+          {orderForm.productLabel}
         </label>
         <select id="product"
           name="product"
@@ -235,15 +233,15 @@ export default function OrderForm() {
           onChange={handleChange}
           className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         >
-          <option value="digital">{isDE ? 'Digitales JPEG' : 'Digital JPEG'}</option>
-          <option value="canvas">{isDE ? 'Leinwanddruck' : 'Canvas Print'}</option>
+          <option value="digital">{orderForm.productDigital}</option>
+          <option value="canvas">{orderForm.productCanvas}</option>
         </select>
       </div>
 
       {formData.product === 'canvas' && (
         <div>
           <label className="block text-base font-medium text-body mb-2" htmlFor="canvasSize">
-            {isDE ? 'Größe *' : 'Size *'}
+            {orderForm.canvasSizeLabel}
           </label>
           <select id="canvasSize"
             name="canvasSize"
@@ -263,7 +261,7 @@ export default function OrderForm() {
       {/* Optional Fields */}
       <div>
         <label className="block text-base font-medium text-body mb-2" htmlFor="childName">
-          {isDE ? "Babys Name" : "Child's Name"}
+          {orderForm.childNameLabel}
         </label>
         <input id="childName"
           type="text"
@@ -276,7 +274,7 @@ export default function OrderForm() {
 
       <div>
         <label className="block text-base font-medium text-body mb-2" htmlFor="weeksInWomb">
-          {isDE ? 'Wochen im Mutterleib' : 'Weeks in Womb'}
+          {orderForm.weeksLabel}
         </label>
         <input id="weeksInWomb"
           type="text"
@@ -291,12 +289,12 @@ export default function OrderForm() {
       {formData.product === 'canvas' && (
         <div className="border-t pt-6">
           <h3 className="text-lg font-bold mb-4">
-            {isDE ? 'Lieferadresse *' : 'Shipping Address *'}
+            {orderForm.shippingHeading}
           </h3>
 
           <div>
             <label className="block text-base font-medium text-body mb-2" htmlFor="shippingFullName">
-              {isDE ? 'Vollständiger Name *' : 'Full Name *'}
+              {orderForm.shippingFullName}
             </label>
             <input id="shippingFullName"
               type="text"
@@ -310,7 +308,7 @@ export default function OrderForm() {
 
           <div className="mt-4">
             <label className="block text-base font-medium text-body mb-2" htmlFor="shippingStreet">
-              {isDE ? 'Straße *' : 'Street *'}
+              {orderForm.shippingStreet}
             </label>
             <input id="shippingStreet"
               type="text"
@@ -325,7 +323,7 @@ export default function OrderForm() {
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div>
               <label className="block text-base font-medium text-body mb-2" htmlFor="shippingCity">
-                {isDE ? 'Stadt *' : 'City *'}
+                {orderForm.shippingCity}
               </label>
               <input id="shippingCity"
                 type="text"
@@ -338,7 +336,7 @@ export default function OrderForm() {
             </div>
             <div>
               <label className="block text-base font-medium text-body mb-2" htmlFor="shippingState">
-                {isDE ? 'Bundesland *' : 'State *'}
+                {orderForm.shippingState}
               </label>
               <input id="shippingState"
                 type="text"
@@ -354,7 +352,7 @@ export default function OrderForm() {
           <div className="grid grid-cols-2 gap-4 mt-4">
             <div>
               <label className="block text-base font-medium text-body mb-2" htmlFor="shippingPostalCode">
-                {isDE ? 'Postleitzahl *' : 'Postal Code *'}
+                {orderForm.shippingPostalCode}
               </label>
               <input id="shippingPostalCode"
                 type="text"
@@ -367,7 +365,7 @@ export default function OrderForm() {
             </div>
             <div>
               <label className="block text-base font-medium text-body mb-2" htmlFor="shippingCountry">
-                {isDE ? 'Land *' : 'Country *'}
+                {orderForm.shippingCountry}
               </label>
               <input id="shippingCountry"
                 type="text"
@@ -386,7 +384,7 @@ export default function OrderForm() {
       <div className="border-t pt-6">
         <div>
           <label className="block text-base font-medium text-body mb-2" htmlFor="ultrasoundImage">
-            {isDE ? 'Ultraschallbild hochladen *' : 'Upload Ultrasound Image *'}
+            {orderForm.ultrasoundLabel}
           </label>
           <input id="ultrasoundImage"
             type="file"
@@ -400,7 +398,7 @@ export default function OrderForm() {
 
         <div className="mt-4">
           <label className="block text-base font-medium text-body mb-2" htmlFor="referenceImage">
-            {isDE ? 'Referenzbild hochladen' : 'Upload Reference Image'}
+            {orderForm.referenceLabel}
           </label>
           <input id="referenceImage"
             type="file"
@@ -415,7 +413,7 @@ export default function OrderForm() {
       {/* Special Requests */}
       <div>
         <label className="block text-base font-medium text-body mb-2" htmlFor="specialRequests">
-          {isDE ? 'Besondere Wünsche' : 'Special Requests'}
+          {orderForm.specialRequests}
         </label>
         <textarea id="specialRequests"
           name="specialRequests"
@@ -433,7 +431,7 @@ export default function OrderForm() {
         disabled={loading}
         className={buttonClasses('primary', 'w-full disabled:opacity-50')}
       >
-        {loading ? (isDE ? 'Wird eingereicht...' : 'Submitting...') : isDE ? 'Jetzt Bestellen' : 'Submit Order'}
+        {loading ? (orderForm.submitting) : orderForm.submit}
       </button>
     </form>
   );

@@ -5,77 +5,67 @@
     "order": "Order",
     "formats": "Formats",
     "contact": "Contact",
-    "language": "EN"
+    "mainMenu": "Main menu",
+    "switchLanguage": "DE",
+    "switchLanguageLabel": "Switch language to German",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu"
   },
   "hero": {
     "headline": "ULTRASOUND ART",
-    "body": "A tiny black-and-white ultrasound photo is a thing of the past. Let the very first image of your child live forever! I artistically enhance your ultrasound image and bring it to life with colour.\nPrinted on canvas, you'll have not just a beautiful memory, but a modern, striking piece of décor for your home.\nOptionally personalised with your child's name and number of weeks in the womb.",
     "cta_order": "Order Now",
-    "cta_formats": "View Formats"
+    "cta_formats": "View Formats",
+    "supporting": "A tiny black-and-white ultrasound photo is a thing of the past.",
+    "bodyRest": "Let the very first image of your child live forever! I artistically enhance your ultrasound image and bring it to life with colour.\nPrinted on canvas, you'll have not just a beautiful memory, but a modern, striking piece of décor for your home.\nOptionally personalised with your child's name and number of weeks in the womb.",
+    "imageAlt": "Example of an artistically enhanced ultrasound image"
   },
   "howItWorks": {
-    "title": "How It Works",
-    "step1": {
-      "title": "Upload Your Image",
-      "description": "Share your clear ultrasound image with me"
-    },
-    "step2": {
-      "title": "Artistic Enhancement",
-      "description": "I create a beautiful digital portrait for you"
-    },
-    "step3": {
-      "title": "Canvas or Digital",
-      "description": "Receive your canvas print or digital file"
-    }
+    "title": "Simple Process",
+    "steps": [
+      {
+        "title": "Send Your Image",
+        "description": "Upload a clear ultrasound photo or personal portrait. We review it within 24 hours."
+      },
+      {
+        "title": "Artistic Enhancement",
+        "description": "Our artist creates a beautiful enhanced version with color and artistic touches."
+      },
+      {
+        "title": "Receive & Enjoy",
+        "description": "Get your high-quality digital file or canvas print. Perfect keepsake for your home."
+      }
+    ]
   },
   "pricing": {
     "title": "Formats & Pricing",
     "digital": {
-      "title": "Digital Download",
-      "resolution": "High-res JPG",
-      "delivery": "Instant Delivery"
+      "title": "High-Res Digital JPG",
+      "delivery": "1 Week Delivery",
+      "items": [
+        "High-resolution digital file",
+        "Perfect for digital frames",
+        "Instant download after completion"
+      ]
     },
     "canvas": {
-      "title": "Canvas Print",
-      "size30": "30×30 cm",
-      "size40": "40×40 cm",
-      "size50": "50×50 cm",
-      "delivery": "~2 Weeks Delivery"
-    },
-    "addons": "Optional Add-ons",
-    "addon1": "Child's name added",
-    "addon2": "Number of weeks in the womb"
+      "title": "Canvas Prints",
+      "delivery": "1 - 2 Weeks Delivery"
+    }
   },
   "contact": {
     "title": "Get in Touch",
     "email": "portraits4life.art@gmail.com",
     "description": "Have questions or special requests? Send me a message and I'll get back to you as soon as possible!",
-    "cta": "Contact Me Now"
+    "cta": "Contact me"
   },
   "footer": {
     "contactUs": "Contact Us",
     "copyright": "© 2024 Portraits 4 Life. All rights reserved.",
-    "tagline": "Made with care for new parents & their memories"
+    "tagline": "Made with care for new parents & their memories",
+    "legalNav": "Legal"
   },
   "order": {
     "title": "Order",
-    "form": {
-      "name": "Your Name",
-      "email": "Email Address",
-      "productType": "Product Type",
-      "productDigital": "Digital Download",
-      "productCanvas": "Canvas Print",
-      "canvasSize": "Canvas Size",
-      "size30": "30×30 cm",
-      "size40": "40×40 cm",
-      "size50": "50×50 cm",
-      "childName": "Child's Name (optional)",
-      "weeksInWomb": "Weeks in the Womb (optional)",
-      "photo1": "Upload Ultrasound Image (max 15 MB)",
-      "photo2": "Second Image (optional, max 15 MB)",
-      "message": "Special Requests or Message",
-      "submit": "Place Order"
-    },
     "info": {
       "ultrasound": {
         "title": "For Ultrasound Portrait",
@@ -127,5 +117,131 @@
       "title": "Privacy Policy – Portraits 4 Life",
       "description": "How personal data is handled."
     }
+  },
+  "gallery": {
+    "title": "Our Work",
+    "alt1": "Artistically enhanced ultrasound image, example 1",
+    "alt2": "Artistically enhanced ultrasound image, example 2",
+    "fullSizeAlt": "Full-size image",
+    "close": "Close",
+    "caption": "See the beauty in every detail. Transform your ultrasound into a work of art."
+  },
+  "faq": {
+    "title": "Frequently Asked Questions",
+    "items": [
+      {
+        "question": "How long does the artwork take?",
+        "answer": "Digital artwork typically takes 1 week. Canvas prints take 1-2 weeks from confirmation."
+      },
+      {
+        "question": "What image formats do you accept?",
+        "answer": "We accept JPG, PNG and other common image formats. High-resolution images (at least 300dpi) produce the best results."
+      },
+      {
+        "question": "Can I review the image before printing?",
+        "answer": "Yes! We send you a preview before final production. You can request changes if needed."
+      },
+      {
+        "question": "What are the shipping costs?",
+        "answer": "Shipping costs depend on your location. They will be clearly shown before payment."
+      },
+      {
+        "question": "What if I'm not satisfied with the result?",
+        "answer": "If you're not happy with the result, we can make adjustments or offer a refund."
+      }
+    ],
+    "moreQuestions": "More questions?",
+    "moreLink": "Get in touch"
+  },
+  "orderInfo": {
+    "title": "Information",
+    "sections": [
+      {
+        "id": "ultrasound",
+        "title": "Ultrasound Portraits",
+        "items": [
+          "Choose a clear ultrasound image - profile views work best",
+          "We notify you within 24 hours if the image is usable",
+          "If not suitable, you can resubmit another image at no extra cost"
+        ]
+      },
+      {
+        "id": "individual",
+        "title": "Individual Portraits",
+        "items": [
+          "Choose a clear photo of the person (300dpi preferred)",
+          "We confirm if the photo meets our quality requirements"
+        ]
+      },
+      {
+        "id": "couple",
+        "title": "Couple Portraits",
+        "items": [
+          "One profile photo per person - doesn't need to be a joint photo",
+          "300dpi quality preferred for best results",
+          "We'll notify you if we need adjusted images"
+        ]
+      },
+      {
+        "id": "payment",
+        "title": "Payment",
+        "items": [
+          "After confirmation, you can pay via PayPal, bank transfer, or credit card",
+          "Payment link will be sent via email"
+        ]
+      }
+    ]
+  },
+  "orderForm": {
+    "successTitle": "Thank You for Your Order!",
+    "submitted": "Your order has been submitted successfully.",
+    "orderIdLabel": "Order ID:",
+    "contactWithin24h": "We will contact you within 24 hours to confirm your images.",
+    "newOrder": "New Order",
+    "nameLabel": "Your Name *",
+    "emailLabel": "Your Email *",
+    "productLabel": "Product *",
+    "productDigital": "Digital JPEG",
+    "productCanvas": "Canvas Print",
+    "canvasSizeLabel": "Size *",
+    "childNameLabel": "Child's Name",
+    "weeksLabel": "Weeks in Womb",
+    "shippingHeading": "Shipping Address *",
+    "shippingFullName": "Full Name *",
+    "shippingStreet": "Street *",
+    "shippingCity": "City *",
+    "shippingState": "State *",
+    "shippingPostalCode": "Postal Code *",
+    "shippingCountry": "Country *",
+    "ultrasoundLabel": "Upload Ultrasound Image *",
+    "referenceLabel": "Upload Reference Image",
+    "specialRequests": "Special Requests",
+    "fileTooLarge": "The file is larger than 15 MB. Please choose a smaller image.",
+    "fileType": "Only JPG, PNG, WebP or HEIC.",
+    "ultrasoundRequired": "Please upload an ultrasound image.",
+    "submitting": "Submitting...",
+    "submit": "Submit Order"
+  },
+  "common": {
+    "home": "Home",
+    "breadcrumb": "Breadcrumb",
+    "order": "Order",
+    "newTab": "(opens in new tab)"
+  },
+  "orderPage": {
+    "intro": "Upload your ultrasound image and place your order here."
+  },
+  "facts": {
+    "label": "Key facts",
+    "formats": "Formats",
+    "formatsValue": "Digital or canvas ({sizes} cm)",
+    "price": "Price",
+    "priceValue": "from {price}",
+    "delivery": "Delivery",
+    "deliveryValue": "about {weeks} weeks after payment",
+    "payment": "Payment",
+    "paymentValue": "PayPal, bank transfer, credit card",
+    "optional": "Optional",
+    "optionalValue": "Child's name and week of pregnancy"
   }
 }
