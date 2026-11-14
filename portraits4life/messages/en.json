@@ -25,19 +25,19 @@
     "priceLine": "Canvas from {price} | Delivery about {weeks} weeks after payment"
   },
   "howItWorks": {
-    "title": "Simple Process",
+    "title": "How it works",
     "steps": [
       {
-        "title": "Send Your Image",
-        "description": "Upload a clear ultrasound photo or personal portrait. We review it within 24 hours."
+        "title": "Upload your image",
+        "description": "Send me your clear ultrasound image."
       },
       {
-        "title": "Artistic Enhancement",
-        "description": "Our artist creates a beautiful enhanced version with color and artistic touches."
+        "title": "I edit it",
+        "description": "I turn it into a colourful work of art."
       },
       {
-        "title": "Receive & Enjoy",
-        "description": "Get your high-quality digital file or canvas print. Perfect keepsake for your home."
+        "title": "Receive canvas or file",
+        "description": "You get your print or the digital file."
       }
     ]
   },

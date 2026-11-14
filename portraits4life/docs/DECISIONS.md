@@ -81,6 +81,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-15: So funktioniert's, three steps (plan v3, step 6)
+
+- **Status:** done, wording pending client approval
+- **Decision:** The section is titled "So funktioniert's" (EN "How it works") with three steps: Bild hochladen, Ich bearbeite es, Leinwand oder Datei erhalten. Each step has a small icon (upload, edit, gift) in place of the number. The cards stay in one row on desktop and stack on phones. TODO(client): approve the wording (the EN wording is new).
+- **Why:** Plan v3 step 6: the process is three plain steps.
+- **Considered:** Keeping the numbered steps (rejected: the plan asks for icons).
+
 ## 2026-11-15: Examples as before and after pairs (plan v3, step 5)
 
 - **Status:** done, originals pending from the client

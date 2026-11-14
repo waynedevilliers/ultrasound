@@ -25,19 +25,19 @@
     "priceLine": "Leinwand ab {price} | Lieferung ca. {weeks} Wochen nach Zahlungseingang"
   },
   "howItWorks": {
-    "title": "Einfacher Prozess",
+    "title": "So funktioniert's",
     "steps": [
       {
         "title": "Bild hochladen",
-        "description": "Sende mir dein klares Ultraschallbild oder Portraitfoto. Wir prüfen es innerhalb von 24 Stunden."
+        "description": "Sende mir dein klares Ultraschallbild."
       },
       {
-        "title": "Künstlerische Bearbeitung",
-        "description": "Unser Künstler erstellt eine wunderschöne verbesserte Version mit Farben und künstlerischen Akzenten."
+        "title": "Ich bearbeite es",
+        "description": "Ich mache daraus ein farbiges Kunstwerk."
       },
       {
-        "title": "Genießen & Bewahren",
-        "description": "Erhalte deine hochauflösende Datei oder deinen Leinwanddruck. Das perfekte Erinnerungsstück."
+        "title": "Leinwand oder Datei erhalten",
+        "description": "Du bekommst deinen Druck oder die digitale Datei."
       }
     ]
   },
