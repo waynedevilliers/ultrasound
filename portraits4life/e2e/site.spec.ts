@@ -16,7 +16,7 @@ for (const path of pages) {
 test('mobile menu opens, navigates and closes', async ({ page, isMobile }) => {
   test.skip(!isMobile, 'mobile project only');
   await page.goto('/en');
-  const toggle = page.locator('header button[aria-controls]');
+  const toggle = page.locator('nav button[aria-controls]');
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
   await page.getByRole('navigation', { name: 'Main menu' }).last().getByRole('link', { name: 'Order' }).click();
