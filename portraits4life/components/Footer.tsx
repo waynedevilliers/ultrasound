@@ -2,8 +2,6 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import de from '@/messages/de.json';
-import en from '@/messages/en.json';
 import { getCopy, localeOf } from '@/lib/copy';
 import { footerRoutes, routeHref } from '@/content/routes';
 
