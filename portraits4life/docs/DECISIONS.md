@@ -125,6 +125,28 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Owner choice (option B): photos never pass through the order endpoint, so the request size limit does not apply, and each photo is stored once.
 - **Considered:** Email attachments (rejected: request size limit, mailbox copies of health-related photos).
 
+## 2026-11-14: Final check (Step 14)
+
+- **Status:** done, not ready to launch (see open items)
+- **Launch checklist results:**
+  - Build passes; prints the Next.js middleware deprecation warning (rename middleware.ts to proxy.ts): partial
+  - Every page in both languages: one h1, title, description and localised alt texts: pass (e2e)
+  - axe (WCAG 2.2 AA) on every page in both languages: pass (65 e2e tests)
+  - Mobile menu opens, navigates and closes: pass (e2e)
+  - No horizontal scroll at 375px: pass. At 320px: not verified (the headless browser used 347px)
+  - All internal links work; external links safe; mailto valid: pass (e2e crawl)
+  - Impressum and Datenschutz filled in: FAIL (placeholders until the operator gives details)
+  - Secrets not committed: pass (only .env.example is tracked). Secrets set on the host: not verified
+  - Security headers present: pass locally. On the live site: not verified
+  - Sitemap and robots respond: pass locally (sitemap empty until SITE_URL is set). Old URLs redirect: not applicable (no Wix redirects)
+  - Order form sends, uploads arrive, replies reach the right person: NOT VERIFIED (needs storage, email and database credentials and a Vercel deployment)
+  - Lighthouse budgets (mobile, local build): performance 0.93 and 0.95, accessibility 0.99, best practices 1 and 0.96, SEO 1, CLS 0, blocking time 87 and 117 ms: pass. LCP 3.1 s (landing) and 2.7 s (order) against 2.5 s: FAIL
+  - Decisions current; no open question blocks launch: FAIL (legal details, sender domain, SITE_URL, order flow test)
+- **Contrast (default states, from axe):** white on the brand pink about 4.6:1; brand pink on white about 4.6:1. axe passes every page.
+- **Noticed, not changed:** knip reports unused files (components/ui/button.tsx, components/ui/tabs.tsx, lib/db.ts), unused exports and some unused dependencies (class-variance-authority, tw-animate-css, shadcn, tailwindcss, @testing-library/user-event; the last three are used through configuration, so knip flags them falsely). dotenv is used by scripts/init-db.js but not declared. jscpd finds no duplicate code. The LCP element on phones is the body paragraph below the buttons.
+- **Why:** Owner plan, Step 14.
+- **Considered:** Moving the hero image above the paragraph on phones to speed up LCP (not done: it changes the agreed first screen; needs the owner's decision).
+
 ## 2026-11-14: Footer, SEO and legal (Step 13)
 
 - **Status:** done, with open items

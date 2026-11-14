@@ -156,3 +156,12 @@ for (const path of seoPages) {
     expect(jsonLd.some((text) => text.includes('"Organization"'))).toBe(true);
   });
 }
+
+for (const path of ['/de', '/de/order', '/en/impressum', '/de/impressum', '/en/datenschutz', '/de/datenschutz']) {
+  test(`${path} has no axe violations (WCAG 2.2 AA)`, async ({ page }) => {
+    await page.emulateMedia({ reducedMotion: 'reduce' });
+    await page.goto(path);
+    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+    expect(results.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
+  });
+}
