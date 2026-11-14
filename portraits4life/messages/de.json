@@ -124,9 +124,14 @@
     }
   },
   "gallery": {
-    "title": "Unsere Arbeiten",
+    "title": "Beispiele",
+    "before": "Vorher",
+    "after": "Nachher",
+    "placeholder": "Originalbild folgt",
     "alt1": "Künstlerisch bearbeitetes Ultraschallbild, Beispiel 1",
     "alt2": "Künstlerisch bearbeitetes Ultraschallbild, Beispiel 2",
+    "alt3": "Künstlerisch bearbeitetes Ultraschallbild, Beispiel 3",
+    "beforeAlt": "Originales Ultraschallbild, folgt in Kürze",
     "fullSizeAlt": "Vollbild",
     "close": "Schließen",
     "caption": "Sehe die Schönheit in jedem Detail. Verwandle dein Ultraschallbild in ein Kunstwerk."

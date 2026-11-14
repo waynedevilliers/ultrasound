@@ -81,6 +81,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-15: Examples as before and after pairs (plan v3, step 5)
+
+- **Status:** done, originals pending from the client
+- **Decision:** The examples section (anchor #beispiele, title "Beispiele" / "Examples") shows three pairs: the original ultrasound on the left ("Vorher" / "Before") and the artwork on the right ("Nachher" / "After"), at the same size. Until the client sends the originals, the left side is a marked placeholder ("Originalbild folgt" / "Original image to follow"). The artwork keeps the lightbox. TODO(client): originals for each pair, and approval of the placeholder wording.
+- **Why:** Plan v3 step 5: the before and after shows what the product does.
+- **Considered:** Hiding the pairs until the originals arrive (rejected: the section needs to show the offer now).
+
 ## 2026-11-15: Hero, intro and facts strip (plan v3, step 4)
 
 - **Status:** done, wording pending client approval

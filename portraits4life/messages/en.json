@@ -124,9 +124,14 @@
     }
   },
   "gallery": {
-    "title": "Our Work",
+    "title": "Examples",
+    "before": "Before",
+    "after": "After",
+    "placeholder": "Original image to follow",
     "alt1": "Artistically enhanced ultrasound image, example 1",
     "alt2": "Artistically enhanced ultrasound image, example 2",
+    "alt3": "Artistically enhanced ultrasound image, example 3",
+    "beforeAlt": "Original ultrasound image, to follow soon",
     "fullSizeAlt": "Full-size image",
     "close": "Close",
     "caption": "See the beauty in every detail. Transform your ultrasound into a work of art."
