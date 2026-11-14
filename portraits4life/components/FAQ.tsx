@@ -11,7 +11,7 @@ export default function FAQ() {
   const isDE = pathname.startsWith('/de');
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const contactRoute = routes.find((route) => route.id === 'contact');
-  const contactHref = contactRoute ? routeHref(isDE ? 'de' : 'en', contactRoute) : '#contact';
+  const contactHref = contactRoute ? routeHref(isDE ? 'de' : 'en', contactRoute) : '#kontakt';
 
   const faq = getCopy(localeOf(pathname)).faq;
   const faqItems = faq.items;
