@@ -68,7 +68,7 @@ export default function Header() {
           href={isDE ? '/de' : '/en'}
           className="flex items-center justify-center gap-3 py-4 hover:opacity-90 transition"
         >
-          <div className="w-12 h-12 sm:w-14 sm:h-14 relative">
+          <div className="w-16 h-16 sm:w-20 sm:h-20 relative">
             <Image
               src="/images/logo.avif"
               alt="Portraits 4 Life"
@@ -77,7 +77,7 @@ export default function Header() {
               className="w-full h-full object-contain"
             />
           </div>
-          <span className="font-display text-2xl sm:text-3xl font-bold text-ink whitespace-nowrap">
+          <span className="font-display text-3xl sm:text-4xl font-bold text-ink whitespace-nowrap">
             Portraits 4 Life
           </span>
         </a>
@@ -86,14 +86,14 @@ export default function Header() {
       <nav
         ref={navRef}
         aria-label={navLabel}
-        className="sticky top-0 z-50 bg-surface border-y border-line"
+        className="sticky top-0 z-50 bg-surface border-b border-line"
       >
         <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[var(--menu-bar-height)] flex items-center justify-center">
           <ul className="hidden lg:flex items-center gap-6">
             {links.map((link, index) => (
               <li key={link.id} className="flex items-center gap-6">
                 {index > 0 && (
-                  <span aria-hidden="true" className="text-field">
+                  <span aria-hidden="true" className="text-body">
                     |
                   </span>
                 )}
