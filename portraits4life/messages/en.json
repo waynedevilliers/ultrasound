@@ -269,5 +269,15 @@
       "Optionally personalised with your child's name and number of weeks in the womb."
     ],
     "title": "Your child's first image"
+  },
+  "about": {
+    "title": "About Portraits 4 Life",
+    "paragraphs": [
+      "Behind Portraits 4 Life is a small studio with one idea: a child’s first picture deserves more than a grey printout.",
+      "Every image is edited by hand. The colours follow the outline of the scan so the picture looks clear and warm.",
+      "On request, with your child’s name and the number of weeks in the womb."
+    ],
+    "photoPlaceholder": "Photo coming soon",
+    "photoAlt": "Portrait of the artist behind Portraits 4 Life"
   }
 }

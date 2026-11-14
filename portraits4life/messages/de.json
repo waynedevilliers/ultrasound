@@ -269,5 +269,15 @@
       "Auf Wunsch mit Namen deines Kindes und Anzahl der Wochen im Mutterleib."
     ],
     "title": "Die erste Aufnahme deines Kindes"
+  },
+  "about": {
+    "title": "Über Portraits 4 Life",
+    "paragraphs": [
+      "Hinter Portraits 4 Life steckt ein kleines Atelier mit einer Idee: Die erste Aufnahme eines Kindes verdient mehr als ein graues Blatt Papier.",
+      "Jedes Bild wird von Hand bearbeitet. Die Farben folgen den Konturen des Ultraschalls, damit die Aufnahme klar und warm wirkt.",
+      "Auf Wunsch mit Namen deines Kindes und der Anzahl der Wochen im Mutterleib."
+    ],
+    "photoPlaceholder": "Foto folgt",
+    "photoAlt": "Porträt der Künstlerin oder des Künstlers hinter Portraits 4 Life"
   }
 }
