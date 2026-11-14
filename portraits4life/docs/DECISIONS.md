@@ -79,14 +79,14 @@ One entry per decision someone could later question. Each entry: date, status (`
 Questions the owner has not answered yet. Remove an item and log the answer as a decision once answered.
 
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
-- Order form: attachments or upload-and-link: answered by the photo decision (2026-11-14, Step 10): upload-and-link.
+- Order form: attachments or upload-and-link: answered by the photo decision (2026-11-14, Step 11 part B): upload-and-link.
 
 ## 2026-11-14: Order form fixes after the step 11 review
 
 - **Status:** done
-- **Decision:** The form has `noValidate`, so the server's field messages show instead of the browser's bubbles. The error summary has `role="alert"` and takes focus after a failed submit. File size and type errors also mark the photo field. A stored photo that is missing or invalid on the server returns an issue for its field. The stub debug page at `app/[locale]/test` is removed. The submit button reads "Jetzt bestellen". Prettier 3.9.10 is a dev dependency (`npx prettier --check <files>`); no repo-wide format script, because 70 files are not formatted yet.
+- **Decision:** The form has `noValidate`, so the server's field messages show instead of the browser's bubbles. The error summary has `role="alert"` and takes focus after a failed submit. File size and type errors also mark the photo field. A stored photo that is missing or invalid on the server returns an issue for its field. The stub debug page at `app/[locale]/test` is removed. The submit button reads "Jetzt bestellen". Prettier 3.9.10 is a dev dependency (`npx prettier --check <files>`); no repo-wide format script, because 65 files are not formatted yet.
 - **Why:** Review of PR #29: field errors were not reachable in a browser, the summary was not announced, and some errors did not mark their field.
-- **Open:** Reformat the whole repo in its own step (about 70 files). The 429 rate-limit response still shows the generic message.
+- **Open:** Reformat the whole repo in its own step (65 files). The 429 rate-limit response still shows the generic message.
 - **Considered:** Adding a Prettier check script (rejected until the repo is formatted).
 
 ## 2026-11-14: Field-level errors on the order form (plan v3, step 11)

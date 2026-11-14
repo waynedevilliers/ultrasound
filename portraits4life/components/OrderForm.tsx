@@ -228,7 +228,7 @@ export default function OrderForm({
           ref={summaryRef}
           role="alert"
           tabIndex={-1}
-          className="p-4 bg-danger-soft border border-danger-edge rounded-lg text-danger-text focus:outline-none"
+          className="p-4 bg-danger-soft border border-danger-edge rounded-lg text-danger-text focus-visible:outline-2 focus-visible:outline-brand"
         >
           {error}
         </div>
