@@ -169,5 +169,44 @@
     ],
     "moreQuestions": "More questions?",
     "moreLink": "Get in touch"
+  },
+  "orderInfo": {
+    "title": "Information",
+    "sections": [
+      {
+        "id": "ultrasound",
+        "title": "Ultrasound Portraits",
+        "items": [
+          "Choose a clear ultrasound image - profile views work best",
+          "We notify you within 24 hours if the image is usable",
+          "If not suitable, you can resubmit another image at no extra cost"
+        ]
+      },
+      {
+        "id": "individual",
+        "title": "Individual Portraits",
+        "items": [
+          "Choose a clear photo of the person (300dpi preferred)",
+          "We confirm if the photo meets our quality requirements"
+        ]
+      },
+      {
+        "id": "couple",
+        "title": "Couple Portraits",
+        "items": [
+          "One profile photo per person - doesn't need to be a joint photo",
+          "300dpi quality preferred for best results",
+          "We'll notify you if we need adjusted images"
+        ]
+      },
+      {
+        "id": "payment",
+        "title": "Payment",
+        "items": [
+          "After confirmation, you can pay via PayPal, bank transfer, or credit card",
+          "Payment link will be sent via email"
+        ]
+      }
+    ]
   }
 }
