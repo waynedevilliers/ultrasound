@@ -80,3 +80,10 @@ test('hero shows heading, supporting line and primary button without scrolling (
     expect((box?.y ?? 0) + (box?.height ?? 0)).toBeLessThanOrEqual(667);
   }
 });
+
+test('the root address opens the German site', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'desktop project only');
+  await page.goto('/');
+  await expect(page).toHaveURL(/\/de$/);
+  await expect(page.locator('html')).toHaveAttribute('lang', 'de');
+});
