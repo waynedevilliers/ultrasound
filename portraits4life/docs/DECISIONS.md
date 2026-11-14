@@ -81,6 +81,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-14: Small logo in the sticky bar (Step 6b)
+
+- **Status:** done
+- **Decision:** A 40px logo sits at the left of the sticky bar, linking to the current language home page. Its space is always reserved, so the menu never moves. It is hidden (opacity 0, aria-hidden, not focusable) until the big logo leaves the viewport; an IntersectionObserver on the big logo sets it visible. Only opacity changes, over 200ms; with reduced motion the change is instant.
+- **Why:** Owner plan, Step 6b. The bar keeps the brand visible once the big logo has scrolled away.
+- **Considered:** A scroll listener (rejected by the plan: scroll listeners are not allowed in the navbar).
+
 ## 2026-11-13: Sticky menu bar instead of a shrinking header (Step 6a)
 
 - **Status:** done

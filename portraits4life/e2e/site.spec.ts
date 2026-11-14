@@ -57,3 +57,13 @@ test('order page has exactly one primary action (the submit button)', async ({ p
   await expect(page.locator('[data-variant="primary"]')).toHaveCount(1);
   await expect(page.locator('button[type="submit"][data-variant="primary"]')).toHaveCount(1);
 });
+
+test('small logo in the bar fades in after the big logo scrolls away', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'desktop project only');
+  await page.emulateMedia({ reducedMotion: 'reduce' });
+  await page.goto('/en');
+  const compact = page.getByTestId('compact-logo');
+  await expect(compact).toHaveCSS('opacity', '0');
+  await page.evaluate(() => window.scrollTo(0, 900));
+  await expect(compact).toHaveCSS('opacity', '1');
+});
