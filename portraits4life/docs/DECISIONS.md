@@ -115,6 +115,16 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Owner request. The German audience is the main one.
 - **Considered:** Detecting the browser language (rejected by the owner: German always starts).
 
+## 2026-11-14: Order photos: direct upload to private storage (Step 11, part B)
+
+- **Status:** done, not yet tested on a live deployment
+- **Decision:** Photos go straight from the browser to private Vercel Blob storage, using a short-lived upload token (`app/api/orders/upload`). The order is then sent as JSON with the stored paths (`app/api/orders`), which checks that each photo exists and passes the size and type rules. The emails contain signed links to our own route (`app/api/orders/files`), which serves a photo only with a valid, unexpired signature (30 days). Nothing is publicly linkable.
+- **Retention:** a daily cron (`app/api/cron/cleanup`, 03:00) deletes photos uploaded more than 30 days ago. Deviation: the plan says "30 days after the order is completed", but there is no completion status yet, so the count starts at upload.
+- **Deviations from the plan text:** mail is sent with Resend, so the variables are `RESEND_API_KEY`, `ORDER_FROM_EMAIL` and `ORDER_EMAIL` (not EMAIL_HOST and similar SMTP settings). The order is sent with a route handler, not a server action, because the upload needs its own token route anyway.
+- **Still open:** errors are listed above the submit button, not under each field. The rate limit is per server instance. Upload and sending need Blob, Resend, Postgres and a Vercel deployment to test end to end; the e2e tests cover the parts that work without them. The environment variables are listed in .env.example and must be set on Vercel, including CRON_SECRET for the cleanup job.
+- **Why:** Owner choice (option B): photos never pass through the order endpoint, so the request size limit does not apply, and each photo is stored once.
+- **Considered:** Email attachments (rejected: request size limit, mailbox copies of health-related photos).
+
 ## 2026-11-14: Layout system (Step 7)
 
 - **Status:** done

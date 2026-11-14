@@ -87,3 +87,21 @@ test('the root address opens the German site', async ({ page, isMobile }) => {
   await expect(page).toHaveURL(/\/de$/);
   await expect(page.locator('html')).toHaveAttribute('lang', 'de');
 });
+
+test('private order photos are not served without a valid signed link', async ({ request, isMobile }) => {
+  test.skip(isMobile, 'desktop project only');
+  const response = await request.get('/api/orders/files?p=orders/ultrasound-x&exp=1&sig=bad');
+  expect(response.status()).toBe(403);
+});
+
+test('the photo cleanup job refuses calls without the cron secret', async ({ request, isMobile }) => {
+  test.skip(isMobile, 'desktop project only');
+  const response = await request.get('/api/cron/cleanup');
+  expect(response.status()).toBe(403);
+});
+
+test('the order endpoint rejects a request that is not JSON', async ({ request, isMobile }) => {
+  test.skip(isMobile, 'desktop project only');
+  const response = await request.post('/api/orders', { data: 'not json', headers: { 'Content-Type': 'text/plain' } });
+  expect(response.status()).toBe(400);
+});

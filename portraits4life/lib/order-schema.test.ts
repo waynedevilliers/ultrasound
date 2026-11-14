@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { MAX_IMAGE_BYTES, orderFieldsSchema, validateImageFile } from './order-schema';
+import { MAX_IMAGE_BYTES, orderFieldsSchema, orderSubmitSchema, validateImageFile, validateStoredImage } from './order-schema';
 
 const digital = {
   name: 'Anna',
@@ -69,5 +69,39 @@ describe('validateImageFile', () => {
   it('accepts a small JPEG', () => {
     const jpg = new File(['x'], 'scan.jpg', { type: 'image/jpeg' });
     expect(validateImageFile(jpg, true)).toBeNull();
+  });
+});
+
+describe('orderSubmitSchema', () => {
+  const base = { ...digital, website: '', ultrasoundPath: 'orders/ultrasound-abc123', referencePath: '' };
+
+  it('accepts an order with a stored photo path', () => {
+    expect(orderSubmitSchema.safeParse(base).success).toBe(true);
+  });
+
+  it('rejects a photo path outside the orders folder', () => {
+    expect(orderSubmitSchema.safeParse({ ...base, ultrasoundPath: '../secrets' }).success).toBe(false);
+  });
+
+  it('rejects a missing ultrasound photo path', () => {
+    expect(orderSubmitSchema.safeParse({ ...base, ultrasoundPath: '' }).success).toBe(false);
+  });
+
+  it('still enforces the field rules', () => {
+    expect(orderSubmitSchema.safeParse({ ...base, email: 'bad' }).success).toBe(false);
+  });
+});
+
+describe('validateStoredImage', () => {
+  it('accepts a stored JPEG within the limit', () => {
+    expect(validateStoredImage({ size: 1024, contentType: 'image/jpeg' })).toBeNull();
+  });
+
+  it('rejects a stored file over 15 MB', () => {
+    expect(validateStoredImage({ size: MAX_IMAGE_BYTES + 1, contentType: 'image/png' })).toBe('Image is larger than 15 MB');
+  });
+
+  it('rejects a stored file that is not an allowed image', () => {
+    expect(validateStoredImage({ size: 10, contentType: 'application/pdf' })).toBe('Image must be JPG, PNG, WebP or HEIC');
   });
 });
