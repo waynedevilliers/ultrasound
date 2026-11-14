@@ -165,3 +165,13 @@ for (const path of ['/de', '/de/order', '/en/impressum', '/de/impressum', '/en/d
     expect(results.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
   });
 }
+
+test('order page heading and intro are in one language per locale', async ({ page, isMobile }) => {
+  test.skip(isMobile, 'desktop project only');
+  await page.goto('/en/order');
+  await expect(page.locator('h1')).toHaveText('Order');
+  await expect(page.getByText('Upload your ultrasound image and place your order here.')).toBeVisible();
+  await page.goto('/de/order');
+  await expect(page.locator('h1')).toHaveText('Bestellen');
+  await expect(page.getByText('Hier können Sie Ihr Ultraschallbild hochladen und Ihre Bestellung aufgeben.')).toBeVisible();
+});

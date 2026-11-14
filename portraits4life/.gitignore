@@ -48,3 +48,9 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /lighthouse-reports/
+
+# Local reference screenshots (not part of the site)
+/public/screenshots/
+# Lighthouse CI output
+/.lighthouseci/
+/lighthouse-reports/
