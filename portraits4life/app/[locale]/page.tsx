@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import FactsBox from '@/components/FactsBox';
+import IntroSection from '@/components/IntroSection';
 import HowItWorks from '@/components/HowItWorks';
 import Gallery from '@/components/Gallery';
 import PricingTiers from '@/components/PricingTiers';
@@ -29,6 +30,7 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <main className="flex-1">
         <Hero />
         <FactsBox />
+        <IntroSection />
         <Reveal>
           <HowItWorks />
         </Reveal>

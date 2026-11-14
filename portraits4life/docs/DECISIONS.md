@@ -81,6 +81,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-15: Hero, intro and facts strip (plan v3, step 4)
+
+- **Status:** done, wording pending client approval
+- **Decision:** The hero shows the heading, a supporting line that names the offer, three benefit points with check icons, "Jetzt bestellen" (primary) and "Beispiele ansehen" (secondary, to the examples section), and the price line under the buttons (price from formatPrice). The emotional text moved to an intro section directly under the facts strip, ending with the primary order button. The facts strip is a slim strip with four items (price, delivery, payment, formats), no card borders or shadows, one row on desktop and two columns below. "Optional" is removed; it is a hero benefit. The language switch is plain text "DE | EN" with the current language underlined. On phones the bar shows a small "Bestellen" button next to the menu button, hidden on the order page.
+- **Why:** Plan v3 step 4: the first screen names the offer and the price, and the order button is one tap away.
+- **Considered:** Keeping the pill language switch (rejected: it competes with the order button).
+
 ## 2026-11-15: One price format and a text logo in the bar (plan v3, step 3)
 
 - **Status:** done

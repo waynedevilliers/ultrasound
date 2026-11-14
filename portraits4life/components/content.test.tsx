@@ -2,6 +2,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Hero from './Hero';
 import Gallery from './Gallery';
+import IntroSection from './IntroSection';
 
 const path = { current: '/en' };
 vi.mock('next/navigation', () => ({ usePathname: () => path.current }));
@@ -13,24 +14,23 @@ vi.mock('next/image', () => ({
   },
 }));
 
-describe('Hero copy', () => {
-  it('renders the supporting sentence exactly once (English)', () => {
+describe('Hero and intro copy', () => {
+  it('renders the supporting line exactly once (English)', () => {
     path.current = '/en';
     render(<Hero />);
-    expect(screen.getAllByText('A tiny black-and-white ultrasound photo is a thing of the past.')).toHaveLength(1);
+    expect(screen.getAllByText("I turn your child's ultrasound image into a colourful work of art, as a digital file or on canvas.")).toHaveLength(1);
   });
 
-  it('renders the supporting sentence exactly once (German)', () => {
+  it('renders the supporting line exactly once (German)', () => {
     path.current = '/de';
     render(<Hero />);
-    expect(screen.getAllByText('Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern.')).toHaveLength(1);
-    expect(screen.queryByText(/Ein schwarz-weißes Ultraschallbild im Miniformat/, { selector: 'div' })).toBeNull();
+    expect(screen.getAllByText('Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk, digital oder auf Leinwand.')).toHaveLength(1);
   });
 
-  it('does not repeat the removed first sentence in the body copy', () => {
+  it('shows the intro sentence once, in the intro section only', () => {
     path.current = '/de';
-    const { container } = render(<Hero />);
-    expect(container.textContent?.split('Ein schwarz-weißes Ultraschallbild im Miniformat').length).toBe(2);
+    render(<><Hero /><IntroSection /></>);
+    expect(screen.getAllByText(/Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern\./)).toHaveLength(1);
   });
 });
 

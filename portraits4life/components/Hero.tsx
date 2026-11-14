@@ -4,11 +4,25 @@ import Image from 'next/image';
 import ActionLink from '@/components/ActionLink';
 import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
+import { canvasProduct, lowestPrice } from '@/content/products';
+import { formatPrice } from '@/lib/price';
 
+const check = (
+  <svg className="h-5 w-5 shrink-0 text-brand" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24" aria-hidden="true">
+    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+  </svg>
+);
+
+// TODO(client): approve the supporting line, the three benefit points and the price line (DE and EN; the EN wording is new).
 export default function Hero() {
   const pathname = usePathname();
-  const isDE = pathname.startsWith('/de');
-  const { hero } = getCopy(localeOf(pathname));
+  const locale = localeOf(pathname);
+  const isDE = locale === 'de';
+  const { hero } = getCopy(locale);
+  const price = formatPrice(lowestPrice(), locale);
+  const priceLine = hero.priceLine
+    .replace('{price}', price)
+    .replace('{weeks}', String(canvasProduct.deliveryWeeksMax));
 
   return (
     <section className="bg-gradient-to-b from-hero to-surface">
@@ -19,22 +33,29 @@ export default function Hero() {
               {hero.headline}
             </h1>
 
-            <p className="text-[1.125rem] min-[600px]:text-[1.25rem] text-body leading-relaxed max-w-[640px] mb-8">
+            <p className="text-[1.125rem] min-[600px]:text-[1.25rem] text-body leading-relaxed max-w-[640px] mb-6">
               {hero.supporting}
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-8">
+            <ul className="mb-8 space-y-2">
+              {hero.benefits.map((benefit) => (
+                <li key={benefit} className="flex items-center gap-3 text-base text-body">
+                  {check}
+                  <span>{benefit}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col sm:flex-row gap-4 mb-4">
               <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
                 {hero.cta_order}
               </ActionLink>
-              <ActionLink href={isDE ? '/de#pricing' : '/en#pricing'} variant="secondary">
-                {hero.cta_formats}
+              <ActionLink href={isDE ? '/de#beispiele' : '/en#beispiele'} variant="secondary">
+                {hero.cta_examples}
               </ActionLink>
             </div>
 
-            <div className="reading-column text-base text-copy leading-relaxed whitespace-pre-line">
-              {hero.bodyRest}
-            </div>
+            <p className="text-base text-copy">{priceLine}</p>
           </div>
 
           <div className="relative h-96 lg:h-96 min-w-0">
