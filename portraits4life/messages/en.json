@@ -55,6 +55,14 @@
     "canvas": {
       "title": "Canvas Prints",
       "delivery": "1 - 2 Weeks Delivery"
+    },
+    "orderFormat": "Order this format",
+    "payment": "Payment: PayPal, bank transfer, credit card",
+    "deliveryLine": "Delivery: about {weeks} weeks after payment",
+    "imageAlt": {
+      "canvasGallery": "Ultrasound artwork as a canvas print in a gallery wall",
+      "canvasPortrait": "Ultrasound portrait on canvas with neon light",
+      "canvasSizes": "Comparison of canvas sizes 30, 40 and 50 cm"
     }
   },
   "contact": {

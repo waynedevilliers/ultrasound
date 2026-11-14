@@ -8,14 +8,22 @@ import JsonLd from '@/components/JsonLd';
 import { getCopy } from '@/lib/copy';
 import { pageMetadata, seoCopy, SITE_URL } from '@/lib/metadata';
 import { breadcrumbJsonLd, organizationJsonLd } from '@/lib/structured-data';
+import { parseFormatParam } from '@/lib/format-param';
 
 export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
   const { locale } = await params;
   return pageMetadata({ locale, path: '/order', ...seoCopy(locale, 'order') });
 }
 
-export default async function OrderPage({ params }: { params: Promise<{ locale: string }> }) {
+export default async function OrderPage({
+  params,
+  searchParams,
+}: {
+  params: Promise<{ locale: string }>;
+  searchParams: Promise<{ format?: string }>;
+}) {
   const { locale } = await params;
+  const { format } = await searchParams;
   const copy = getCopy(locale === 'de' ? 'de' : 'en');
   const home = { label: copy.common.home, href: `/${locale}` };
   return (
@@ -38,7 +46,7 @@ export default async function OrderPage({ params }: { params: Promise<{ locale: 
           <p className="text-center text-copy mb-12 max-w-2xl mx-auto">{copy.orderPage.intro}</p>
 
           <div className="bg-surface rounded-lg shadow-lg p-8 mb-12">
-            <OrderForm />
+            <OrderForm initialFormat={parseFormatParam(format)} />
           </div>
 
           <OrderInfo />
