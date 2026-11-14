@@ -81,6 +81,17 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-14: Images and content blocks (Step 10)
+
+- **Status:** done, with one open item
+- **Decision:** Every image has an alt text in German and English (hero, gallery and the lightbox). Gallery and hero images have a sizes attribute and load lazily, except the hero, which keeps its priority loading. The lightbox close button has a screen reader label. Image sizes checked: no source image is over 500 KB (largest is 55 KB, public/images/ultrasound.avif), so nothing needs recompressing. The hero supporting sentence is no longer repeated in the body copy (unit tested).
+- **Open items:**
+  - No new image-and-text sections were added: they would need copy that does not exist yet.
+  - public/screenshots/image.png is a reference screenshot inside public/, so it is served to visitors. It should move out of public/ (not changed without asking).
+  - The gallery alt texts are generic; the client may refine them (TODO(client)).
+- **Why:** Owner plan, Step 10.
+- **Considered:** Writing new image-and-text copy (rejected: content is the client's to supply).
+
 ## 2026-11-14: Facts box under the hero (Step 9)
 
 - **Status:** done

@@ -4,7 +4,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 
-// TODO(client): alt texts for the example images are generic; describe each artwork in German and English.
+// TODO(client): the alt texts describe the artwork in general; the client may refine them for each image.
 export default function Gallery() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
@@ -26,8 +26,9 @@ export default function Gallery() {
           >
             <Image
               src="/images/ultrasound2.avif"
-              alt="Ultrasound artwork example 1"
+              alt={isDE ? 'Künstlerisch bearbeitetes Ultraschallbild, Beispiel 1' : 'Artistically enhanced ultrasound image, example 1'}
               fill
+              sizes="(min-width: 768px) 50vw, 100vw"
               className="object-cover hover:scale-105 transition duration-300"
             />
           </div>
@@ -38,8 +39,9 @@ export default function Gallery() {
           >
             <Image
               src="/images/ultrasound3.avif"
-              alt="Ultrasound artwork example 2"
+              alt={isDE ? 'Künstlerisch bearbeitetes Ultraschallbild, Beispiel 2' : 'Artistically enhanced ultrasound image, example 2'}
               fill
+              sizes="(min-width: 768px) 50vw, 100vw"
               className="object-cover hover:scale-105 transition duration-300"
             />
           </div>
@@ -53,15 +55,17 @@ export default function Gallery() {
             <div className="relative w-full h-full max-w-4xl max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
               <Image
                 src={selectedImage}
-                alt="Full size image"
+                alt={isDE ? 'Vollbild' : 'Full-size image'}
                 fill
+                sizes="100vw"
                 className="object-contain"
               />
               <button
                 onClick={() => setSelectedImage(null)}
                 className="absolute top-4 right-4 bg-surface text-black rounded-full w-10 h-10 flex items-center justify-center hover:bg-surface-strong transition"
               >
-                ✕
+                <span aria-hidden="true">✕</span>
+                <span className="sr-only">{isDE ? 'Schließen' : 'Close'}</span>
               </button>
             </div>
           </div>
