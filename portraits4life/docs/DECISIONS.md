@@ -88,6 +88,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Reviewer findings on feat/faq: screen readers could not tell open from closed, and a heading inside a button is not valid markup.
 - **Considered:** Keeping the answers out of the DOM when closed (rejected: aria-controls needs the panel to exist).
 
+## 2026-11-14: Final call to action with id kontakt (plan v3, step 10)
+
+- **Status:** done, copy pending client approval
+- **Decision:** The closing section keeps its place and gets the id `kontakt`. It shows the heading "Bereit für dein Kunstwerk?", the existing short text, the email as plain text, and one primary button "Jetzt bestellen" to the order page. The menu entry Kontakt and the FAQ contact link point to #kontakt.
+- **Why:** Plan v3 step 10: one clear action at the end of the page, and the menu item still works.
+- **Considered:** A mailto button (rejected: the order page is the main action; the email stays visible as text).
+
 ## 2026-11-15: Five menu items, the rest reached by scrolling (owner request)
 
 - **Status:** done
@@ -280,8 +287,8 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 ## 2026-11-13: One button component and one primary action (Step 5)
 
 - **Status:** done
-- **Decision:** `components/ActionLink.tsx` is the only button style. Primary is filled brand; secondary is outlined brand with a 1.5px border. Internal paths use next/link, anchors and mailto use plain links, external URLs open in a new tab with rel noopener noreferrer, an icon and screen reader text. Each page has one primary action: the landing page has "Order now" in the hero; the order page has the submit button. Other buttons on the landing page are secondary.
-- **Changes:** the hero secondary button moved from dark to brand outline; the contact button on the landing page became secondary and its label is now "Contact me".
+- **Decision:** `components/ActionLink.tsx` is the only button style. Primary is filled brand; secondary is outlined brand with a 1.5px border. Internal paths use next/link, anchors and mailto use plain links, external URLs open in a new tab with rel noopener noreferrer, an icon and screen reader text. Each page has one primary action: the same primary button may repeat, but every primary button on a page leads to the order page (landing: hero, intro and closing section; order page: the submit button). Other buttons on the landing page are secondary.
+- **Changes:** the hero secondary button moved from dark to brand outline. The contact button on the landing page was made secondary as "Contact me"; from 2026-11-14 (Step 10) the closing section is primary "Jetzt bestellen" again, as the rule above allows.
 - **Contrast:** white on pink-600 about 4.6:1; pink-600 on white about 4.6:1. Both pass 4.5:1 in the default state; axe passes both pages. The hover shade (pink-700) is not measured separately.
 - **Why:** Owner plan, Step 5: one primary action per page.
 - **Considered:** Keeping the old dark secondary (rejected: the plan asks for the accent colour).

@@ -15,6 +15,10 @@ Your job is to find problems, not to fix them.
   npm run type-check, npm test -- run, npm run build, npm audit,
   npm outdated, npx knip, npx jscpd, ls. Never install packages, never
   commit, never push.
+* Run every npm command on Node 22 (see .nvmrc). Node 20 cannot run
+  the test suite (ERR_REQUIRE_ESM in jsdom). Check `node -v` first;
+  if it is not 22.x, switch with nvm before running checks, and say so
+  in the report.
 * Use the script names from package.json. If a documented script does
   not exist, report it as a finding instead of guessing another name.
 * Before reviewing, read CLAUDE.md, AGENTS.md, docs/DECISIONS.md,
@@ -78,11 +82,21 @@ Your job is to find problems, not to fix them.
 9. Documentation
    * README is accurate: actually run the documented commands
    * DECISIONS.md up to date; list every TODO(client) and
-     PLACEHOLDER(client), and every link to luiseschwarze.wixsite.com
+     PLACEHOLDER(client)
 10. Consistency with recorded decisions
    * Nothing in docs/DECISIONS.md has been undone: colors unchanged,
      no dropdown menus, sticky menu bar (no shrinking header), one
-     primary button per page
+     action per page (the same primary button may repeat, no other
+     action is primary)
+
+11. Product page (sales logic)
+   * Hero shows the offer, a primary order button, and price plus
+     delivery time next to it
+   * Every landing page section leads to the same order action
+   * Order button reachable in one tap on mobile (sticky bar)
+   * No invented reviews, testimonials or numbers; prices consistent
+     everywhere
+
 
 ## Output
 Write docs/reviews/YYYY-MM-DD-review.md containing:
