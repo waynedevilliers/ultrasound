@@ -70,3 +70,23 @@ export function validateImageFile(file: FormDataEntryValue | null, required: boo
   }
   return null;
 }
+
+// Photos are uploaded to storage first; the order then carries their paths.
+const storedPath = z.string().regex(/^orders\/[A-Za-z0-9._-]+$/, 'Invalid file path').max(200);
+
+export const orderSubmitSchema = z.intersection(
+  orderFieldsSchema,
+  z.object({
+    ultrasoundPath: storedPath,
+    referencePath: z.string().max(200).default(''),
+  })
+);
+
+export type OrderSubmit = z.infer<typeof orderSubmitSchema>;
+
+// Checks a stored photo's metadata on the server. Returns an error message, or null when valid.
+export function validateStoredImage(meta: { size: number; contentType: string }): string | null {
+  if (meta.size > MAX_IMAGE_BYTES) return 'Image is larger than 15 MB';
+  if (!ALLOWED_IMAGE_TYPES.includes(meta.contentType)) return 'Image must be JPG, PNG, WebP or HEIC';
+  return null;
+}

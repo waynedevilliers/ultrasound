@@ -5,6 +5,7 @@ import { canvasSizes } from '@/content/products';
 import { buttonClasses } from '@/components/ActionLink';
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/order-schema';
 import { usePathname } from 'next/navigation';
+import { upload } from '@vercel/blob/client';
 
 export default function OrderForm() {
   const pathname = usePathname();
@@ -65,55 +66,66 @@ export default function OrderForm() {
     }));
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  // Photos go straight from the browser to private storage. The order then carries only their paths.
+  const uploadPhoto = async (file: File, prefix: string): Promise<string> => {
+    const stored = await upload(`orders/${prefix}`, file, {
+      access: 'private',
+      handleUploadUrl: '/api/orders/upload',
+      contentType: file.type,
+    });
+    return stored.pathname;
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
     setError('');
 
     try {
-      const submitFormData = new FormData();
-
-      // Basic fields
-      submitFormData.append('name', formData.name);
-      submitFormData.append('email', formData.email);
-      submitFormData.append('product', formData.product);
-
-      if (formData.product === 'canvas') {
-        submitFormData.append('canvasSize', formData.canvasSize);
-        submitFormData.append('shippingFullName', formData.shippingFullName);
-        submitFormData.append('shippingStreet', formData.shippingStreet);
-        submitFormData.append('shippingCity', formData.shippingCity);
-        submitFormData.append('shippingState', formData.shippingState);
-        submitFormData.append('shippingPostalCode', formData.shippingPostalCode);
-        submitFormData.append('shippingCountry', formData.shippingCountry);
+      if (!files.ultrasound) {
+        throw new Error(isDE ? 'Bitte lade ein Ultraschallbild hoch.' : 'Please upload an ultrasound image.');
       }
-
-      submitFormData.append('childName', formData.childName);
-      submitFormData.append('weeksInWomb', formData.weeksInWomb);
-      submitFormData.append('specialRequests', formData.specialRequests);
 
       // Honeypot: hidden from visitors, must stay empty.
-      const honeypot = ((e.currentTarget as HTMLFormElement).elements.namedItem('website') as HTMLInputElement | null)?.value ?? '';
-      submitFormData.append('website', honeypot);
+      const honeypot = (e.currentTarget.elements.namedItem('website') as HTMLInputElement | null)?.value ?? '';
 
-      // Files
-      if (files.ultrasound) {
-        submitFormData.append('ultrasoundImage', files.ultrasound);
-      }
-      if (files.reference) {
-        submitFormData.append('referenceImage', files.reference);
-      }
+      const ultrasoundPath = await uploadPhoto(files.ultrasound, 'ultrasound');
+      const referencePath = files.reference ? await uploadPhoto(files.reference, 'reference') : '';
+
+      const payload = {
+        name: formData.name,
+        email: formData.email,
+        product: formData.product,
+        childName: formData.childName,
+        weeksInWomb: formData.weeksInWomb,
+        specialRequests: formData.specialRequests,
+        website: honeypot,
+        ultrasoundPath,
+        referencePath,
+        ...(formData.product === 'canvas'
+          ? {
+              canvasSize: formData.canvasSize,
+              shippingFullName: formData.shippingFullName,
+              shippingStreet: formData.shippingStreet,
+              shippingCity: formData.shippingCity,
+              shippingState: formData.shippingState,
+              shippingPostalCode: formData.shippingPostalCode,
+              shippingCountry: formData.shippingCountry,
+            }
+          : {}),
+      };
 
       const response = await fetch('/api/orders', {
         method: 'POST',
-        body: submitFormData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
       });
 
       const data = await response.json();
 
       if (!response.ok) {
         const details = Array.isArray(data.issues) ? data.issues.map((issue: { message: string }) => issue.message).join(' ') : '';
-        throw new Error(details || data.error || 'Failed to submit order');
+        throw new Error(details || data.message || data.error || 'Failed to submit order');
       }
 
       setOrderId(data.orderId);
@@ -191,7 +203,7 @@ export default function OrderForm() {
         </label>
         <input id="name"
           type="text"
-          name="name"
+          name="name" autoComplete="name"
           value={formData.name}
           onChange={handleChange}
           required
@@ -205,7 +217,7 @@ export default function OrderForm() {
         </label>
         <input id="email"
           type="email"
-          name="email"
+          name="email" autoComplete="email"
           value={formData.email}
           onChange={handleChange}
           required
@@ -288,7 +300,7 @@ export default function OrderForm() {
             </label>
             <input id="shippingFullName"
               type="text"
-              name="shippingFullName"
+              name="shippingFullName" autoComplete="name"
               value={formData.shippingFullName}
               onChange={handleChange}
               required
@@ -302,7 +314,7 @@ export default function OrderForm() {
             </label>
             <input id="shippingStreet"
               type="text"
-              name="shippingStreet"
+              name="shippingStreet" autoComplete="street-address"
               value={formData.shippingStreet}
               onChange={handleChange}
               required
@@ -317,7 +329,7 @@ export default function OrderForm() {
               </label>
               <input id="shippingCity"
                 type="text"
-                name="shippingCity"
+                name="shippingCity" autoComplete="address-level2"
                 value={formData.shippingCity}
                 onChange={handleChange}
                 required
@@ -330,7 +342,7 @@ export default function OrderForm() {
               </label>
               <input id="shippingState"
                 type="text"
-                name="shippingState"
+                name="shippingState" autoComplete="address-level1"
                 value={formData.shippingState}
                 onChange={handleChange}
                 required
@@ -346,7 +358,7 @@ export default function OrderForm() {
               </label>
               <input id="shippingPostalCode"
                 type="text"
-                name="shippingPostalCode"
+                name="shippingPostalCode" autoComplete="postal-code"
                 value={formData.shippingPostalCode}
                 onChange={handleChange}
                 required
@@ -359,7 +371,7 @@ export default function OrderForm() {
               </label>
               <input id="shippingCountry"
                 type="text"
-                name="shippingCountry"
+                name="shippingCountry" autoComplete="country-name"
                 value={formData.shippingCountry}
                 onChange={handleChange}
                 required
