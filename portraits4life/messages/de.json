@@ -5,7 +5,11 @@
     "order": "Bestellen",
     "formats": "Formate",
     "contact": "Kontakt",
-    "language": "DE"
+    "mainMenu": "Hauptmenü",
+    "switchLanguage": "EN",
+    "switchLanguageLabel": "Sprache auf Englisch wechseln",
+    "openMenu": "Menü öffnen",
+    "closeMenu": "Menü schließen"
   },
   "hero": {
     "headline": "ULTRASOUND ART",
