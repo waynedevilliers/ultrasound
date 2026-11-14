@@ -6,6 +6,7 @@ import IntroSection from '@/components/IntroSection';
 import HowItWorks from '@/components/HowItWorks';
 import Gallery from '@/components/Gallery';
 import PricingTiers from '@/components/PricingTiers';
+import About from '@/components/About';
 import FAQ from '@/components/FAQ';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
@@ -39,6 +40,9 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
         </Reveal>
         <Reveal>
           <PricingTiers />
+        </Reveal>
+        <Reveal>
+          <About locale={locale} />
         </Reveal>
         <Reveal>
           <FAQ />

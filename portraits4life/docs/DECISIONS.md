@@ -81,6 +81,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-15: About section with photo placeholder (plan v3, step 8)
+
+- **Status:** done, copy and photo pending client
+- **Decision:** A short "Über" section between the pricing cards and the FAQ: a photo frame (placeholder text until the photo arrives, with alt text) beside a title and three short paragraphs. The copy is a neutral draft written from the brand, not the artist's own story (TODO(client)).
+- **Why:** Plan v3 step 8: parents should know who makes the artwork.
+- **Considered:** Putting the artist note in the footer (rejected: too little room for a personal note).
+
 ## 2026-11-15: Formats link to the order form (plan v3, step 7)
 
 - **Status:** done, wording pending client approval
