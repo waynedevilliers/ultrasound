@@ -136,5 +136,13 @@
       "title": "Privacy Policy – Portraits 4 Life",
       "description": "How personal data is handled."
     }
+  },
+  "gallery": {
+    "title": "Our Work",
+    "alt1": "Artistically enhanced ultrasound image, example 1",
+    "alt2": "Artistically enhanced ultrasound image, example 2",
+    "fullSizeAlt": "Full-size image",
+    "close": "Close",
+    "caption": "See the beauty in every detail. Transform your ultrasound into a work of art."
   }
 }

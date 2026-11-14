@@ -3,11 +3,12 @@
 import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { getCopy, localeOf } from '@/lib/copy';
 
 // TODO(client): the alt texts describe the artwork in general; the client may refine them for each image.
 export default function Gallery() {
   const pathname = usePathname();
-  const isDE = pathname.startsWith('/de');
+  const { gallery } = getCopy(localeOf(pathname));
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
 
   return (
@@ -16,7 +17,7 @@ export default function Gallery() {
         <h2
           className="font-display heading-xl font-bold text-center mb-16 text-ink"
         >
-          {isDE ? 'Unsere Arbeiten' : 'Our Work'}
+          {gallery.title}
         </h2>
 
         <div className="grid md:grid-cols-2 gap-12 items-center">
@@ -26,7 +27,7 @@ export default function Gallery() {
           >
             <Image
               src="/images/ultrasound2.avif"
-              alt={isDE ? 'Künstlerisch bearbeitetes Ultraschallbild, Beispiel 1' : 'Artistically enhanced ultrasound image, example 1'}
+              alt={gallery.alt1}
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
               className="object-cover hover:scale-105 transition duration-300"
@@ -39,7 +40,7 @@ export default function Gallery() {
           >
             <Image
               src="/images/ultrasound3.avif"
-              alt={isDE ? 'Künstlerisch bearbeitetes Ultraschallbild, Beispiel 2' : 'Artistically enhanced ultrasound image, example 2'}
+              alt={gallery.alt2}
               fill
               sizes="(min-width: 768px) 50vw, 100vw"
               className="object-cover hover:scale-105 transition duration-300"
@@ -55,7 +56,7 @@ export default function Gallery() {
             <div className="relative w-full h-full max-w-4xl max-h-[90vh]" onClick={(e) => e.stopPropagation()}>
               <Image
                 src={selectedImage}
-                alt={isDE ? 'Vollbild' : 'Full-size image'}
+                alt={gallery.fullSizeAlt}
                 fill
                 sizes="100vw"
                 className="object-contain"
@@ -65,7 +66,7 @@ export default function Gallery() {
                 className="absolute top-4 right-4 bg-surface text-black rounded-full w-10 h-10 flex items-center justify-center hover:bg-surface-strong transition"
               >
                 <span aria-hidden="true">✕</span>
-                <span className="sr-only">{isDE ? 'Schließen' : 'Close'}</span>
+                <span className="sr-only">{gallery.close}</span>
               </button>
             </div>
           </div>
@@ -73,11 +74,7 @@ export default function Gallery() {
 
         <div className="mt-12 text-center">
           <p className="text-xl text-copy">
-            {isDE ? (
-              'Sehe die Schönheit in jedem Detail. Verwandle dein Ultraschallbild in ein Kunstwerk.'
-            ) : (
-              'See the beauty in every detail. Transform your ultrasound into a work of art.'
-            )}
+            {gallery.caption}
           </p>
         </div>
       </div>

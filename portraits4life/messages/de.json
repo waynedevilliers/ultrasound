@@ -136,5 +136,13 @@
       "title": "Datenschutz – Portraits 4 Life",
       "description": "Informationen zum Umgang mit personenbezogenen Daten."
     }
+  },
+  "gallery": {
+    "title": "Unsere Arbeiten",
+    "alt1": "Künstlerisch bearbeitetes Ultraschallbild, Beispiel 1",
+    "alt2": "Künstlerisch bearbeitetes Ultraschallbild, Beispiel 2",
+    "fullSizeAlt": "Vollbild",
+    "close": "Schließen",
+    "caption": "Sehe die Schönheit in jedem Detail. Verwandle dein Ultraschallbild in ein Kunstwerk."
   }
 }
