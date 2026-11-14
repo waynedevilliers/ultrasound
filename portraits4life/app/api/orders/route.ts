@@ -11,8 +11,7 @@ import { buildFileLink } from '@/lib/signed-link';
 const DEFAULT_FROM = 'onboarding@resend.dev';
 const DEFAULT_ORDER_EMAIL = 'portraits4life.art@gmail.com';
 const LINK_TTL_MS = 30 * 24 * 60 * 60 * 1000;
-// TODO(client): set SITE_URL to the live domain; the default only works in development.
-const SITE_URL = process.env.SITE_URL || 'http://localhost:3000';
+// TODO(client): set SITE_URL to the live domain so links stay stable; otherwise the request address is used.
 
 function clientKey(request: NextRequest): string {
   const forwarded = request.headers.get('x-forwarded-for');
@@ -121,10 +120,11 @@ export async function POST(request: NextRequest) {
 
     const orderId = result.rows[0]?.id;
     const expires = Date.now() + LINK_TTL_MS;
+    const siteUrl = process.env.SITE_URL || new URL(request.url).origin;
     const secret = process.env.ORDER_LINK_SECRET;
     const links = {
-      ultrasound: buildFileLink(SITE_URL, order.ultrasoundPath, expires, secret),
-      reference: order.referencePath ? buildFileLink(SITE_URL, order.referencePath, expires, secret) : '',
+      ultrasound: buildFileLink(siteUrl, order.ultrasoundPath, expires, secret),
+      reference: order.referencePath ? buildFileLink(siteUrl, order.referencePath, expires, secret) : '',
     };
     const subject = `New Order #${orderId} - ${order.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`;
     const from = process.env.ORDER_FROM_EMAIL || DEFAULT_FROM;

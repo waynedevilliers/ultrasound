@@ -105,3 +105,38 @@ test('the order endpoint rejects a request that is not JSON', async ({ request, 
   const response = await request.post('/api/orders', { data: 'not json', headers: { 'Content-Type': 'text/plain' } });
   expect(response.status()).toBe(400);
 });
+
+const linkPages = ['/en', '/de', '/en/order', '/de/order', '/en/impressum', '/de/impressum', '/de/datenschutz', '/en/datenschutz'];
+
+for (const path of linkPages) {
+  test(`every link on ${path} works (internal, anchors, mailto, external)`, async ({ page, isMobile }) => {
+    test.skip(isMobile, 'desktop project only');
+    await page.goto(path);
+    const links = await page.$$eval('a[href]', (anchors) =>
+      anchors.map((a) => ({
+        href: a.getAttribute('href') ?? '',
+        target: a.getAttribute('target'),
+        rel: a.getAttribute('rel') ?? '',
+        hasId: (id: string) => Boolean(document.getElementById(id)),
+      }))
+    );
+    const broken: string[] = [];
+    for (const link of links) {
+      if (link.href.startsWith('mailto:')) {
+        if (!link.href.includes('@')) broken.push(`bad mailto: ${link.href}`);
+      } else if (link.href.startsWith('#')) {
+        const id = link.href.slice(1);
+        const exists = await page.evaluate((target) => Boolean(document.getElementById(target)), id);
+        if (!exists) broken.push(`missing anchor target: ${link.href}`);
+      } else if (link.href.startsWith('/')) {
+        const response = await page.request.get(link.href.split('#')[0]);
+        if (response.status() !== 200) broken.push(`${link.href} -> ${response.status()}`);
+      } else if (/^https?:\/\//.test(link.href)) {
+        if (link.target !== '_blank' || !link.rel.includes('noopener') || !link.rel.includes('noreferrer')) {
+          broken.push(`external link without safe attributes: ${link.href}`);
+        }
+      }
+    }
+    expect(broken).toEqual([]);
+  });
+}
