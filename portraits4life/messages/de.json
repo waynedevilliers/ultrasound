@@ -39,20 +39,18 @@
   "pricing": {
     "title": "Formate & Preise",
     "digital": {
-      "title": "Digital Download",
-      "resolution": "Hochauflösendes JPG",
-      "delivery": "Sofortige Zustellung"
+      "title": "Hochauflösendes digitales JPG",
+      "delivery": "1 Woche Lieferung",
+      "items": [
+        "Hochauflösende digitale Datei",
+        "Perfekt für digitale Bilderrahmen",
+        "Sofortige Bereitstellung nach Fertigstellung"
+      ]
     },
     "canvas": {
-      "title": "Leinwanddruck",
-      "size30": "30×30 cm",
-      "size40": "40×40 cm",
-      "size50": "50×50 cm",
-      "delivery": "~2 Wochen Lieferung"
-    },
-    "addons": "Optionale Extras",
-    "addon1": "Name deines Kindes hinzufügen",
-    "addon2": "Anzahl der Wochen im Mutterleib"
+      "title": "Leinwanddrucke",
+      "delivery": "1 - 2 Wochen Lieferung"
+    }
   },
   "contact": {
     "title": "Lass uns in Kontakt treten",

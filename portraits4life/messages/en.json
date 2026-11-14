@@ -39,20 +39,18 @@
   "pricing": {
     "title": "Formats & Pricing",
     "digital": {
-      "title": "Digital Download",
-      "resolution": "High-res JPG",
-      "delivery": "Instant Delivery"
+      "title": "High-Res Digital JPG",
+      "delivery": "1 Week Delivery",
+      "items": [
+        "High-resolution digital file",
+        "Perfect for digital frames",
+        "Instant download after completion"
+      ]
     },
     "canvas": {
-      "title": "Canvas Print",
-      "size30": "30×30 cm",
-      "size40": "40×40 cm",
-      "size50": "50×50 cm",
-      "delivery": "~2 Weeks Delivery"
-    },
-    "addons": "Optional Add-ons",
-    "addon1": "Child's name added",
-    "addon2": "Number of weeks in the womb"
+      "title": "Canvas Prints",
+      "delivery": "1 - 2 Weeks Delivery"
+    }
   },
   "contact": {
     "title": "Get in Touch",

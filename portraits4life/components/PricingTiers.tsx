@@ -1,6 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
+import { getCopy, localeOf } from '@/lib/copy';
 import { canvasSizes, digitalProduct } from '@/content/products';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -8,41 +9,18 @@ export default function PricingTiers() {
   const pathname = usePathname();
   const isDE = pathname.startsWith('/de');
 
-  const tiers = isDE ? [
+  const { pricing } = getCopy(localeOf(pathname));
+  const tiers = [
     {
-      title: 'Hochauflösendes digitales JPG',
+      title: pricing.digital.title,
       price: `€${digitalProduct.priceFrom} - ${digitalProduct.priceTo}`,
-      delivery: '1 Woche Lieferung',
-      items: [
-        'Hochauflösende digitale Datei',
-        'Perfekt für digitale Bilderrahmen',
-        'Sofortige Bereitstellung nach Fertigstellung',
-      ],
+      delivery: pricing.digital.delivery,
+      items: pricing.digital.items,
     },
     {
-      title: 'Leinwanddrucke',
-      items: [
-        ...canvasSizes.map((size) => ({ size: `${size.widthCm} × ${size.heightCm} cm`, price: `€${size.price}` })),
-      ],
-      delivery: '1 - 2 Wochen Lieferung',
-    },
-  ] : [
-    {
-      title: 'High-Res Digital JPG',
-      price: `€${digitalProduct.priceFrom} - ${digitalProduct.priceTo}`,
-      delivery: '1 Week Delivery',
-      items: [
-        'High-resolution digital file',
-        'Perfect for digital frames',
-        'Instant download after completion',
-      ],
-    },
-    {
-      title: 'Canvas Prints',
-      items: [
-        ...canvasSizes.map((size) => ({ size: `${size.widthCm} × ${size.heightCm} cm`, price: `€${size.price}` })),
-      ],
-      delivery: '1 - 2 Weeks Delivery',
+      title: pricing.canvas.title,
+      items: canvasSizes.map((size) => ({ size: `${size.widthCm} × ${size.heightCm} cm`, price: `€${size.price}` })),
+      delivery: pricing.canvas.delivery,
     },
   ];
 
@@ -52,7 +30,7 @@ export default function PricingTiers() {
         <h2
           className="font-display heading-xl font-bold text-center mb-16 text-ink"
         >
-          {isDE ? 'Formate & Preise' : 'Formats & Pricing'}
+          {pricing.title}
         </h2>
 
         <div className="grid md:grid-cols-2 gap-8">
