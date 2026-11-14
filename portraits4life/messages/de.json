@@ -13,9 +13,11 @@
   },
   "hero": {
     "headline": "ULTRASOUND ART",
-    "body": "Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern. Lass dir die allererste Aufnahme deines Kindes verewigen! Ich bearbeite das Ultraschallbild künstlerisch und hebe es farblich hervor.\nAuf Leinwand gedruckt, hast du nicht nur eine wunderschöne Erinnerung, sondern auch eine moderne, anschauliche Deko für deine Wohnung.\nAuf Wunsch mit Namen deines Kindes und Anzahl der Wochen im Mutterleib.",
     "cta_order": "Jetzt bestellen",
-    "cta_formats": "Formate ansehen"
+    "cta_formats": "Formate ansehen",
+    "supporting": "Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern.",
+    "bodyRest": "Lass dir die allererste Aufnahme deines Kindes verewigen! Ich bearbeite das Ultraschallbild künstlerisch und hebe es farblich hervor.\nAuf Leinwand gedruckt, hast du nicht nur eine wunderschöne Erinnerung, sondern auch eine moderne, anschauliche Deko für deine Wohnung.\nAuf Wunsch mit Namen deines Kindes und Anzahl der Wochen im Mutterleib.",
+    "imageAlt": "Künstlerisch bearbeitetes Ultraschallbild als Beispiel"
   },
   "howItWorks": {
     "title": "So funktioniert's",
