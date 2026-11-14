@@ -81,6 +81,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-15: Final call to action with id kontakt (plan v3, step 10)
+
+- **Status:** done, copy pending client approval
+- **Decision:** The closing section keeps its place and gets the id `kontakt`. It shows the heading "Bereit für dein Kunstwerk?", the existing short text, the email as plain text, and one primary button "Jetzt bestellen" to the order page. The menu entry Kontakt and the FAQ contact link point to #kontakt.
+- **Why:** Plan v3 step 10: one clear action at the end of the page, and the menu item still works.
+- **Considered:** A mailto button (rejected: the order page is the main action; the email stays visible as text).
+
 ## 2026-11-15: Five menu items, the rest reached by scrolling (owner request)
 
 - **Status:** done

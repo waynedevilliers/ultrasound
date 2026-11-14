@@ -21,7 +21,7 @@ export const routes: SiteRoute[] = [
   { id: 'examples', path: '', anchor: '#beispiele', menu: true, footer: false, sitemap: false },
   { id: 'about', path: '', anchor: '#ueber-mich', menu: false, footer: false, sitemap: false },
   { id: 'faq', path: '', anchor: '#faq', menu: false, footer: false, sitemap: false },
-  { id: 'contact', path: '', anchor: '#contact', menu: true, footer: false, sitemap: false },
+  { id: 'contact', path: '', anchor: '#kontakt', menu: true, footer: false, sitemap: false },
   { id: 'impressum', path: '/impressum', menu: false, footer: true, sitemap: true },
   { id: 'datenschutz', path: '/datenschutz', menu: false, footer: true, sitemap: true },
 ];

@@ -10,7 +10,7 @@ export default function ContactSection() {
   const isDE = pathname.startsWith('/de');
 
   return (
-    <section id="contact" className="section-y bg-gradient-to-r from-dark-deep to-dark-alt">
+    <section id="kontakt" className="section-y bg-gradient-to-r from-dark-deep to-dark-alt">
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2
           className="font-display heading-xl font-bold mb-6 text-white"
@@ -26,7 +26,7 @@ export default function ContactSection() {
           {contact.email}
         </p>
 
-        <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="secondary">
+        <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
           {contact.cta}
         </ActionLink>
       </div>
