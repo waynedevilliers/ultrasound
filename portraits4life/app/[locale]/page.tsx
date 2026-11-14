@@ -7,6 +7,7 @@ import FAQ from '@/components/FAQ';
 import ContactSection from '@/components/ContactSection';
 import Footer from '@/components/Footer';
 import Reveal from '@/components/Reveal';
+import FactsBox from '@/components/FactsBox';
 
 export default function Home() {
   return (
@@ -14,6 +15,7 @@ export default function Home() {
       <Header />
       <main className="flex-1">
         <Hero />
+        <FactsBox />
         <Reveal>
           <HowItWorks />
         </Reveal>

@@ -81,6 +81,14 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-14: Facts box under the hero (Step 9)
+
+- **Status:** done
+- **Decision:** A facts box sits directly under the hero, with five cards: formats (digital or canvas, 30x30, 40x40, 50x50 cm), price (from the lowest product price), delivery (about 2 weeks after payment, the longest canvas delivery in the product data), payment (PayPal, bank transfer, credit card), and optional (child's name and week of pregnancy). All prices, sizes and delivery times come from `content/products.ts`. Icons are decorative and hidden from screen readers. Phones show one column.
+- **Why:** Owner plan, Step 9: parents see the key facts at a glance.
+- **Not done yet:** The box text is written in the component, not in the message files (part of the text move).
+- **Considered:** Hard-coding the values (rejected: prices must come from one file).
+
 ## 2026-11-14: Hero (Step 8)
 
 - **Status:** done
