@@ -81,6 +81,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: email with attachments or upload-and-link (Step 11, part A).
 
+## 2026-11-15: Formats link to the order form (plan v3, step 7)
+
+- **Status:** done, wording pending client approval
+- **Decision:** Each format (digital and the three canvas sizes) is a card with equal height and a secondary button "Dieses Format bestellen" that links to `/{locale}/order?format=...`. The order page reads `format` on the server (`lib/format-param.ts`) and preselects the product and canvas size. Unknown values are ignored. Payment and delivery lines sit below the cards (TODO(client)).
+- **Why:** Plan v3 step 7: a visitor who picks a format should not pick it again on the form.
+- **Considered:** Reading the format in a client effect (rejected: the lint rule forbids setState in effects, and the server read avoids a flash of the default).
+
 ## 2026-11-15: So funktioniert's, three steps (plan v3, step 6)
 
 - **Status:** done, wording pending client approval

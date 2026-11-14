@@ -5,11 +5,12 @@ import { canvasSizes } from '@/content/products';
 import { buttonClasses } from '@/components/ActionLink';
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/order-schema';
 import { usePathname } from 'next/navigation';
+import type { FormatChoice } from '@/lib/format-param';
 import { getCopy, localeOf } from '@/lib/copy';
 import { formatPrice } from '@/lib/price';
 import { upload } from '@vercel/blob/client';
 
-export default function OrderForm() {
+export default function OrderForm({ initialFormat = null }: { initialFormat?: FormatChoice | null }) {
   const pathname = usePathname();
   const locale = localeOf(pathname);
   const orderForm = getCopy(locale).orderForm;
@@ -22,8 +23,8 @@ export default function OrderForm() {
   const [formData, setFormData] = useState({
     name: '',
     email: '',
-    product: 'digital',
-    canvasSize: '30x30cm',
+    product: initialFormat?.product ?? 'digital',
+    canvasSize: initialFormat?.product === 'canvas' ? initialFormat.canvasSize : '30x30cm',
     childName: '',
     weeksInWomb: '',
     specialRequests: '',

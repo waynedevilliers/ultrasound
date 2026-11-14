@@ -55,6 +55,14 @@
     "canvas": {
       "title": "Leinwanddrucke",
       "delivery": "1 - 2 Wochen Lieferung"
+    },
+    "orderFormat": "Dieses Format bestellen",
+    "payment": "Bezahlung: PayPal, Überweisung, Kreditkarte",
+    "deliveryLine": "Lieferzeit: ca. {weeks} Wochen nach Zahlungseingang",
+    "imageAlt": {
+      "canvasGallery": "Ultraschallbild als Leinwanddruck in einer Galerie-Wand",
+      "canvasPortrait": "Ultraschallbild als Leinwand-Porträt mit Neonlicht",
+      "canvasSizes": "Vergleich der Leinwandgrößen 30, 40 und 50 cm"
     }
   },
   "contact": {
