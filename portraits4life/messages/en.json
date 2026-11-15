@@ -114,7 +114,7 @@
     },
     "datenschutz": {
       "title": "Privacy Policy",
-      "intro": "TODO(client): Privacy policy under the GDPR. Controller, purpose and legal basis for processing order data and images, retention period, recipients (hosting, email delivery), data subject rights and privacy contact. This page is a placeholder."
+      "intro": "TODO(client): Privacy policy under the GDPR, draft. Controller: name and address still open. Processed: order data (name, email, shipping address if applicable, details about the child) and ultrasound images. Recipients (processors): Vercel (hosting, image storage, order database) and Resend (email delivery). Retention for images: 30 days after upload, then deleted automatically. Retention for order data: open. This page must be reviewed before launch."
     }
   },
   "seo": {

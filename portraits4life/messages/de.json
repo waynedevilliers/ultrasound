@@ -114,7 +114,7 @@
     },
     "datenschutz": {
       "title": "Datenschutzerklärung",
-      "intro": "TODO(client): Datenschutzerklärung nach DSGVO. Verantwortliche Stelle, Zweck und Rechtsgrundlage der Verarbeitung der Bestelldaten und Bilder, Speicherdauer, Empfänger (Hosting, E-Mail-Versand), Betroffenenrechte und Kontakt zum Datenschutz. Diese Seite ist ein Platzhalter."
+      "intro": "TODO(client): Datenschutzerklärung nach DSGVO, Entwurf. Verantwortliche Stelle: Name und Anschrift offen. Verarbeitet werden Bestelldaten (Name, E-Mail, ggf. Lieferadresse, Angaben zum Kind) und Ultraschallbilder. Empfänger (Auftragsverarbeiter): Vercel (Hosting, Speicher für Bilder, Datenbank für Bestellungen) und Resend (E-Mail-Versand). Speicherdauer Bilder: 30 Tage nach dem Upload, dann automatisch gelöscht. Speicherdauer Bestelldaten: offen. Diese Seite muss vor dem Start geprüft werden."
     }
   },
   "seo": {

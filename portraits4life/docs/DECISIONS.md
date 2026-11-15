@@ -96,6 +96,15 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** The work is done digitally; a visitor must not be told otherwise.
 - **Considered:** Keeping "von Hand" with a softer phrase (rejected: still a manual claim).
 
+## 2026-11-15: Privacy draft names the processors and retention (plan v3, step 13)
+
+- **Status:** draft, pending client and legal review
+- **Decision:** The privacy page draft names Vercel (hosting, image storage, order database) and Resend (email) as processors, states 30-day retention for images and leaves retention for order data open. The client list is `docs/legal-client-review.md`. The Impressum text is unchanged (client data still missing).
+- **Where data sits today:** photos in a private Vercel Blob store; order details (name, email, shipping address, child details, photo links) in the Postgres `orders` table; the emails are sent with Resend.
+- **What deletes data today:** a daily cron job (`vercel.json`, 03:00) deletes photos older than 30 days from upload. It is not yet verified on a live deployment. Nothing deletes order rows.
+- **Open before launch:** legal entity and contact details; order retention; consent for health-related images (legal advice); SITE_URL; sender domain for Resend; a live test order; live security headers.
+- **Considered:** Writing final legal text now (rejected: needs the operator's details and legal review).
+
 ## 2026-11-14: Image folders by section (plan v3, step 12)
 
 - **Status:** done
