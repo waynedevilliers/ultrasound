@@ -85,7 +85,7 @@ export default function Header() {
         >
           <div className="w-16 h-16 sm:w-20 sm:h-20 relative">
             <Image
-              src="/images/logo.avif"
+              src="/images/brand/logo.avif"
               alt="Portraits 4 Life"
               width={48}
               height={48}
