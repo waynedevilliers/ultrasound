@@ -89,6 +89,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Open:** Reformat the whole repo in its own step (65 files). The 429 rate-limit response still shows the generic message.
 - **Considered:** Adding a Prettier check script (rejected until the repo is formatted).
 
+## 2026-11-14: Image folders by section (plan v3, step 12)
+
+- **Status:** done
+- **Decision:** Images sit in folders by section: `public/images/brand/` (logo), `public/images/artwork/` (the ultrasound artwork shown in the hero and the gallery, each file kept once), `public/images/formats/` (canvas photos). Reference screenshots and the reference folder moved out of the project to `/home/johnblack/dev/business/ultrasound/reference/`, so they are not served and not in git.
+- **Why:** Plan v3 step 12. The site can then be checked by section, and reference material cannot be served by mistake.
+- **Open:** The canvas photos are PNG files of about 3 MB each (over the 500 KB rule). They are used through next/image, so the page sends smaller files, but the source files should be converted before launch.
+
 ## 2026-11-14: Field-level errors on the order form (plan v3, step 11)
 
 - **Status:** done

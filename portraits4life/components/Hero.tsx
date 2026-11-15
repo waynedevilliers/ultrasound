@@ -60,7 +60,7 @@ export default function Hero() {
 
           <div className="relative h-96 lg:h-96 min-w-0">
             <Image
-              src="/images/ultrasound2.avif"
+              src="/images/artwork/ultrasound2.avif"
               alt={hero.imageAlt}
               fill
               className="object-cover rounded-lg shadow-lg"

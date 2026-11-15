@@ -21,4 +21,4 @@ Status as of 2026-11-14. Steps 0 to 14 are built. Items below are still open.
 - Step 13: Wix redirects, if the domain moves. Legal text (see above).
 - Step 14 cleanup: knip reports unused files (components/ui/button.tsx, components/ui/tabs.tsx, lib/db.ts), unused exports and dependencies, and dotenv used but not declared. Remove only with approval.
 - Middleware: rename middleware.ts to proxy.ts (deprecation warning in the build).
-- Public reference screenshot: public/screenshots/ is now ignored by git but still served if deployed from this folder. Move it out of public/ before launch.
+- Public reference screenshot: done. The reference screenshots moved out of the project to /home/johnblack/dev/business/ultrasound/reference/ (plan v3 step 12).

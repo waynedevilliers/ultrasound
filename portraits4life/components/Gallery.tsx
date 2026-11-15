@@ -8,9 +8,9 @@ import { getCopy, localeOf } from '@/lib/copy';
 // TODO(client): the original ultrasound images for the "Vorher" side are still missing; placeholders are shown until they arrive.
 // Each pair shows the original (before) next to the artwork (after), at the same size.
 const pairs = [
-  { after: '/images/ultrasound.avif', altKey: 'alt1' as const },
-  { after: '/images/ultrasound2.avif', altKey: 'alt2' as const },
-  { after: '/images/ultrasound3.avif', altKey: 'alt3' as const },
+  { after: '/images/artwork/ultrasound.avif', altKey: 'alt1' as const },
+  { after: '/images/artwork/ultrasound2.avif', altKey: 'alt2' as const },
+  { after: '/images/artwork/ultrasound3.avif', altKey: 'alt3' as const },
 ];
 
 export default function Gallery() {
