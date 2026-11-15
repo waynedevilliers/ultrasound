@@ -153,6 +153,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Mobile step M2 (the name is now in the sticky bar).
 - **Considered:** Keeping the 64px logo (rejected: the row took too much space above the hero).
 
+## 2026-11-15: Upload fields (order round 1, step O3)
+
+- **Status:** done; second-image hint pending client (TODO(client))
+- **Decision:** Each photo has a styled upload box (at least 96px high, dashed border, upload icon, "Bild auswählen" / "Choose image", and the formats the server accepts: "JPG, PNG, WebP oder HEIC, maximal 15 MB"). The real file input stays in the page, visually hidden and focusable, linked to its label; the box shows the focus outline. After a choice the file name and size show, with an "Entfernen" / "Remove" button. Errors stay under the field, linked with aria-describedby. The second upload is "Zweites Bild (optional)" with a hint (TODO(client): when is a second image needed?).
+- **Why:** Order round 1, step O3.
+- **Considered:** Listing only JPG and PNG in the box (rejected: the server accepts WebP and HEIC too).
+
 ## 2026-11-15: Product choice with prices (order round 1, step O2)
 
 - **Status:** done
