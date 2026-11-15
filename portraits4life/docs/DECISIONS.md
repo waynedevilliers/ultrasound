@@ -138,6 +138,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Gallery caption:** "Sieh die Schönheit in jedem Detail." / "See the beauty in every detail."
 - **Footer year:** the copyright is "© {year} ...", and the year comes from the code (new Date().getFullYear()).
 
+## 2026-11-15: Über layout (landing round 4, step P5)
+
+- **Status:** done; photo still a placeholder (TODO(client))
+- **Decision:** The photo frame keeps its 4:5 shape on phones and is capped at 480px high, so on desktop the image and the text column are balanced. The text column stays vertically centred beside it.
+- **Why:** Landing round 4, step P5.
+- **Considered:** A fixed height (rejected: the 4:5 shape stays on phones).
+
 ## 2026-11-15: FAQ, closing section, language switch (landing round 4, step P4)
 
 - **Status:** done; copy pending client approval (TODO(client))
