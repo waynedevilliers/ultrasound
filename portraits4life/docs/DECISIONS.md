@@ -153,6 +153,14 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Mobile step M2 (the name is now in the sticky bar).
 - **Considered:** Keeping the 64px logo (rejected: the row took too much space above the hero).
 
+## 2026-11-15: Order page wording (order round 1, step O1)
+
+- **Status:** done; wording pending client approval
+- **Decision:** Intro: "Lade dein Ultraschallbild hoch und sende mir deine Wünsche." Labels: "Name des Kindes (optional)", "Schwangerschaftswoche (optional)", "Besondere Wünsche (optional)". The week of pregnancy is a number field (1 to 42, numeric keyboard). A line "* Pflichtfeld" (EN "* Required field") sits above the first field. The delivery answer in the FAQ is built from content/products.ts ("nach Zahlungseingang"). Menu order: Start, Beispiele, Formate, Bestellen, Kontakt.
+- **Formal address (du rule), matches found in messages/de.json:** orderPage.intro (fixed), faq.items.3.answer (fixed, "Du siehst sie vor der Zahlung ..."). The block order.info.* (ultrasound, individual, couple: 7 matches) is not read by the site; it still uses Sie and should be deleted in a cleanup step.
+- **Why:** Order page round 1, step O1.
+- **Considered:** Changing the button label now (not done: it waits for the owner's answer in O4).
+
 ## 2026-11-15: Über layout (landing round 4, step P5)
 
 - **Status:** done; photo still a placeholder (TODO(client))

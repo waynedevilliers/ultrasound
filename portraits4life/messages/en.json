@@ -160,7 +160,7 @@
     "items": [
       {
         "question": "How long does the artwork take?",
-        "answer": "Digital artwork typically takes 1 week. Canvas prints take 1 to 2 weeks from confirmation."
+        "answer": "Digital artwork takes {digital}. Canvas prints take {canvas} after payment."
       },
       {
         "question": "Which image formats can I upload?",
@@ -237,8 +237,8 @@
     "productDigital": "Digital JPEG",
     "productCanvas": "Canvas Print",
     "canvasSizeLabel": "Size *",
-    "childNameLabel": "Child's Name",
-    "weeksLabel": "Weeks in Womb",
+    "childNameLabel": "Child's name (optional)",
+    "weeksLabel": "Week of pregnancy (optional)",
     "shippingHeading": "Shipping Address *",
     "shippingFullName": "Full Name *",
     "shippingStreet": "Street *",
@@ -248,7 +248,7 @@
     "shippingCountry": "Country *",
     "ultrasoundLabel": "Upload Ultrasound Image *",
     "referenceLabel": "Upload Reference Image",
-    "specialRequests": "Special Requests",
+    "specialRequests": "Special requests (optional)",
     "fileTooLarge": "The file is larger than 15 MB. Please choose a smaller image.",
     "fileType": "Only JPG, PNG, WebP or HEIC.",
     "ultrasoundRequired": "Please upload an ultrasound image.",
@@ -256,7 +256,8 @@
     "submit": "Submit Order",
     "fieldInvalid": "Please check this field.",
     "checkFields": "Please check the highlighted fields.",
-    "genericError": "The order could not be sent. Please try again."
+    "genericError": "The order could not be sent. Please try again.",
+    "requiredNote": "* Required field"
   },
   "common": {
     "home": "Home",
@@ -268,7 +269,7 @@
     "rangeTo": "to"
   },
   "orderPage": {
-    "intro": "Upload your ultrasound image and place your order here."
+    "intro": "Upload your ultrasound image and send me your wishes."
   },
   "facts": {
     "label": "Key facts",
