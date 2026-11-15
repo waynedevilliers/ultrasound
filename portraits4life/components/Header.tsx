@@ -26,6 +26,16 @@ export default function Header() {
   const logoRef = useRef<HTMLAnchorElement>(null);
   // The small logo in the bar appears once the big logo has scrolled out of view.
   const [compact, setCompact] = useState(false);
+  // The bar's order button hides while the hero's order button is on screen. null: unknown, shown.
+  const [heroVisible, setHeroVisible] = useState<boolean | null>(null);
+  useEffect(() => {
+    const target = document.getElementById('hero-order');
+    if (!target || typeof IntersectionObserver === 'undefined') return;
+    const observer = new IntersectionObserver(([entry]) => setHeroVisible(entry.isIntersecting), { threshold: 0 });
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [pathname]);
+  const barOrderHidden = heroVisible === true;
 
   useEffect(() => {
     const element = logoRef.current;
@@ -123,21 +133,30 @@ export default function Header() {
           <a
             href={isDE ? '/de' : '/en'}
             data-testid="compact-logo"
-            aria-hidden={!compact}
             tabIndex={compact ? 0 : -1}
             // TODO(client): simplified logo that is readable at 32px; the name is shown for now.
-            className={`absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 font-display text-2xl font-bold text-ink whitespace-nowrap transition-opacity duration-200 motion-reduce:transition-none ${compact ? 'opacity-100' : 'opacity-0'}`}
+            // Below lg the name is always visible; from lg it fades in once the big logo has scrolled away.
+            className={`absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 font-display text-base min-[360px]:text-lg sm:text-2xl font-bold text-ink whitespace-nowrap transition-opacity duration-200 motion-reduce:transition-none max-lg:opacity-100 ${compact ? 'opacity-100' : 'opacity-0'}`}
           >
             {copy.header.logo}
           </a>
 
           <div className="absolute right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4">
-            <LanguageSwitch />
+            <div className="hidden lg:block">
+              <LanguageSwitch />
+            </div>
 
             {!onOrderPage && (
-              <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary" className="lg:hidden min-h-11 px-4 py-2 text-base">
-                {copy.header.order}
-              </ActionLink>
+              <span
+                data-testid="bar-order"
+                inert={barOrderHidden}
+                aria-hidden={barOrderHidden || undefined}
+                className={`lg:hidden inline-flex transition-opacity duration-200 motion-reduce:transition-none ${barOrderHidden ? 'opacity-0' : 'opacity-100'}`}
+              >
+                <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary" className="min-h-11 !px-2.5 !py-2 text-sm">
+                  {copy.header.order}
+                </ActionLink>
+              </span>
             )}
 
             <button
@@ -179,6 +198,9 @@ export default function Header() {
                 </a>
               </li>
             ))}
+            <li className="border-t border-line py-2">
+              <LanguageSwitch layout="rows" />
+            </li>
           </ul>
         )}
       </nav>
