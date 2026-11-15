@@ -247,7 +247,7 @@
     "shippingPostalCode": "Postleitzahl *",
     "shippingCountry": "Land *",
     "ultrasoundLabel": "Ultraschallbild hochladen *",
-    "referenceLabel": "Referenzbild hochladen",
+    "referenceLabel": "Zweites Bild (optional)",
     "specialRequests": "Besondere Wünsche (optional)",
     "fileTooLarge": "Die Datei ist größer als 15 MB. Bitte ein kleineres Bild wählen.",
     "fileType": "Nur JPG, PNG, WebP oder HEIC.",
@@ -257,7 +257,11 @@
     "fieldInvalid": "Bitte prüfe dieses Feld.",
     "checkFields": "Bitte prüfe die markierten Felder.",
     "genericError": "Die Bestellung konnte nicht gesendet werden. Bitte versuche es noch einmal.",
-    "requiredNote": "* Pflichtfeld"
+    "requiredNote": "* Pflichtfeld",
+    "chooseImage": "Bild auswählen",
+    "imageFormats": "JPG, PNG, WebP oder HEIC, maximal 15 MB",
+    "removeImage": "Entfernen",
+    "referenceHint": "Hilfreich, wenn du ein zweites Foto zum Vergleich hast."
   },
   "common": {
     "home": "Startseite",

@@ -247,7 +247,7 @@
     "shippingPostalCode": "Postal Code *",
     "shippingCountry": "Country *",
     "ultrasoundLabel": "Upload Ultrasound Image *",
-    "referenceLabel": "Upload Reference Image",
+    "referenceLabel": "Second image (optional)",
     "specialRequests": "Special requests (optional)",
     "fileTooLarge": "The file is larger than 15 MB. Please choose a smaller image.",
     "fileType": "Only JPG, PNG, WebP or HEIC.",
@@ -257,7 +257,11 @@
     "fieldInvalid": "Please check this field.",
     "checkFields": "Please check the highlighted fields.",
     "genericError": "The order could not be sent. Please try again.",
-    "requiredNote": "* Required field"
+    "requiredNote": "* Required field",
+    "chooseImage": "Choose image",
+    "imageFormats": "JPG, PNG, WebP or HEIC, up to 15 MB",
+    "removeImage": "Remove",
+    "referenceHint": "Helpful if you have a second photo for comparison."
   },
   "common": {
     "home": "Home",

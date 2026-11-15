@@ -134,4 +134,11 @@ describe('OrderForm', () => {
     expect((container.querySelector('#format') as HTMLSelectElement).value).toBe('50x50cm');
     expect(container.querySelector('#shippingStreet')).not.toBeNull();
   });
+  it('shows the chosen file name and size, and Remove clears it', () => {
+    const { container } = render(<OrderForm />);
+    fireEvent.change(photoInput(container), { target: { files: [smallPng()] } });
+    expect(screen.getByText(/scan\.png \(100 KB\)|scan\.png \(1 KB\)/)).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'Remove' }));
+    expect(screen.queryByText(/scan\.png/)).toBeNull();
+  });
 });

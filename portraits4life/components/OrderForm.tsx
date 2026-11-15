@@ -10,6 +10,7 @@ import type { FormatChoice } from '@/lib/format-param';
 import { getCopy, localeOf } from '@/lib/copy';
 import { upload } from '@vercel/blob/client';
 import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
+import UploadArea from '@/components/UploadArea';
 
 // Empty values for every field except product and size, which may come from the URL.
 const EMPTY_FORM = {
@@ -119,6 +120,14 @@ export default function OrderForm({
       [type]: file,
     }));
   };
+
+  // Removes a chosen photo and its error.
+  const handleRemoveFile = (type: 'ultrasound' | 'reference') => {
+    setFiles((prev) => ({ ...prev, [type]: null }));
+    setFieldErrors((prev) => clearFieldError(prev, type));
+  };
+
+  const uploadCopy = { choose: orderForm.chooseImage, formats: orderForm.imageFormats, remove: orderForm.removeImage };
 
   // Photos go straight from the browser to private storage. The order then carries only their paths.
   const uploadPhoto = async (file: File, prefix: string): Promise<string> => {
@@ -471,40 +480,33 @@ export default function OrderForm({
 
       {/* File Uploads */}
       <div className="border-t pt-6">
-        <div>
-          <label className="block text-base font-medium text-body mb-2" htmlFor="ultrasoundImage">
-            {orderForm.ultrasoundLabel}
-          </label>
-          <input
-            id="ultrasoundImage"
-            {...invalid('ultrasound')}
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFileChange(e, 'ultrasound')}
-            required
-            className="w-full"
-          />
-          {fieldError('ultrasound')}
-          {files.ultrasound && (
-            <p className="text-base text-success mt-1">{files.ultrasound.name}</p>
-          )}
-        </div>
+        <UploadArea
+          id="ultrasoundImage"
+          labelText={orderForm.ultrasoundLabel}
+          file={files.ultrasound}
+          locale={locale}
+          copy={uploadCopy}
+          required
+          inputProps={invalid('ultrasound')}
+          errorNode={fieldError('ultrasound')}
+          onChange={(e) => handleFileChange(e, 'ultrasound')}
+          onRemove={() => handleRemoveFile('ultrasound')}
+        />
 
-        <div className="mt-4">
-          <label className="block text-base font-medium text-body mb-2" htmlFor="referenceImage">
-            {orderForm.referenceLabel}
-          </label>
-          <input
-            id="referenceImage"
-            {...invalid('reference')}
-            type="file"
-            accept="image/*"
-            onChange={(e) => handleFileChange(e, 'reference')}
-            className="w-full"
-          />
-          {fieldError('reference')}
-          {files.reference && <p className="text-base text-success mt-1">{files.reference.name}</p>}
-        </div>
+        {/* TODO(client): when is a second image needed? The hint below is a draft. */}
+        <UploadArea
+          id="referenceImage"
+          className="mt-6"
+          labelText={orderForm.referenceLabel}
+          hint={orderForm.referenceHint}
+          file={files.reference}
+          locale={locale}
+          copy={uploadCopy}
+          inputProps={invalid('reference')}
+          errorNode={fieldError('reference')}
+          onChange={(e) => handleFileChange(e, 'reference')}
+          onRemove={() => handleRemoveFile('reference')}
+        />
       </div>
 
       {/* Special Requests */}
