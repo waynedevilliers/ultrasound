@@ -128,6 +128,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Landing round 3, step L3: one card look across the page.
 - **Considered:** 32px padding for both (rejected: five fact cards would be cramped at desktop width).
 
+## 2026-11-15: Landing section order (landing round 3, step L4)
+
+- **Status:** done
+- **Before:** Hero, facts, intro, So funktioniert's, Beispiele, Formate und Preise, Über mich, FAQ, final call to action.
+- **Decision:** Hero, facts, intro, Beispiele, So funktioniert's, Formate und Preise, Über mich, FAQ, final call to action. Only the two blocks Beispiele and So funktioniert's changed places; nothing inside the sections changed. The rendered order was checked in the browser.
+- **Why:** Landing round 3, step L4.
+
 ## 2026-11-14: Image folders by section (plan v3, step 12)
 
 - **Status:** done
