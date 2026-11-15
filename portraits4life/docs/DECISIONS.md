@@ -175,6 +175,18 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Order page round 1, step O1.
 - **Considered:** Changing the button label now (not done: it waits for the owner's answer in O4).
 
+## 2026-11-15: Phone hero: M3 layout live again (owner decision)
+
+- **Status:** done
+- **Decision:** The M3 phone hero is live again: headline, supporting line, order button, price line, image, benefit points, examples button; headline lower bound 1.5rem (one line at 375px). The earlier layout (headline, supporting line, benefits, buttons, price line, image) is kept as a commented-out option in components/Hero.tsx, with the switch-back steps in the comment, and its headline size is commented in app/globals.css. Desktop is unchanged.
+- **Why:** Owner decision: the order button and the image sit higher on phones. The earlier revert entry above is superseded.
+
+## 2026-11-15: Phone hero reverted to the previous layout (owner request)
+
+- **Status:** done
+- **Decision:** The phone hero M3 change is reverted: the previous order (headline, supporting line, benefit points, buttons, price line, image) and the previous headline size (2.5rem lower bound) are back. Desktop is unchanged. The M3 entry below stays as history.
+- **Why:** Owner request after the M3 merge.
+
 ## 2026-11-15: Hero on phones (mobile step M3)
 
 - **Status:** done; copy and photo pending owner review

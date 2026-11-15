@@ -29,6 +29,64 @@ export default function Hero() {
     .replace('{digitalDelivery}', digitalDeliveryText(locale))
     .replace('{canvasDelivery}', canvasDeliveryText(locale));
 
+  // Earlier phone layout, kept as an option and NOT in use (commented out).
+  // Order on phones: headline, supporting line, benefit points, buttons, price line, image.
+  // The live layout below (mobile step M3) puts the order button and the image higher on phones.
+  // Desktop is the same in both. To switch back: delete the live return, uncomment the block,
+  // and set the .heading-hero lower bound in app/globals.css back to 2.5rem.
+  /*
+  return (
+    <section className="bg-gradient-to-b from-hero to-surface">
+      <div className="container-site section-y pb-6 sm:pb-8 lg:pb-12">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="min-w-0">
+            <h1 className="font-display heading-hero font-bold mb-6 text-ink leading-tight">
+              {hero.headline}
+            </h1>
+
+            <p className="text-[1.125rem] min-[600px]:text-[1.25rem] text-body leading-relaxed max-w-[640px] mb-6">
+              {hero.supporting}
+            </p>
+
+            <ul className="mb-8 space-y-2">
+              {hero.benefits.map((benefit) => (
+                <li key={benefit} className="flex items-center gap-3 text-base text-body">
+                  {check}
+                  <span>{benefit}</span>
+                </li>
+              ))}
+            </ul>
+
+            <div className="flex flex-col sm:flex-row gap-4 mb-4">
+              <div id="hero-order" className="inline-flex">
+                <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
+                  {hero.cta_order}
+                </ActionLink>
+                </div>
+              <ActionLink href={isDE ? '/de#beispiele' : '/en#beispiele'} variant="secondary">
+                {hero.cta_examples}
+              </ActionLink>
+            </div>
+
+            <p className="text-base text-copy">{priceLine}</p>
+          </div>
+
+          <div className="relative h-96 lg:h-96 min-w-0">
+            <Image
+              src="/images/artwork/ultrasound2.avif"
+              alt={hero.imageAlt}
+              fill
+              className="object-cover rounded-lg shadow-lg"
+              priority
+              sizes="(min-width: 1024px) 50vw, 100vw"
+            />
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+  */
+
   return (
     <section className="bg-gradient-to-b from-hero to-surface">
       <div className="container-site section-y pb-6 sm:pb-8 lg:pb-12">
