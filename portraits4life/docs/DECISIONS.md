@@ -89,6 +89,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Open:** Reformat the whole repo in its own step (65 files). The 429 rate-limit response still shows the generic message.
 - **Considered:** Adding a Prettier check script (rejected until the repo is formatted).
 
+## 2026-11-15: No claims of manual work (landing copy fix)
+
+- **Status:** done; wording pending client approval (TODO(client) in Hero.tsx and IntroSection.tsx)
+- **Decision:** The site makes no claim of hand work. The editing is digital. Benefit point 1 reads "Jedes Bild individuell künstlerisch gestaltet" / "Every image individually designed as a piece of art". The intro's first paragraph says the image is edited digitally. A project-wide search for "von Hand", "by hand", "handmade", "handgemacht" and "handgefertigt" found four matches, all in messages/de.json and messages/en.json; all are replaced. A landing test fails if any of these phrases appears.
+- **Why:** The work is done digitally; a visitor must not be told otherwise.
+- **Considered:** Keeping "von Hand" with a softer phrase (rejected: still a manual claim).
+
 ## 2026-11-14: Image folders by section (plan v3, step 12)
 
 - **Status:** done

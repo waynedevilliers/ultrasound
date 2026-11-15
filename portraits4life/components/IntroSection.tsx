@@ -6,6 +6,7 @@ import { getCopy, localeOf } from '@/lib/copy';
 
 // The emotional text below the hero, ending with the primary order button.
 // TODO(client): approve the intro title and wording; the title is new.
+// TODO(client): the first paragraph says the editing is digital (no manual claim); approve the wording.
 export default function IntroSection() {
   const pathname = usePathname();
   const locale = localeOf(pathname);
