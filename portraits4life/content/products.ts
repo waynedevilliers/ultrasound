@@ -33,6 +33,7 @@ export function isCanvasSizeId(value: string): value is CanvasSizeId {
   return (canvasSizeIds as string[]).includes(value);
 }
 
-export function lowestPrice(): number {
-  return Math.min(digitalProduct.priceFrom, ...canvasSizes.map((size) => size.price));
+// The lowest price of a canvas print: the value shown as "Leinwand ab ...".
+export function lowestCanvasPrice(): number {
+  return Math.min(...canvasSizes.map((size) => size.price));
 }

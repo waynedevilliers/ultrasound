@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { canvasProduct, canvasSizes, digitalProduct, isCanvasSizeId, lowestPrice } from './products';
+import { canvasProduct, canvasSizes, digitalProduct, isCanvasSizeId, lowestCanvasPrice } from './products';
 
 describe('products', () => {
   it('every canvas size has a positive whole-euro price', () => {
@@ -25,7 +25,8 @@ describe('products', () => {
   });
 
   it('lowest price is the cheapest of digital and canvas', () => {
-    expect(lowestPrice()).toBe(Math.min(digitalProduct.priceFrom, ...canvasSizes.map((s) => s.price)));
+    expect(lowestCanvasPrice()).toBe(Math.min(...canvasSizes.map((s) => s.price)));
+    expect(lowestCanvasPrice()).toBe(69);
   });
 
   it('delivery window is ordered', () => {

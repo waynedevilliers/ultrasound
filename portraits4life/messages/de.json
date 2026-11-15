@@ -26,7 +26,7 @@
       "Auf Wunsch mit Namen und Schwangerschaftswoche"
     ],
     "cta_examples": "Beispiele ansehen",
-    "priceLine": "Leinwand ab {price} | Lieferung ca. {weeks} Wochen nach Zahlungseingang"
+    "priceLine": "Digital ab {digital} | Leinwand ab {canvas} | Lieferung: digital {digitalDelivery}, Leinwand {canvasDelivery}"
   },
   "howItWorks": {
     "title": "So funktioniert's",
@@ -50,7 +50,7 @@
     "title": "Formate & Preise",
     "digital": {
       "title": "Hochauflösendes digitales JPG",
-      "delivery": "1 Woche Lieferung",
+      "delivery": "{time} Lieferung",
       "items": [
         "Hochauflösende digitale Datei",
         "Perfekt für digitale Bilderrahmen",
@@ -59,16 +59,17 @@
     },
     "canvas": {
       "title": "Leinwanddrucke",
-      "delivery": "1 - 2 Wochen Lieferung"
+      "delivery": "{time} Lieferung"
     },
     "orderFormat": "Dieses Format bestellen",
     "payment": "Bezahlung: PayPal, Überweisung, Kreditkarte",
-    "deliveryLine": "Lieferzeit: ca. {weeks} Wochen nach Zahlungseingang",
+    "deliveryLine": "Lieferzeit: digital {digital}, Leinwand {canvas} nach Zahlungseingang",
     "imageAlt": {
       "canvasGallery": "Ultraschallbild als Leinwanddruck in einer Galerie-Wand",
       "canvasPortrait": "Ultraschallbild als Leinwand-Porträt mit Neonlicht",
       "canvasSizes": "Vergleich der Leinwandgrößen 30, 40 und 50 cm"
-    }
+    },
+    "from": "ab"
   },
   "contact": {
     "title": "Bereit für dein Kunstwerk?",
@@ -154,7 +155,7 @@
     "items": [
       {
         "question": "Wie lange dauert die Bearbeitung?",
-        "answer": "Die digitale Bearbeitung dauert normalerweise 1 Woche. Der Leinwanddruck dauert 1-2 Wochen nach Bestätigung."
+        "answer": "Die digitale Bearbeitung dauert normalerweise 1 Woche. Der Leinwanddruck dauert 1 bis 2 Wochen nach Bestätigung."
       },
       {
         "question": "Welche Bildformate kann ich hochladen?",
@@ -252,7 +253,10 @@
     "home": "Startseite",
     "breadcrumb": "Brotkrumen",
     "order": "Bestellen",
-    "newTab": "(öffnet in neuem Tab)"
+    "newTab": "(öffnet in neuem Tab)",
+    "week": "Woche",
+    "weeks": "Wochen",
+    "rangeTo": "bis"
   },
   "orderPage": {
     "intro": "Hier können Sie Ihr Ultraschallbild hochladen und Ihre Bestellung aufgeben."
@@ -262,9 +266,9 @@
     "formats": "Formate",
     "formatsValue": "Digital oder Leinwand ({sizes} cm)",
     "price": "Preis",
-    "priceValue": "ab {price}",
+    "priceValue": "Digital ab {digital}, Leinwand ab {canvas}",
     "delivery": "Lieferzeit",
-    "deliveryValue": "ca. {weeks} Wochen nach Zahlungseingang",
+    "deliveryValue": "Digital {digital}, Leinwand {canvas} nach Zahlungseingang",
     "payment": "Bezahlung",
     "paymentValue": "PayPal, Überweisung, Kreditkarte",
     "optional": "Optional",
