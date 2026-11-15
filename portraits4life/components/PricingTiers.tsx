@@ -4,7 +4,8 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
 import { formatPrice } from '@/lib/price';
-import { canvasProduct, canvasSizes, digitalProduct } from '@/content/products';
+import { canvasSizes, digitalProduct } from '@/content/products';
+import { canvasDeliveryText, digitalDeliveryText } from '@/lib/delivery';
 import ActionLink from '@/components/ActionLink';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
@@ -19,8 +20,9 @@ export default function PricingTiers() {
     {
       key: 'digital',
       title: pricing.digital.title,
-      price: `${formatPrice(digitalProduct.priceFrom, locale)} – ${formatPrice(digitalProduct.priceTo, locale)}`,
-      delivery: pricing.digital.delivery,
+      // TODO(client): what decides the price between the lowest and the highest digital price?
+      price: `${pricing.from} ${formatPrice(digitalProduct.priceFrom, locale)}`,
+      delivery: pricing.digital.delivery.replace('{time}', digitalDeliveryText(locale)),
       items: pricing.digital.items,
       href: `${orderPath}?format=${digitalProduct.id}`,
     },
@@ -28,7 +30,7 @@ export default function PricingTiers() {
       key: size.id,
       title: `${pricing.canvas.title} ${size.widthCm} × ${size.heightCm} cm`,
       price: formatPrice(size.price, locale),
-      delivery: pricing.canvas.delivery,
+      delivery: pricing.canvas.delivery.replace('{time}', canvasDeliveryText(locale)),
       items: [],
       href: `${orderPath}?format=${size.id}`,
     })),
@@ -40,8 +42,6 @@ export default function PricingTiers() {
     { src: '/images/formats/canvas-portrait.png', alt: pricing.imageAlt.canvasPortrait },
     { src: '/images/formats/canvas-sizes.png', alt: pricing.imageAlt.canvasSizes },
   ];
-
-  const deliveryWeeks = `${canvasProduct.deliveryWeeksMin}–${canvasProduct.deliveryWeeksMax}`;
 
   return (
     <section id="pricing" className="section-y bg-canvas">
@@ -98,7 +98,11 @@ export default function PricingTiers() {
 
         <div className="mt-10 space-y-2 text-center text-copy">
           <p>{pricing.payment}</p>
-          <p>{pricing.deliveryLine.replace('{weeks}', deliveryWeeks)}</p>
+          <p>
+            {pricing.deliveryLine
+              .replace('{digital}', digitalDeliveryText(locale))
+              .replace('{canvas}', canvasDeliveryText(locale))}
+          </p>
         </div>
       </div>
     </section>

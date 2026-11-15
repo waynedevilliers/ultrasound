@@ -128,6 +128,19 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Landing round 3, step L3: one card look across the page.
 - **Considered:** 32px padding for both (rejected: five fact cards would be cramped at desktop width).
 
+## 2026-11-15: Prices and delivery times (landing round 4, step P1)
+
+- **Status:** done in code; the delivery wording is an open question for the owner
+- **Decision:** Every price and delivery time comes from `content/products.ts`. The hero line and the fact cards show "Digital ab 30 €" and "Leinwand ab 69 €" (the lowest canvas price, not the lowest overall). The pricing cards show "ab 30 €" for the digital product. Delivery reads "1 Woche" (digital) and "1 bis 2 Wochen" (canvas) from the product file.
+- **Where prices and delivery appear:** hero price line; fact cards "Preis" and "Lieferzeit"; pricing cards (digital price and delivery, canvas delivery) and the line under the cards; order confirmation email (English, from the product file); FAQ answer 1 (typed copy, "1 bis 2 Wochen").
+- **Open question: delivery times.** The site showed three versions before this step:
+  1. "2 Wochen": hero line and Lieferzeit card (the top of the canvas range, typed copy).
+  2. "1 Woche": digital product, FAQ answer 1 (matches the product file).
+  3. "1 bis 2 Wochen": canvas cards and the line under the cards (matches the product file).
+  The product file currently says digital 1 week and canvas 1 to 2 weeks, so version 1 is gone from the site. The owner should confirm these values, and whether the FAQ and the email keep "nach Bestätigung" or "nach Zahlungseingang" (the FAQ and the price copy disagree).
+- **TODO(client):** what decides the price between the lowest and the highest digital price (30 € to 50 €)? The card shows "ab 30 €" for now.
+- **Why:** The hero showed "Leinwand ab 30 €", which was wrong; the lowest canvas price is 69 €. Delivery texts were typed in three places.
+
 ## 2026-11-15: Landing section order (landing round 3, step L4)
 
 - **Status:** done

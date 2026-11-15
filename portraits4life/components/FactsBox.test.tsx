@@ -17,9 +17,9 @@ describe('FactsBox', () => {
 
   it('takes the lowest price and canvas sizes from the product data', () => {
     render(<FactsBox />);
-    expect(screen.getByText('from €30')).toBeInTheDocument();
+    expect(screen.getByText('Digital from €30, canvas from €69')).toBeInTheDocument();
     expect(screen.getByText(/30×30, 40×40, 50×50 cm/)).toBeInTheDocument();
-    expect(screen.getByText(/about 2 weeks after payment/)).toBeInTheDocument();
+    expect(screen.getByText('Digital 1 week, canvas 1 to 2 weeks after payment')).toBeInTheDocument();
   });
 
   it('marks the decorative icons as hidden from screen readers', () => {

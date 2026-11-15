@@ -26,7 +26,7 @@
       "On request with name and week of pregnancy"
     ],
     "cta_examples": "View examples",
-    "priceLine": "Canvas from {price} | Delivery about {weeks} weeks after payment"
+    "priceLine": "Digital from {digital} | Canvas from {canvas} | Delivery: digital {digitalDelivery}, canvas {canvasDelivery}"
   },
   "howItWorks": {
     "title": "How it works",
@@ -50,7 +50,7 @@
     "title": "Formats & Pricing",
     "digital": {
       "title": "High-Res Digital JPG",
-      "delivery": "1 Week Delivery",
+      "delivery": "{time} delivery",
       "items": [
         "High-resolution digital file",
         "Perfect for digital frames",
@@ -59,16 +59,17 @@
     },
     "canvas": {
       "title": "Canvas Prints",
-      "delivery": "1 - 2 Weeks Delivery"
+      "delivery": "{time} delivery"
     },
     "orderFormat": "Order this format",
     "payment": "Payment: PayPal, bank transfer, credit card",
-    "deliveryLine": "Delivery: about {weeks} weeks after payment",
+    "deliveryLine": "Delivery: digital {digital}, canvas {canvas} after payment",
     "imageAlt": {
       "canvasGallery": "Ultrasound artwork as a canvas print in a gallery wall",
       "canvasPortrait": "Ultrasound portrait on canvas with neon light",
       "canvasSizes": "Comparison of canvas sizes 30, 40 and 50 cm"
-    }
+    },
+    "from": "from"
   },
   "contact": {
     "title": "Ready for your artwork?",
@@ -154,7 +155,7 @@
     "items": [
       {
         "question": "How long does the artwork take?",
-        "answer": "Digital artwork typically takes 1 week. Canvas prints take 1-2 weeks from confirmation."
+        "answer": "Digital artwork typically takes 1 week. Canvas prints take 1 to 2 weeks from confirmation."
       },
       {
         "question": "Which image formats can I upload?",
@@ -252,7 +253,10 @@
     "home": "Home",
     "breadcrumb": "Breadcrumb",
     "order": "Order",
-    "newTab": "(opens in new tab)"
+    "newTab": "(opens in new tab)",
+    "week": "week",
+    "weeks": "weeks",
+    "rangeTo": "to"
   },
   "orderPage": {
     "intro": "Upload your ultrasound image and place your order here."
@@ -262,9 +266,9 @@
     "formats": "Formats",
     "formatsValue": "Digital or canvas ({sizes} cm)",
     "price": "Price",
-    "priceValue": "from {price}",
+    "priceValue": "Digital from {digital}, canvas from {canvas}",
     "delivery": "Delivery",
-    "deliveryValue": "about {weeks} weeks after payment",
+    "deliveryValue": "Digital {digital}, canvas {canvas} after payment",
     "payment": "Payment",
     "paymentValue": "PayPal, bank transfer, credit card",
     "optional": "Optional",
