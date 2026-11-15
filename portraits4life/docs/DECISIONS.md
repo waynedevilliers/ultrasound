@@ -105,6 +105,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Open before launch:** legal entity and contact details; order retention; consent for health-related images (legal advice); SITE_URL; sender domain for Resend; a live test order; live security headers.
 - **Considered:** Writing final legal text now (rejected: needs the operator's details and legal review).
 
+## 2026-11-15: Intro with image (landing round 3, step L1)
+
+- **Status:** done; alt text and the image choice pending client approval
+- **Decision:** On desktop the intro has the title, text and button in a left column, with `ultrasound3.avif` on the right, at its own proportions and without cropping. On mobile the order is title, image, text, button. The third paragraph ("Auf Wunsch mit Namen ...") is removed from the intro only; it stays in the hero benefit points, and a test checks that it appears once. The intro image is a placeholder from the existing examples; a finished-canvas photo is a high-priority TODO(client).
+- **Why:** Landing round 3, step L1.
+- **Considered:** Using the hero image again (rejected: the brief asked for the other example).
+
 ## 2026-11-14: Image folders by section (plan v3, step 12)
 
 - **Status:** done

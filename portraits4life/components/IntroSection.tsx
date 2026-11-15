@@ -1,12 +1,15 @@
 'use client';
 
+import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import ActionLink from '@/components/ActionLink';
 import { getCopy, localeOf } from '@/lib/copy';
 
 // The emotional text below the hero, ending with the primary order button.
+// Desktop: text column on the left, image on the right. Mobile: title, image, text, button.
 // TODO(client): approve the intro title and wording; the title is new.
 // TODO(client): the first paragraph says the editing is digital (no manual claim); approve the wording.
+// TODO(client), high priority: photo of a finished canvas on a wall for this section. The image shown is a placeholder from the existing examples.
 export default function IntroSection() {
   const pathname = usePathname();
   const locale = localeOf(pathname);
@@ -15,14 +18,27 @@ export default function IntroSection() {
 
   return (
     <section className="section-y bg-surface">
-      <div className="container-site">
-        <h2 className="font-display heading-xl font-bold text-center mb-10 text-ink">{intro.title}</h2>
-        <div className="reading-column space-y-5 text-lg text-body leading-relaxed">
+      <div className="container-site grid gap-10 lg:grid-cols-2 lg:gap-16">
+        <h2 className="font-display heading-xl font-bold text-center lg:text-left lg:col-start-1 lg:row-start-1 text-ink">
+          {intro.title}
+        </h2>
+
+        <Image
+          src="/images/artwork/ultrasound3.avif"
+          alt={intro.imageAlt}
+          width={545}
+          height={417}
+          sizes="(min-width: 1024px) 50vw, 100vw"
+          className="h-auto w-full rounded-lg shadow-lg lg:col-start-2 lg:row-span-3 lg:row-start-1 self-center"
+        />
+
+        <div className="reading-column space-y-5 text-lg text-body leading-relaxed lg:col-start-1 lg:row-start-2">
           {intro.paragraphs.map((paragraph) => (
             <p key={paragraph}>{paragraph}</p>
           ))}
         </div>
-        <div className="mt-10 text-center">
+
+        <div className="text-center lg:text-left lg:col-start-1 lg:row-start-3">
           <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
             {hero.cta_order}
           </ActionLink>
