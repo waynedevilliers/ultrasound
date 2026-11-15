@@ -227,7 +227,7 @@
     line-height: 1.2;
   }
   .heading-hero {
-    font-size: clamp(2.5rem, 7vw, 3.75rem);
+    font-size: clamp(1.5rem, 7vw, 3.75rem);
     line-height: 1.1;
   }
 

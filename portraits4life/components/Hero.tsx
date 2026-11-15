@@ -16,6 +16,8 @@ const check = (
 
 // TODO(client): approve the supporting line, the three benefit points and the price line (DE and EN; the EN wording is new).
 // TODO(client): benefit point 1 now reads "individuell künstlerisch gestaltet" / "individually designed as a piece of art" (digital work, no manual claim); approve the wording.
+// Phones: headline, supporting line, order button, price line, image, benefit points, examples button.
+// Desktop: text column on the left (headline, supporting line, benefits, buttons, price), image on the right.
 export default function Hero() {
   const pathname = usePathname();
   const locale = localeOf(pathname);
@@ -30,17 +32,18 @@ export default function Hero() {
   return (
     <section className="bg-gradient-to-b from-hero to-surface">
       <div className="container-site section-y pb-6 sm:pb-8 lg:pb-12">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="min-w-0">
-            <h1 className="font-display heading-hero font-bold mb-6 text-ink leading-tight">
+        <div className="grid gap-6 lg:grid-cols-2 lg:gap-12 lg:items-center">
+          {/* On phones this column is transparent, so its items can be ordered with the image. */}
+          <div className="min-w-0 contents lg:block">
+            <h1 className="font-display heading-hero font-bold mb-0 lg:mb-6 text-ink leading-tight">
               {hero.headline}
             </h1>
 
-            <p className="text-[1.125rem] min-[600px]:text-[1.25rem] text-body leading-relaxed max-w-[640px] mb-6">
+            <p className="text-[1.125rem] min-[600px]:text-[1.25rem] text-body leading-relaxed max-w-[640px] mb-0 lg:mb-6">
               {hero.supporting}
             </p>
 
-            <ul className="mb-8 space-y-2">
+            <ul className="mb-0 lg:mb-8 space-y-2 max-lg:order-6">
               {hero.benefits.map((benefit) => (
                 <li key={benefit} className="flex items-center gap-3 text-base text-body">
                   {check}
@@ -49,21 +52,21 @@ export default function Hero() {
               ))}
             </ul>
 
-            <div className="flex flex-col sm:flex-row gap-4 mb-4">
-              <div id="hero-order" className="inline-flex">
+            <div className="contents lg:flex lg:flex-row lg:gap-4 lg:mb-4">
+              <div id="hero-order" className="inline-flex max-lg:order-3">
                 <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
                   {hero.cta_order}
                 </ActionLink>
-                </div>
-              <ActionLink href={isDE ? '/de#beispiele' : '/en#beispiele'} variant="secondary">
+              </div>
+              <ActionLink href={isDE ? '/de#beispiele' : '/en#beispiele'} variant="secondary" className="max-lg:order-7">
                 {hero.cta_examples}
               </ActionLink>
             </div>
 
-            <p className="text-base text-copy">{priceLine}</p>
+            <p className="text-base text-copy max-lg:order-4">{priceLine}</p>
           </div>
 
-          <div className="relative h-96 lg:h-96 min-w-0">
+          <div className="relative min-w-0 aspect-square max-lg:order-5 lg:aspect-auto lg:h-96">
             <Image
               src="/images/artwork/ultrasound2.avif"
               alt={hero.imageAlt}
