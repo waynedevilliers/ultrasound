@@ -84,9 +84,9 @@ export default function Header() {
         <a
           ref={logoRef}
           href={isDE ? '/de' : '/en'}
-          className="flex items-center justify-center gap-3 py-4 hover:opacity-90 transition"
+          className="flex items-center justify-center gap-3 py-2 sm:py-4 hover:opacity-90 transition"
         >
-          <div className="w-16 h-16 sm:w-20 sm:h-20 relative">
+          <div className="w-12 h-12 sm:w-20 sm:h-20 relative">
             <Image
               src="/images/brand/logo.avif"
               alt="Portraits 4 Life"
@@ -95,7 +95,7 @@ export default function Header() {
               className="w-full h-full object-contain"
             />
           </div>
-          <span className="font-display text-3xl sm:text-4xl font-bold text-ink whitespace-nowrap">
+          <span className="hidden sm:inline font-display text-3xl sm:text-4xl font-bold text-ink whitespace-nowrap">
             Portraits 4 Life
           </span>
         </a>

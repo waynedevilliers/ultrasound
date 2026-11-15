@@ -146,6 +146,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Mobile step M1: the sticky bar holds the name and one order action; the language moves into the menu.
 - **Considered:** Removing the bar order button on phones (rejected: the one-tap order on phones is a recorded requirement).
 
+## 2026-11-15: Logo row on phones (mobile step M2)
+
+- **Status:** done in code (option A); owner chooses between A and B
+- **Decision:** Option A (in the code): on phones the logo row shows only the logo image, 48px high, centred, with 8px vertical padding. The name is hidden in the logo row below 640px because the bar shows it. Row height: 96px before, 64px after (375px and 320px); desktop unchanged at 112px. Option B (screenshot only): no logo row on phones.
+- **Why:** Mobile step M2 (the name is now in the sticky bar).
+- **Considered:** Keeping the 64px logo (rejected: the row took too much space above the hero).
+
 ## 2026-11-15: Über layout (landing round 4, step P5)
 
 - **Status:** done; photo still a placeholder (TODO(client))
