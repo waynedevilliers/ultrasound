@@ -78,8 +78,8 @@
     "cta": "Order now"
   },
   "footer": {
-    "contactUs": "Contact Us",
-    "copyright": "© 2024 Portraits 4 Life. All rights reserved.",
+    "contactUs": "Write to me",
+    "copyright": "© {year} Portraits 4 Life. All rights reserved.",
     "tagline": "Made with care for new parents & their memories",
     "legalNav": "Legal"
   },
@@ -148,7 +148,7 @@
     "beforeAlt": "Original ultrasound image, to follow soon",
     "fullSizeAlt": "Full-size image",
     "close": "Close",
-    "caption": "See the beauty in every detail. Transform your ultrasound into a work of art."
+    "caption": "See the beauty in every detail."
   },
   "faq": {
     "title": "Frequently Asked Questions",
@@ -159,11 +159,11 @@
       },
       {
         "question": "Which image formats can I upload?",
-        "answer": "We accept JPG, PNG and other common image formats. High-resolution images (at least 300dpi) produce the best results."
+        "answer": "I accept JPG, PNG and other common image formats. High-resolution images (at least 300dpi) produce the best results."
       },
       {
         "question": "Can I review the image before printing?",
-        "answer": "Yes! We send you a preview before final production. You can request changes if needed."
+        "answer": "Yes! I send you a preview before final production. You can request changes if needed."
       },
       {
         "question": "What are the shipping costs?",
@@ -171,7 +171,7 @@
       },
       {
         "question": "What if I'm not satisfied with the result?",
-        "answer": "If you're not happy with the result, we can make adjustments or offer a refund."
+        "answer": "If you're not happy with the result, I can make adjustments or offer a refund."
       }
     ],
     "moreQuestions": "More questions?",
@@ -185,7 +185,7 @@
         "title": "Ultrasound Portraits",
         "items": [
           "Choose a clear ultrasound image - profile views work best",
-          "We notify you within 24 hours if the image is usable",
+          "I notify you within 24 hours if the image is usable",
           "If not suitable, you can resubmit another image at no extra cost"
         ]
       },
@@ -194,7 +194,7 @@
         "title": "Individual Portraits",
         "items": [
           "Choose a clear photo of the person (300dpi preferred)",
-          "We confirm if the photo meets our quality requirements"
+          "I confirm if the photo meets my quality requirements"
         ]
       },
       {
@@ -203,7 +203,7 @@
         "items": [
           "One profile photo per person - doesn't need to be a joint photo",
           "300dpi quality preferred for best results",
-          "We'll notify you if we need adjusted images"
+          "I'll notify you if I need adjusted images"
         ]
       },
       {
@@ -220,7 +220,7 @@
     "successTitle": "Thank You for Your Order!",
     "submitted": "Your order has been submitted successfully.",
     "orderIdLabel": "Order ID:",
-    "contactWithin24h": "We will contact you within 24 hours to confirm your images.",
+    "contactWithin24h": "I will contact you within 24 hours to confirm your images.",
     "newOrder": "New Order",
     "nameLabel": "Your Name *",
     "emailLabel": "Your Email *",
@@ -283,11 +283,10 @@
     "imageAlt": "A colour-edited ultrasound image as a piece of art"
   },
   "about": {
-    "title": "About Portraits 4 Life",
+    "title": "About me",
     "paragraphs": [
       "Behind Portraits 4 Life is a small studio with one idea: a child’s first picture deserves more than a grey printout.",
-      "Every image is edited digitally. The colours follow the outline of the scan so the picture looks clear and warm.",
-      "On request, with your child’s name and the number of weeks in the womb."
+      "Every image is individually designed digitally. The colours follow the outline of the scan so the picture looks clear and warm."
     ],
     "photoPlaceholder": "Photo coming soon",
     "photoAlt": "Portrait of the artist behind Portraits 4 Life"

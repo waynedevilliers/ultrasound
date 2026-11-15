@@ -128,6 +128,16 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Landing round 3, step L3: one card look across the page.
 - **Considered:** 32px padding for both (rejected: five fact cards would be cramped at desktop width).
 
+## 2026-11-15: Wording: first person singular, no manual claims (landing round 4, step P2)
+
+- **Status:** done; wording pending client approval (the Über text is a draft, TODO(client))
+- **Manual-work search:** "von Hand", "by hand", "handmade", "handgemacht", "handgefertigt" appear in the project only in the landing test, which checks they are absent. The Über text now reads "Jedes Bild wird individuell digital gestaltet." (EN: "Every image is individually designed digitally.").
+- **First person:** "wir", "uns", "unser" in messages/de.json and "we", "us", "our" in messages/en.json are changed to "ich" / "I" and "Schreib mir" / "Write to me" wherever they speak for the operator: FAQ answers and the FAQ link, footer contact, order info, and the order confirmation text. Matches changed: footer.contactUs, faq.moreLink, faq answers 1, 2 and 4, orderInfo items (sections 0.1, 1.1, 2.2), orderForm.contactWithin24h. The English matches changed in the same places.
+- **Not changed (out of step):** the German "Sie" in the order page copy (orderPage.intro, orderForm and the upload guidance in de.json). CLAUDE.md asks for "du"; this needs its own step.
+- **Über:** title "Über mich" / "About me"; the third paragraph ("Auf Wunsch mit Namen ...") is removed; paragraphs are marked as a draft (TODO(client) in About.tsx).
+- **Gallery caption:** "Sieh die Schönheit in jedem Detail." / "See the beauty in every detail."
+- **Footer year:** the copyright is "© {year} ...", and the year comes from the code (new Date().getFullYear()).
+
 ## 2026-11-15: Prices and delivery times (landing round 4, step P1)
 
 - **Status:** done in code; the delivery wording is an open question for the owner
