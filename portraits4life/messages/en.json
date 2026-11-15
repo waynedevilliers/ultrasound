@@ -49,7 +49,7 @@
   "pricing": {
     "title": "Formats & Pricing",
     "digital": {
-      "title": "High-Res Digital JPG",
+      "title": "Digital file (JPG)",
       "delivery": "{time} delivery",
       "items": [
         "High-resolution digital file",
@@ -58,7 +58,7 @@
       ]
     },
     "canvas": {
-      "title": "Canvas Prints",
+      "title": "Canvas print",
       "delivery": "{time} delivery"
     },
     "orderFormat": "Order this format",
@@ -69,7 +69,11 @@
       "canvasPortrait": "Ultrasound portrait on canvas with neon light",
       "canvasSizes": "Comparison of canvas sizes 30, 40 and 50 cm"
     },
-    "from": "from"
+    "from": "from",
+    "canvasItems": [
+      "Printed on canvas",
+      "Delivery after payment"
+    ]
   },
   "contact": {
     "title": "Ready for your artwork?",

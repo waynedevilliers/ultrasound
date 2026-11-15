@@ -49,7 +49,7 @@
   "pricing": {
     "title": "Formate & Preise",
     "digital": {
-      "title": "Hochauflösendes digitales JPG",
+      "title": "Digitale Datei (JPG)",
       "delivery": "{time} Lieferung",
       "items": [
         "Hochauflösende digitale Datei",
@@ -58,7 +58,7 @@
       ]
     },
     "canvas": {
-      "title": "Leinwanddrucke",
+      "title": "Leinwanddruck",
       "delivery": "{time} Lieferung"
     },
     "orderFormat": "Dieses Format bestellen",
@@ -69,7 +69,11 @@
       "canvasPortrait": "Ultraschallbild als Leinwand-Porträt mit Neonlicht",
       "canvasSizes": "Vergleich der Leinwandgrößen 30, 40 und 50 cm"
     },
-    "from": "ab"
+    "from": "ab",
+    "canvasItems": [
+      "Druck auf Leinwand",
+      "Lieferung nach Zahlungseingang"
+    ]
   },
   "contact": {
     "title": "Bereit für dein Kunstwerk?",
