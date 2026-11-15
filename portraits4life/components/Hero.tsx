@@ -14,6 +14,7 @@ const check = (
 );
 
 // TODO(client): approve the supporting line, the three benefit points and the price line (DE and EN; the EN wording is new).
+// TODO(client): benefit point 1 now reads "individuell künstlerisch gestaltet" / "individually designed as a piece of art" (digital work, no manual claim); approve the wording.
 export default function Hero() {
   const pathname = usePathname();
   const locale = localeOf(pathname);
