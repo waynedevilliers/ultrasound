@@ -161,6 +161,15 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Order page round 1, step O1.
 - **Considered:** Changing the button label now (not done: it waits for the owner's answer in O4).
 
+## 2026-11-15: Hero on phones (mobile step M3)
+
+- **Status:** done; copy and photo pending owner review
+- **Decision:** On phones the order is headline, supporting line, "Jetzt bestellen", price line, image, benefit points, "Beispiele ansehen". The headline's lower size bound is 1.5rem (was 2.5rem); the upper bound and the desktop size are unchanged. The image is a full-width square with its own proportions, not cropped. Desktop keeps the two-column layout and the 384px image.
+- **Measured at 375 x 667:** headline on one line (343px wide, 33px tall); order button bottom at 386px; 47% of the image visible without scrolling; top padding 40px (the small section spacing, already in place). No sideways scrolling.
+- **Measured at 320 x 568:** headline on one line (288px); order button bottom at 412px; 13% of the image visible.
+- **Why:** Mobile step M3: the order is visible on the first screen.
+- **Considered:** Changing the top padding (rejected: already the small section spacing value).
+
 ## 2026-11-15: Über layout (landing round 4, step P5)
 
 - **Status:** done; photo still a placeholder (TODO(client))
