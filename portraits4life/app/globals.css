@@ -227,6 +227,7 @@
     line-height: 1.2;
   }
   .heading-hero {
+    /* Earlier phone size, kept as an option and NOT in use: clamp(2.5rem, 7vw, 3.75rem). Switch back together with the layout in Hero.tsx. */
     font-size: clamp(1.5rem, 7vw, 3.75rem);
     line-height: 1.1;
   }
