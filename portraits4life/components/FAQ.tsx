@@ -4,6 +4,7 @@ import { useId, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
 import { routeHref, routes } from '@/content/routes';
+import { canvasDeliveryText, digitalDeliveryText } from '@/lib/delivery';
 
 // TODO(client): the new question about an unsuitable image is a draft answer; confirm it.
 // TODO(client): the questions and answers are drafts. Confirm each answer (shipping, preview, refund, file requirements) with the client; see docs/faq-client-review.md. No FAQPage structured data until they are confirmed.
@@ -49,7 +50,11 @@ export default function FAQ() {
                   </button>
                 </h3>
                 <div id={panelId} hidden={!isOpen} className="px-6 py-4 bg-surface border-t border-line">
-                  <p className="text-copy leading-relaxed">{item.answer}</p>
+                  <p className="text-copy leading-relaxed">
+                    {item.answer
+                      .replace('{digital}', digitalDeliveryText(locale))
+                      .replace('{canvas}', canvasDeliveryText(locale))}
+                  </p>
                 </div>
               </div>
             );

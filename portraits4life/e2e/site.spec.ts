@@ -174,8 +174,8 @@ test('order page heading and intro are in one language per locale', async ({ pag
   test.skip(isMobile, 'desktop project only');
   await page.goto('/en/order');
   await expect(page.locator('h1')).toHaveText('Order');
-  await expect(page.getByText('Upload your ultrasound image and place your order here.')).toBeVisible();
+  await expect(page.getByText('Upload your ultrasound image and send me your wishes.')).toBeVisible();
   await page.goto('/de/order');
   await expect(page.locator('h1')).toHaveText('Bestellen');
-  await expect(page.getByText('Hier können Sie Ihr Ultraschallbild hochladen und Ihre Bestellung aufgeben.')).toBeVisible();
+  await expect(page.getByText('Lade dein Ultraschallbild hoch und sende mir deine Wünsche.')).toBeVisible();
 });

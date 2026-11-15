@@ -12,8 +12,9 @@ describe('routes', () => {
   });
 
   it('builds a locale-aware href for every locale', () => {
-    expect(routeHref('de', routes[1])).toBe('/de/order');
-    expect(routeHref('en', routes[2])).toBe('/en#pricing');
+    const byId = (id: string) => routes.find((route) => route.id === id)!;
+    expect(routeHref('de', byId('order'))).toBe('/de/order');
+    expect(routeHref('en', byId('formats'))).toBe('/en#pricing');
   });
 
   it('puts legal pages in the footer, not the main menu', () => {

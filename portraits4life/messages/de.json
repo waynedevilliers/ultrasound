@@ -160,7 +160,7 @@
     "items": [
       {
         "question": "Wie lange dauert die Bearbeitung?",
-        "answer": "Die digitale Bearbeitung dauert normalerweise 1 Woche. Der Leinwanddruck dauert 1 bis 2 Wochen nach Bestätigung."
+        "answer": "Die digitale Bearbeitung dauert {digital}. Der Leinwanddruck dauert {canvas} nach Zahlungseingang."
       },
       {
         "question": "Welche Bildformate kann ich hochladen?",
@@ -172,7 +172,7 @@
       },
       {
         "question": "Wie sind die Versandkosten?",
-        "answer": "Die Versandkosten hängen von deinem Standort ab. Sie werden vor der Zahlung klar angezeigt."
+        "answer": "Die Versandkosten hängen von deinem Standort ab. Du siehst sie vor der Zahlung klar angezeigt."
       },
       {
         "question": "Was ist, wenn mir das Endergebnis nicht gefällt?",
@@ -237,8 +237,8 @@
     "productDigital": "Digitales JPEG",
     "productCanvas": "Leinwanddruck",
     "canvasSizeLabel": "Größe *",
-    "childNameLabel": "Babys Name",
-    "weeksLabel": "Wochen im Mutterleib",
+    "childNameLabel": "Name des Kindes (optional)",
+    "weeksLabel": "Schwangerschaftswoche (optional)",
     "shippingHeading": "Lieferadresse *",
     "shippingFullName": "Vollständiger Name *",
     "shippingStreet": "Straße *",
@@ -248,7 +248,7 @@
     "shippingCountry": "Land *",
     "ultrasoundLabel": "Ultraschallbild hochladen *",
     "referenceLabel": "Referenzbild hochladen",
-    "specialRequests": "Besondere Wünsche",
+    "specialRequests": "Besondere Wünsche (optional)",
     "fileTooLarge": "Die Datei ist größer als 15 MB. Bitte ein kleineres Bild wählen.",
     "fileType": "Nur JPG, PNG, WebP oder HEIC.",
     "ultrasoundRequired": "Bitte lade ein Ultraschallbild hoch.",
@@ -256,7 +256,8 @@
     "submit": "Jetzt bestellen",
     "fieldInvalid": "Bitte prüfe dieses Feld.",
     "checkFields": "Bitte prüfe die markierten Felder.",
-    "genericError": "Die Bestellung konnte nicht gesendet werden. Bitte versuche es noch einmal."
+    "genericError": "Die Bestellung konnte nicht gesendet werden. Bitte versuche es noch einmal.",
+    "requiredNote": "* Pflichtfeld"
   },
   "common": {
     "home": "Startseite",
@@ -268,7 +269,7 @@
     "rangeTo": "bis"
   },
   "orderPage": {
-    "intro": "Hier können Sie Ihr Ultraschallbild hochladen und Ihre Bestellung aufgeben."
+    "intro": "Lade dein Ultraschallbild hoch und sende mir deine Wünsche."
   },
   "facts": {
     "label": "Die wichtigsten Fakten",

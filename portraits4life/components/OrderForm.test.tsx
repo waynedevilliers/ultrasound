@@ -123,4 +123,14 @@ describe('OrderForm', () => {
       'The order could not be sent. Please try again.',
     );
   });
+
+  it('asks for the week of pregnancy as a number from 1 to 42 and shows the required-field note', () => {
+    const { container } = render(<OrderForm />);
+    const weeks = container.querySelector('#weeksInWomb') as HTMLInputElement;
+    expect(weeks).toHaveAttribute('type', 'number');
+    expect(weeks).toHaveAttribute('min', '1');
+    expect(weeks).toHaveAttribute('max', '42');
+    expect(weeks).toHaveAttribute('inputmode', 'numeric');
+    expect(screen.getByText('* Required field')).toBeInTheDocument();
+  });
 });

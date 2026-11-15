@@ -234,6 +234,8 @@ export default function OrderForm({
         </div>
       )}
 
+      <p className="text-sm text-copy">{orderForm.requiredNote}</p>
+
       {/* Basic Fields */}
       <div>
         <label className="block text-base font-medium text-body mb-2" htmlFor="name">
@@ -336,7 +338,10 @@ export default function OrderForm({
         <input
           id="weeksInWomb"
           {...invalid('weeksInWomb')}
-          type="text"
+          type="number"
+          min={1}
+          max={42}
+          inputMode="numeric"
           name="weeksInWomb"
           value={formData.weeksInWomb}
           onChange={handleChange}

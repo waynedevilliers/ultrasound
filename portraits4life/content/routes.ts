@@ -15,10 +15,10 @@ export type SiteRoute = {
 
 export const routes: SiteRoute[] = [
   { id: 'home', path: '', menu: true, footer: true, sitemap: true },
-  { id: 'order', path: '/order', menu: true, footer: false, sitemap: true },
-  { id: 'formats', path: '', anchor: '#pricing', menu: true, footer: false, sitemap: false },
-  { id: 'howItWorks', path: '', anchor: '#so-funktionierts', menu: false, footer: false, sitemap: false },
   { id: 'examples', path: '', anchor: '#beispiele', menu: true, footer: false, sitemap: false },
+  { id: 'formats', path: '', anchor: '#pricing', menu: true, footer: false, sitemap: false },
+  { id: 'order', path: '/order', menu: true, footer: false, sitemap: true },
+  { id: 'howItWorks', path: '', anchor: '#so-funktionierts', menu: false, footer: false, sitemap: false },
   { id: 'about', path: '', anchor: '#ueber-mich', menu: false, footer: false, sitemap: false },
   { id: 'faq', path: '', anchor: '#faq', menu: false, footer: false, sitemap: false },
   { id: 'contact', path: '', anchor: '#kontakt', menu: true, footer: false, sitemap: false },
