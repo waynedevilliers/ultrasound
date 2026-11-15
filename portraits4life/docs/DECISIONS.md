@@ -79,7 +79,15 @@ One entry per decision someone could later question. Each entry: date, status (`
 Questions the owner has not answered yet. Remove an item and log the answer as a decision once answered.
 
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
-- Order form: email with attachments or upload-and-link (Step 11, part A).
+- Order form: attachments or upload-and-link: answered by the photo decision (2026-11-14, Step 11 part B): upload-and-link.
+
+## 2026-11-14: Order form fixes after the step 11 review
+
+- **Status:** done
+- **Decision:** The form has `noValidate`, so the server's field messages show instead of the browser's bubbles. The error summary has `role="alert"` and takes focus after a failed submit. File size and type errors also mark the photo field. A stored photo that is missing or invalid on the server returns an issue for its field. The stub debug page at `app/[locale]/test` is removed. The submit button reads "Jetzt bestellen". Prettier 3.9.10 is a dev dependency (`npx prettier --check <files>`); no repo-wide format script, because 65 files are not formatted yet.
+- **Why:** Review of PR #29: field errors were not reachable in a browser, the summary was not announced, and some errors did not mark their field.
+- **Open:** Reformat the whole repo in its own step (65 files). The 429 rate-limit response still shows the generic message.
+- **Considered:** Adding a Prettier check script (rejected until the repo is formatted).
 
 ## 2026-11-14: Field-level errors on the order form (plan v3, step 11)
 
@@ -180,7 +188,7 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Decision:** The order is sent to a route handler (app/api/orders), not a server action. This keeps room for 15 MB uploads: photos go directly to private storage through a token route, and the order itself is JSON.
 - **Why:** Owner decision. Server validation, escaping, honeypot and rate limiting are in place.
 - **Present:** server-side Zod validation of every field; the stored photo is checked for existence, size (15 MB) and type on the server; every value in the email is HTML-escaped; honeypot field; rate limit on the order endpoint.
-- **Missing (fix in step 11):** the rate limit is per server instance and trusts x-forwarded-for; the upload token route has no rate limit; field-level error messages (errors are listed above the button, not under each field).
+- **Missing:** the rate limit is per server instance and trusts x-forwarded-for; the upload token route has no rate limit. Field-level error messages were added in Step 11 (2026-11-14).
 - **Considered:** A server action (rejected for the reason above).
 
 ## 2026-11-14: Images and content blocks (Step 10)
@@ -223,7 +231,7 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Decision:** Photos go straight from the browser to private Vercel Blob storage, using a short-lived upload token (`app/api/orders/upload`). The order is then sent as JSON with the stored paths (`app/api/orders`), which checks that each photo exists and passes the size and type rules. The emails contain signed links to our own route (`app/api/orders/files`), which serves a photo only with a valid, unexpired signature (30 days). Nothing is publicly linkable.
 - **Retention:** a daily cron (`app/api/cron/cleanup`, 03:00) deletes photos uploaded more than 30 days ago. Deviation: the plan says "30 days after the order is completed", but there is no completion status yet, so the count starts at upload.
 - **Deviations from the plan text:** mail is sent with Resend, so the variables are `RESEND_API_KEY`, `ORDER_FROM_EMAIL` and `ORDER_EMAIL` (not EMAIL_HOST and similar SMTP settings). The order is sent with a route handler, not a server action, because the upload needs its own token route anyway.
-- **Still open:** errors are listed above the submit button, not under each field. The rate limit is per server instance. Upload and sending need Blob, Resend, Postgres and a Vercel deployment to test end to end; the e2e tests cover the parts that work without them. The environment variables are listed in .env.example and must be set on Vercel, including CRON_SECRET for the cleanup job.
+- **Still open:** the rate limit is per server instance (field errors are done, see 2026-11-14 Step 11). Upload and sending need Blob, Resend, Postgres and a Vercel deployment to test end to end; the e2e tests cover the parts that work without them. The environment variables are listed in .env.example and must be set on Vercel, including CRON_SECRET for the cleanup job.
 - **Why:** Owner choice (option B): photos never pass through the order endpoint, so the request size limit does not apply, and each photo is stored once.
 - **Considered:** Email attachments (rejected: request size limit, mailbox copies of health-related photos).
 
