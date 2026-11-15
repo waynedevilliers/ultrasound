@@ -78,8 +78,9 @@
   "contact": {
     "title": "Bereit für dein Kunstwerk?",
     "email": "portraits4life.art@gmail.com",
-    "description": "Hast du Fragen oder besondere Wünsche? Schreib mir eine Nachricht und ich antworte dir so schnell wie möglich!",
-    "cta": "Jetzt bestellen"
+    "description": "Lade dein Ultraschallbild hoch. Ich prüfe es und melde mich bei dir.",
+    "cta": "Jetzt bestellen",
+    "questions": "Fragen? Schreib mir:"
   },
   "footer": {
     "contactUs": "Schreib mir",
@@ -176,6 +177,10 @@
       {
         "question": "Was ist, wenn mir das Endergebnis nicht gefällt?",
         "answer": "Wenn du mit dem Ergebnis nicht zufrieden bist, kann ich Anpassungen vornehmen oder die Bestellung erstatten."
+      },
+      {
+        "question": "Was, wenn mein Ultraschallbild nicht geeignet ist?",
+        "answer": "Dann melde ich mich bei dir und wir besprechen, welches Bild sich eignet."
       }
     ],
     "moreQuestions": "Noch Fragen?",

@@ -7,15 +7,12 @@ import { menuRoutes, routeHref, type SiteRoute } from '@/content/routes';
 import { isActiveItem } from '@/lib/is-active-item';
 import { getCopy, localeOf } from '@/lib/copy';
 import ActionLink from '@/components/ActionLink';
+import LanguageSwitch from '@/components/LanguageSwitch';
 
 
 
 // The logo row scrolls away with the page. The menu bar is sticky: it never changes
 // size and has no scroll listeners, so it cannot flicker.
-// Moves the browser to another address. Kept outside the component.
-function navigateTo(url: string) {
-  window.location.href = url;
-}
 
 export default function Header() {
   const pathname = usePathname();
@@ -59,10 +56,6 @@ export default function Header() {
     };
   }, [menuOpen]);
 
-  // Switching keeps the current page; only the language prefix changes.
-  const switchTo = (newLang: 'de' | 'en') => {
-    navigateTo(pathname.replace(/^\/(en|de)/, `/${newLang}`) || `/${newLang}`);
-  };
   const onOrderPage = pathname.endsWith('/order');
 
   const links = menuRoutes().map((route: SiteRoute) => ({
@@ -139,26 +132,7 @@ export default function Header() {
           </a>
 
           <div className="absolute right-4 sm:right-6 lg:right-8 top-1/2 -translate-y-1/2 flex items-center gap-2 sm:gap-4">
-            <nav aria-label={copy.header.switchLanguageLabel} className="flex items-center gap-2 text-base font-semibold">
-              {(["de", "en"] as const).map((code, index) => (
-                <span key={code} className="flex items-center gap-2">
-                  {index > 0 && <span aria-hidden="true" className="text-field">|</span>}
-                  {code === locale ? (
-                    <span aria-current="true" className="text-brand-strong underline underline-offset-4">
-                      {code.toUpperCase()}
-                    </span>
-                  ) : (
-                    <button
-                      type="button"
-                      onClick={() => switchTo(code)}
-                      className="text-copy hover:text-ink transition"
-                    >
-                      {code.toUpperCase()}
-                    </button>
-                  )}
-                </span>
-              ))}
-            </nav>
+            <LanguageSwitch />
 
             {!onOrderPage && (
               <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary" className="lg:hidden min-h-11 px-4 py-2 text-base">
