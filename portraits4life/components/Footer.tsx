@@ -19,7 +19,7 @@ export default function Footer() {
   };
 
   const contactUs = copy.footer.contactUs;
-  const copyright = copy.footer.copyright;
+  const copyright = copy.footer.copyright.replace('{year}', String(new Date().getFullYear()));
   const tagline = copy.footer.tagline;
 
   return (

@@ -78,8 +78,8 @@
     "cta": "Jetzt bestellen"
   },
   "footer": {
-    "contactUs": "Kontaktiere uns",
-    "copyright": "© 2024 Portraits 4 Life. Alle Rechte vorbehalten.",
+    "contactUs": "Schreib mir",
+    "copyright": "© {year} Portraits 4 Life. Alle Rechte vorbehalten.",
     "tagline": "Mit Liebe für Eltern und ihre schönsten Erinnerungen",
     "legalNav": "Rechtliches"
   },
@@ -148,7 +148,7 @@
     "beforeAlt": "Originales Ultraschallbild, folgt in Kürze",
     "fullSizeAlt": "Vollbild",
     "close": "Schließen",
-    "caption": "Sehe die Schönheit in jedem Detail. Verwandle dein Ultraschallbild in ein Kunstwerk."
+    "caption": "Sieh die Schönheit in jedem Detail."
   },
   "faq": {
     "title": "Häufig gestellte Fragen",
@@ -159,11 +159,11 @@
       },
       {
         "question": "Welche Bildformate kann ich hochladen?",
-        "answer": "Wir akzeptieren JPG, PNG und andere gängige Bildformate. High-Resolution-Bilder (mindestens 300dpi) geben die besten Ergebnisse."
+        "answer": "Ich akzeptiere JPG, PNG und andere gängige Bildformate. High-Resolution-Bilder (mindestens 300dpi) geben die besten Ergebnisse."
       },
       {
         "question": "Kann ich das Bild vor dem Druck überprüfen?",
-        "answer": "Ja! Wir senden dir eine Vorschau vor der endgültigen Produktion. Du kannst Änderungen anfordern, wenn nötig."
+        "answer": "Ja! Ich sende dir eine Vorschau vor der endgültigen Produktion. Du kannst Änderungen anfordern, wenn nötig."
       },
       {
         "question": "Wie sind die Versandkosten?",
@@ -171,11 +171,11 @@
       },
       {
         "question": "Was ist, wenn mir das Endergebnis nicht gefällt?",
-        "answer": "Wenn du mit dem Ergebnis nicht zufrieden bist, können wir Anpassungen vornehmen oder die Bestellung erstatten."
+        "answer": "Wenn du mit dem Ergebnis nicht zufrieden bist, kann ich Anpassungen vornehmen oder die Bestellung erstatten."
       }
     ],
     "moreQuestions": "Noch Fragen?",
-    "moreLink": "Kontaktiere uns"
+    "moreLink": "Schreib mir"
   },
   "orderInfo": {
     "title": "Informationen",
@@ -185,7 +185,7 @@
         "title": "Ultraschallportraits",
         "items": [
           "Wähle ein klares Ultraschallbild - Profilaufnahmen funktionieren am besten",
-          "Wir benachrichtigen dich innerhalb von 24 Stunden, ob das Bild verwendbar ist",
+          "Ich benachrichtige dich innerhalb von 24 Stunden, ob das Bild verwendbar ist",
           "Falls nicht geeignet, kannst du ein anderes Bild kostenlos erneut einreichen"
         ]
       },
@@ -194,7 +194,7 @@
         "title": "Individualportraits",
         "items": [
           "Wähle ein klares Foto der Person (300dpi bevorzugt)",
-          "Wir bestätigen, ob das Foto unsere Qualitätsanforderungen erfüllt"
+          "Ich bestätige, ob das Foto meine Qualitätsanforderungen erfüllt"
         ]
       },
       {
@@ -203,7 +203,7 @@
         "items": [
           "Ein Profilfoto pro Person - muss kein gemeinsames Foto sein",
           "300dpi Qualität bevorzugt für beste Ergebnisse",
-          "Wir benachrichtigen dich, wenn wir angepasste Bilder benötigen"
+          "Ich benachrichtige dich, wenn ich angepasste Bilder benötige"
         ]
       },
       {
@@ -220,7 +220,7 @@
     "successTitle": "Danke für deine Bestellung!",
     "submitted": "Deine Bestellung wurde erfolgreich eingereicht.",
     "orderIdLabel": "Bestellnummer:",
-    "contactWithin24h": "Wir werden dich innerhalb von 24 Stunden kontaktieren, um deine Bilder zu bestätigen.",
+    "contactWithin24h": "Ich werde dich innerhalb von 24 Stunden kontaktieren, um deine Bilder zu bestätigen.",
     "newOrder": "Neue Bestellung",
     "nameLabel": "Dein Name *",
     "emailLabel": "Deine E-Mail *",
@@ -283,11 +283,10 @@
     "imageAlt": "Ein farbig bearbeitetes Ultraschallbild als Kunstwerk"
   },
   "about": {
-    "title": "Über Portraits 4 Life",
+    "title": "Über mich",
     "paragraphs": [
       "Hinter Portraits 4 Life steckt ein kleines Atelier mit einer Idee: Die erste Aufnahme eines Kindes verdient mehr als ein graues Blatt Papier.",
-      "Jedes Bild wird digital bearbeitet. Die Farben folgen den Konturen des Ultraschalls, damit die Aufnahme klar und warm wirkt.",
-      "Auf Wunsch mit Namen deines Kindes und der Anzahl der Wochen im Mutterleib."
+      "Jedes Bild wird individuell digital gestaltet. Die Farben folgen den Konturen des Ultraschalls, damit die Aufnahme klar und warm wirkt."
     ],
     "photoPlaceholder": "Foto folgt",
     "photoAlt": "Porträt der Künstlerin oder des Künstlers hinter Portraits 4 Life"

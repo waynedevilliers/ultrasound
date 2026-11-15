@@ -33,3 +33,29 @@ Status as of 2026-11-15. Plan v3 steps 1 to 13 are built in code. Launch is not 
 ## Done since the last version of this list
 - Field-level errors on the order form (Step 11) and the review fixes (PR #29, #30).
 - Image folders by section; reference screenshots moved out of the project (Step 12, PR #31).
+
+## Order and security review (2026-11-15), for later
+Full audit: docs/reviews/2026-11-15-audit.md. Parked until the visual work is done.
+- CRITICAL: the Content-Security-Policy (connect-src 'self') blocks direct photo uploads to Vercel Blob, so orders with a photo cannot be sent. Test on a Vercel preview after the fix.
+- An order is saved before the signing secret is checked; a missing ORDER_LINK_SECRET leaves an order with no email, and retries duplicate it.
+- ORDER_FROM_EMAIL falls back to onboarding@resend.dev, so customer mail fails silently in production.
+- Order emails are English only; German is the main audience.
+- Unconfirmed promises: "innerhalb von 24 Stunden", "kostenlos erneut einreichen".
+- Payment and delivery timing contradict each other (order info, form, pricing, FAQ).
+- JSON-LD highPrice is 50, the page says "ab 30 €" (align with the product file).
+- Gallery lightbox not keyboard accessible (div with onClick, no dialog role, no Escape).
+- Success button: white on green-600, contrast 3.30:1 (below 4.5:1); owner colour decision.
+- Order page copy uses "Sie"; order.info.* block is unused and can be deleted.
+- Upload token route: bad JSON is an unhandled 500; no rate limit.
+- Honeypot branch unreachable for filled values; "Website" label is English.
+- Client components only for usePathname (Hero, FactsBox, PricingTiers, IntroSection, HowItWorks, ContactSection, Footer): should be Server Components with locale as a prop.
+- Landing not statically generated (no generateStaticParams).
+- next-intl is installed but copy is imported as JSON (lib/copy.ts); DECISIONS says next-intl.
+- middleware.ts to proxy.ts rename (deprecation warning).
+- README out of date (env names, Node version, branch names, removed endpoint).
+- Dead code from knip (components/ui/button.tsx, ui/tabs.tsx, lib/db.ts, unused exports and dependencies).
+- Test gaps: language switch, Gallery, PricingTiers.
+- Duplicate contact email in five places; language switch in Header and Footer.
+- Product JSON-LD lacks image and Offer url.
+- Stale root docs (INSTRUCTIONS.md, PROJECT_STATUS.md, TEST_GUIDE.md); unused template SVGs in public/.
+- Outdated packages: TypeScript, ESLint 9, Vitest 4, React, next-intl (majors need their own step).
