@@ -1,15 +1,12 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import OrderForm from './OrderForm';
+import { formatOptions } from '@/lib/format-options';
 
 vi.mock('next/navigation', () => ({ usePathname: () => '/en/order' }));
 vi.mock('@vercel/blob/client', () => ({
   upload: vi.fn(async (path: string) => ({ pathname: `${path}/stored.png` })),
 }));
-
-function productSelect(container: HTMLElement) {
-  return container.querySelector('select[name="product"]') as HTMLSelectElement;
-}
 
 function photoInput(container: HTMLElement) {
   return container.querySelector('#ultrasoundImage') as HTMLInputElement;
@@ -34,17 +31,16 @@ afterEach(() => {
 });
 
 describe('OrderForm', () => {
-  it('shows canvas sizes only when Canvas Print is selected', () => {
+  it('lists the products with their prices and shows shipping only for a canvas size', () => {
     const { container } = render(<OrderForm />);
-    expect(container.querySelector('select[name="canvasSize"]')).toBeNull();
-    fireEvent.change(productSelect(container), { target: { value: 'canvas' } });
-    const sizes = container.querySelector('select[name="canvasSize"]') as HTMLSelectElement;
-    expect(sizes).not.toBeNull();
-    expect(Array.from(sizes.options).map((o) => o.value)).toEqual([
-      '30x30cm',
-      '40x40cm',
-      '50x50cm',
-    ]);
+    const list = container.querySelector('#format') as HTMLSelectElement;
+    expect(Array.from(list.options).map((o) => o.textContent)).toEqual(formatOptions('en').map((o) => o.label));
+    expect(container.querySelector('#shippingStreet')).toBeNull();
+    fireEvent.change(list, { target: { value: '40x40cm' } });
+    expect(list.value).toBe('40x40cm');
+    expect(container.querySelector('#shippingStreet')).not.toBeNull();
+    fireEvent.change(list, { target: { value: 'digital' } });
+    expect(container.querySelector('#shippingStreet')).toBeNull();
   });
 
   it('rejects an upload over 15 MB and marks the photo field', () => {
@@ -132,5 +128,10 @@ describe('OrderForm', () => {
     expect(weeks).toHaveAttribute('max', '42');
     expect(weeks).toHaveAttribute('inputmode', 'numeric');
     expect(screen.getByText('* Required field')).toBeInTheDocument();
+  });
+  it('preselects the format from the order link', () => {
+    const { container } = render(<OrderForm initialFormat={{ product: 'canvas', canvasSize: '50x50cm' }} />);
+    expect((container.querySelector('#format') as HTMLSelectElement).value).toBe('50x50cm');
+    expect(container.querySelector('#shippingStreet')).not.toBeNull();
   });
 });
