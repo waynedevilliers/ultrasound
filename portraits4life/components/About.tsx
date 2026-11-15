@@ -10,7 +10,7 @@ export default function About({ locale }: { locale: string }) {
         <div
           role="img"
           aria-label={about.photoAlt}
-          className="flex aspect-[4/5] items-center justify-center rounded-lg border border-line bg-surface-muted p-6 text-center text-copy shadow-lg"
+          className="flex aspect-[4/5] max-h-[480px] items-center justify-center rounded-lg border border-line bg-surface-muted p-6 text-center text-copy shadow-lg"
         >
           {about.photoPlaceholder}
         </div>
