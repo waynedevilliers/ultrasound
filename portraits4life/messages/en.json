@@ -33,17 +33,18 @@
     "steps": [
       {
         "title": "Upload your image",
-        "description": "Send me your clear ultrasound image."
+        "description": "Upload a clearly visible ultrasound image."
       },
       {
         "title": "I edit it",
-        "description": "I turn it into a colourful work of art."
+        "description": "I check your image and turn it into a colourful piece of art."
       },
       {
         "title": "Receive canvas or file",
         "description": "You get your print or the digital file."
       }
-    ]
+    ],
+    "paymentNote": "You pay only after I have checked your image."
   },
   "pricing": {
     "title": "Formats & Pricing",

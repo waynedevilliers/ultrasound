@@ -112,6 +112,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Landing round 3, step L1.
 - **Considered:** Using the hero image again (rejected: the brief asked for the other example).
 
+## 2026-11-15: Process steps: numbers, new text, payment line (landing round 3, step L2)
+
+- **Status:** done with variant A in code; owner chooses between A and B
+- **Decision:** The three steps are an ordered list. Variant A (in the code): the number sits in the circle where the icon was. Variant B (screenshot only, not in code): "1." before each title. Step 1 reads "Lade ein gut erkennbares Ultraschallbild hoch.", step 2 "Ich prüfe dein Bild und mache daraus ein farbiges Kunstwerk.". A centred line under the cards says the payment comes after the image is checked (TODO(client): confirm the payment order). Card text is 16px. The cards have no fixed height; they stay equal through the grid.
+- **Why:** Landing round 3, step L2.
+- **Considered:** Keeping the icons (rejected by the brief).
+
 ## 2026-11-14: Image folders by section (plan v3, step 12)
 
 - **Status:** done
