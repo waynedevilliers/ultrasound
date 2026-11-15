@@ -138,6 +138,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Gallery caption:** "Sieh die Schönheit in jedem Detail." / "See the beauty in every detail."
 - **Footer year:** the copyright is "© {year} ...", and the year comes from the code (new Date().getFullYear()).
 
+## 2026-11-15: Format cards (landing round 4, step P3)
+
+- **Status:** done; feature list and card titles pending client approval
+- **Decision:** Titles "Digitale Datei (JPG)" and "Leinwanddruck 30 × 30 cm" (non-breaking spaces, the size never wraps). All four cards use the shared `InfoCard`; the order button sits at the bottom of each card. Each canvas card has a short neutral feature list ("Druck auf Leinwand", "Lieferung nach Zahlungseingang"), marked TODO(client); the text is in messages, because prose is kept out of content/. Two product photos are shown (size comparison and single canvas). `canvas-gallery.png` stays in the repo, not shown. Payment and delivery lines stay below the cards.
+- **Why:** Landing round 4, step P3.
+- **Considered:** Product claims such as frame type or print finish (rejected: not confirmed by the owner).
+
 ## 2026-11-15: Prices and delivery times (landing round 4, step P1)
 
 - **Status:** done in code; the delivery wording is an open question for the owner

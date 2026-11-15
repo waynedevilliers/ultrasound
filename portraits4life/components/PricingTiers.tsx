@@ -7,14 +7,18 @@ import { formatPrice } from '@/lib/price';
 import { canvasSizes, digitalProduct } from '@/content/products';
 import { canvasDeliveryText, digitalDeliveryText } from '@/lib/delivery';
 import ActionLink from '@/components/ActionLink';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import InfoCard from '@/components/InfoCard';
 
 // TODO(client): confirm payment methods and delivery times before launch.
+// TODO(client): confirm the canvas feature list (neutral placeholders, no product claims yet).
+// TODO(client): confirm the alt texts and captions for the canvas photos.
 export default function PricingTiers() {
   const pathname = usePathname();
   const locale = localeOf(pathname);
   const { pricing } = getCopy(locale);
   const orderPath = `/${locale}/order`;
+  // Non-breaking spaces keep a size such as "30 × 30 cm" on one line.
+  const sizeLabel = (widthCm: number, heightCm: number) => `${widthCm} × ${heightCm} cm`;
 
   const formats = [
     {
@@ -28,19 +32,17 @@ export default function PricingTiers() {
     },
     ...canvasSizes.map((size) => ({
       key: size.id,
-      title: `${pricing.canvas.title} ${size.widthCm} × ${size.heightCm} cm`,
+      title: `${pricing.canvas.title} ${sizeLabel(size.widthCm, size.heightCm)}`,
       price: formatPrice(size.price, locale),
       delivery: pricing.canvas.delivery.replace('{time}', canvasDeliveryText(locale)),
-      items: [],
+      items: pricing.canvasItems,
       href: `${orderPath}?format=${size.id}`,
     })),
   ];
 
-  // TODO(client): confirm the alt texts and captions for the canvas photos.
   const images = [
-    { src: '/images/formats/canvas-gallery.png', alt: pricing.imageAlt.canvasGallery },
-    { src: '/images/formats/canvas-portrait.png', alt: pricing.imageAlt.canvasPortrait },
     { src: '/images/formats/canvas-sizes.png', alt: pricing.imageAlt.canvasSizes },
+    { src: '/images/formats/canvas-portrait.png', alt: pricing.imageAlt.canvasPortrait },
   ];
 
   return (
@@ -48,7 +50,7 @@ export default function PricingTiers() {
       <div className="container-site">
         <h2 className="font-display heading-xl font-bold text-center mb-16 text-ink">{pricing.title}</h2>
 
-        <div className="grid gap-6 md:grid-cols-3 mb-16">
+        <div className="grid gap-6 md:grid-cols-2 mb-16">
           {images.map((image) => (
             <Image
               key={image.src}
@@ -56,7 +58,7 @@ export default function PricingTiers() {
               alt={image.alt}
               width={1536}
               height={1024}
-              sizes="(min-width: 768px) 33vw, 100vw"
+              sizes="(min-width: 768px) 50vw, 100vw"
               className="h-auto w-full rounded-lg shadow-lg"
             />
           ))}
@@ -64,35 +66,26 @@ export default function PricingTiers() {
 
         <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {formats.map((format) => (
-            <Card
-              key={format.key}
-              className="flex h-full flex-col border-2 border-line hover:border-brand transition overflow-hidden"
-            >
-              <CardHeader className="bg-gradient-to-r from-canvas to-surface pb-6">
-                <CardTitle className="text-2xl mb-2">{format.title}</CardTitle>
-                <p className="text-3xl font-bold text-brand-strong">{format.price}</p>
-                <p className="text-base text-copy mt-2">{format.delivery}</p>
-              </CardHeader>
-              <CardContent className="flex flex-1 flex-col pt-6">
-                {format.items.length > 0 && (
-                  <ul className="space-y-3 mb-6">
-                    {format.items.map((item) => (
-                      <li key={item} className="flex items-start gap-3 text-copy">
-                        <span className="text-brand mt-1 shrink-0" aria-hidden="true">
-                          ✓
-                        </span>
-                        <span>{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                )}
-                <div className="mt-auto">
-                  <ActionLink href={format.href} variant="secondary" className="w-full">
-                    {pricing.orderFormat}
-                  </ActionLink>
-                </div>
-              </CardContent>
-            </Card>
+            <InfoCard key={format.key} variant="bordered" className="flex flex-col">
+              <h3 className="text-2xl font-bold text-ink mb-2">{format.title}</h3>
+              <p className="text-3xl font-bold text-brand-strong">{format.price}</p>
+              <p className="text-base text-copy mt-2 mb-6">{format.delivery}</p>
+              <ul className="space-y-3 mb-8">
+                {format.items.map((item) => (
+                  <li key={item} className="flex items-start gap-3 text-copy">
+                    <span className="text-brand mt-1 shrink-0" aria-hidden="true">
+                      ✓
+                    </span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="mt-auto">
+                <ActionLink href={format.href} variant="secondary" className="w-full">
+                  {pricing.orderFormat}
+                </ActionLink>
+              </div>
+            </InfoCard>
           ))}
         </div>
 
