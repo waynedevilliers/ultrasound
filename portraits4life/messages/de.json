@@ -33,17 +33,18 @@
     "steps": [
       {
         "title": "Bild hochladen",
-        "description": "Sende mir dein klares Ultraschallbild."
+        "description": "Lade ein gut erkennbares Ultraschallbild hoch."
       },
       {
         "title": "Ich bearbeite es",
-        "description": "Ich mache daraus ein farbiges Kunstwerk."
+        "description": "Ich prüfe dein Bild und mache daraus ein farbiges Kunstwerk."
       },
       {
         "title": "Leinwand oder Datei erhalten",
         "description": "Du bekommst deinen Druck oder die digitale Datei."
       }
-    ]
+    ],
+    "paymentNote": "Du bezahlst erst, nachdem ich dein Bild geprüft habe."
   },
   "pricing": {
     "title": "Formate & Preise",
