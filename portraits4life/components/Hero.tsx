@@ -50,9 +50,11 @@ export default function Hero() {
             </ul>
 
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
-              <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
-                {hero.cta_order}
-              </ActionLink>
+              <div id="hero-order" className="inline-flex">
+                <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
+                  {hero.cta_order}
+                </ActionLink>
+                </div>
               <ActionLink href={isDE ? '/de#beispiele' : '/en#beispiele'} variant="secondary">
                 {hero.cta_examples}
               </ActionLink>

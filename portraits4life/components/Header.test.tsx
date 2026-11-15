@@ -76,7 +76,8 @@ describe('Header small logo', () => {
     render(<Header />);
     const compact = screen.getByTestId('compact-logo');
     expect(compact).toHaveAttribute('href', '/en');
-    expect(compact).toHaveAttribute('aria-hidden', 'true');
+    expect(compact).not.toHaveAttribute('aria-hidden');
+    expect(compact.className).toContain('max-lg:opacity-100');
     expect(compact).toHaveAttribute('tabindex', '-1');
     expect(compact.className).toContain('opacity-0');
   });

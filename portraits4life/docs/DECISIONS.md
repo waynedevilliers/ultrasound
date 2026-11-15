@@ -138,6 +138,14 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Gallery caption:** "Sieh die Schönheit in jedem Detail." / "See the beauty in every detail."
 - **Footer year:** the copyright is "© {year} ...", and the year comes from the code (new Date().getFullYear()).
 
+## 2026-11-15: Mobile bar and menu (mobile step M1)
+
+- **Status:** done; screenshots pending owner review
+- **Decision:** Below lg the sticky bar shows the site name at the left (always visible), the compact "Bestellen" button and the menu button. The compact button is hidden (opacity 0, not focusable, space reserved) while the hero's "Jetzt bestellen" is on screen, and fades in once it has scrolled away (IntersectionObserver, no scroll listener). DE | EN leaves the bar on phones and becomes two rows at the end of the menu panel. Desktop is unchanged. The name is text-base below 360px, text-lg up to 640px and text-2xl from 640px, so it never overlaps the bar button at 320px.
+- **Measured (browser):** menu button 44 x 44px. Bar button 44px tall, 92px wide. At 375px the name ends at 143px and the bar button starts at 215px; at 320px the name ends at 131px and the bar button spans 160 to 252px.
+- **Why:** Mobile step M1: the sticky bar holds the name and one order action; the language moves into the menu.
+- **Considered:** Removing the bar order button on phones (rejected: the one-tap order on phones is a recorded requirement).
+
 ## 2026-11-15: Über layout (landing round 4, step P5)
 
 - **Status:** done; photo still a placeholder (TODO(client))
