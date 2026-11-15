@@ -119,6 +119,15 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Landing round 3, step L2.
 - **Considered:** Keeping the icons (rejected by the brief).
 
+## 2026-11-15: One card style (landing round 3, step L3)
+
+- **Status:** done
+- **Decision:** One `InfoCard` component serves the fact cards and the step cards: no border, `shadow-sm` (hover `shadow-md`), 12px radius (`rounded-xl`), 24px padding (`p-6`). Icons stay inline with the fact titles.
+- **Current values before this step:** fact cards 8px radius, 1px border, 16px padding, shadow-sm, no hover. Step cards 8px radius, no border, 32px padding, shadow-sm, hover shadow-md.
+- **Changes this brings:** the radius of both is 12px (the step cards had 8px, not a larger radius); the padding of both is 24px (fact cards 16px, step cards 32px); the fact cards gain the hover shadow.
+- **Why:** Landing round 3, step L3: one card look across the page.
+- **Considered:** 32px padding for both (rejected: five fact cards would be cramped at desktop width).
+
 ## 2026-11-14: Image folders by section (plan v3, step 12)
 
 - **Status:** done

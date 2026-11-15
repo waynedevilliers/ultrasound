@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { canvasProduct, canvasSizes, lowestPrice } from '@/content/products';
 import { formatPrice } from '@/lib/price';
 import { getCopy, localeOf } from '@/lib/copy';
+import InfoCard from '@/components/InfoCard';
 
 const icon = (path: string) => (
   <svg className="h-6 w-6 text-brand" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24" aria-hidden="true">
@@ -55,13 +56,13 @@ export default function FactsBox() {
       <div className="container-site pt-0 pb-10">
         <dl className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
           {facts.map((fact) => (
-            <div key={fact.label} className="rounded-lg border border-line bg-surface p-4 shadow-sm">
+            <InfoCard key={fact.label}>
               <dt className="flex items-center gap-3 text-base font-semibold text-ink">
                 <span className="shrink-0">{fact.icon}</span>
                 {fact.label}
               </dt>
               <dd className="mt-2 text-base text-copy">{fact.value}</dd>
-            </div>
+            </InfoCard>
           ))}
         </dl>
       </div>

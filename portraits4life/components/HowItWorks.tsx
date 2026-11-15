@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
+import InfoCard from '@/components/InfoCard';
 
 // TODO(client): approve the three step titles and descriptions (DE and EN; the wording is new).
 // TODO(client): confirm the payment order (paid after the image is checked) before launch.
@@ -16,7 +17,7 @@ export default function HowItWorks() {
 
         <ol className="grid gap-8 md:grid-cols-3">
           {howItWorks.steps.map((step, index) => (
-            <li key={step.title} className="h-full bg-surface rounded-lg p-8 shadow-sm hover:shadow-md transition">
+            <InfoCard as="li" key={step.title}>
               <span
                 aria-hidden="true"
                 className="mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-brand-tint font-display text-xl font-bold text-brand-strong"
@@ -25,7 +26,7 @@ export default function HowItWorks() {
               </span>
               <h3 className="text-xl font-bold mb-3 text-ink">{step.title}</h3>
               <p className="text-base text-copy leading-relaxed">{step.description}</p>
-            </li>
+            </InfoCard>
           ))}
         </ol>
 
