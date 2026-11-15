@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
 import { footerRoutes, routeHref } from '@/content/routes';
+import LanguageSwitch from '@/components/LanguageSwitch';
 
 // TODO(client): confirm contact email, copyright year and the legal page links before launch.
 export default function Footer() {
@@ -11,12 +12,6 @@ export default function Footer() {
   const isDE = pathname.startsWith('/de');
   const copy = getCopy(localeOf(pathname));
   const legal = copy.legal;
-
-  const handleLanguageSwitch = () => {
-    const newLang = isDE ? 'en' : 'de';
-    const newPath = pathname.replace(/^\/(en|de)/, `/${newLang}`);
-    window.location.href = newPath || `/${newLang}`;
-  };
 
   const contactUs = copy.footer.contactUs;
   const copyright = copy.footer.copyright.replace('{year}', String(new Date().getFullYear()));
@@ -41,14 +36,9 @@ export default function Footer() {
 
           <div className="text-caption">
             <p>{copyright}</p>
-            <button
-              type="button"
-              onClick={handleLanguageSwitch}
-              aria-label={copy.header.switchLanguageLabel}
-              className="mt-4 px-4 py-2 rounded-full border-2 border-brand-light text-brand-on-dark font-semibold hover:text-brand-on-dark transition"
-            >
-              {copy.header.switchLanguage}
-            </button>
+            <div className="mt-4">
+              <LanguageSwitch tone="dark" />
+            </div>
             <nav aria-label={copy.footer.legalNav} className="mt-4 flex flex-col gap-2">
               {footerRoutes().filter((route) => route.id === 'impressum' || route.id === 'datenschutz').map((route) => (
                 <Link key={route.id} href={routeHref(isDE ? 'de' : 'en', route)} className="hover:text-on-dark-soft transition">

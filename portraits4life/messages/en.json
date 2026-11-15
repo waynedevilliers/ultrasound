@@ -78,8 +78,9 @@
   "contact": {
     "title": "Ready for your artwork?",
     "email": "portraits4life.art@gmail.com",
-    "description": "Have questions or special requests? Send me a message and I'll get back to you as soon as possible!",
-    "cta": "Order now"
+    "description": "Upload your ultrasound image. I check it and get back to you.",
+    "cta": "Order now",
+    "questions": "Questions? Write to me:"
   },
   "footer": {
     "contactUs": "Write to me",
@@ -176,6 +177,10 @@
       {
         "question": "What if I'm not satisfied with the result?",
         "answer": "If you're not happy with the result, I can make adjustments or offer a refund."
+      },
+      {
+        "question": "What if my ultrasound image is not suitable?",
+        "answer": "Then I will get in touch and we will talk about which image works."
       }
     ],
     "moreQuestions": "More questions?",

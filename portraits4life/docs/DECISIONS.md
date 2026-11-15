@@ -138,6 +138,14 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Gallery caption:** "Sieh die Schönheit in jedem Detail." / "See the beauty in every detail."
 - **Footer year:** the copyright is "© {year} ...", and the year comes from the code (new Date().getFullYear()).
 
+## 2026-11-15: FAQ, closing section, language switch (landing round 4, step P4)
+
+- **Status:** done; copy pending client approval (TODO(client))
+- **Decision:** The FAQ chevron turns 180° when a question opens; with reduced motion the turn is instant. A new question "Was, wenn mein Ultraschallbild nicht geeignet ist?" has a draft answer (TODO(client)). The closing section says "Lade dein Ultraschallbild hoch. Ich prüfe es und melde mich bei dir." and shows the question line "Fragen? Schreib mir:" with the email as a normal text link under the button. The language switch is one component (LanguageSwitch) used by the header (light) and the footer (dark); the footer pill is removed.
+- **Contrast of the link colour (pink-400, brand-light) on the dark sections:** 6.47:1 on slate-900 and 5.31:1 on slate-800, both above 4.5:1 (computed from the palette values).
+- **Why:** Landing round 4, step P4.
+- **Considered:** Keeping the large email line (replaced by the question line, as the brief asks).
+
 ## 2026-11-15: Format cards (landing round 4, step P3)
 
 - **Status:** done; feature list and card titles pending client approval

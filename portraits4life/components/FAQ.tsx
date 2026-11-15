@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
 import { routeHref, routes } from '@/content/routes';
 
+// TODO(client): the new question about an unsuitable image is a draft answer; confirm it.
 // TODO(client): the questions and answers are drafts. Confirm each answer (shipping, preview, refund, file requirements) with the client; see docs/faq-client-review.md. No FAQPage structured data until they are confirmed.
 export default function FAQ() {
   const pathname = usePathname();
@@ -38,7 +39,7 @@ export default function FAQ() {
                     <span className="text-lg font-semibold text-ink">{item.question}</span>
                     <svg
                       aria-hidden="true"
-                      className={`ml-4 w-6 h-6 shrink-0 text-brand-strong transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                      className={`ml-4 w-6 h-6 shrink-0 text-brand-strong transition-transform motion-reduce:transition-none ${isOpen ? 'rotate-180' : ''}`}
                       fill="none"
                       stroke="currentColor"
                       viewBox="0 0 24 24"
