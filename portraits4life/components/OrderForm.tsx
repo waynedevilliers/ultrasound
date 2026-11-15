@@ -1,13 +1,13 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { canvasSizes } from '@/content/products';
+import { formatOptions } from '@/lib/format-options';
+import { isCanvasSizeId } from '@/content/products';
 import { buttonClasses } from '@/components/ActionLink';
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/order-schema';
 import { usePathname } from 'next/navigation';
 import type { FormatChoice } from '@/lib/format-param';
 import { getCopy, localeOf } from '@/lib/copy';
-import { formatPrice } from '@/lib/price';
 import { upload } from '@vercel/blob/client';
 import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 
@@ -69,6 +69,19 @@ export default function OrderForm({
         {fieldErrors[key]}
       </p>
     ) : null;
+
+  // The product list sets both the product and the canvas size.
+  const formatValue = formData.product === 'canvas' ? formData.canvasSize : 'digital';
+  // A size error from the server is shown on the same list.
+  const formatErrorKey = fieldErrors.canvasSize ? 'canvasSize' : 'product';
+  const handleFormatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const value = e.target.value;
+    setFormData((prev) => {
+      if (value === 'digital') return { ...prev, product: 'digital' };
+      return isCanvasSizeId(value) ? { ...prev, product: 'canvas', canvasSize: value } : prev;
+    });
+    setFieldErrors((prev) => clearFieldError(clearFieldError(prev, 'product'), 'canvasSize'));
+  };
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
@@ -274,45 +287,25 @@ export default function OrderForm({
       </div>
 
       <div>
-        <label className="block text-base font-medium text-body mb-2" htmlFor="product">
+        <label className="block text-base font-medium text-body mb-2" htmlFor="format">
           {orderForm.productLabel}
         </label>
         <select
-          id="product"
-          {...invalid('product')}
-          name="product"
-          value={formData.product}
-          onChange={handleChange}
+          id="format"
+          name="format"
+          value={formatValue}
+          onChange={handleFormatChange}
+          {...invalid(formatErrorKey)}
           className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         >
-          <option value="digital">{orderForm.productDigital}</option>
-          <option value="canvas">{orderForm.productCanvas}</option>
+          {formatOptions(locale).map((option) => (
+            <option key={option.value} value={option.value}>
+              {option.label}
+            </option>
+          ))}
         </select>
-        {fieldError('product')}
+        {fieldError(formatErrorKey)}
       </div>
-
-      {formData.product === 'canvas' && (
-        <div>
-          <label className="block text-base font-medium text-body mb-2" htmlFor="canvasSize">
-            {orderForm.canvasSizeLabel}
-          </label>
-          <select
-            id="canvasSize"
-            {...invalid('canvasSize')}
-            name="canvasSize"
-            value={formData.canvasSize}
-            onChange={handleChange}
-            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
-          >
-            {canvasSizes.map((size) => (
-              <option key={size.id} value={size.id}>
-                {size.widthCm} × {size.heightCm} cm - {formatPrice(size.price, locale)}
-              </option>
-            ))}
-          </select>
-          {fieldError('canvasSize')}
-        </div>
-      )}
 
       {/* Optional Fields */}
       <div>

@@ -153,6 +153,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Mobile step M2 (the name is now in the sticky bar).
 - **Considered:** Keeping the 64px logo (rejected: the row took too much space above the hero).
 
+## 2026-11-15: Product choice with prices (order round 1, step O2)
+
+- **Status:** done
+- **Decision:** One product list replaces the separate product and canvas-size selects. Options come from the format-card names and prices (lib/format-options.ts): "Digitale Datei (JPG), ab 30 €", "Leinwanddruck 30 × 30 cm, 69 €" (EN "Digital file (JPG), from €30", "Canvas print 30 × 30 cm, €69"). Shipping fields appear for a canvas size only. The ?format= preselect still works.
+- **Why:** Order round 1, step O2: the visitor chooses the format once, with its price.
+- **Considered:** Keeping two selects (rejected: the price belongs to the format, not to a separate size list).
+
 ## 2026-11-15: Order page wording (order round 1, step O1)
 
 - **Status:** done; wording pending client approval
