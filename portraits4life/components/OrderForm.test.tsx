@@ -141,4 +141,9 @@ describe('OrderForm', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Remove' }));
     expect(screen.queryByText(/scan\.png/)).toBeNull();
   });
+  it('shows the trust text under the button and links the privacy line to the privacy page', () => {
+    render(<OrderForm />);
+    expect(screen.getByText('I check your image and get back to you by email. You pay only after that.')).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: 'Privacy Policy' })).toHaveAttribute('href', '/en/datenschutz');
+  });
 });

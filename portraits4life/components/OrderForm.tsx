@@ -8,6 +8,8 @@ import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/order-schema';
 import { usePathname } from 'next/navigation';
 import type { FormatChoice } from '@/lib/format-param';
 import { getCopy, localeOf } from '@/lib/copy';
+import Link from 'next/link';
+import { routeHref, routes } from '@/content/routes';
 import { upload } from '@vercel/blob/client';
 import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 import UploadArea from '@/components/UploadArea';
@@ -36,7 +38,10 @@ export default function OrderForm({
 }) {
   const pathname = usePathname();
   const locale = localeOf(pathname);
-  const orderForm = getCopy(locale).orderForm;
+  const copy = getCopy(locale);
+  const orderForm = copy.orderForm;
+  const privacyRoute = routes.find((route) => route.id === 'datenschutz');
+  const privacyHref = privacyRoute ? routeHref(locale, privacyRoute) : `/${locale}/datenschutz`;
 
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
@@ -535,6 +540,18 @@ export default function OrderForm({
       >
         {loading ? orderForm.submitting : orderForm.submit}
       </button>
+
+      {/* TODO(client): confirm the trust text and the legal wording of the privacy line before launch. */}
+      <div className="space-y-3 text-center">
+        <p className="text-base text-body">{orderForm.trustNote}</p>
+        <p className="text-sm text-copy">
+          {orderForm.privacyBefore}{' '}
+          <Link href={privacyHref} className="font-semibold text-brand-strong underline underline-offset-4">
+            {copy.legal.datenschutz.title}
+          </Link>{' '}
+          {orderForm.privacyAfter}
+        </p>
+      </div>
     </form>
   );
 }
