@@ -37,8 +37,17 @@ describe('security headers', () => {
     expect(buildContentSecurityPolicy({ development: true })).toContain("'unsafe-eval'");
   });
 
-  it('loads no external hosts', () => {
+  it('loads no external hosts except the Vercel upload addresses', () => {
     const csp = buildContentSecurityPolicy();
-    expect(csp).not.toMatch(/https?:\/\//);
+    const hosts = csp.match(/https?:\/\/[^\s;]+/g) ?? [];
+    expect(hosts.every((h) => h === 'https://vercel.com' || h.endsWith('.vercel-storage.com') || h === 'https://blob.vercel-storage.com')).toBe(true);
+  });
+
+  it('allows photo uploads to Vercel Blob and nothing else new', () => {
+    const csp = buildContentSecurityPolicy();
+    const connect = csp.split(';').find((d) => d.trim().startsWith('connect-src')) ?? '';
+    expect(connect).toContain('https://vercel.com');
+    expect(connect).toContain('https://*.blob.vercel-storage.com');
+    expect(connect).toContain("'self'");
   });
 });

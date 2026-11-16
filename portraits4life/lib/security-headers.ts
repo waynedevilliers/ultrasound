@@ -9,7 +9,9 @@ export type SecurityHeaderOptions = {
 // nonces are the later fix (see docs/DECISIONS.md).
 export function buildContentSecurityPolicy({ development = false }: SecurityHeaderOptions = {}): string {
   const scriptSrc = ["'self'", "'unsafe-inline'", ...(development ? ["'unsafe-eval'"] : [])];
-  const connectSrc = ["'self'", ...(development ? ['ws:'] : [])];
+  // Photo uploads go from the browser straight to Vercel Blob (see components/OrderForm.tsx).
+  const blobHosts = ['https://vercel.com', 'https://blob.vercel-storage.com', 'https://*.blob.vercel-storage.com'];
+  const connectSrc = ["'self'", ...blobHosts, ...(development ? ['ws:'] : [])];
   const directives: Record<string, string[]> = {
     'default-src': ["'self'"],
     'script-src': scriptSrc,
