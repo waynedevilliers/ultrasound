@@ -17,7 +17,7 @@
   },
   "hero": {
     "headline": "ULTRASOUND ART",
-    "cta_order": "Order Now",
+    "cta_order": "Order now",
     "supporting": "I turn your child's ultrasound image into a colourful work of art, as a digital file or on canvas.",
     "imageAlt": "Example of an artistically enhanced ultrasound image",
     "benefits": [
@@ -44,7 +44,7 @@
         "description": "You get your print or the digital file."
       }
     ],
-    "paymentNote": "You pay only after I have checked your image."
+    "paymentNote": "You pay only after I have checked your image. The delivery time starts with the payment."
   },
   "pricing": {
     "title": "Formats & Pricing",
@@ -141,11 +141,11 @@
       },
       {
         "question": "Which image formats can I upload?",
-        "answer": "I accept JPG, PNG and other common image formats. High-resolution images (at least 300dpi) produce the best results."
+        "answer": "I accept {formats}. High-resolution images (at least 300dpi) produce the best results."
       },
       {
         "question": "Can I review the image before printing?",
-        "answer": "Yes! I send you a preview before final production. You can request changes if needed."
+        "answer": "Yes! You get a preview before printing and can request one round of changes."
       },
       {
         "question": "What are the shipping costs?",
@@ -153,11 +153,11 @@
       },
       {
         "question": "What if I'm not satisfied with the result?",
-        "answer": "If you're not happy with the result, I can make adjustments or offer a refund."
+        "answer": "You get a preview before printing and can request one round of changes."
       },
       {
         "question": "What if my ultrasound image is not suitable?",
-        "answer": "Then I will get in touch and we will talk about which image works."
+        "answer": "I check your image before you pay. If it is not suitable, you can send another one free of charge. It costs you nothing."
       }
     ],
     "moreQuestions": "More questions?",
@@ -171,33 +171,16 @@
         "title": "Ultrasound Portraits",
         "items": [
           "Choose a clear ultrasound image - profile views work best",
-          "I notify you within 24 hours if the image is usable",
-          "If not suitable, you can resubmit another image at no extra cost"
-        ]
-      },
-      {
-        "id": "individual",
-        "title": "Individual Portraits",
-        "items": [
-          "Choose a clear photo of the person (300dpi preferred)",
-          "I confirm if the photo meets my quality requirements"
-        ]
-      },
-      {
-        "id": "couple",
-        "title": "Couple Portraits",
-        "items": [
-          "One profile photo per person - doesn't need to be a joint photo",
-          "300dpi quality preferred for best results",
-          "I'll notify you if I need adjusted images"
+          "I notify you within 2 working days if the image is usable",
+          "If it is not suitable, you can send another image free of charge. It costs you nothing."
         ]
       },
       {
         "id": "payment",
         "title": "Payment",
         "items": [
-          "After confirmation, you can pay via PayPal, bank transfer, or credit card",
-          "Payment link will be sent via email"
+          "You pay only after I have checked your image. The delivery time starts with the payment.",
+          "Payment by PayPal, bank transfer or credit card"
         ]
       }
     ]
@@ -206,7 +189,7 @@
     "successTitle": "Thank You for Your Order!",
     "submitted": "Your order has been submitted successfully.",
     "orderIdLabel": "Order ID:",
-    "contactWithin24h": "I will contact you within 24 hours to confirm your images.",
+    "contactWithin24h": "I will contact you within 2 working days to confirm your images.",
     "newOrder": "New Order",
     "nameLabel": "Your Name *",
     "emailLabel": "Your Email *",
@@ -224,7 +207,6 @@
     "shippingPostalCode": "Postal Code *",
     "shippingCountry": "Country *",
     "ultrasoundLabel": "Upload Ultrasound Image *",
-    "referenceLabel": "Second image (optional)",
     "specialRequests": "Special requests (optional)",
     "fileTooLarge": "The file is larger than 15 MB. Please choose a smaller image.",
     "fileType": "Only JPG, PNG, WebP or HEIC.",
@@ -236,9 +218,8 @@
     "genericError": "The order could not be sent. Please try again.",
     "requiredNote": "* Required field",
     "chooseImage": "Choose image",
-    "imageFormats": "JPG, PNG, WebP or HEIC, up to 15 MB",
+    "imageFormats": "{formats}, up to 15 MB",
     "removeImage": "Remove",
-    "referenceHint": "Helpful if you have a second photo for comparison.",
     "trustNote": "I check your image and get back to you by email. You pay only after that.",
     "privacyBefore": "By submitting, you agree to the processing of your data as described in the",
     "privacyAfter": ".",

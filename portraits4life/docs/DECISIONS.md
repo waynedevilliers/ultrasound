@@ -159,6 +159,16 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Mobile step M2 (the name is now in the sticky bar).
 - **Considered:** Keeping the 64px logo (rejected: the row took too much space above the hero).
 
+## 2026-11-16: Promises confirmed by the owner, and the site sells ultrasound art only
+
+- **Status:** done in the copy; wording pending client review of the legal text (TODO(client))
+- **Unsuitable image:** "Ich prüfe dein Bild, bevor du bezahlst. Ist es nicht geeignet, kannst du kostenlos ein anderes senden. Es entstehen dir keine Kosten." No refund wording anywhere.
+- **Result not liked:** "Vor dem Druck bekommst du eine Vorschau und kannst einmal Änderungen wünschen." Also the answer to "Kann ich das Bild vor dem Druck überprüfen?" says the same. No refund wording.
+- **Response time:** "innerhalb von 2 Werktagen" everywhere; no mention of 24 hours.
+- **One source per fact:** the accepted image formats are one constant (lib/image-formats.ts), used by the upload hint and the FAQ answer. The payment timing is one sentence, used in the How it works section and the order info payment row.
+- **Scope:** the site sells ultrasound art only. The Individualportraits and Paarportraits rows and the second upload field are removed from the page; their texts are kept in docs/removed-products.md.
+- **Order button:** "Order now" on the landing page (English). The form's submit label stays until the order-or-request question is answered.
+
 ## 2026-11-16: Coming-soon mode for production
 
 - **Status:** built; not switched on

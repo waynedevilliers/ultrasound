@@ -5,6 +5,7 @@ import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
 import { routeHref, routes } from '@/content/routes';
 import { canvasDeliveryText, digitalDeliveryText } from '@/lib/delivery';
+import { IMAGE_FORMAT_LIST } from '@/lib/image-formats';
 
 // TODO(client): the new question about an unsuitable image is a draft answer; confirm it.
 // TODO(client): the questions and answers are drafts. Confirm each answer (shipping, preview, refund, file requirements) with the client; see docs/faq-client-review.md. No FAQPage structured data until they are confirmed.
@@ -53,7 +54,8 @@ export default function FAQ() {
                   <p className="text-copy leading-relaxed">
                     {item.answer
                       .replace('{digital}', digitalDeliveryText(locale))
-                      .replace('{canvas}', canvasDeliveryText(locale))}
+                      .replace('{canvas}', canvasDeliveryText(locale))
+                      .replace('{formats}', IMAGE_FORMAT_LIST[locale === 'de' ? 'de' : 'en'])}
                   </p>
                 </div>
               </div>

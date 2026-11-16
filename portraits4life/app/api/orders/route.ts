@@ -178,7 +178,7 @@ export async function POST(request: NextRequest) {
         <p><strong>Order ID:</strong> ${escapeHtml(String(orderId))}</p>
         <p><strong>Product:</strong> ${escapeHtml(productLabel(order))}</p>
         <p><strong>Expected Delivery:</strong> ${order.product === 'canvas' ? `${canvasProduct.deliveryWeeksMin}-${canvasProduct.deliveryWeeksMax} weeks` : `${digitalProduct.deliveryWeeks} week`}</p>
-        <p>We'll contact you within 24 hours to confirm your images are suitable for processing.</p>
+        <p>I will contact you within 2 working days to confirm your images are suitable for processing.</p>
         <p>Best regards,<br/>Portraits 4 Life Team</p>
       `,
     };

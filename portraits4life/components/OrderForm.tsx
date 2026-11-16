@@ -13,6 +13,7 @@ import { routeHref, routes } from '@/content/routes';
 import { upload } from '@vercel/blob/client';
 import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 import UploadArea from '@/components/UploadArea';
+import { IMAGE_FORMAT_LIST } from '@/lib/image-formats';
 
 // Empty values for every field except product and size, which may come from the URL.
 const EMPTY_FORM = {
@@ -132,7 +133,11 @@ export default function OrderForm({
     setFieldErrors((prev) => clearFieldError(prev, type));
   };
 
-  const uploadCopy = { choose: orderForm.chooseImage, formats: orderForm.imageFormats, remove: orderForm.removeImage };
+  const uploadCopy = {
+    choose: orderForm.chooseImage,
+    formats: orderForm.imageFormats.replace('{formats}', IMAGE_FORMAT_LIST[locale === 'de' ? 'de' : 'en']),
+    remove: orderForm.removeImage,
+  };
 
   // Photos go straight from the browser to private storage. The order then carries only their paths.
   const uploadPhoto = async (file: File, prefix: string): Promise<string> => {
@@ -509,21 +514,6 @@ export default function OrderForm({
           errorNode={fieldError('ultrasound')}
           onChange={(e) => handleFileChange(e, 'ultrasound')}
           onRemove={() => handleRemoveFile('ultrasound')}
-        />
-
-        {/* TODO(client): when is a second image needed? The hint below is a draft. */}
-        <UploadArea
-          id="referenceImage"
-          className="mt-6"
-          labelText={orderForm.referenceLabel}
-          hint={orderForm.referenceHint}
-          file={files.reference}
-          locale={locale}
-          copy={uploadCopy}
-          inputProps={invalid('reference')}
-          errorNode={fieldError('reference')}
-          onChange={(e) => handleFileChange(e, 'reference')}
-          onRemove={() => handleRemoveFile('reference')}
         />
       </div>
 
