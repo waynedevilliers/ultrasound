@@ -20,16 +20,8 @@ export default function PricingTiers() {
   // Non-breaking spaces keep a size such as "30 × 30 cm" on one line.
   const sizeLabel = (widthCm: number, heightCm: number) => `${widthCm} × ${heightCm} cm`;
 
+  // Canvas sizes first, the digital file last.
   const formats = [
-    {
-      key: 'digital',
-      title: pricing.digital.title,
-      // TODO(client): what decides the price between the lowest and the highest digital price?
-      price: `${pricing.from} ${formatPrice(digitalProduct.priceFrom, locale)}`,
-      delivery: pricing.digital.delivery.replace('{time}', digitalDeliveryText(locale)),
-      items: pricing.digital.items,
-      href: `${orderPath}?format=${digitalProduct.id}`,
-    },
     ...canvasSizes.map((size) => ({
       key: size.id,
       title: `${pricing.canvas.title} ${sizeLabel(size.widthCm, size.heightCm)}`,
@@ -38,6 +30,14 @@ export default function PricingTiers() {
       items: pricing.canvasItems,
       href: `${orderPath}?format=${size.id}`,
     })),
+    {
+      key: digitalProduct.id,
+      title: pricing.digital.title,
+      price: formatPrice(digitalProduct.price, locale),
+      delivery: pricing.digital.delivery.replace('{time}', digitalDeliveryText(locale)),
+      items: pricing.digital.items,
+      href: `${orderPath}?format=${digitalProduct.id}`,
+    },
   ];
 
   const images = [

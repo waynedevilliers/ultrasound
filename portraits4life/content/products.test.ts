@@ -1,17 +1,16 @@
 import { describe, expect, it } from 'vitest';
-import { canvasProduct, canvasSizes, digitalProduct, isCanvasSizeId, lowestCanvasPrice } from './products';
+import { allPrices, canvasProduct, canvasSizes, digitalProduct, highestPrice, isCanvasSizeId, lowestPrice } from './products';
 
 describe('products', () => {
-  it('every canvas size has a positive whole-euro price', () => {
-    for (const size of canvasSizes) {
-      expect(size.price).toBeGreaterThan(0);
-      expect(Number.isInteger(size.price)).toBe(true);
+  it('every price is a positive whole-euro amount', () => {
+    for (const price of allPrices()) {
+      expect(price).toBeGreaterThan(0);
+      expect(Number.isInteger(price)).toBe(true);
     }
   });
 
-  it('digital download has a price range from low to high', () => {
-    expect(digitalProduct.priceFrom).toBeGreaterThan(0);
-    expect(digitalProduct.priceTo).toBeGreaterThanOrEqual(digitalProduct.priceFrom);
+  it('the digital file has one fixed price', () => {
+    expect(digitalProduct.price).toBeGreaterThan(0);
   });
 
   it('canvas sizes are unique ids', () => {
@@ -20,13 +19,18 @@ describe('products', () => {
   });
 
   it('recognises only listed canvas sizes', () => {
-    expect(isCanvasSizeId('30x30cm')).toBe(true);
+    expect(isCanvasSizeId(canvasSizes[0].id)).toBe(true);
     expect(isCanvasSizeId('99x99cm')).toBe(false);
   });
 
-  it('lowest price is the cheapest of digital and canvas', () => {
-    expect(lowestCanvasPrice()).toBe(Math.min(...canvasSizes.map((s) => s.price)));
-    expect(lowestCanvasPrice()).toBe(69);
+  it('the starting price is the cheapest product, the highest price the most expensive', () => {
+    expect(lowestPrice()).toBe(Math.min(...allPrices()));
+    expect(highestPrice()).toBe(Math.max(...allPrices()));
+  });
+
+  it('the digital file costs the same as the smallest canvas', () => {
+    expect(digitalProduct.price).toBe(canvasSizes[0].price);
+    expect(lowestPrice()).toBe(digitalProduct.price);
   });
 
   it('delivery window is ordered', () => {

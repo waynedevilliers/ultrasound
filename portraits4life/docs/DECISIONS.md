@@ -80,6 +80,10 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: attachments or upload-and-link: answered by the photo decision (2026-11-14, Step 11 part B): upload-and-link.
+- Prices: final prices for 40 × 40 and 50 × 50 after real print quotes (provisional now: 109 € and 129 €).
+- Is the digital file sold at all, or canvases only?
+- Is shipping within Germany included in the price?
+- Terms for the digital file (private use only): wording to be confirmed.
 - Order info section (O6): does this site offer Individualportraits and Paarportraits, or only ultrasound art? If only ultrasound art, rows 2 and 3 and the second upload go (texts kept under docs/). The payment row says "Nach der Bestätigung", while the rest of the site says "nach Zahlungseingang"; the owner should pick one timing.
 - Order form: is the form a binding paid order (the button must read "Zahlungspflichtig bestellen") or a request (the button reads "Bild senden und anfragen")? The button stays "Jetzt bestellen" until the owner answers.
 
@@ -154,6 +158,14 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Decision:** Option A (in the code): on phones the logo row shows only the logo image, 48px high, centred, with 8px vertical padding. The name is hidden in the logo row below 640px because the bar shows it. Row height: 96px before, 64px after (375px and 320px); desktop unchanged at 112px. Option B (screenshot only): no logo row on phones.
 - **Why:** Mobile step M2 (the name is now in the sticky bar).
 - **Considered:** Keeping the 64px logo (rejected: the row took too much space above the hero).
+
+## 2026-11-15: Prices start at 89 € for every product (price update, PR3)
+
+- **Status:** done in code; the 40 × 40 and 50 × 50 prices are provisional (TODO(client))
+- **Decision:** Digital file 89 € (one fixed price, no range). Canvas 30 × 30 cm 89 €, 40 × 40 cm 109 € (provisional), 50 × 50 cm 129 € (provisional). The site shows one starting price, "Ab 89 €". The format cards show the canvas sizes first and the digital file last. All prices come from content/products.ts.
+- **Why:** The price pays for the artwork, not the carrier. The digital file costs the same as the smallest canvas, so it does not undercut the canvases.
+- **Considered:** Digital file at 30 € (rejected: buyers would print elsewhere).
+- **Open questions:** see the Open questions section.
 
 ## 2026-11-15: Trust text under the order button (order round 1, step O4)
 

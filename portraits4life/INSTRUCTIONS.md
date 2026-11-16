@@ -44,8 +44,8 @@
 - Responsive sizing
 
 #### Pricing Tiers (components/PricingTiers.tsx)
-- Digital JPEG option: €30-50 (1 week delivery)
-- Canvas prints: €69 (30x30cm), €89 (40x40cm), €119 (50x50cm) (1-2 weeks delivery)
+- Digital JPEG option: €89 (1 week delivery)
+- Canvas prints: €89 (30x30cm), €109 (40x40cm, provisional), €129 (50x50cm, provisional) (1-2 weeks delivery)
 - Card-based layout
 - CTA buttons for each tier
 - Bilingual content

@@ -17,10 +17,10 @@ describe('PricingTiers', () => {
     render(<PricingTiers />);
     const links = screen.getAllByRole('link', { name: 'Dieses Format bestellen' });
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
-      '/de/order?format=digital',
       '/de/order?format=30x30cm',
       '/de/order?format=40x40cm',
       '/de/order?format=50x50cm',
+      '/de/order?format=digital',
     ]);
   });
 

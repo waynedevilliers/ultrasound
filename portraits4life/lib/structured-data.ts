@@ -20,9 +20,7 @@ export function productJsonLd(name: string, description: string, locale: 'de' | 
       '@type': 'Offer',
       name: de ? 'Digitales JPEG' : 'Digital JPEG',
       priceCurrency: CURRENCY,
-      price: String(digitalProduct.priceFrom),
-      lowPrice: String(digitalProduct.priceFrom),
-      highPrice: String(digitalProduct.priceTo),
+      price: String(digitalProduct.price),
       availability: 'https://schema.org/InStock',
     },
     ...canvasSizes.map((size) => ({

@@ -26,7 +26,7 @@
       "Auf Wunsch mit Namen und Schwangerschaftswoche"
     ],
     "cta_examples": "Beispiele ansehen",
-    "priceLine": "Digital ab {digital} | Leinwand ab {canvas} | Lieferung: digital {digitalDelivery}, Leinwand {canvasDelivery}"
+    "priceLine": "Ab {price}"
   },
   "howItWorks": {
     "title": "So funktioniert's",
@@ -261,7 +261,7 @@
     "formats": "Formate",
     "formatsValue": "Digital oder Leinwand ({sizes} cm)",
     "price": "Preis",
-    "priceValue": "Digital ab {digital}, Leinwand ab {canvas}",
+    "priceValue": "Ab {price}",
     "delivery": "Lieferzeit",
     "deliveryValue": "Digital {digital}, Leinwand {canvas} nach Zahlungseingang",
     "payment": "Bezahlung",

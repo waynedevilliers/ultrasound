@@ -42,7 +42,7 @@ Full audit: docs/reviews/2026-11-15-audit.md. Parked until the visual work is do
 - Order emails are English only; German is the main audience.
 - Unconfirmed promises: "innerhalb von 24 Stunden", "kostenlos erneut einreichen".
 - Payment and delivery timing contradict each other (order info, form, pricing, FAQ).
-- JSON-LD highPrice is 50, the page says "ab 30 €" (align with the product file).
+- JSON-LD prices come from the product file (done with the price update; check on the live site).
 - Gallery lightbox not keyboard accessible (div with onClick, no dialog role, no Escape).
 - Success button: white on green-600, contrast 3.30:1 (below 4.5:1); owner colour decision.
 - Order page copy uses "Sie"; order.info.* block is unused and can be deleted.
