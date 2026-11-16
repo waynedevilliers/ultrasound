@@ -80,6 +80,7 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: attachments or upload-and-link: answered by the photo decision (2026-11-14, Step 11 part B): upload-and-link.
+- Order info section (O6): does this site offer Individualportraits and Paarportraits, or only ultrasound art? If only ultrasound art, rows 2 and 3 and the second upload go (texts kept under docs/). The payment row says "Nach der Bestätigung", while the rest of the site says "nach Zahlungseingang"; the owner should pick one timing.
 - Order form: is the form a binding paid order (the button must read "Zahlungspflichtig bestellen") or a request (the button reads "Bild senden und anfragen")? The button stays "Jetzt bestellen" until the owner answers.
 
 ## 2026-11-14: Order form fixes after the step 11 review
