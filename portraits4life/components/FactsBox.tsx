@@ -2,7 +2,7 @@
 
 import type { ReactNode } from 'react';
 import { usePathname } from 'next/navigation';
-import { canvasSizes, digitalProduct, lowestCanvasPrice } from '@/content/products';
+import { canvasSizes, lowestPrice } from '@/content/products';
 import { canvasDeliveryText, digitalDeliveryText } from '@/lib/delivery';
 import { formatPrice } from '@/lib/price';
 import { getCopy, localeOf } from '@/lib/copy';
@@ -32,8 +32,7 @@ export default function FactsBox() {
     {
       label: f.price,
       value: f.priceValue
-        .replace("{digital}", formatPrice(digitalProduct.priceFrom, locale))
-        .replace("{canvas}", formatPrice(lowestCanvasPrice(), locale)),
+        .replace("{price}", formatPrice(lowestPrice(), locale)),
       icon: icon("M7 7h.01M7 3h5l9 9a2 2 0 010 2.8l-4.2 4.2a2 2 0 01-2.8 0L5 10V5a2 2 0 012-2z"),
     },
     {

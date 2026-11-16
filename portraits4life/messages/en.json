@@ -26,7 +26,7 @@
       "On request with name and week of pregnancy"
     ],
     "cta_examples": "View examples",
-    "priceLine": "Digital from {digital} | Canvas from {canvas} | Delivery: digital {digitalDelivery}, canvas {canvasDelivery}"
+    "priceLine": "From {price}"
   },
   "howItWorks": {
     "title": "How it works",
@@ -261,7 +261,7 @@
     "formats": "Formats",
     "formatsValue": "Digital or canvas ({sizes} cm)",
     "price": "Price",
-    "priceValue": "Digital from {digital}, canvas from {canvas}",
+    "priceValue": "From {price}",
     "delivery": "Delivery",
     "deliveryValue": "Digital {digital}, canvas {canvas} after payment",
     "payment": "Payment",

@@ -92,7 +92,7 @@ Full-page section integration tests covering all major components.
 
 **Key Tests:**
 - Hero displays correct bilingual content
-- Pricing shows: €30-50 digital, €69/89/119 canvas
+- Pricing shows: €89 digital, €89/109/129 canvas (prices come from content/products.ts)
 - All FAQ questions appear in English/German
 - Switching language updates all sections
 - Sections have proper heading hierarchy

@@ -4,17 +4,19 @@
 
 export const CURRENCY = 'EUR';
 
+// One fixed price: the price pays for the artwork, not the carrier (see docs/DECISIONS.md).
 export const digitalProduct = {
   id: 'digital',
-  priceFrom: 30,
-  priceTo: 50,
+  price: 89,
   deliveryWeeks: 1,
 } as const;
 
 export const canvasSizes = [
-  { id: '30x30cm', widthCm: 30, heightCm: 30, price: 69 },
-  { id: '40x40cm', widthCm: 40, heightCm: 40, price: 89 },
-  { id: '50x50cm', widthCm: 50, heightCm: 50, price: 119 },
+  { id: '30x30cm', widthCm: 30, heightCm: 30, price: 89 },
+  // TODO(client): confirm after real print quotes (provisional price).
+  { id: '40x40cm', widthCm: 40, heightCm: 40, price: 109 },
+  // TODO(client): confirm after real print quotes (provisional price).
+  { id: '50x50cm', widthCm: 50, heightCm: 50, price: 129 },
 ] as const;
 
 export const canvasProduct = {
@@ -33,7 +35,17 @@ export function isCanvasSizeId(value: string): value is CanvasSizeId {
   return (canvasSizeIds as string[]).includes(value);
 }
 
-// The lowest price of a canvas print: the value shown as "Leinwand ab ...".
-export function lowestCanvasPrice(): number {
-  return Math.min(...canvasSizes.map((size) => size.price));
+// Every product's price, for the starting price, the price range and structured data.
+export function allPrices(): number[] {
+  return [digitalProduct.price, ...canvasSizes.map((size) => size.price)];
+}
+
+// The starting price shown on the site ("Ab ...").
+export function lowestPrice(): number {
+  return Math.min(...allPrices());
+}
+
+// The highest price of any product (used for structured data).
+export function highestPrice(): number {
+  return Math.max(...allPrices());
 }

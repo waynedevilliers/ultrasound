@@ -4,9 +4,8 @@ import Image from 'next/image';
 import ActionLink from '@/components/ActionLink';
 import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
-import { digitalProduct, lowestCanvasPrice } from '@/content/products';
+import { lowestPrice } from '@/content/products';
 import { formatPrice } from '@/lib/price';
-import { canvasDeliveryText, digitalDeliveryText } from '@/lib/delivery';
 
 const check = (
   <svg className="h-5 w-5 shrink-0 text-brand" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24" aria-hidden="true">
@@ -23,11 +22,7 @@ export default function Hero() {
   const locale = localeOf(pathname);
   const isDE = locale === 'de';
   const { hero } = getCopy(locale);
-  const priceLine = hero.priceLine
-    .replace('{digital}', formatPrice(digitalProduct.priceFrom, locale))
-    .replace('{canvas}', formatPrice(lowestCanvasPrice(), locale))
-    .replace('{digitalDelivery}', digitalDeliveryText(locale))
-    .replace('{canvasDelivery}', canvasDeliveryText(locale));
+  const priceLine = hero.priceLine.replace('{price}', formatPrice(lowestPrice(), locale));
 
   // Earlier phone layout, kept as an option and NOT in use (commented out).
   // Order on phones: headline, supporting line, benefit points, buttons, price line, image.
