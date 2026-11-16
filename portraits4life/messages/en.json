@@ -285,5 +285,9 @@
     ],
     "photoPlaceholder": "Photo coming soon",
     "photoAlt": "Portrait of the artist behind Portraits 4 Life"
+  },
+  "comingSoon": {
+    "title": "Coming soon",
+    "text": "The site will be ready soon. Please check back."
   }
 }

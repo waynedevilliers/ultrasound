@@ -159,6 +159,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Why:** Mobile step M2 (the name is now in the sticky bar).
 - **Considered:** Keeping the 64px logo (rejected: the row took too much space above the hero).
 
+## 2026-11-16: Coming-soon mode for production
+
+- **Status:** built; not switched on
+- **Decision:** With COMING_SOON=true (set in Vercel for Production only) every page shows a short "coming soon" message (DE "Bald verfügbar", EN "Coming soon"), and robots.txt disallows crawling. Locally the variable is unset, so the full site shows. Vercel Authentication stays on production as well. The order API routes stay reachable in this mode; they are protected by the Vercel login.
+- **Why:** The site is not launched, and it should not be public or indexed before launch.
+- **Considered:** Only Vercel Authentication (kept; the coming-soon page is an extra layer that also hides the content from search engines).
+
 ## 2026-11-15: Prices start at 89 € for every product (price update, PR3)
 
 - **Status:** done in code; the 40 × 40 and 50 × 50 prices are provisional (TODO(client))
