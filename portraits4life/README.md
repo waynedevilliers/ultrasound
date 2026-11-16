@@ -165,6 +165,16 @@ Set these in Vercel Project Settings > Environment Variables.
 6. Push - `git push origin feature/description`
 7. Deploy - Merge to main (Vercel auto-deploys)
 
+## Mobile Check
+
+Measures the phone view (375 x 667 and 320 x 568) and saves key screens. Start the dev server or the built site first, then:
+
+```bash
+npm run mobile-check -- http://localhost:3000
+```
+
+The script (`scripts/mobile-check.mjs`, Chromium only) checks the landing and order pages in German and English. It writes `docs/reviews/mobile/result.json` (page height, sideways scrolling, what is above the fold, small tap targets, close tap targets, small text, overlaps in the sticky bar, primary order buttons on screen) and seven screenshots. The folder is git-ignored. Text that is intentionally small can be marked with `data-small-ok`.
+
 ## Code Quality
 
 - Type Safety - Full TypeScript coverage
