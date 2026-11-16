@@ -151,11 +151,24 @@ export default function OrderForm({
     setFieldErrors({});
 
     try {
-      if (!files.ultrasound) {
-        setFieldErrors({ ultrasound: orderForm.ultrasoundRequired });
+      // Required fields are checked here too, so an empty submit marks every missing field.
+      const required: string[] = ['name', 'email'];
+      if (formData.product === 'canvas') {
+        required.push('shippingFullName', 'shippingStreet', 'shippingCity', 'shippingState', 'shippingPostalCode', 'shippingCountry');
+      }
+      const values = formData as Record<string, string>;
+      const missing: Record<string, string> = {};
+      for (const key of required) {
+        if (!values[key].trim()) missing[key] = orderForm.requiredField;
+      }
+      if (formData.email.trim() && !formData.email.includes('@')) missing.email = orderForm.fieldInvalid;
+      if (!files.ultrasound) missing.ultrasound = orderForm.ultrasoundRequired;
+      if (Object.keys(missing).length > 0) {
+        setFieldErrors(missing);
         setError(orderForm.checkFields);
         return;
       }
+      if (!files.ultrasound) return;
 
       // Honeypot: hidden from visitors, must stay empty.
       const honeypot =

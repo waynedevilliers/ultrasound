@@ -18,6 +18,8 @@ function smallPng() {
 
 // Submits the form with a photo chosen, the way a visitor would after filling it in.
 function submitWithPhoto(container: HTMLElement) {
+  fireEvent.change(container.querySelector('input[name="name"]') as HTMLInputElement, { target: { value: 'Ann' } });
+  fireEvent.change(container.querySelector('input[name="email"]') as HTMLInputElement, { target: { value: 'ann@example.com' } });
   fireEvent.change(photoInput(container), { target: { files: [smallPng()] } });
   fireEvent.submit(container.querySelector('form') as HTMLFormElement);
 }
@@ -82,7 +84,7 @@ describe('OrderForm', () => {
     expect(document.getElementById('email-error')).toHaveTextContent('Please check this field.');
     expect(screen.getByRole('alert')).toHaveTextContent('Please check the highlighted fields.');
 
-    fireEvent.change(email, { target: { value: 'ann@example.com' } });
+    fireEvent.change(email, { target: { value: 'ann@example.org' } });
     expect(email).not.toHaveAttribute('aria-invalid');
     expect(document.getElementById('email-error')).toBeNull();
   });
@@ -145,5 +147,14 @@ describe('OrderForm', () => {
     render(<OrderForm />);
     expect(screen.getByText('I check your image and get back to you by email. You pay only after that.')).toBeInTheDocument();
     expect(screen.getByRole('link', { name: 'Privacy Policy' })).toHaveAttribute('href', '/en/datenschutz');
+  });
+  it('marks every empty required field on an empty submit', () => {
+    const { container } = render(<OrderForm />);
+    fireEvent.submit(container.querySelector('form') as HTMLFormElement);
+    for (const id of ['name', 'email', 'ultrasoundImage']) {
+      const key = id === 'ultrasoundImage' ? 'ultrasound' : id;
+      expect(document.getElementById(id) ?? container.querySelector('#' + id)).toHaveAttribute('aria-invalid', 'true');
+      expect(document.getElementById(key + '-error')).not.toBeNull();
+    }
   });
 });

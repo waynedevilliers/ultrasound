@@ -89,30 +89,7 @@
     "legalNav": "Rechtliches"
   },
   "order": {
-    "title": "Bestellen",
-    "info": {
-      "ultrasound": {
-        "title": "Für Ultraschallportrait",
-        "item1": "Wählen Sie ein klares Ultraschallbild — Profilaufnahmen funktionieren am besten",
-        "item2": "Sie werden sofort benachrichtigt, wenn das Bild verwendbar ist",
-        "item3": "Falls nicht, können Sie ein neues Bild einreichen"
-      },
-      "individual": {
-        "title": "Für Individualportrait",
-        "item1": "Wählen Sie ein klares Foto der Person (300dpi bevorzugt)",
-        "item2": "Sie werden benachrichtigt, wenn das Foto die Anforderungen erfüllt"
-      },
-      "couple": {
-        "title": "Für Paarsportrait",
-        "item1": "Wählen Sie ein Profilfoto pro Person — muss keine gemeinsame Aufnahme sein",
-        "item2": "300dpi Qualität bevorzugt",
-        "item3": "Sie werden benachrichtigt und können neue Fotos einreichen, falls nötig"
-      },
-      "payment": {
-        "title": "Zahlung",
-        "description": "Nach der Bestätigung per E-Mail erfolgt die Zahlung per PayPal, Banküberweisung oder Kreditkarte"
-      }
-    }
+    "title": "Bestellen"
   },
   "legal": {
     "impressum": {
@@ -264,7 +241,8 @@
     "referenceHint": "Hilfreich, wenn du ein zweites Foto zum Vergleich hast.",
     "trustNote": "Ich prüfe dein Bild und melde mich per E-Mail. Du bezahlst erst danach.",
     "privacyBefore": "Mit dem Absenden stimmst du der Verarbeitung deiner Daten gemäß der",
-    "privacyAfter": "zu."
+    "privacyAfter": "zu.",
+    "requiredField": "Bitte fülle dieses Feld aus."
   },
   "common": {
     "home": "Startseite",

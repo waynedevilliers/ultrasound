@@ -89,30 +89,7 @@
     "legalNav": "Legal"
   },
   "order": {
-    "title": "Order",
-    "info": {
-      "ultrasound": {
-        "title": "For Ultrasound Portrait",
-        "item1": "Choose a clear ultrasound image — profile views work best",
-        "item2": "You will be notified immediately if the image is usable",
-        "item3": "If not, you can submit a new image"
-      },
-      "individual": {
-        "title": "For Individual Portrait",
-        "item1": "Choose a clear photo of the person (300dpi preferred)",
-        "item2": "You will be notified if the photo meets requirements"
-      },
-      "couple": {
-        "title": "For Couple Portrait",
-        "item1": "Choose one profile photo per person — doesn't need to be a joint photo",
-        "item2": "300dpi quality preferred",
-        "item3": "You will be notified, and can submit new photos if needed"
-      },
-      "payment": {
-        "title": "Payment",
-        "description": "After confirmation email, payment via PayPal, bank transfer, or credit card"
-      }
-    }
+    "title": "Order"
   },
   "legal": {
     "impressum": {
@@ -264,7 +241,8 @@
     "referenceHint": "Helpful if you have a second photo for comparison.",
     "trustNote": "I check your image and get back to you by email. You pay only after that.",
     "privacyBefore": "By submitting, you agree to the processing of your data as described in the",
-    "privacyAfter": "."
+    "privacyAfter": ".",
+    "requiredField": "Please fill in this field."
   },
   "common": {
     "home": "Home",
