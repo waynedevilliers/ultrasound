@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { isComingSoon } from './site-mode';
+import { comingSoonPath, isComingSoon } from './site-mode';
 
 describe('isComingSoon', () => {
   afterEach(() => vi.unstubAllEnvs());
@@ -14,5 +14,13 @@ describe('isComingSoon', () => {
     expect(isComingSoon()).toBe(true);
     vi.stubEnv('COMING_SOON', 'yes');
     expect(isComingSoon()).toBe(false);
+  });
+});
+
+describe('comingSoonPath', () => {
+  it('keeps the language of the requested path', () => {
+    expect(comingSoonPath('/en/order')).toBe('/en/coming-soon');
+    expect(comingSoonPath('/de/order')).toBe('/de/coming-soon');
+    expect(comingSoonPath('/')).toBe('/de/coming-soon');
   });
 });

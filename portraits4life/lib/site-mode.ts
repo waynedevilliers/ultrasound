@@ -3,3 +3,8 @@
 export function isComingSoon(): boolean {
   return process.env.COMING_SOON === 'true';
 }
+
+// The coming-soon page for the language of the requested path (German unless the path starts with /en).
+export function comingSoonPath(pathname: string): string {
+  return pathname.startsWith('/en') ? '/en/coming-soon' : '/de/coming-soon';
+}
