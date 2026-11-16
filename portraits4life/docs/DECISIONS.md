@@ -169,6 +169,12 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Scope:** the site sells ultrasound art only. The Individualportraits and Paarportraits rows and the second upload field are removed from the page; their texts are kept in docs/removed-products.md.
 - **Order button:** "Order now" on the landing page (English). The form's submit label stays until the order-or-request question is answered.
 
+## 2026-11-16: Content-Security-Policy allows the photo upload to Vercel Blob
+
+- **Status:** done in code; to be checked on a preview deployment
+- **Decision:** The connect-src rule allows the Vercel upload and storage addresses (vercel.com, blob.vercel-storage.com and its subdomains) in addition to the site itself. No other external host is allowed.
+- **Why:** The browser was blocking the direct photo upload, so no order with a photo could be sent.
+
 ## 2026-11-16: Coming-soon mode for production
 
 - **Status:** built; not switched on
