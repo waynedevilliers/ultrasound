@@ -1,5 +1,6 @@
 import createMiddleware from 'next-intl/middleware';
-import { NextRequest } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
+import { comingSoonPath, isComingSoon } from '@/lib/site-mode';
 
 const handleI18nRouting = createMiddleware({
   locales: ['en', 'de'],
@@ -9,6 +10,12 @@ const handleI18nRouting = createMiddleware({
 });
 
 export function middleware(request: NextRequest) {
+  // Coming-soon mode: every site page is answered with the coming-soon page, so no site content is sent.
+  if (isComingSoon()) {
+    const url = request.nextUrl.clone();
+    url.pathname = comingSoonPath(request.nextUrl.pathname);
+    return NextResponse.rewrite(url);
+  }
   return handleI18nRouting(request);
 }
 

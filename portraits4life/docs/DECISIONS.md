@@ -175,6 +175,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Decision:** The connect-src rule allows the Vercel upload and storage addresses (vercel.com, blob.vercel-storage.com and its subdomains) in addition to the site itself. No other external host is allowed.
 - **Why:** The browser was blocking the direct photo upload, so no order with a photo could be sent.
 
+## 2026-11-16: Coming-soon mode works in the middleware (replaces the layout switch)
+
+- **Status:** done
+- **Decision:** In coming-soon mode the middleware answers every site page with the coming-soon page (rewrite to /{locale}/coming-soon). The layout is unchanged. Checked on a coming-soon build: no site text appears in the responses, not even in the page data. Crawling is disallowed in robots.txt.
+- **Why:** The earlier layout switch still sent the full site's page data to the browser, so the text could be found in the page source.
+- **Open:** API routes (orders, uploads) are not covered by the middleware; they are protected by the Vercel login only.
+
 ## 2026-11-16: Coming-soon mode for production
 
 - **Status:** built; not switched on
