@@ -261,7 +261,10 @@
     "chooseImage": "Bild auswählen",
     "imageFormats": "JPG, PNG, WebP oder HEIC, maximal 15 MB",
     "removeImage": "Entfernen",
-    "referenceHint": "Hilfreich, wenn du ein zweites Foto zum Vergleich hast."
+    "referenceHint": "Hilfreich, wenn du ein zweites Foto zum Vergleich hast.",
+    "trustNote": "Ich prüfe dein Bild und melde mich per E-Mail. Du bezahlst erst danach.",
+    "privacyBefore": "Mit dem Absenden stimmst du der Verarbeitung deiner Daten gemäß der",
+    "privacyAfter": "zu."
   },
   "common": {
     "home": "Startseite",

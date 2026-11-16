@@ -80,6 +80,7 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: attachments or upload-and-link: answered by the photo decision (2026-11-14, Step 11 part B): upload-and-link.
+- Order form: is the form a binding paid order (the button must read "Zahlungspflichtig bestellen") or a request (the button reads "Bild senden und anfragen")? The button stays "Jetzt bestellen" until the owner answers.
 
 ## 2026-11-14: Order form fixes after the step 11 review
 
@@ -152,6 +153,13 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Decision:** Option A (in the code): on phones the logo row shows only the logo image, 48px high, centred, with 8px vertical padding. The name is hidden in the logo row below 640px because the bar shows it. Row height: 96px before, 64px after (375px and 320px); desktop unchanged at 112px. Option B (screenshot only): no logo row on phones.
 - **Why:** Mobile step M2 (the name is now in the sticky bar).
 - **Considered:** Keeping the 64px logo (rejected: the row took too much space above the hero).
+
+## 2026-11-15: Trust text under the order button (order round 1, step O4)
+
+- **Status:** done; legal wording pending client (TODO(client))
+- **Decision:** Under the submit button, a line in body colour (16px): "Ich prüfe dein Bild und melde mich per E-Mail. Du bezahlst erst danach." Below it, 14px: "Mit dem Absenden stimmst du der Verarbeitung deiner Daten gemäß der Datenschutzerklärung zu." with a link to the Datenschutz page. The button label is unchanged; the question whether this is a binding paid order or a request is open (see Open questions).
+- **Why:** Order round 1, step O4.
+- **Considered:** Changing the button label now (rejected: the owner answers first).
 
 ## 2026-11-15: Upload fields (order round 1, step O3)
 
