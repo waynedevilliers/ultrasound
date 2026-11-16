@@ -14,7 +14,8 @@
     "knip": "knip",
     "jscpd": "jscpd app components lib content --min-lines 8 --min-tokens 60 --ignore \"**/node_modules/**,**/.next/**\" --reporters console",
     "lighthouse": "lhci autorun",
-    "db:init": "node scripts/init-db.js"
+    "db:init": "node scripts/init-db.js",
+    "mobile-check": "node scripts/mobile-check.mjs"
   },
   "overrides": {
     "proxy-addr": "2.0.8",
