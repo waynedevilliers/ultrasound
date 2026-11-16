@@ -285,5 +285,9 @@
     ],
     "photoPlaceholder": "Foto folgt",
     "photoAlt": "Porträt der Künstlerin oder des Künstlers hinter Portraits 4 Life"
+  },
+  "comingSoon": {
+    "title": "Bald verfügbar",
+    "text": "Die Seite ist bald so weit. Schau bald wieder vorbei."
   }
 }
