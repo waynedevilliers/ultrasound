@@ -45,7 +45,7 @@ describe('orderFieldsSchema', () => {
     expect(result.success).toBe(false);
   });
 
-  it('rejects a filled honeypot field', () => {
+  it('accepts a filled honeypot field for route-level rejection', () => {
     // The schema accepts the honeypot value; the order route refuses a filled honeypot.
     expect(orderFieldsSchema.safeParse({ ...digital, website: 'spam' }).success).toBe(true);
   });
