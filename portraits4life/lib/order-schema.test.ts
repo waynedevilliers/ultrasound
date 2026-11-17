@@ -1,6 +1,12 @@
 import { CONSENT_VERSION } from './consent';
 import { describe, expect, it } from 'vitest';
-import { MAX_IMAGE_BYTES, orderFieldsSchema, orderSubmitSchema, validateImageFile, validateStoredImage } from './order-schema';
+import {
+  MAX_IMAGE_BYTES,
+  orderFieldsSchema,
+  orderSubmitSchema,
+  validateImageFile,
+  validateStoredImage,
+} from './order-schema';
 
 const digital = {
   name: 'Anna',
@@ -39,8 +45,9 @@ describe('orderFieldsSchema', () => {
     expect(result.success).toBe(false);
   });
 
-  it('rejects a filled honeypot field', () => {
-    expect(orderFieldsSchema.safeParse({ ...digital, website: 'spam' }).success).toBe(false);
+  it('accepts a filled honeypot field for route-level rejection', () => {
+    // The schema accepts the honeypot value; the order route refuses a filled honeypot.
+    expect(orderFieldsSchema.safeParse({ ...digital, website: 'spam' }).success).toBe(true);
   });
 
   it('rejects an invalid email address', () => {
@@ -74,14 +81,22 @@ describe('validateImageFile', () => {
 });
 
 describe('orderSubmitSchema', () => {
-  const base = { ...digital, website: '', ultrasoundPath: 'orders/ultrasound-abc123', referencePath: '', consent: { processing: true, rights: true, showcase: false, version: CONSENT_VERSION } };
+  const base = {
+    ...digital,
+    website: '',
+    ultrasoundPath: 'orders/ultrasound-abc123',
+    referencePath: '',
+    consent: { processing: true, rights: true, showcase: false, version: CONSENT_VERSION },
+  };
 
   it('accepts an order with a stored photo path', () => {
     expect(orderSubmitSchema.safeParse(base).success).toBe(true);
   });
 
   it('rejects a photo path outside the orders folder', () => {
-    expect(orderSubmitSchema.safeParse({ ...base, ultrasoundPath: '../secrets' }).success).toBe(false);
+    expect(orderSubmitSchema.safeParse({ ...base, ultrasoundPath: '../secrets' }).success).toBe(
+      false,
+    );
   });
 
   it('rejects a missing ultrasound photo path', () => {
@@ -99,10 +114,14 @@ describe('validateStoredImage', () => {
   });
 
   it('rejects a stored file over 15 MB', () => {
-    expect(validateStoredImage({ size: MAX_IMAGE_BYTES + 1, contentType: 'image/png' })).toBe('Image is larger than 15 MB');
+    expect(validateStoredImage({ size: MAX_IMAGE_BYTES + 1, contentType: 'image/png' })).toBe(
+      'Image is larger than 15 MB',
+    );
   });
 
   it('rejects a stored file that is not an allowed image', () => {
-    expect(validateStoredImage({ size: 10, contentType: 'application/pdf' })).toBe('Image must be JPG, PNG, WebP or HEIC');
+    expect(validateStoredImage({ size: 10, contentType: 'application/pdf' })).toBe(
+      'Image must be JPG, PNG, WebP or HEIC',
+    );
   });
 });

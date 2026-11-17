@@ -67,6 +67,23 @@ describe('POST /api/orders/upload', () => {
     );
   });
 
+  it('refuses one visitor after 20 token requests in a window, and not another visitor', async () => {
+    handleUpload.mockResolvedValue({ type: 'blob.generate-client-token' });
+    const from = (ip: string) =>
+      new NextRequest('http://localhost/api/orders/upload', {
+        method: 'POST',
+        headers: { 'content-type': 'application/json', 'x-forwarded-for': ip },
+        body: '{}',
+      });
+    for (let i = 0; i < 20; i++) {
+      expect((await POST(from('203.0.113.9'))).status).toBe(200);
+    }
+    const limited = await POST(from('203.0.113.9'));
+    expect(limited.status).toBe(429);
+    expect(await limited.json()).toEqual({ error: 'Too many requests' });
+    expect((await POST(from('203.0.113.10'))).status).toBe(200);
+  });
+
   it('logs a refusal under the code the browser sent', async () => {
     handleUpload.mockImplementation(
       async (options: {

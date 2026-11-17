@@ -1,6 +1,7 @@
 import { sql } from '@vercel/postgres';
 import { logOrderFailure } from '@/lib/order-log';
 import { createRequestCode, isRequestCode } from '@/lib/request-code';
+import { clientKey } from '@/lib/client-key';
 import { head } from '@vercel/blob';
 import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
@@ -14,11 +15,6 @@ const DEFAULT_FROM = 'onboarding@resend.dev';
 const DEFAULT_ORDER_EMAIL = 'portraits4life.art@gmail.com';
 const LINK_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 // TODO(client): set SITE_URL to the live domain so links stay stable; otherwise the request address is used.
-
-function clientKey(request: NextRequest): string {
-  const forwarded = request.headers.get('x-forwarded-for');
-  return forwarded?.split(',')[0]?.trim() || request.headers.get('x-real-ip') || 'unknown';
-}
 
 function productLabel(order: OrderSubmit): string {
   if (order.product === 'canvas') {

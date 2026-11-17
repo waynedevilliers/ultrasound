@@ -42,7 +42,8 @@ export const orderFieldsSchema = z
       .default(''),
     specialRequests: optionalText(1000),
     // Honeypot: real visitors never fill this field.
-    website: z.string().max(0).default(''),
+    // Honeypot: any value is accepted here so the route can refuse it with its own check.
+    website: z.string().default(''),
     shippingFullName: z.string().default(''),
     shippingStreet: z.string().default(''),
     shippingCity: z.string().default(''),
