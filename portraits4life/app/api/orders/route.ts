@@ -203,17 +203,25 @@ export async function POST(request: NextRequest) {
     });
     const customerEmail = { from, to: order.email, subject: customer.subject, html: customer.html };
 
-    for (const email of [adminEmail, customerEmail]) {
+    // Returns whether the email was accepted, so the visitor is only told about a confirmation that is on its way.
+    const sendMail = async (email: typeof customerEmail): Promise<boolean> => {
       try {
         const sent = await resend.emails.send(email);
-        if (sent.error) logOrderFailure(requestId, 'email', sent.error);
+        if (sent.error) {
+          logOrderFailure(requestId, 'email', sent.error);
+          return false;
+        }
+        return true;
       } catch (emailError) {
         logOrderFailure(requestId, 'email', emailError);
+        return false;
       }
-    }
+    };
+    await sendMail(adminEmail);
+    const confirmationSent = await sendMail(customerEmail);
 
     return NextResponse.json(
-      { success: true, reference, message: 'Order submitted successfully' },
+      { success: true, reference, confirmationSent, message: 'Order submitted successfully' },
       { status: 201 },
     );
   } catch (error) {

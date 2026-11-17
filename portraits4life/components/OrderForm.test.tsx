@@ -356,6 +356,38 @@ describe('OrderForm submit errors', () => {
     expect(errorSpy).toHaveBeenCalled();
   });
 
+  it('names the address the confirmation went to, only when the mail service accepted it', async () => {
+    stubServer(
+      async () =>
+        new Response(
+          JSON.stringify({ success: true, reference: 'P4L-261117-K7QM', confirmationSent: true }),
+          {
+            status: 201,
+          },
+        ),
+    );
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    expect(await screen.findByText(/ann@example\.com/)).toBeInTheDocument();
+    expect(screen.getByText(/spam folder/i)).toBeInTheDocument();
+  });
+
+  it('shows no confirmation line when the mail service did not accept the email', async () => {
+    stubServer(
+      async () =>
+        new Response(
+          JSON.stringify({ success: true, reference: 'P4L-261117-K7QM', confirmationSent: false }),
+          {
+            status: 201,
+          },
+        ),
+    );
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    await screen.findByText(/P4L-261117-K7QM$/);
+    expect(screen.queryByText(/spam folder/i)).toBeNull();
+  });
+
   it('shows the order reference after a successful order, and not the running number', async () => {
     stubServer(
       async () =>

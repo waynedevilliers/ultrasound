@@ -213,6 +213,16 @@ describe('POST /api/orders logging and email', () => {
     expect(String(errorSpy.mock.calls.at(-1)?.[0])).not.toContain('../../etc');
   });
 
+  it('tells the visitor a confirmation is on its way only when the customer email was accepted', async () => {
+    const accepted = await (await POST(orderRequest(order()))).json();
+    expect(accepted.confirmationSent).toBe(true);
+
+    send.mockResolvedValueOnce({ data: null, error: { name: 'x', message: 'y', statusCode: 422 } });
+    send.mockResolvedValueOnce({ data: null, error: { name: 'x', message: 'y', statusCode: 422 } });
+    const refused = await (await POST(orderRequest(order()))).json();
+    expect(refused.confirmationSent).toBe(false);
+  });
+
   it('keeps a saved order successful when the photo links cannot be made', async () => {
     delete process.env.ORDER_LINK_SECRET;
     const response = await POST(orderRequest(order()));
