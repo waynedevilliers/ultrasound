@@ -297,15 +297,19 @@ describe('OrderForm submit errors', () => {
       'fetch',
       vi.fn(async (_url: string, init: RequestInit) => {
         bodies.push(String(init.body));
-        return new Response(JSON.stringify({ success: true, orderId: 1 }), { status: 201 });
+        return new Response(JSON.stringify({ success: true, reference: 'P4L-261117-K7QM' }), {
+          status: 201,
+        });
       }),
     );
     const { container } = render(<OrderForm />);
     submitWithPhoto(container);
-    await screen.findByText(/#1$/);
+    await screen.findByText(/P4L-261117-K7QM/);
     const code = vi.mocked(upload).mock.calls.at(-1)?.[2]?.clientPayload;
     expect(code).toMatch(/^[0-9a-f]{8}$/);
     expect(JSON.parse(bodies[0]).requestCode).toBe(code);
+    // The page is /en/order in this test, so the email language is English.
+    expect(JSON.parse(bodies[0]).locale).toBe('en');
   });
 
   it('does not report success when a successful reply cannot be read', async () => {
@@ -352,13 +356,17 @@ describe('OrderForm submit errors', () => {
     expect(errorSpy).toHaveBeenCalled();
   });
 
-  it('shows the order number after a successful order and clears the form', async () => {
+  it('shows the order reference after a successful order, and not the running number', async () => {
     stubServer(
-      async () => new Response(JSON.stringify({ success: true, orderId: 42 }), { status: 201 }),
+      async () =>
+        new Response(JSON.stringify({ success: true, reference: 'P4L-261117-K7QM', orderId: 42 }), {
+          status: 201,
+        }),
     );
     const { container } = render(<OrderForm />);
     submitWithPhoto(container);
-    expect(await screen.findByText(/#42$/)).toBeInTheDocument();
+    expect(await screen.findByText(/P4L-261117-K7QM$/)).toBeInTheDocument();
+    expect(screen.queryByText(/#42/)).toBeNull();
     expect(screen.queryByRole('alert')).toBeNull();
   });
 });

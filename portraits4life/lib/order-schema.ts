@@ -42,6 +42,8 @@ export const orderFieldsSchema = z
       .default(''),
     specialRequests: optionalText(1000),
     // Honeypot: real visitors never fill this field.
+    // Language of the page the order was made on; the customer's confirmation email uses it.
+    locale: z.enum(['de', 'en']).default('de'),
     // Honeypot: any value is accepted here so the route can refuse it with its own check.
     website: z.string().default(''),
     shippingFullName: z.string().default(''),

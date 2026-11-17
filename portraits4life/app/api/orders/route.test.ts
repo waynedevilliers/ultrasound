@@ -148,7 +148,13 @@ describe('POST /api/orders logging and email', () => {
   it('saves the order, sends both emails and returns 201 with the order number', async () => {
     const response = await POST(orderRequest(order()));
     expect(response.status).toBe(201);
-    expect(await response.json()).toMatchObject({ success: true, orderId: 7 });
+    const data = await response.json();
+    expect(data).toMatchObject({
+      success: true,
+      reference: expect.stringMatching(/^P4L-\d{6}-[A-HJ-NP-Z2-9]{4}$/),
+    });
+    // The running number stays internal and is not returned to the visitor.
+    expect(data).not.toHaveProperty('orderId');
     expect(send).toHaveBeenCalledTimes(2);
     expect(errorSpy).not.toHaveBeenCalled();
   });
@@ -198,6 +204,20 @@ describe('POST /api/orders logging and email', () => {
     );
     const adminEmail = send.mock.calls[0][0];
     expect(adminEmail.html).toContain('Photo links could not be created');
+  });
+
+  it('sends the customer email in German for a German page', async () => {
+    await POST(orderRequest(order({ locale: 'de' })));
+    const customerEmail = send.mock.calls[1][0];
+    expect(customerEmail.subject).toBe('Bestellung bestätigt: Portraits 4 Life');
+    expect(customerEmail.html).toContain('Danke für deine Bestellung!');
+  });
+
+  it('sends the customer email in English for an English page', async () => {
+    await POST(orderRequest(order({ locale: 'en' })));
+    const customerEmail = send.mock.calls[1][0];
+    expect(customerEmail.subject).toBe('Order confirmed: Portraits 4 Life');
+    expect(customerEmail.html).toContain('Thank you for your order!');
   });
 
   it('still answers 201 when sending throws', async () => {

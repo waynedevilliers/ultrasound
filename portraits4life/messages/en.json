@@ -277,5 +277,17 @@
   "comingSoon": {
     "title": "Coming soon",
     "text": "The site will be ready soon. Please check back."
+  },
+  "customerEmail": {
+    "subject": "Order confirmed: Portraits 4 Life",
+    "heading": "Thank you for your order!",
+    "greeting": "Hi {name},",
+    "intro": "we have received your order and will review your image shortly.",
+    "reference": "Reference:",
+    "product": "Product:",
+    "delivery": "Expected delivery:",
+    "contact": "I will contact you within 2 working days to confirm that your image is suitable for processing.",
+    "signoff": "Best regards,",
+    "team": "Portraits 4 Life Team"
   }
 }

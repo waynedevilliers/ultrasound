@@ -4,7 +4,7 @@ type OrderSuccessProps = {
   title: string;
   submitted: string;
   orderIdLabel: string;
-  orderId: string;
+  reference: string;
   contact: string;
 };
 
@@ -13,7 +13,7 @@ export default function OrderSuccess({
   title,
   submitted,
   orderIdLabel,
-  orderId,
+  reference,
   contact,
 }: OrderSuccessProps) {
   return (
@@ -35,7 +35,8 @@ export default function OrderSuccess({
       <h2 className="font-display heading-xl font-bold text-ink mb-6">{title}</h2>
       <p className="text-base text-body mb-4">{submitted}</p>
       <p className="text-base text-body mb-4">
-        <strong className="font-bold text-ink">{orderIdLabel}</strong> #{orderId}
+        <strong className="font-bold text-ink">{orderIdLabel}</strong>{' '}
+        <span className="whitespace-nowrap">{reference}</span>
       </p>
       <p className="text-base text-body">{contact}</p>
     </InfoCard>

@@ -43,6 +43,7 @@ export async function initializeDatabase() {
       consent_showcase BOOLEAN DEFAULT FALSE,
       consent_version VARCHAR(50),
       consent_at TIMESTAMP DEFAULT NOW(),
+      reference VARCHAR(32) UNIQUE,
       status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'processing', 'completed', 'rejected')),
       created_at TIMESTAMP DEFAULT NOW(),
       updated_at TIMESTAMP DEFAULT NOW()
