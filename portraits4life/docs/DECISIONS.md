@@ -169,6 +169,12 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - **Scope:** the site sells ultrasound art only. The Individualportraits and Paarportraits rows and the second upload field are removed from the page; their texts are kept in docs/removed-products.md.
 - **Order button:** "Order now" on the landing page (English). The form's submit label stays until the order-or-request question is answered.
 
+## 2026-11-16: Explicit consent before the photo upload
+
+- **Status:** done; wording pending legal review (TODO(client))
+- **Decision:** Three boxes above the submit button, all unticked: (1) required: consent to process the image and details to make the artwork, with a link to the Datenschutz page and a note that consent can be withdrawn; (2) required: the customer owns the image or has permission; (3) optional: the finished artwork may be shown as an example. A line states that personalised products cannot be returned. The form does not send the order until (1) and (2) are ticked, and the server rejects orders without them. Each order stores the showcase answer, the consent version (lib/consent.ts) and the time.
+- **Why:** An ultrasound image is health-related data; explicit consent must be given and provable (GDPR).
+
 ## 2026-11-16: Content-Security-Policy allows the photo upload to Vercel Blob
 
 - **Status:** done in code; to be checked on a preview deployment

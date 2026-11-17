@@ -19,7 +19,10 @@ async function initDatabase() {
         ultrasound_image_url TEXT,
         reference_image_url TEXT,
         shipping_address JSONB,
-        status VARCHAR(50) DEFAULT 'pending',
+        consent_showcase BOOLEAN DEFAULT FALSE,
+      consent_version VARCHAR(50),
+      consent_at TIMESTAMP DEFAULT NOW(),
+      status VARCHAR(50) DEFAULT 'pending',
         created_at TIMESTAMP DEFAULT NOW(),
         updated_at TIMESTAMP DEFAULT NOW()
       )`;

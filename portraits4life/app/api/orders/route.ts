@@ -49,6 +49,7 @@ function orderEmailHtml(
     ${row('Product', productLabel(order))}
     ${order.childName ? row("Child's Name", order.childName) : ''}
     ${order.weeksInWomb ? row('Weeks in Womb', order.weeksInWomb) : ''}
+    ${row('Showcase permission', order.consent.showcase ? 'yes' : 'no')}
     ${order.specialRequests ? row('Special Requests', order.specialRequests) : ''}
     ${shipping}
     <p>Photos are private. Each link works for 30 days.</p>
@@ -116,7 +117,7 @@ export async function POST(request: NextRequest) {
       INSERT INTO orders (
         name, email, product, canvas_size, child_name, weeks_in_womb,
         special_requests, ultrasound_image_url, reference_image_url,
-        shipping_address, status, created_at
+        shipping_address, status, created_at, consent_showcase, consent_version
       ) VALUES (
         ${order.name},
         ${order.email},
@@ -140,7 +141,9 @@ export async function POST(request: NextRequest) {
             : null,
         )},
         ${'pending'},
-        ${new Date().toISOString()}
+        ${new Date().toISOString()},
+        ${order.consent.showcase},
+        ${order.consent.version}
       )
       RETURNING id, created_at;
     `;

@@ -37,10 +37,6 @@ function measure() {
     return el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + cls;
   };
   const textOf = (el) => (el.innerText || el.value || el.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ').slice(0, 50);
-  const box = (el) => {
-    const r = el.getBoundingClientRect();
-    return { top: Math.round(r.top), bottom: Math.round(r.bottom), left: Math.round(r.left), right: Math.round(r.right), width: Math.round(r.width), height: Math.round(r.height) };
-  };
   const vw = window.innerWidth;
   const vh = window.innerHeight;
 
