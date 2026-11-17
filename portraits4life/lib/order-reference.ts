@@ -26,3 +26,36 @@ export function createOrderReference(now: Date = new Date()): string {
   }
   return `P4L-${germanDate(now)}-${random}`;
 }
+
+// Four random characters can, rarely, match a reference from the same day. The unique index then
+// rejects the insert, so the save is tried again with a new reference, a few times at most.
+export const MAX_REFERENCE_ATTEMPTS = 3;
+const UNIQUE_VIOLATION = '23505';
+
+export function isReferenceConflict(error: unknown): boolean {
+  if (typeof error !== 'object' || error === null) return false;
+  const { code, constraint, message } = error as {
+    code?: unknown;
+    constraint?: unknown;
+    message?: unknown;
+  };
+  if (code !== UNIQUE_VIOLATION) return false;
+  return `${String(constraint ?? '')} ${String(message ?? '')}`.includes('reference');
+}
+
+export async function withReference<T>(
+  save: (reference: string) => Promise<T>,
+  now: Date = new Date(),
+): Promise<{ reference: string; value: T }> {
+  let lastError: unknown;
+  for (let attempt = 0; attempt < MAX_REFERENCE_ATTEMPTS; attempt++) {
+    const reference = createOrderReference(now);
+    try {
+      return { reference, value: await save(reference) };
+    } catch (error) {
+      if (!isReferenceConflict(error)) throw error;
+      lastError = error;
+    }
+  }
+  throw lastError;
+}

@@ -180,6 +180,24 @@ describe('POST /api/orders logging and email', () => {
     );
   });
 
+  it('saves the order again with a new reference after a reference conflict', async () => {
+    const conflict = {
+      code: '23505',
+      constraint: 'idx_orders_reference',
+      message: 'duplicate key value violates unique constraint "idx_orders_reference"',
+    };
+    vi.mocked(sql).mockReset();
+    vi.mocked(sql)
+      .mockRejectedValueOnce(conflict)
+      .mockResolvedValueOnce({ rows: [] } as never);
+    const response = await POST(orderRequest(order()));
+    expect(response.status).toBe(201);
+    expect(sql).toHaveBeenCalledTimes(2);
+    expect(await response.json()).toMatchObject({
+      reference: expect.stringMatching(/^P4L-\d{6}-[A-HJ-NP-Z2-9]{4}$/),
+    });
+  });
+
   it('uses the request code the browser sent, so the upload and order logs match', async () => {
     vi.mocked(sql).mockRejectedValueOnce(new Error('connection refused'));
     const response = await POST(orderRequest(order({ requestCode: 'a1b2c3d4' })));

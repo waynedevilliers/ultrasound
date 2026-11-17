@@ -1,7 +1,7 @@
 import { sql } from '@vercel/postgres';
 import { logOrderFailure } from '@/lib/order-log';
 import { createRequestCode, isRequestCode } from '@/lib/request-code';
-import { createOrderReference } from '@/lib/order-reference';
+import { withReference } from '@/lib/order-reference';
 import { buildCustomerEmail, deliveryText, productName } from '@/lib/customer-email';
 import { clientKey } from '@/lib/client-key';
 import { head } from '@vercel/blob';
@@ -126,8 +126,9 @@ export async function POST(request: NextRequest) {
     }
 
     step = 'save';
-    const reference = createOrderReference();
-    await sql`
+    // A reference that is already taken is replaced and the save is tried again.
+    const { reference } = await withReference(
+      (candidate) => sql`
       INSERT INTO orders (
         name, email, product, canvas_size, child_name, weeks_in_womb,
         special_requests, ultrasound_image_url, reference_image_url,
@@ -159,9 +160,10 @@ export async function POST(request: NextRequest) {
         ${order.consent.showcase},
         ${order.consent.version},
         NOW(),
-        ${reference}
+        ${candidate}
       );
-    `;
+    `,
+    );
 
     // The order is saved from here on; a failure now is logged as links, not as a lost order.
     step = 'links';
