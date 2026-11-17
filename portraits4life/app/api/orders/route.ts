@@ -117,7 +117,7 @@ export async function POST(request: NextRequest) {
       INSERT INTO orders (
         name, email, product, canvas_size, child_name, weeks_in_womb,
         special_requests, ultrasound_image_url, reference_image_url,
-        shipping_address, status, created_at, consent_showcase, consent_version
+        shipping_address, status, created_at, consent_showcase, consent_version, consent_at
       ) VALUES (
         ${order.name},
         ${order.email},
@@ -143,7 +143,8 @@ export async function POST(request: NextRequest) {
         ${'pending'},
         ${new Date().toISOString()},
         ${order.consent.showcase},
-        ${order.consent.version}
+        ${order.consent.version},
+        NOW()
       )
       RETURNING id, created_at;
     `;
