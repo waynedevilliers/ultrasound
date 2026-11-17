@@ -1,11 +1,13 @@
 import { sql } from '@vercel/postgres';
 import { logOrderFailure } from '@/lib/order-log';
 import { createRequestCode, isRequestCode } from '@/lib/request-code';
+import { withReference } from '@/lib/order-reference';
+import { buildCustomerEmail, deliveryText, productName } from '@/lib/customer-email';
 import { clientKey } from '@/lib/client-key';
 import { head } from '@vercel/blob';
 import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
-import { canvasSizes, digitalProduct, canvasProduct, type CanvasSizeId } from '@/content/products';
+import { canvasSizes, type CanvasSizeId } from '@/content/products';
 import { escapeHtml } from '@/lib/escape-html';
 import { isRateLimited } from '@/lib/rate-limit';
 import { orderSubmitSchema, validateStoredImage, type OrderSubmit } from '@/lib/order-schema';
@@ -26,7 +28,7 @@ function productLabel(order: OrderSubmit): string {
 
 function orderEmailHtml(
   order: OrderSubmit,
-  orderId: unknown,
+  reference: string,
   links: { ultrasound: string; reference: string },
 ): string {
   const row = (label: string, value: string) =>
@@ -41,7 +43,7 @@ function orderEmailHtml(
       : '';
   return `
     <h2>New Order Received</h2>
-    ${row('Order ID', String(orderId))}
+    ${row('Reference', reference)}
     ${row('Customer Name', order.name)}
     ${row('Email', order.email)}
     ${row('Product', productLabel(order))}
@@ -124,11 +126,13 @@ export async function POST(request: NextRequest) {
     }
 
     step = 'save';
-    const result = await sql`
+    // A reference that is already taken is replaced and the save is tried again.
+    const { reference } = await withReference(
+      (candidate) => sql`
       INSERT INTO orders (
         name, email, product, canvas_size, child_name, weeks_in_womb,
         special_requests, ultrasound_image_url, reference_image_url,
-        shipping_address, status, created_at, consent_showcase, consent_version, consent_at
+        shipping_address, status, created_at, consent_showcase, consent_version, consent_at, reference
       ) VALUES (
         ${order.name},
         ${order.email},
@@ -155,14 +159,14 @@ export async function POST(request: NextRequest) {
         ${new Date().toISOString()},
         ${order.consent.showcase},
         ${order.consent.version},
-        NOW()
-      )
-      RETURNING id, created_at;
-    `;
+        NOW(),
+        ${candidate}
+      );
+    `,
+    );
 
     // The order is saved from here on; a failure now is logged as links, not as a lost order.
     step = 'links';
-    const orderId = result.rows[0]?.id;
     const expires = Date.now() + LINK_TTL_MS;
     const siteUrl = process.env.SITE_URL || new URL(request.url).origin;
     const secret = process.env.ORDER_LINK_SECRET;
@@ -178,7 +182,7 @@ export async function POST(request: NextRequest) {
       // The order is already saved, so the visitor still gets success. The admin email goes out without links.
       logOrderFailure(requestId, 'links', linkError);
     }
-    const subject = `New Order #${orderId} - ${order.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`;
+    const subject = `New Order ${reference} - ${order.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`;
     const from = process.env.ORDER_FROM_EMAIL || DEFAULT_FROM;
     const resend = new Resend(process.env.RESEND_API_KEY);
 
@@ -188,23 +192,16 @@ export async function POST(request: NextRequest) {
       to: process.env.ORDER_EMAIL || DEFAULT_ORDER_EMAIL,
       replyTo: order.email,
       subject,
-      html: orderEmailHtml(order, orderId, links),
+      html: orderEmailHtml(order, reference, links),
     };
-    const customerEmail = {
-      from,
-      to: order.email,
-      subject: 'Order Confirmed - Portraits 4 Life',
-      html: `
-        <h2>Thank You for Your Order!</h2>
-        <p>Hi ${escapeHtml(order.name)},</p>
-        <p>We've received your order and will review your images shortly.</p>
-        <p><strong>Order ID:</strong> ${escapeHtml(String(orderId))}</p>
-        <p><strong>Product:</strong> ${escapeHtml(productLabel(order))}</p>
-        <p><strong>Expected Delivery:</strong> ${order.product === 'canvas' ? `${canvasProduct.deliveryWeeksMin}-${canvasProduct.deliveryWeeksMax} weeks` : `${digitalProduct.deliveryWeeks} week`}</p>
-        <p>I will contact you within 2 working days to confirm your images are suitable for processing.</p>
-        <p>Best regards,<br/>Portraits 4 Life Team</p>
-      `,
-    };
+    const customer = buildCustomerEmail({
+      locale: order.locale,
+      name: order.name,
+      reference,
+      product: productName(order.locale, order.product, order.canvasSize),
+      delivery: deliveryText(order.locale, order.product),
+    });
+    const customerEmail = { from, to: order.email, subject: customer.subject, html: customer.html };
 
     for (const email of [adminEmail, customerEmail]) {
       try {
@@ -216,7 +213,7 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json(
-      { success: true, orderId, message: 'Order submitted successfully' },
+      { success: true, reference, message: 'Order submitted successfully' },
       { status: 201 },
     );
   } catch (error) {

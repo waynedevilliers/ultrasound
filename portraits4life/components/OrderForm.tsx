@@ -47,7 +47,7 @@ class OrderStageError extends Error {
 }
 
 type ServerReply = {
-  orderId?: string | number;
+  reference?: string;
   message?: string;
   code?: string;
   issues?: { field: string; message: string }[];
@@ -91,7 +91,7 @@ export default function OrderForm({
   useEffect(() => {
     if (error) summaryRef.current?.focus();
   }, [error]);
-  const [orderId, setOrderId] = useState('');
+  const [reference, setReference] = useState('');
 
   const [formData, setFormData] = useState({
     ...EMPTY_FORM,
@@ -258,6 +258,7 @@ export default function OrderForm({
         },
         website: honeypot,
         requestCode,
+        locale,
         ultrasoundPath,
         referencePath,
         ...(formData.product === 'canvas'
@@ -302,9 +303,10 @@ export default function OrderForm({
         throw new OrderStageError('invalid');
       }
 
-      const orderId = String(data.orderId ?? '');
-      if (!orderId) throw new OrderStageError('server', requestCode);
-      setOrderId(orderId);
+      // A reply without a reference is not a confirmed order, so it is shown as a failure.
+      const confirmed = typeof data.reference === 'string' ? data.reference : '';
+      if (!confirmed) throw new OrderStageError('server', requestCode);
+      setReference(confirmed);
       setSubmitted(true);
       setFormData(EMPTY_FORM);
       setFiles({ ultrasound: null, reference: null });
@@ -334,7 +336,7 @@ export default function OrderForm({
         title={orderForm.successTitle}
         submitted={orderForm.submitted}
         orderIdLabel={orderForm.orderIdLabel}
-        orderId={orderId}
+        reference={reference}
         contact={orderForm.contactWithin24h}
       />
     );

@@ -6,7 +6,7 @@ const props = {
   title: 'Danke für deine Bestellung!',
   submitted: 'Deine Bestellung wurde erfolgreich eingereicht.',
   orderIdLabel: 'Bestellnummer:',
-  orderId: '11',
+  reference: 'P4L-261117-K7QM',
   contact: 'Ich werde dich innerhalb von 2 Werktagen kontaktieren.',
 };
 
@@ -19,7 +19,7 @@ describe('OrderSuccess', () => {
   it('shows the order number and the contact line', () => {
     render(<OrderSuccess {...props} />);
     expect(screen.getByText(props.orderIdLabel)).toBeInTheDocument();
-    expect(screen.getByText(/#11/)).toBeInTheDocument();
+    expect(screen.getByText(/P4L-261117-K7QM/)).toBeInTheDocument();
     expect(screen.getByText(props.contact)).toBeInTheDocument();
   });
 

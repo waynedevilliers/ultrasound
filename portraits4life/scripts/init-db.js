@@ -33,6 +33,9 @@ async function initDatabase() {
     await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS consent_at TIMESTAMP`;
     // No default: a consent time is only written when a consent is actually recorded.
     await sql`ALTER TABLE orders ALTER COLUMN consent_at DROP DEFAULT`;
+    // The customer-facing order reference (for example P4L-261117-K7QM). Older rows have none.
+    await sql`ALTER TABLE orders ADD COLUMN IF NOT EXISTS reference VARCHAR(32)`;
+    await sql`CREATE UNIQUE INDEX IF NOT EXISTS idx_orders_reference ON orders(reference)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_orders_email ON orders(email)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_orders_status ON orders(status)`;
     await sql`CREATE INDEX IF NOT EXISTS idx_orders_created_at ON orders(created_at DESC)`;
