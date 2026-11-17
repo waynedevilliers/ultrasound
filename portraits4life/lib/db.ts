@@ -40,6 +40,9 @@ export async function initializeDatabase() {
       ultrasound_image_url TEXT,
       reference_image_url TEXT,
       shipping_address JSONB,
+      consent_showcase BOOLEAN DEFAULT FALSE,
+      consent_version VARCHAR(50),
+      consent_at TIMESTAMP DEFAULT NOW(),
       status VARCHAR(50) DEFAULT 'pending' CHECK (status IN ('pending', 'approved', 'processing', 'completed', 'rejected')),
       created_at TIMESTAMP DEFAULT NOW(),
       updated_at TIMESTAMP DEFAULT NOW()

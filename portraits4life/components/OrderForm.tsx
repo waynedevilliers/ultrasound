@@ -13,6 +13,7 @@ import { routeHref, routes } from '@/content/routes';
 import { upload } from '@vercel/blob/client';
 import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 import UploadArea from '@/components/UploadArea';
+import { CONSENT_VERSION } from '@/lib/consent';
 import { IMAGE_FORMAT_LIST } from '@/lib/image-formats';
 
 // Empty values for every field except product and size, which may come from the URL.
@@ -49,6 +50,8 @@ export default function OrderForm({
   const [error, setError] = useState('');
   // Errors for single fields, keyed by field name; cleared when the field changes.
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  // Consent boxes, unticked by default. Only processing and rights are required.
+  const [consent, setConsent] = useState({ processing: false, rights: false, showcase: false });
   // Screen readers announce the summary (role=alert); focus moves there after a failed submit.
   const summaryRef = useRef<HTMLDivElement>(null);
   useEffect(() => {
@@ -168,6 +171,8 @@ export default function OrderForm({
       }
       if (formData.email.trim() && !formData.email.includes('@')) missing.email = orderForm.fieldInvalid;
       if (!files.ultrasound) missing.ultrasound = orderForm.ultrasoundRequired;
+      if (!consent.processing) missing.consentProcessing = orderForm.consentRequired;
+      if (!consent.rights) missing.consentRights = orderForm.consentRequired;
       if (Object.keys(missing).length > 0) {
         setFieldErrors(missing);
         setError(orderForm.checkFields);
@@ -189,6 +194,7 @@ export default function OrderForm({
         childName: formData.childName,
         weeksInWomb: formData.weeksInWomb,
         specialRequests: formData.specialRequests,
+        consent: { processing: true, rights: true, showcase: consent.showcase, version: CONSENT_VERSION },
         website: honeypot,
         ultrasoundPath,
         referencePath,
@@ -532,6 +538,55 @@ export default function OrderForm({
           className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
         />
         {fieldError('specialRequests')}
+      </div>
+
+      {/* Consent: unticked by default. The two required boxes must be ticked before the photo is sent. */}
+      <div className="space-y-4 border-t pt-6">
+        <div>
+          <label className="flex items-start gap-3 text-base text-body">
+            <input
+              id="consentProcessing"
+              type="checkbox"
+              checked={consent.processing}
+              onChange={(e) => setConsent((prev) => ({ ...prev, processing: e.target.checked }))}
+              {...invalid('consentProcessing')}
+              className="mt-1 h-5 w-5 shrink-0 accent-brand"
+            />
+            <span>
+              {orderForm.consentProcessing.split('{link}')[0]}
+              <Link href={privacyHref} className="font-semibold text-brand-strong underline underline-offset-4">
+                {copy.legal.datenschutz.title}
+              </Link>
+              {orderForm.consentProcessing.split('{link}')[1]}
+            </span>
+          </label>
+          {fieldError('consentProcessing')}
+        </div>
+        <div>
+          <label className="flex items-start gap-3 text-base text-body">
+            <input
+              id="consentRights"
+              type="checkbox"
+              checked={consent.rights}
+              onChange={(e) => setConsent((prev) => ({ ...prev, rights: e.target.checked }))}
+              {...invalid('consentRights')}
+              className="mt-1 h-5 w-5 shrink-0 accent-brand"
+            />
+            <span>{orderForm.consentRights}</span>
+          </label>
+          {fieldError('consentRights')}
+        </div>
+        <label className="flex items-start gap-3 text-base text-body">
+          <input
+            id="consentShowcase"
+            type="checkbox"
+            checked={consent.showcase}
+            onChange={(e) => setConsent((prev) => ({ ...prev, showcase: e.target.checked }))}
+            className="mt-1 h-5 w-5 shrink-0 accent-brand"
+          />
+          <span>{orderForm.consentShowcase}</span>
+        </label>
+        <p className="text-sm text-copy">{orderForm.withdrawalNote}</p>
       </div>
 
       {/* Submit Button */}

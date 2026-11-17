@@ -223,7 +223,12 @@
     "trustNote": "I check your image and get back to you by email. You pay only after that.",
     "privacyBefore": "By submitting, you agree to the processing of your data as described in the",
     "privacyAfter": ".",
-    "requiredField": "Please fill in this field."
+    "requiredField": "Please fill in this field.",
+    "consentProcessing": "I agree that my ultrasound images and details are processed to create the artwork. I can withdraw this consent at any time. Details in the {link}.",
+    "consentRights": "I confirm that I own the image or have permission to have it used.",
+    "consentShowcase": "I allow the finished artwork to be shown as an example on the website and on social media (optional).",
+    "consentRequired": "Please confirm this consent.",
+    "withdrawalNote": "Personalised products cannot be returned."
   },
   "common": {
     "home": "Home",

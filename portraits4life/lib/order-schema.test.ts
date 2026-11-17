@@ -1,3 +1,4 @@
+import { CONSENT_VERSION } from './consent';
 import { describe, expect, it } from 'vitest';
 import { MAX_IMAGE_BYTES, orderFieldsSchema, orderSubmitSchema, validateImageFile, validateStoredImage } from './order-schema';
 
@@ -73,7 +74,7 @@ describe('validateImageFile', () => {
 });
 
 describe('orderSubmitSchema', () => {
-  const base = { ...digital, website: '', ultrasoundPath: 'orders/ultrasound-abc123', referencePath: '' };
+  const base = { ...digital, website: '', ultrasoundPath: 'orders/ultrasound-abc123', referencePath: '', consent: { processing: true, rights: true, showcase: false, version: CONSENT_VERSION } };
 
   it('accepts an order with a stored photo path', () => {
     expect(orderSubmitSchema.safeParse(base).success).toBe(true);

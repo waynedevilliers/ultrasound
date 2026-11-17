@@ -223,7 +223,12 @@
     "trustNote": "Ich prüfe dein Bild und melde mich per E-Mail. Du bezahlst erst danach.",
     "privacyBefore": "Mit dem Absenden stimmst du der Verarbeitung deiner Daten gemäß der",
     "privacyAfter": "zu.",
-    "requiredField": "Bitte fülle dieses Feld aus."
+    "requiredField": "Bitte fülle dieses Feld aus.",
+    "consentProcessing": "Ich stimme zu, dass meine Ultraschallbilder und Angaben zur Erstellung des Kunstwerks verarbeitet werden. Ich kann diese Einwilligung jederzeit widerrufen. Details in der {link}.",
+    "consentRights": "Ich bestätige, dass ich das Bild selbst besitze oder die Erlaubnis habe, es verwenden zu lassen.",
+    "consentShowcase": "Ich erlaube, dass das fertige Kunstwerk als Beispiel auf der Website und in sozialen Medien gezeigt wird (optional).",
+    "consentRequired": "Bitte bestätige diese Zustimmung.",
+    "withdrawalNote": "Personalisierte Produkte können nicht zurückgegeben werden."
   },
   "common": {
     "home": "Startseite",

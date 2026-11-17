@@ -1,5 +1,6 @@
 import { z } from 'zod';
 import { canvasSizeIds } from '@/content/products';
+import { CONSENT_VERSION } from '@/lib/consent';
 
 export const MAX_IMAGE_BYTES = 15 * 1024 * 1024;
 export const ALLOWED_IMAGE_TYPES = [
@@ -99,6 +100,13 @@ export const orderSubmitSchema = z.intersection(
   z.object({
     ultrasoundPath: storedPath,
     referencePath: storedPath.or(z.literal('')).default(''),
+    // Explicit consent for health-related images: the two required boxes must be ticked.
+    consent: z.object({
+      processing: z.literal(true),
+      rights: z.literal(true),
+      showcase: z.boolean().default(false),
+      version: z.literal(CONSENT_VERSION),
+    }),
   }),
 );
 

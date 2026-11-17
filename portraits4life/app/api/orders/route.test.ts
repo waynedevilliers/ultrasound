@@ -8,6 +8,7 @@ vi.mock('@vercel/postgres', () => ({ sql: vi.fn() }));
 vi.mock('resend', () => ({ Resend: vi.fn() }));
 
 import { POST } from './route';
+import { CONSENT_VERSION } from '@/lib/consent';
 
 let client = 0;
 
@@ -29,6 +30,7 @@ function order(overrides: Record<string, unknown> = {}) {
     weeksInWomb: '',
     specialRequests: '',
     website: '',
+    consent: { processing: true, rights: true, showcase: false, version: CONSENT_VERSION },
     ultrasoundPath: 'orders/ultrasound-scan.jpg',
     referencePath: '',
     ...overrides,

@@ -20,6 +20,8 @@ function smallPng() {
 function submitWithPhoto(container: HTMLElement) {
   fireEvent.change(container.querySelector('input[name="name"]') as HTMLInputElement, { target: { value: 'Ann' } });
   fireEvent.change(container.querySelector('input[name="email"]') as HTMLInputElement, { target: { value: 'ann@example.com' } });
+  fireEvent.click(container.querySelector('#consentProcessing') as HTMLElement);
+  fireEvent.click(container.querySelector('#consentRights') as HTMLElement);
   fireEvent.change(photoInput(container), { target: { files: [smallPng()] } });
   fireEvent.submit(container.querySelector('form') as HTMLFormElement);
 }
@@ -146,7 +148,7 @@ describe('OrderForm', () => {
   it('shows the trust text under the button and links the privacy line to the privacy page', () => {
     render(<OrderForm />);
     expect(screen.getByText('I check your image and get back to you by email. You pay only after that.')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: 'Privacy Policy' })).toHaveAttribute('href', '/en/datenschutz');
+    expect(screen.getAllByRole('link', { name: 'Privacy Policy' })[0]).toHaveAttribute('href', '/en/datenschutz');
   });
   it('marks every empty required field on an empty submit', () => {
     const { container } = render(<OrderForm />);
@@ -156,5 +158,13 @@ describe('OrderForm', () => {
       expect(document.getElementById(id) ?? container.querySelector('#' + id)).toHaveAttribute('aria-invalid', 'true');
       expect(document.getElementById(key + '-error')).not.toBeNull();
     }
+  });
+  it('keeps the consent boxes unticked and asks for the required ones on submit', () => {
+    const { container } = render(<OrderForm />);
+    expect((container.querySelector('#consentProcessing') as HTMLInputElement).checked).toBe(false);
+    expect((container.querySelector('#consentRights') as HTMLInputElement).checked).toBe(false);
+    fireEvent.submit(container.querySelector('form') as HTMLFormElement);
+    expect(container.querySelector('#consentProcessing')).toHaveAttribute('aria-invalid', 'true');
+    expect(container.querySelector('#consentRights')).toHaveAttribute('aria-invalid', 'true');
   });
 });
