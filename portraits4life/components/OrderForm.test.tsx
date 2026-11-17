@@ -460,11 +460,7 @@ describe('OrderForm success focus', () => {
     );
     const { container } = render(<OrderForm />);
     submitWithPhoto(container);
-    const status = await screen.findByRole('status');
-    expect(status).toHaveFocus();
-    expect(Element.prototype.scrollIntoView).toHaveBeenCalledWith({
-      behavior: 'smooth',
-      block: 'start',
-    });
+    const region = await screen.findByRole('region', { name: /Thank you, your image has arrived/ });
+    expect(region).toHaveFocus();
   });
 });

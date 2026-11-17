@@ -3,6 +3,7 @@ import { render, screen, within } from '@testing-library/react';
 import OrderSuccess from './OrderSuccess';
 
 const props = {
+  headingId: 'h-success',
   title: 'Danke, dein Bild ist bei mir angekommen!',
   referenceLabel: 'Deine Referenz:',
   reference: 'P4L-261117-K7QM',

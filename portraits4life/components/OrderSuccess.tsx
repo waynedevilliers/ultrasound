@@ -2,6 +2,8 @@ import ActionLink from '@/components/ActionLink';
 import InfoCard from '@/components/InfoCard';
 
 type OrderSuccessProps = {
+  // Names the success region for assistive technology.
+  headingId: string;
   title: string;
   referenceLabel: string;
   reference: string;
@@ -15,6 +17,7 @@ type OrderSuccessProps = {
 
 // The message after a sent order. It uses the shared card and the site's own colors, not a status color.
 export default function OrderSuccess({
+  headingId,
   title,
   referenceLabel,
   reference,
@@ -40,7 +43,9 @@ export default function OrderSuccess({
           <path d="M5 12.5l4.5 4.5L19 7.5" />
         </svg>
       </div>
-      <h2 className="font-display heading-xl font-bold text-ink mb-6">{title}</h2>
+      <h2 id={headingId} className="font-display heading-xl font-bold text-ink mb-6">
+        {title}
+      </h2>
       <p className="text-base text-body mb-4">
         <strong className="font-bold text-ink">{referenceLabel}</strong>{' '}
         <span className="whitespace-nowrap">{reference}</span>

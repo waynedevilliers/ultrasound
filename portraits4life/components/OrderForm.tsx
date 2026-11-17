@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useId, useRef, useState } from 'react';
 import { formatOptions } from '@/lib/format-options';
 import { isCanvasSizeId } from '@/content/products';
 import { buttonClasses } from '@/components/ActionLink';
@@ -73,8 +73,8 @@ export default function OrderForm({
   onSentChange,
 }: {
   initialFormat?: FormatChoice | null;
-  // Tells the page when the order was sent, so its heading and intro can change.
-  onSentChange?: (sent: boolean) => void;
+  // Tells the page the order was sent (with the text to announce); an empty text means not sent.
+  onSentChange?: (announcement: string) => void;
 }) {
   const pathname = usePathname();
   const locale = localeOf(pathname);
@@ -92,17 +92,9 @@ export default function OrderForm({
   const [consent, setConsent] = useState({ processing: false, rights: false, showcase: false });
   // Screen readers announce the summary (role=alert); focus moves there after a failed submit.
   const summaryRef = useRef<HTMLDivElement>(null);
-  // The success message is announced and brought into view after sending. Reduced motion jumps instead.
+  // After sending, focus moves to the success message. The page scrolls to it once its layout has changed.
   const successRef = useRef<HTMLDivElement>(null);
-  useEffect(() => {
-    if (!submitted) return;
-    onSentChange?.(true);
-    const element = successRef.current;
-    if (!element) return;
-    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-    element.focus({ preventScroll: true });
-    element.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
-  }, [submitted, onSentChange]);
+  const successHeadingId = useId();
   useEffect(() => {
     if (error) summaryRef.current?.focus();
   }, [error]);
@@ -111,6 +103,11 @@ export default function OrderForm({
   const [confirmationTo, setConfirmationTo] = useState<string | null>(null);
   // The product of the sent order, so the success steps describe what really happens next.
   const [submittedProduct, setSubmittedProduct] = useState<'digital' | 'canvas'>('digital');
+  useEffect(() => {
+    if (!submitted) return;
+    onSentChange?.(`${orderForm.successTitle} ${orderForm.referenceLabel} ${reference}`);
+    successRef.current?.focus({ preventScroll: true });
+  }, [submitted, onSentChange, orderForm.successTitle, orderForm.referenceLabel, reference]);
 
   const [formData, setFormData] = useState({
     ...EMPTY_FORM,
@@ -355,11 +352,13 @@ export default function OrderForm({
     return (
       <div
         ref={successRef}
-        role="status"
+        role="region"
+        aria-labelledby={successHeadingId}
         tabIndex={-1}
-        className="mx-auto max-w-2xl scroll-mt-32 outline-none"
+        className="mx-auto max-w-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
       >
         <OrderSuccess
+          headingId={successHeadingId}
           title={orderForm.successTitle}
           referenceLabel={orderForm.referenceLabel}
           reference={reference}
