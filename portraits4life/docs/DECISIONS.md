@@ -4,6 +4,12 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 ---
 
+## 2026-11-17: Database setup for orders
+
+- **Status:** done for the database in the local file; production database to be confirmed
+- **Decision:** The setup script (scripts/init-db.js) reads POSTGRES_URL, the name Vercel sets when a Postgres store is connected. It creates the orders table if missing and adds the consent columns if they are not there yet. It is safe to run again. .env.example uses POSTGRES_URL.
+- **Why:** The table existed from an earlier setup without the consent columns, so orders with consent could not be saved.
+
 ## 2026-11-11: Colors stay as they are
 
 - **Status:** done
