@@ -1,6 +1,6 @@
 import { sql } from '@vercel/postgres';
-import { randomUUID } from 'node:crypto';
 import { logOrderFailure } from '@/lib/order-log';
+import { createRequestCode, isRequestCode } from '@/lib/request-code';
 import { head } from '@vercel/blob';
 import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
@@ -55,13 +55,15 @@ function orderEmailHtml(
     ${order.specialRequests ? row('Special Requests', order.specialRequests) : ''}
     ${shipping}
     <p>Photos are private. Each link works for 30 days.</p>
-    <p><a href="${escapeHtml(links.ultrasound)}">Ultrasound Image</a></p>
+    ${links.ultrasound ? `<p><a href="${escapeHtml(links.ultrasound)}">Ultrasound Image</a></p>` : '<p>Photo links could not be created. Find the photos for this order in the database.</p>'}
     ${links.reference ? `<p><a href="${escapeHtml(links.reference)}">Reference Image</a></p>` : ''}
   `;
 }
 
 export async function POST(request: NextRequest) {
-  const requestId = randomUUID().slice(0, 8);
+  let requestId = createRequestCode();
+  // The step that is running, so a failure is logged under the right name.
+  let step = 'request';
   try {
     if (isRateLimited(clientKey(request))) {
       return NextResponse.json(
@@ -76,6 +78,13 @@ export async function POST(request: NextRequest) {
     } catch {
       return NextResponse.json({ success: false, message: 'Invalid order data' }, { status: 400 });
     }
+
+    // The browser sends the code it showed during the photo upload, so both logs share it.
+    const claimed =
+      typeof body === 'object' && body !== null
+        ? (body as { requestCode?: unknown }).requestCode
+        : undefined;
+    if (isRequestCode(claimed)) requestId = claimed;
 
     const parsed = orderSubmitSchema.safeParse(body);
     if (!parsed.success) {
@@ -118,6 +127,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    step = 'save';
     const result = await sql`
       INSERT INTO orders (
         name, email, product, canvas_size, child_name, weeks_in_womb,
@@ -154,16 +164,24 @@ export async function POST(request: NextRequest) {
       RETURNING id, created_at;
     `;
 
+    // The order is saved from here on; a failure now is logged as links, not as a lost order.
+    step = 'links';
     const orderId = result.rows[0]?.id;
     const expires = Date.now() + LINK_TTL_MS;
     const siteUrl = process.env.SITE_URL || new URL(request.url).origin;
     const secret = process.env.ORDER_LINK_SECRET;
-    const links = {
-      ultrasound: buildFileLink(siteUrl, order.ultrasoundPath, expires, secret),
-      reference: order.referencePath
-        ? buildFileLink(siteUrl, order.referencePath, expires, secret)
-        : '',
-    };
+    let links = { ultrasound: '', reference: '' };
+    try {
+      links = {
+        ultrasound: buildFileLink(siteUrl, order.ultrasoundPath, expires, secret),
+        reference: order.referencePath
+          ? buildFileLink(siteUrl, order.referencePath, expires, secret)
+          : '',
+      };
+    } catch (linkError) {
+      // The order is already saved, so the visitor still gets success. The admin email goes out without links.
+      logOrderFailure(requestId, 'links', linkError);
+    }
     const subject = `New Order #${orderId} - ${order.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`;
     const from = process.env.ORDER_FROM_EMAIL || DEFAULT_FROM;
     const resend = new Resend(process.env.RESEND_API_KEY);
@@ -206,7 +224,7 @@ export async function POST(request: NextRequest) {
       { status: 201 },
     );
   } catch (error) {
-    logOrderFailure(requestId, 'processing', error);
+    logOrderFailure(requestId, step, error);
     return NextResponse.json(
       { success: false, message: 'Failed to process order', code: requestId },
       { status: 500 },

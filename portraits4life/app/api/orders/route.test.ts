@@ -166,6 +166,40 @@ describe('POST /api/orders logging and email', () => {
     );
   });
 
+  it('logs a failed database save as the save step', async () => {
+    vi.mocked(sql).mockRejectedValueOnce(new Error('connection refused'));
+    await POST(orderRequest(order()));
+    expect(String(errorSpy.mock.calls.at(-1)?.[0])).toMatch(
+      /^\[order [0-9a-f]{8}\] save failed: Error: connection refused$/,
+    );
+  });
+
+  it('uses the request code the browser sent, so the upload and order logs match', async () => {
+    vi.mocked(sql).mockRejectedValueOnce(new Error('connection refused'));
+    const response = await POST(orderRequest(order({ requestCode: 'a1b2c3d4' })));
+    expect(await response.json()).toMatchObject({ code: 'a1b2c3d4' });
+    expect(String(errorSpy.mock.calls.at(-1)?.[0])).toMatch(/^\[order a1b2c3d4\] save failed: /);
+  });
+
+  it('ignores a request code that is not in the expected format', async () => {
+    vi.mocked(sql).mockRejectedValueOnce(new Error('connection refused'));
+    const response = await POST(orderRequest(order({ requestCode: '../../etc' })));
+    const data = await response.json();
+    expect(data.code).toMatch(/^[0-9a-f]{8}$/);
+    expect(String(errorSpy.mock.calls.at(-1)?.[0])).not.toContain('../../etc');
+  });
+
+  it('keeps a saved order successful when the photo links cannot be made', async () => {
+    delete process.env.ORDER_LINK_SECRET;
+    const response = await POST(orderRequest(order()));
+    expect(response.status).toBe(201);
+    expect(String(errorSpy.mock.calls.at(-1)?.[0])).toMatch(
+      /^\[order [0-9a-f]{8}\] links failed: Error: ORDER_LINK_SECRET is not set$/,
+    );
+    const adminEmail = send.mock.calls[0][0];
+    expect(adminEmail.html).toContain('Photo links could not be created');
+  });
+
   it('still answers 201 when sending throws', async () => {
     send.mockRejectedValueOnce(new Error('network down'));
     const response = await POST(orderRequest(order()));

@@ -15,6 +15,7 @@ import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 import UploadArea from '@/components/UploadArea';
 import { CONSENT_VERSION } from '@/lib/consent';
 import { IMAGE_FORMAT_LIST } from '@/lib/image-formats';
+import { createRequestCode } from '@/lib/request-code';
 
 // Empty values for every field except product and size, which may come from the URL.
 const EMPTY_FORM = {
@@ -173,17 +174,19 @@ export default function OrderForm({
   };
 
   // Photos go straight from the browser to private storage. The order then carries only their paths.
-  const uploadPhoto = async (file: File, prefix: string): Promise<string> => {
+  // The request code travels with the upload, so the server logs for this upload carry the code shown here.
+  const uploadPhoto = async (file: File, prefix: string, requestCode: string): Promise<string> => {
     try {
       const stored = await upload(`orders/${prefix}`, file, {
         access: 'private',
         handleUploadUrl: '/api/orders/upload',
         contentType: file.type,
+        clientPayload: requestCode,
       });
       return stored.pathname;
     } catch (error) {
       console.error('Photo upload failed', error);
-      throw new OrderStageError('upload');
+      throw new OrderStageError('upload', requestCode);
     }
   };
 
@@ -227,8 +230,12 @@ export default function OrderForm({
       const honeypot =
         (e.currentTarget.elements.namedItem('website') as HTMLInputElement | null)?.value ?? '';
 
-      const ultrasoundPath = await uploadPhoto(files.ultrasound, 'ultrasound');
-      const referencePath = files.reference ? await uploadPhoto(files.reference, 'reference') : '';
+      // One code per attempt: shown if the upload fails, and sent with the order.
+      const requestCode = createRequestCode();
+      const ultrasoundPath = await uploadPhoto(files.ultrasound, 'ultrasound', requestCode);
+      const referencePath = files.reference
+        ? await uploadPhoto(files.reference, 'reference', requestCode)
+        : '';
 
       const payload = {
         name: formData.name,
@@ -244,6 +251,7 @@ export default function OrderForm({
           version: CONSENT_VERSION,
         },
         website: honeypot,
+        requestCode,
         ultrasoundPath,
         referencePath,
         ...(formData.product === 'canvas'

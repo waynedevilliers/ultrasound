@@ -271,6 +271,38 @@ describe('OrderForm submit errors', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
+  it('shows the request code when the photo upload fails', async () => {
+    const { upload } = await import('@vercel/blob/client');
+    vi.mocked(upload).mockRejectedValueOnce(new Error('token refused'));
+    vi.stubGlobal('fetch', vi.fn());
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent(
+      /The image could not be uploaded\. Please try again\. \(Error code: [0-9a-f]{8}\)/,
+    );
+    const code = vi.mocked(upload).mock.calls.at(-1)?.[2]?.clientPayload;
+    expect(alert.textContent).toContain(`(Error code: ${code})`);
+  });
+
+  it('sends the code used for the photo upload with the order', async () => {
+    const { upload } = await import('@vercel/blob/client');
+    const bodies: string[] = [];
+    vi.stubGlobal(
+      'fetch',
+      vi.fn(async (_url: string, init: RequestInit) => {
+        bodies.push(String(init.body));
+        return new Response(JSON.stringify({ success: true, orderId: 1 }), { status: 201 });
+      }),
+    );
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    await screen.findByText(/#1$/);
+    const code = vi.mocked(upload).mock.calls.at(-1)?.[2]?.clientPayload;
+    expect(code).toMatch(/^[0-9a-f]{8}$/);
+    expect(JSON.parse(bodies[0]).requestCode).toBe(code);
+  });
+
   it('shows the network message when the connection drops', async () => {
     stubServer(async () => {
       throw new TypeError('offline');

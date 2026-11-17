@@ -31,7 +31,9 @@ describe('POST /api/orders/upload', () => {
     const response = await POST(uploadRequest('not json'));
     expect(response.status).toBe(400);
     expect(await response.json()).toEqual({ error: 'Upload not allowed' });
-    expect(errorSpy).toHaveBeenCalledWith('Upload token refused:', expect.any(String));
+    expect(String(errorSpy.mock.calls.at(-1)?.[0])).toMatch(
+      /^\[order [0-9a-f]{8}\] upload failed: /,
+    );
     expect(handleUpload).not.toHaveBeenCalled();
   });
 
@@ -60,6 +62,20 @@ describe('POST /api/orders/upload', () => {
     );
     const response = await POST(uploadRequest('{}'));
     expect(response.status).toBe(400);
-    expect(errorSpy).toHaveBeenCalledWith('Upload token refused:', 'Invalid upload path');
+    expect(String(errorSpy.mock.calls.at(-1)?.[0])).toMatch(
+      /^\[order [0-9a-f]{8}\] upload failed: Error: Invalid upload path$/,
+    );
+  });
+
+  it('logs a refusal under the code the browser sent', async () => {
+    handleUpload.mockImplementation(
+      async (options: {
+        onBeforeGenerateToken: (path: string, payload: string | null) => Promise<unknown>;
+      }) => {
+        await options.onBeforeGenerateToken('private/other.jpg', '1c256519');
+      },
+    );
+    await POST(uploadRequest('{}'));
+    expect(String(errorSpy.mock.calls.at(-1)?.[0])).toMatch(/^\[order 1c256519\] upload failed: /);
   });
 });
