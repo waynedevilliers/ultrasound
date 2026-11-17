@@ -105,7 +105,9 @@ export async function POST(request: NextRequest) {
       try {
         const meta = await head(photo.pathname);
         error = validateStoredImage({ size: meta.size, contentType: meta.contentType });
-      } catch {
+      } catch (lookupError) {
+        // Usually a visitor who never finished the upload; logged so a storage outage is visible too.
+        logOrderFailure(requestId, 'photo-check', lookupError);
         error = 'Upload missing. Please upload the photo again.';
       }
       if (error) {

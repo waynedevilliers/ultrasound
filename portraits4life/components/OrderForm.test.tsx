@@ -1,4 +1,4 @@
-import { afterEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import OrderForm from './OrderForm';
 import { formatOptions } from '@/lib/format-options';
@@ -18,8 +18,12 @@ function smallPng() {
 
 // Submits the form with a photo chosen, the way a visitor would after filling it in.
 function submitWithPhoto(container: HTMLElement) {
-  fireEvent.change(container.querySelector('input[name="name"]') as HTMLInputElement, { target: { value: 'Ann' } });
-  fireEvent.change(container.querySelector('input[name="email"]') as HTMLInputElement, { target: { value: 'ann@example.com' } });
+  fireEvent.change(container.querySelector('input[name="name"]') as HTMLInputElement, {
+    target: { value: 'Ann' },
+  });
+  fireEvent.change(container.querySelector('input[name="email"]') as HTMLInputElement, {
+    target: { value: 'ann@example.com' },
+  });
   fireEvent.click(container.querySelector('#consentProcessing') as HTMLElement);
   fireEvent.click(container.querySelector('#consentRights') as HTMLElement);
   fireEvent.change(photoInput(container), { target: { files: [smallPng()] } });
@@ -38,7 +42,9 @@ describe('OrderForm', () => {
   it('lists the products with their prices and shows shipping only for a canvas size', () => {
     const { container } = render(<OrderForm />);
     const list = container.querySelector('#format') as HTMLSelectElement;
-    expect(Array.from(list.options).map((o) => o.textContent)).toEqual(formatOptions('en').map((o) => o.label));
+    expect(Array.from(list.options).map((o) => o.textContent)).toEqual(
+      formatOptions('en').map((o) => o.label),
+    );
     expect(container.querySelector('#shippingStreet')).toBeNull();
     fireEvent.change(list, { target: { value: '40x40cm' } });
     expect(list.value).toBe('40x40cm');
@@ -119,9 +125,7 @@ describe('OrderForm', () => {
     });
     const { container } = render(<OrderForm />);
     submitWithPhoto(container);
-    expect(await screen.findByRole('alert')).toHaveTextContent(
-      'No connection to the server.',
-    );
+    expect(await screen.findByRole('alert')).toHaveTextContent('No connection to the server.');
   });
 
   it('asks for the week of pregnancy as a number from 1 to 42 and shows the required-field note', () => {
@@ -134,7 +138,9 @@ describe('OrderForm', () => {
     expect(screen.getByText('* Required field')).toBeInTheDocument();
   });
   it('preselects the format from the order link', () => {
-    const { container } = render(<OrderForm initialFormat={{ product: 'canvas', canvasSize: '50x50cm' }} />);
+    const { container } = render(
+      <OrderForm initialFormat={{ product: 'canvas', canvasSize: '50x50cm' }} />,
+    );
     expect((container.querySelector('#format') as HTMLSelectElement).value).toBe('50x50cm');
     expect(container.querySelector('#shippingStreet')).not.toBeNull();
   });
@@ -147,15 +153,23 @@ describe('OrderForm', () => {
   });
   it('shows the trust text under the button and links the privacy line to the privacy page', () => {
     render(<OrderForm />);
-    expect(screen.getByText('I check your image and get back to you by email. You pay only after that.')).toBeInTheDocument();
-    expect(screen.getAllByRole('link', { name: 'Privacy Policy' })[0]).toHaveAttribute('href', '/en/datenschutz');
+    expect(
+      screen.getByText('I check your image and get back to you by email. You pay only after that.'),
+    ).toBeInTheDocument();
+    expect(screen.getAllByRole('link', { name: 'Privacy Policy' })[0]).toHaveAttribute(
+      'href',
+      '/en/datenschutz',
+    );
   });
   it('marks every empty required field on an empty submit', () => {
     const { container } = render(<OrderForm />);
     fireEvent.submit(container.querySelector('form') as HTMLFormElement);
     for (const id of ['name', 'email', 'ultrasoundImage']) {
       const key = id === 'ultrasoundImage' ? 'ultrasound' : id;
-      expect(document.getElementById(id) ?? container.querySelector('#' + id)).toHaveAttribute('aria-invalid', 'true');
+      expect(document.getElementById(id) ?? container.querySelector('#' + id)).toHaveAttribute(
+        'aria-invalid',
+        'true',
+      );
       expect(document.getElementById(key + '-error')).not.toBeNull();
     }
   });
@@ -166,5 +180,114 @@ describe('OrderForm', () => {
     fireEvent.submit(container.querySelector('form') as HTMLFormElement);
     expect(container.querySelector('#consentProcessing')).toHaveAttribute('aria-invalid', 'true');
     expect(container.querySelector('#consentRights')).toHaveAttribute('aria-invalid', 'true');
+  });
+});
+
+describe('OrderForm submit errors', () => {
+  let errorSpy: ReturnType<typeof vi.spyOn>;
+
+  beforeEach(() => {
+    errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    errorSpy.mockRestore();
+  });
+
+  it('shows the server message with the request code and logs the failure', async () => {
+    stubServer(
+      async () =>
+        new Response(JSON.stringify({ success: false, code: 'abc12345' }), { status: 500 }),
+    );
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'The order could not be saved just now. Please try again later. (Error code: abc12345)',
+    );
+    expect(errorSpy).toHaveBeenCalledWith('Order submit failed', expect.anything());
+  });
+
+  it('shows the server message without a code when the reply is not JSON, such as a gateway page', async () => {
+    stubServer(async () => new Response('<html>Bad gateway</html>', { status: 502 }));
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      /^The order could not be saved just now\. Please try again later\.$/,
+    );
+  });
+
+  it('asks the visitor to wait when there are too many attempts', async () => {
+    stubServer(async () => new Response(JSON.stringify({ success: false }), { status: 429 }));
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'Too many attempts. Please wait a few minutes and try again.',
+    );
+  });
+
+  it('shows the generic message, not a server failure, when the order is rejected without a field', async () => {
+    stubServer(
+      async () =>
+        new Response(JSON.stringify({ success: false, message: 'Invalid order data' }), {
+          status: 400,
+        }),
+    );
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent('The order could not be sent. Please try again.');
+    expect(alert).not.toHaveTextContent('could not be saved');
+  });
+
+  it('marks the consent box the server rejects', async () => {
+    stubServer(
+      async () =>
+        new Response(
+          JSON.stringify({
+            success: false,
+            issues: [{ field: 'consent.rights', message: 'Invalid' }],
+          }),
+          { status: 400 },
+        ),
+    );
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    await waitFor(() =>
+      expect(container.querySelector('#consentRights')).toHaveAttribute('aria-invalid', 'true'),
+    );
+    expect(screen.getByRole('alert')).toHaveTextContent('Please check the highlighted fields.');
+  });
+
+  it('shows the upload message when the photo cannot be sent, and does not call the order endpoint', async () => {
+    const { upload } = await import('@vercel/blob/client');
+    vi.mocked(upload).mockRejectedValueOnce(new Error('token refused'));
+    const fetchMock = vi.fn();
+    vi.stubGlobal('fetch', fetchMock);
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    expect(await screen.findByRole('alert')).toHaveTextContent(
+      'The image could not be uploaded. Please try again.',
+    );
+    expect(fetchMock).not.toHaveBeenCalled();
+  });
+
+  it('shows the network message when the connection drops', async () => {
+    stubServer(async () => {
+      throw new TypeError('offline');
+    });
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    expect(await screen.findByRole('alert')).toHaveTextContent('No connection to the server.');
+    expect(errorSpy).toHaveBeenCalled();
+  });
+
+  it('shows the order number after a successful order and clears the form', async () => {
+    stubServer(
+      async () => new Response(JSON.stringify({ success: true, orderId: 42 }), { status: 201 }),
+    );
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    expect(await screen.findByText(/#42$/)).toBeInTheDocument();
+    expect(screen.queryByRole('alert')).toBeNull();
   });
 });

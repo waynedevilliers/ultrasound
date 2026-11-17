@@ -34,12 +34,29 @@ const EMPTY_FORM = {
 } as const;
 
 // A failed step of the submit, so the message can say what went wrong.
+// 'invalid' is a rejected order that names no field (such as a bot check); 'rate' is too many attempts.
 class OrderStageError extends Error {
   constructor(
-    public stage: 'upload' | 'network' | 'server',
+    public stage: 'upload' | 'network' | 'server' | 'invalid' | 'rate',
     public code?: string,
   ) {
     super(stage);
+  }
+}
+
+type ServerReply = {
+  orderId?: string;
+  message?: string;
+  code?: string;
+  issues?: { field: string; message: string }[];
+};
+
+// A gateway error page is not JSON; it counts as a server failure with no reply body.
+async function readReply(response: Response): Promise<ServerReply> {
+  try {
+    return (await response.json()) as ServerReply;
+  } catch {
+    return {};
   }
 }
 
@@ -148,7 +165,10 @@ export default function OrderForm({
 
   const uploadCopy = {
     choose: orderForm.chooseImage,
-    formats: orderForm.imageFormats.replace('{formats}', IMAGE_FORMAT_LIST[locale === 'de' ? 'de' : 'en']),
+    formats: orderForm.imageFormats.replace(
+      '{formats}',
+      IMAGE_FORMAT_LIST[locale === 'de' ? 'de' : 'en'],
+    ),
     remove: orderForm.removeImage,
   };
 
@@ -177,14 +197,22 @@ export default function OrderForm({
       // Required fields are checked here too, so an empty submit marks every missing field.
       const required: string[] = ['name', 'email'];
       if (formData.product === 'canvas') {
-        required.push('shippingFullName', 'shippingStreet', 'shippingCity', 'shippingState', 'shippingPostalCode', 'shippingCountry');
+        required.push(
+          'shippingFullName',
+          'shippingStreet',
+          'shippingCity',
+          'shippingState',
+          'shippingPostalCode',
+          'shippingCountry',
+        );
       }
       const values = formData as Record<string, string>;
       const missing: Record<string, string> = {};
       for (const key of required) {
         if (!values[key].trim()) missing[key] = orderForm.requiredField;
       }
-      if (formData.email.trim() && !formData.email.includes('@')) missing.email = orderForm.fieldInvalid;
+      if (formData.email.trim() && !formData.email.includes('@'))
+        missing.email = orderForm.fieldInvalid;
       if (!files.ultrasound) missing.ultrasound = orderForm.ultrasoundRequired;
       if (!consent.processing) missing.consentProcessing = orderForm.consentRequired;
       if (!consent.rights) missing.consentRights = orderForm.consentRequired;
@@ -209,7 +237,12 @@ export default function OrderForm({
         childName: formData.childName,
         weeksInWomb: formData.weeksInWomb,
         specialRequests: formData.specialRequests,
-        consent: { processing: true, rights: true, showcase: consent.showcase, version: CONSENT_VERSION },
+        consent: {
+          processing: true,
+          rights: true,
+          showcase: consent.showcase,
+          version: CONSENT_VERSION,
+        },
         website: honeypot,
         ultrasoundPath,
         referencePath,
@@ -237,12 +270,9 @@ export default function OrderForm({
         throw new OrderStageError('network');
       }
 
-      const data: {
-        orderId?: string;
-        message?: string;
-        code?: string;
-        issues?: { field: string; message: string }[];
-      } = await response.json();
+      const data = await readReply(response);
+
+      if (response.status === 429) throw new OrderStageError('rate');
 
       if (!response.ok) {
         const issues = Array.isArray(data.issues) ? data.issues : [];
@@ -252,7 +282,9 @@ export default function OrderForm({
           setError(orderForm.checkFields);
           return;
         }
-        throw new OrderStageError('server', typeof data.code === 'string' ? data.code : undefined);
+        const code = typeof data.code === 'string' ? data.code : undefined;
+        // Server errors (5xx) are our fault; other rejections (4xx) are not, so they get the generic text.
+        throw new OrderStageError(response.status >= 500 ? 'server' : 'invalid', code);
       }
 
       setOrderId(data.orderId ?? '');
@@ -262,7 +294,14 @@ export default function OrderForm({
     } catch (err) {
       console.error('Order submit failed', err);
       if (err instanceof OrderStageError) {
-        const base = orderForm[err.stage === 'upload' ? 'uploadFailed' : err.stage === 'network' ? 'networkError' : 'serverError'];
+        const messages = {
+          upload: orderForm.uploadFailed,
+          network: orderForm.networkError,
+          server: orderForm.serverError,
+          invalid: orderForm.genericError,
+          rate: orderForm.tooManyRequests,
+        };
+        const base = messages[err.stage];
         setError(err.code ? `${base} ${orderForm.errorCode.replace('{code}', err.code)}` : base);
       } else {
         setError(orderForm.genericError);
@@ -294,7 +333,7 @@ export default function OrderForm({
   return (
     // noValidate: the browser's own required-field bubbles would hide our field messages.
     <form onSubmit={handleSubmit} noValidate className="space-y-6 max-w-2xl">
-      <div className="absolute -left-[9999px] h-0 overflow-hidden" aria-hidden="true">
+      <div className="absolute left-[-9999px] h-0 overflow-hidden" aria-hidden="true">
         <label>
           Website
           <input type="text" name="website" tabIndex={-1} autoComplete="off" />
@@ -580,7 +619,10 @@ export default function OrderForm({
             />
             <span>
               {orderForm.consentProcessing.split('{link}')[0]}
-              <Link href={privacyHref} className="font-semibold text-brand-strong underline underline-offset-4">
+              <Link
+                href={privacyHref}
+                className="font-semibold text-brand-strong underline underline-offset-4"
+              >
                 {copy.legal.datenschutz.title}
               </Link>
               {orderForm.consentProcessing.split('{link}')[1]}
@@ -630,7 +672,10 @@ export default function OrderForm({
         <p className="text-base text-body">{orderForm.trustNote}</p>
         <p className="text-sm text-copy">
           {orderForm.privacyBefore}{' '}
-          <Link href={privacyHref} className="font-semibold text-brand-strong underline underline-offset-4">
+          <Link
+            href={privacyHref}
+            className="font-semibold text-brand-strong underline underline-offset-4"
+          >
             {copy.legal.datenschutz.title}
           </Link>{' '}
           {orderForm.privacyAfter}

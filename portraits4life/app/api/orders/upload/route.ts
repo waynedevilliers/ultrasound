@@ -6,8 +6,8 @@ import { ORDER_PATH_PATTERN } from '@/lib/signed-link';
 // The browser uploads photos straight to private storage using a short-lived token.
 // Photos never pass through the order endpoint, so the server request size limit does not apply.
 export async function POST(request: NextRequest) {
-  const body = (await request.json()) as HandleUploadBody;
   try {
+    const body = (await request.json()) as HandleUploadBody;
     const result = await handleUpload({
       body,
       request,
