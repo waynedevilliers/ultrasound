@@ -46,17 +46,22 @@ class OrderStageError extends Error {
 }
 
 type ServerReply = {
-  orderId?: string;
+  orderId?: string | number;
   message?: string;
   code?: string;
   issues?: { field: string; message: string }[];
 };
 
-// A gateway error page is not JSON; it counts as a server failure with no reply body.
-async function readReply(response: Response): Promise<ServerReply> {
+// Reads the reply body. A body that cannot be read is a failure, never a success: on a successful
+// response it means the confirmation is missing; on an error response (for example a gateway page)
+// the error status is enough to report, so the reply is treated as empty.
+async function readReply(response: Response, requestCode: string): Promise<ServerReply> {
   try {
     return (await response.json()) as ServerReply;
-  } catch {
+  } catch (error) {
+    if (response.ok) {
+      throw new OrderStageError(error instanceof TypeError ? 'network' : 'server', requestCode);
+    }
     return {};
   }
 }
@@ -275,10 +280,11 @@ export default function OrderForm({
           body: JSON.stringify(payload),
         });
       } catch {
-        throw new OrderStageError('network');
+        // The request may have reached the server, so the code is kept for the visitor to quote.
+        throw new OrderStageError('network', requestCode);
       }
 
-      const data = await readReply(response);
+      const data = await readReply(response, requestCode);
 
       if (response.status === 429) throw new OrderStageError('rate');
 
@@ -290,12 +296,14 @@ export default function OrderForm({
           setError(orderForm.checkFields);
           return;
         }
-        const code = typeof data.code === 'string' ? data.code : undefined;
-        // Server errors (5xx) are our fault; other rejections (4xx) are not, so they get the generic text.
-        throw new OrderStageError(response.status >= 500 ? 'server' : 'invalid', code);
+        // Server errors (5xx) are our fault and carry the code; other rejections (4xx) get the generic text.
+        if (response.status >= 500) throw new OrderStageError('server', requestCode);
+        throw new OrderStageError('invalid');
       }
 
-      setOrderId(data.orderId ?? '');
+      const orderId = String(data.orderId ?? '');
+      if (!orderId) throw new OrderStageError('server', requestCode);
+      setOrderId(orderId);
       setSubmitted(true);
       setFormData(EMPTY_FORM);
       setFiles({ ultrasound: null, reference: null });

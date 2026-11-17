@@ -195,24 +195,29 @@ describe('OrderForm submit errors', () => {
   });
 
   it('shows the server message with the request code and logs the failure', async () => {
+    const { upload } = await import('@vercel/blob/client');
     stubServer(
       async () =>
         new Response(JSON.stringify({ success: false, code: 'abc12345' }), { status: 500 }),
     );
     const { container } = render(<OrderForm />);
     submitWithPhoto(container);
+    // The code shown is the one the browser sent with the upload, not the one in the reply.
+    const code = vi.mocked(upload).mock.calls.at(-1)?.[2]?.clientPayload;
     expect(await screen.findByRole('alert')).toHaveTextContent(
-      'The order could not be saved just now. Please try again later. (Error code: abc12345)',
+      `The order could not be saved just now. Please try again later. (Error code: ${code})`,
     );
     expect(errorSpy).toHaveBeenCalledWith('Order submit failed', expect.anything());
   });
 
-  it('shows the server message without a code when the reply is not JSON, such as a gateway page', async () => {
+  it('shows the server message with the request code when the reply is not JSON, such as a gateway page', async () => {
+    const { upload } = await import('@vercel/blob/client');
     stubServer(async () => new Response('<html>Bad gateway</html>', { status: 502 }));
     const { container } = render(<OrderForm />);
     submitWithPhoto(container);
+    const code = vi.mocked(upload).mock.calls.at(-1)?.[2]?.clientPayload;
     expect(await screen.findByRole('alert')).toHaveTextContent(
-      /^The order could not be saved just now\. Please try again later\.$/,
+      `The order could not be saved just now. Please try again later. (Error code: ${code})`,
     );
   });
 
@@ -301,6 +306,40 @@ describe('OrderForm submit errors', () => {
     const code = vi.mocked(upload).mock.calls.at(-1)?.[2]?.clientPayload;
     expect(code).toMatch(/^[0-9a-f]{8}$/);
     expect(JSON.parse(bodies[0]).requestCode).toBe(code);
+  });
+
+  it('does not report success when a successful reply cannot be read', async () => {
+    stubServer(async () => new Response('<html>cut off', { status: 201 }));
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    const alert = await screen.findByRole('alert');
+    expect(alert).toHaveTextContent(
+      /^The order could not be saved just now\. Please try again later\. \(Error code: [0-9a-f]{8}\)$/,
+    );
+    expect(screen.queryByText(/Order ID/)).toBeNull();
+    expect((container.querySelector('input[name="name"]') as HTMLInputElement).value).toBe('Ann');
+  });
+
+  it('does not report success when the reply has no order number', async () => {
+    stubServer(async () => new Response(JSON.stringify({ success: true }), { status: 201 }));
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    expect(await screen.findByRole('alert')).toHaveTextContent('could not be saved just now');
+    expect(screen.queryByText(/Order ID/)).toBeNull();
+  });
+
+  it('keeps the request code when the connection drops during the order request', async () => {
+    const { upload } = await import('@vercel/blob/client');
+    stubServer(async () => {
+      throw new TypeError('connection reset');
+    });
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    const alert = await screen.findByRole('alert');
+    const code = vi.mocked(upload).mock.calls.at(-1)?.[2]?.clientPayload;
+    expect(alert.textContent).toContain(
+      `No connection to the server. Please check your internet connection and try again. (Error code: ${code})`,
+    );
   });
 
   it('shows the network message when the connection drops', async () => {
