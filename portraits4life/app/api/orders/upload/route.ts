@@ -24,7 +24,9 @@ export async function POST(request: NextRequest) {
       },
     });
     return NextResponse.json(result);
-  } catch {
+  } catch (error) {
+    // Logged on the server so a failed upload can be diagnosed; the browser gets a generic message.
+    console.error('Upload token refused:', error instanceof Error ? error.message : error);
     return NextResponse.json({ error: 'Upload not allowed' }, { status: 400 });
   }
 }
