@@ -7,7 +7,7 @@ Status as of 2026-11-15. Plan v3 steps 1 to 13 are built in code. Launch is not 
 - SITE_URL set on Vercel to the live domain (canonical links, sitemap, structured data).
 - Sender domain verified with Resend; ORDER_FROM_EMAIL and ORDER_EMAIL set.
 - Order flow tested end to end: upload, email, database (needs a deployment and credentials).
-- Secrets set on the host: ORDER_LINK_SECRET, CRON_SECRET, RESEND_API_KEY, BLOB_READ_WRITE_TOKEN, DATABASE_URL.
+- Secrets set on the host: ORDER_LINK_SECRET, CRON_SECRET, RESEND_API_KEY, BLOB_READ_WRITE_TOKEN, POSTGRES_URL (set automatically when the Postgres store is connected).
 - Phone speed: LCP 3.1 s landing, 2.7 s order (target 2.5 s). Needs a decision on the phone layout.
 - Live security headers checked with curl on the deployed site.
 - Consent for health-related images before upload (legal advice).
