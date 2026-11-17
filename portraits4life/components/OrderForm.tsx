@@ -15,6 +15,7 @@ import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 import UploadArea from '@/components/UploadArea';
 import { CONSENT_VERSION } from '@/lib/consent';
 import { IMAGE_FORMAT_LIST } from '@/lib/image-formats';
+import { createRequestCode } from '@/lib/request-code';
 
 // Empty values for every field except product and size, which may come from the URL.
 const EMPTY_FORM = {
@@ -32,6 +33,38 @@ const EMPTY_FORM = {
   shippingPostalCode: '',
   shippingCountry: '',
 } as const;
+
+// A failed step of the submit, so the message can say what went wrong.
+// 'invalid' is a rejected order that names no field (such as a bot check); 'rate' is too many attempts.
+class OrderStageError extends Error {
+  constructor(
+    public stage: 'upload' | 'network' | 'server' | 'invalid' | 'rate',
+    public code?: string,
+  ) {
+    super(stage);
+  }
+}
+
+type ServerReply = {
+  orderId?: string | number;
+  message?: string;
+  code?: string;
+  issues?: { field: string; message: string }[];
+};
+
+// Reads the reply body. A body that cannot be read is a failure, never a success: on a successful
+// response it means the confirmation is missing; on an error response (for example a gateway page)
+// the error status is enough to report, so the reply is treated as empty.
+async function readReply(response: Response, requestCode: string): Promise<ServerReply> {
+  try {
+    return (await response.json()) as ServerReply;
+  } catch (error) {
+    if (response.ok) {
+      throw new OrderStageError(error instanceof TypeError ? 'network' : 'server', requestCode);
+    }
+    return {};
+  }
+}
 
 export default function OrderForm({
   initialFormat = null,
@@ -138,18 +171,28 @@ export default function OrderForm({
 
   const uploadCopy = {
     choose: orderForm.chooseImage,
-    formats: orderForm.imageFormats.replace('{formats}', IMAGE_FORMAT_LIST[locale === 'de' ? 'de' : 'en']),
+    formats: orderForm.imageFormats.replace(
+      '{formats}',
+      IMAGE_FORMAT_LIST[locale === 'de' ? 'de' : 'en'],
+    ),
     remove: orderForm.removeImage,
   };
 
   // Photos go straight from the browser to private storage. The order then carries only their paths.
-  const uploadPhoto = async (file: File, prefix: string): Promise<string> => {
-    const stored = await upload(`orders/${prefix}`, file, {
-      access: 'private',
-      handleUploadUrl: '/api/orders/upload',
-      contentType: file.type,
-    });
-    return stored.pathname;
+  // The request code travels with the upload, so the server logs for this upload carry the code shown here.
+  const uploadPhoto = async (file: File, prefix: string, requestCode: string): Promise<string> => {
+    try {
+      const stored = await upload(`orders/${prefix}`, file, {
+        access: 'private',
+        handleUploadUrl: '/api/orders/upload',
+        contentType: file.type,
+        clientPayload: requestCode,
+      });
+      return stored.pathname;
+    } catch (error) {
+      console.error('Photo upload failed', error);
+      throw new OrderStageError('upload', requestCode);
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -162,14 +205,22 @@ export default function OrderForm({
       // Required fields are checked here too, so an empty submit marks every missing field.
       const required: string[] = ['name', 'email'];
       if (formData.product === 'canvas') {
-        required.push('shippingFullName', 'shippingStreet', 'shippingCity', 'shippingState', 'shippingPostalCode', 'shippingCountry');
+        required.push(
+          'shippingFullName',
+          'shippingStreet',
+          'shippingCity',
+          'shippingState',
+          'shippingPostalCode',
+          'shippingCountry',
+        );
       }
       const values = formData as Record<string, string>;
       const missing: Record<string, string> = {};
       for (const key of required) {
         if (!values[key].trim()) missing[key] = orderForm.requiredField;
       }
-      if (formData.email.trim() && !formData.email.includes('@')) missing.email = orderForm.fieldInvalid;
+      if (formData.email.trim() && !formData.email.includes('@'))
+        missing.email = orderForm.fieldInvalid;
       if (!files.ultrasound) missing.ultrasound = orderForm.ultrasoundRequired;
       if (!consent.processing) missing.consentProcessing = orderForm.consentRequired;
       if (!consent.rights) missing.consentRights = orderForm.consentRequired;
@@ -184,8 +235,12 @@ export default function OrderForm({
       const honeypot =
         (e.currentTarget.elements.namedItem('website') as HTMLInputElement | null)?.value ?? '';
 
-      const ultrasoundPath = await uploadPhoto(files.ultrasound, 'ultrasound');
-      const referencePath = files.reference ? await uploadPhoto(files.reference, 'reference') : '';
+      // One code per attempt: shown if the upload fails, and sent with the order.
+      const requestCode = createRequestCode();
+      const ultrasoundPath = await uploadPhoto(files.ultrasound, 'ultrasound', requestCode);
+      const referencePath = files.reference
+        ? await uploadPhoto(files.reference, 'reference', requestCode)
+        : '';
 
       const payload = {
         name: formData.name,
@@ -194,8 +249,14 @@ export default function OrderForm({
         childName: formData.childName,
         weeksInWomb: formData.weeksInWomb,
         specialRequests: formData.specialRequests,
-        consent: { processing: true, rights: true, showcase: consent.showcase, version: CONSENT_VERSION },
+        consent: {
+          processing: true,
+          rights: true,
+          showcase: consent.showcase,
+          version: CONSENT_VERSION,
+        },
         website: honeypot,
+        requestCode,
         ultrasoundPath,
         referencePath,
         ...(formData.product === 'canvas'
@@ -211,17 +272,21 @@ export default function OrderForm({
           : {}),
       };
 
-      const response = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      let response: Response;
+      try {
+        response = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } catch {
+        // The request may have reached the server, so the code is kept for the visitor to quote.
+        throw new OrderStageError('network', requestCode);
+      }
 
-      const data: {
-        orderId?: string;
-        message?: string;
-        issues?: { field: string; message: string }[];
-      } = await response.json();
+      const data = await readReply(response, requestCode);
+
+      if (response.status === 429) throw new OrderStageError('rate');
 
       if (!response.ok) {
         const issues = Array.isArray(data.issues) ? data.issues : [];
@@ -231,16 +296,32 @@ export default function OrderForm({
           setError(orderForm.checkFields);
           return;
         }
-        throw new Error(orderForm.genericError);
+        // Server errors (5xx) are our fault and carry the code; other rejections (4xx) get the generic text.
+        if (response.status >= 500) throw new OrderStageError('server', requestCode);
+        throw new OrderStageError('invalid');
       }
 
-      setOrderId(data.orderId ?? '');
+      const orderId = String(data.orderId ?? '');
+      if (!orderId) throw new OrderStageError('server', requestCode);
+      setOrderId(orderId);
       setSubmitted(true);
       setFormData(EMPTY_FORM);
       setFiles({ ultrasound: null, reference: null });
     } catch (err) {
       console.error('Order submit failed', err);
-      setError(orderForm.genericError);
+      if (err instanceof OrderStageError) {
+        const messages = {
+          upload: orderForm.uploadFailed,
+          network: orderForm.networkError,
+          server: orderForm.serverError,
+          invalid: orderForm.genericError,
+          rate: orderForm.tooManyRequests,
+        };
+        const base = messages[err.stage];
+        setError(err.code ? `${base} ${orderForm.errorCode.replace('{code}', err.code)}` : base);
+      } else {
+        setError(orderForm.genericError);
+      }
     } finally {
       setLoading(false);
     }
@@ -268,7 +349,7 @@ export default function OrderForm({
   return (
     // noValidate: the browser's own required-field bubbles would hide our field messages.
     <form onSubmit={handleSubmit} noValidate className="space-y-6 max-w-2xl">
-      <div className="absolute -left-[9999px] h-0 overflow-hidden" aria-hidden="true">
+      <div className="absolute left-[-9999px] h-0 overflow-hidden" aria-hidden="true">
         <label>
           Website
           <input type="text" name="website" tabIndex={-1} autoComplete="off" />
@@ -554,7 +635,10 @@ export default function OrderForm({
             />
             <span>
               {orderForm.consentProcessing.split('{link}')[0]}
-              <Link href={privacyHref} className="font-semibold text-brand-strong underline underline-offset-4">
+              <Link
+                href={privacyHref}
+                className="font-semibold text-brand-strong underline underline-offset-4"
+              >
                 {copy.legal.datenschutz.title}
               </Link>
               {orderForm.consentProcessing.split('{link}')[1]}
@@ -604,7 +688,10 @@ export default function OrderForm({
         <p className="text-base text-body">{orderForm.trustNote}</p>
         <p className="text-sm text-copy">
           {orderForm.privacyBefore}{' '}
-          <Link href={privacyHref} className="font-semibold text-brand-strong underline underline-offset-4">
+          <Link
+            href={privacyHref}
+            className="font-semibold text-brand-strong underline underline-offset-4"
+          >
             {copy.legal.datenschutz.title}
           </Link>{' '}
           {orderForm.privacyAfter}

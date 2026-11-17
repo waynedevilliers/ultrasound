@@ -70,10 +70,7 @@
       "canvasSizes": "Vergleich der Leinwandgrößen 30, 40 und 50 cm"
     },
     "from": "ab",
-    "canvasItems": [
-      "Druck auf Leinwand",
-      "Lieferung nach Zahlungseingang"
-    ]
+    "canvasItems": ["Druck auf Leinwand", "Lieferung nach Zahlungseingang"]
   },
   "contact": {
     "title": "Bereit für dein Kunstwerk?",
@@ -228,7 +225,12 @@
     "consentRights": "Ich bestätige, dass ich das Bild selbst besitze oder die Erlaubnis habe, es verwenden zu lassen.",
     "consentShowcase": "Ich erlaube, dass das fertige Kunstwerk als Beispiel auf der Website und in sozialen Medien gezeigt wird (optional).",
     "consentRequired": "Bitte bestätige diese Zustimmung.",
-    "withdrawalNote": "Personalisierte Produkte können nicht zurückgegeben werden."
+    "withdrawalNote": "Personalisierte Produkte können nicht zurückgegeben werden.",
+    "uploadFailed": "Das Bild konnte nicht hochgeladen werden. Bitte versuche es erneut.",
+    "networkError": "Keine Verbindung zum Server. Bitte prüfe deine Internetverbindung und versuche es erneut.",
+    "serverError": "Die Bestellung konnte gerade nicht gespeichert werden. Bitte versuche es später noch einmal.",
+    "tooManyRequests": "Zu viele Versuche. Bitte warte ein paar Minuten und versuche es dann erneut.",
+    "errorCode": "(Fehlercode: {code})"
   },
   "common": {
     "home": "Startseite",

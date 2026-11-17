@@ -23,6 +23,15 @@ describe('fieldErrorsFromIssues', () => {
     });
   });
 
+  it('puts a missing consent on its checkbox', () => {
+    expect(
+      fieldErrorsFromIssues(
+        [{ field: 'consent.processing' }, { field: 'consent.rights' }],
+        MESSAGE,
+      ),
+    ).toEqual({ consentProcessing: MESSAGE, consentRights: MESSAGE });
+  });
+
   it('ignores fields the form does not show, such as the honeypot', () => {
     expect(fieldErrorsFromIssues([{ field: 'website' }, { field: 'unknown' }], MESSAGE)).toEqual(
       {},

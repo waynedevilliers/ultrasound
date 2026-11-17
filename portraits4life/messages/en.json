@@ -70,10 +70,7 @@
       "canvasSizes": "Comparison of canvas sizes 30, 40 and 50 cm"
     },
     "from": "from",
-    "canvasItems": [
-      "Printed on canvas",
-      "Delivery after payment"
-    ]
+    "canvasItems": ["Printed on canvas", "Delivery after payment"]
   },
   "contact": {
     "title": "Ready for your artwork?",
@@ -228,7 +225,12 @@
     "consentRights": "I confirm that I own the image or have permission to have it used.",
     "consentShowcase": "I allow the finished artwork to be shown as an example on the website and on social media (optional).",
     "consentRequired": "Please confirm this consent.",
-    "withdrawalNote": "Personalised products cannot be returned."
+    "withdrawalNote": "Personalised products cannot be returned.",
+    "uploadFailed": "The image could not be uploaded. Please try again.",
+    "networkError": "No connection to the server. Please check your internet connection and try again.",
+    "serverError": "The order could not be saved just now. Please try again later.",
+    "tooManyRequests": "Too many attempts. Please wait a few minutes and try again.",
+    "errorCode": "(Error code: {code})"
   },
   "common": {
     "home": "Home",

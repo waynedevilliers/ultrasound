@@ -15,11 +15,16 @@ export const ORDER_FORM_FIELDS = [
   'shippingCountry',
   'ultrasound',
   'reference',
+  'consentProcessing',
+  'consentRights',
 ] as const;
 
+// Server paths (the full path first, then the top-level field) mapped to form keys.
 const SERVER_FIELD_ALIASES: Record<string, string> = {
   ultrasoundPath: 'ultrasound',
   referencePath: 'reference',
+  'consent.processing': 'consentProcessing',
+  'consent.rights': 'consentRights',
 };
 
 // Maps the server's validation issues to form field keys. Each mapped field gets the same
@@ -31,7 +36,8 @@ export function fieldErrorsFromIssues(
   const errors: Record<string, string> = {};
   for (const issue of issues) {
     const serverField = issue.field.split('.')[0];
-    const key = SERVER_FIELD_ALIASES[serverField] ?? serverField;
+    const key =
+      SERVER_FIELD_ALIASES[issue.field] ?? SERVER_FIELD_ALIASES[serverField] ?? serverField;
     if ((ORDER_FORM_FIELDS as readonly string[]).includes(key)) {
       errors[key] = message;
     }
