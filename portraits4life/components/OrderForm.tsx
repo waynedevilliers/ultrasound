@@ -70,8 +70,11 @@ async function readReply(response: Response, requestCode: string): Promise<Serve
 
 export default function OrderForm({
   initialFormat = null,
+  onSentChange,
 }: {
   initialFormat?: FormatChoice | null;
+  // Tells the page when the order was sent, so its heading and intro can change.
+  onSentChange?: (sent: boolean) => void;
 }) {
   const pathname = usePathname();
   const locale = localeOf(pathname);
@@ -89,6 +92,17 @@ export default function OrderForm({
   const [consent, setConsent] = useState({ processing: false, rights: false, showcase: false });
   // Screen readers announce the summary (role=alert); focus moves there after a failed submit.
   const summaryRef = useRef<HTMLDivElement>(null);
+  // The success message is announced and brought into view after sending. Reduced motion jumps instead.
+  const successRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (!submitted) return;
+    onSentChange?.(true);
+    const element = successRef.current;
+    if (!element) return;
+    const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    element.focus({ preventScroll: true });
+    element.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth', block: 'start' });
+  }, [submitted, onSentChange]);
   useEffect(() => {
     if (error) summaryRef.current?.focus();
   }, [error]);
@@ -339,22 +353,31 @@ export default function OrderForm({
 
   if (submitted) {
     return (
-      <OrderSuccess
-        title={orderForm.successTitle}
-        referenceLabel={orderForm.referenceLabel}
-        reference={reference}
-        nextStepsTitle={orderForm.nextStepsTitle}
-        steps={[
-          orderForm.nextStep1,
-          orderForm.nextStep2,
-          submittedProduct === 'canvas' ? orderForm.nextStep3 : orderForm.nextStep3Digital,
-        ]}
-        confirmation={
-          confirmationTo ? orderForm.confirmationSent.replace('{email}', confirmationTo) : undefined
-        }
-        backHome={orderForm.backHome}
-        homeHref={`/${locale}`}
-      />
+      <div
+        ref={successRef}
+        role="status"
+        tabIndex={-1}
+        className="mx-auto max-w-2xl scroll-mt-32 outline-none"
+      >
+        <OrderSuccess
+          title={orderForm.successTitle}
+          referenceLabel={orderForm.referenceLabel}
+          reference={reference}
+          nextStepsTitle={orderForm.nextStepsTitle}
+          steps={[
+            orderForm.nextStep1,
+            orderForm.nextStep2,
+            submittedProduct === 'canvas' ? orderForm.nextStep3 : orderForm.nextStep3Digital,
+          ]}
+          confirmation={
+            confirmationTo
+              ? orderForm.confirmationSent.replace('{email}', confirmationTo)
+              : undefined
+          }
+          backHome={orderForm.backHome}
+          homeHref={`/${locale}`}
+        />
+      </div>
     );
   }
 
