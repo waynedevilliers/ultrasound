@@ -372,6 +372,47 @@ describe('OrderForm submit errors', () => {
     expect(screen.getByText(/spam folder/i)).toBeInTheDocument();
   });
 
+  it('describes the file delivery after a digital order', async () => {
+    stubServer(
+      async () =>
+        new Response(JSON.stringify({ success: true, reference: 'P4L-261117-K7QM' }), {
+          status: 201,
+        }),
+    );
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    expect(await screen.findByText(/receive the file by email/)).toBeInTheDocument();
+    expect(screen.queryByText(/canvas is printed/)).toBeNull();
+  });
+
+  it('describes the printing after a canvas order', async () => {
+    stubServer(
+      async () =>
+        new Response(JSON.stringify({ success: true, reference: 'P4L-261117-K7QM' }), {
+          status: 201,
+        }),
+    );
+    const { container } = render(
+      <OrderForm initialFormat={{ product: 'canvas', canvasSize: '30x30cm' }} />,
+    );
+    submitWithPhoto(container);
+    for (const [id, value] of [
+      ['shippingFullName', 'Ann Test'],
+      ['shippingStreet', 'Hauptstraße 1'],
+      ['shippingCity', 'Berlin'],
+      ['shippingState', 'Berlin'],
+      ['shippingPostalCode', '10115'],
+      ['shippingCountry', 'Germany'],
+    ]) {
+      fireEvent.change(container.querySelector(`#${id}`) as HTMLInputElement, {
+        target: { value },
+      });
+    }
+    fireEvent.submit(container.querySelector('form') as HTMLFormElement);
+    expect(await screen.findByText(/canvas is printed/)).toBeInTheDocument();
+    expect(screen.queryByText(/receive the file by email/)).toBeNull();
+  });
+
   it('shows no confirmation line when the mail service did not accept the email', async () => {
     stubServer(
       async () =>

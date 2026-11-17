@@ -189,6 +189,7 @@
     "nextStep1": "Ich prüfe dein Ultraschallbild und melde mich innerhalb von 2 Werktagen per E-Mail.",
     "nextStep2": "Du bekommst eine Vorschau und kannst einmal Änderungen wünschen.",
     "nextStep3": "Nach deiner Freigabe erhältst du die Rechnung. Nach Zahlungseingang wird deine Leinwand gedruckt.",
+    "nextStep3Digital": "Nach deiner Freigabe erhältst du die Rechnung. Nach Zahlungseingang bekommst du die Datei per E-Mail.",
     "confirmationSent": "Eine Bestätigung ist unterwegs an {email}. Schau auch im Spam Ordner nach.",
     "backHome": "Zur Startseite",
     "nameLabel": "Dein Name *",

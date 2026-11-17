@@ -95,6 +95,8 @@ export default function OrderForm({
   const [reference, setReference] = useState('');
   // The address the confirmation was sent to; null when the mail service did not accept it.
   const [confirmationTo, setConfirmationTo] = useState<string | null>(null);
+  // The product of the sent order, so the success steps describe what really happens next.
+  const [submittedProduct, setSubmittedProduct] = useState<'digital' | 'canvas'>('digital');
 
   const [formData, setFormData] = useState({
     ...EMPTY_FORM,
@@ -312,6 +314,7 @@ export default function OrderForm({
       setReference(confirmed);
       setConfirmationTo(data.confirmationSent === true ? formData.email.trim() : null);
       setSubmitted(true);
+      setSubmittedProduct(formData.product === 'canvas' ? 'canvas' : 'digital');
       setFormData(EMPTY_FORM);
       setFiles({ ultrasound: null, reference: null });
     } catch (err) {
@@ -341,7 +344,11 @@ export default function OrderForm({
         referenceLabel={orderForm.referenceLabel}
         reference={reference}
         nextStepsTitle={orderForm.nextStepsTitle}
-        steps={[orderForm.nextStep1, orderForm.nextStep2, orderForm.nextStep3]}
+        steps={[
+          orderForm.nextStep1,
+          orderForm.nextStep2,
+          submittedProduct === 'canvas' ? orderForm.nextStep3 : orderForm.nextStep3Digital,
+        ]}
         confirmation={
           confirmationTo ? orderForm.confirmationSent.replace('{email}', confirmationTo) : undefined
         }

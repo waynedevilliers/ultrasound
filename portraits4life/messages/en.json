@@ -189,6 +189,7 @@
     "nextStep1": "I check your ultrasound image and get back to you by email within 2 working days.",
     "nextStep2": "You receive a preview and can ask for one round of changes.",
     "nextStep3": "After you approve it, you receive the invoice. Once the payment arrives, your canvas is printed.",
+    "nextStep3Digital": "After you approve it, you receive the invoice. Once the payment arrives, you receive the file by email.",
     "confirmationSent": "A confirmation is on its way to {email}. Please also check your spam folder.",
     "backHome": "Back to home",
     "nameLabel": "Your Name *",
