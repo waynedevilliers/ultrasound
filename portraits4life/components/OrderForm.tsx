@@ -13,6 +13,7 @@ import { routeHref, routes } from '@/content/routes';
 import { upload } from '@vercel/blob/client';
 import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 import UploadArea from '@/components/UploadArea';
+import OrderSuccess from '@/components/OrderSuccess';
 import { CONSENT_VERSION } from '@/lib/consent';
 import { IMAGE_FORMAT_LIST } from '@/lib/image-formats';
 import { createRequestCode } from '@/lib/request-code';
@@ -329,20 +330,13 @@ export default function OrderForm({
 
   if (submitted) {
     return (
-      <div className="max-w-2xl mx-auto p-8 bg-success-soft rounded-lg border border-success-edge">
-        <h3 className="text-2xl font-bold text-success-text mb-4">{orderForm.successTitle}</h3>
-        <p className="text-success-strong mb-2">{orderForm.submitted}</p>
-        <p className="text-success-strong mb-4">
-          <strong>{orderForm.orderIdLabel}</strong> #{orderId}
-        </p>
-        <p className="text-success-strong mb-4">{orderForm.contactWithin24h}</p>
-        <button
-          onClick={() => setSubmitted(false)}
-          className="bg-success text-white px-6 py-2 rounded-lg hover:bg-success-strong"
-        >
-          {orderForm.newOrder}
-        </button>
-      </div>
+      <OrderSuccess
+        title={orderForm.successTitle}
+        submitted={orderForm.submitted}
+        orderIdLabel={orderForm.orderIdLabel}
+        orderId={orderId}
+        contact={orderForm.contactWithin24h}
+      />
     );
   }
 
