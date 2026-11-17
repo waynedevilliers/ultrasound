@@ -1,4 +1,6 @@
 import { sql } from '@vercel/postgres';
+import { randomUUID } from 'node:crypto';
+import { logOrderFailure } from '@/lib/order-log';
 import { head } from '@vercel/blob';
 import { Resend } from 'resend';
 import { NextRequest, NextResponse } from 'next/server';
@@ -59,6 +61,7 @@ function orderEmailHtml(
 }
 
 export async function POST(request: NextRequest) {
+  const requestId = randomUUID().slice(0, 8);
   try {
     if (isRateLimited(clientKey(request))) {
       return NextResponse.json(
@@ -190,9 +193,9 @@ export async function POST(request: NextRequest) {
     for (const email of [adminEmail, customerEmail]) {
       try {
         const sent = await resend.emails.send(email);
-        if (sent.error) console.error('Order email rejected', sent.error);
+        if (sent.error) logOrderFailure(requestId, 'email', sent.error);
       } catch (emailError) {
-        console.error('Order email failed', emailError);
+        logOrderFailure(requestId, 'email', emailError);
       }
     }
 
@@ -201,9 +204,9 @@ export async function POST(request: NextRequest) {
       { status: 201 },
     );
   } catch (error) {
-    console.error('Order processing failed', error);
+    logOrderFailure(requestId, 'processing', error);
     return NextResponse.json(
-      { success: false, message: 'Failed to process order' },
+      { success: false, message: 'Failed to process order', code: requestId },
       { status: 500 },
     );
   }

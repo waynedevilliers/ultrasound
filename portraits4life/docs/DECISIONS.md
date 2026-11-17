@@ -4,6 +4,12 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 ---
 
+## 2026-11-17: Order error handling and request codes
+
+- **Status:** done; to be checked on a preview
+- **Decision:** Every failed order carries a short request code (8 characters) that the customer can quote. The server logs the failed step (upload, database, email), the error type and a short message, never the customer details. The form tells the failing step apart: a failed photo upload, a lost connection, and a server failure each have their own message, and the code is shown when there is one.
+- **Why:** The single generic message gave no way to find out why an order failed on the preview.
+
 ## 2026-11-17: Database setup for orders
 
 - **Status:** done for the database in the local file; production database to be confirmed

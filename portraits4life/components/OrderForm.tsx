@@ -33,6 +33,16 @@ const EMPTY_FORM = {
   shippingCountry: '',
 } as const;
 
+// A failed step of the submit, so the message can say what went wrong.
+class OrderStageError extends Error {
+  constructor(
+    public stage: 'upload' | 'network' | 'server',
+    public code?: string,
+  ) {
+    super(stage);
+  }
+}
+
 export default function OrderForm({
   initialFormat = null,
 }: {
@@ -144,12 +154,17 @@ export default function OrderForm({
 
   // Photos go straight from the browser to private storage. The order then carries only their paths.
   const uploadPhoto = async (file: File, prefix: string): Promise<string> => {
-    const stored = await upload(`orders/${prefix}`, file, {
-      access: 'private',
-      handleUploadUrl: '/api/orders/upload',
-      contentType: file.type,
-    });
-    return stored.pathname;
+    try {
+      const stored = await upload(`orders/${prefix}`, file, {
+        access: 'private',
+        handleUploadUrl: '/api/orders/upload',
+        contentType: file.type,
+      });
+      return stored.pathname;
+    } catch (error) {
+      console.error('Photo upload failed', error);
+      throw new OrderStageError('upload');
+    }
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -211,15 +226,21 @@ export default function OrderForm({
           : {}),
       };
 
-      const response = await fetch('/api/orders', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(payload),
-      });
+      let response: Response;
+      try {
+        response = await fetch('/api/orders', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload),
+        });
+      } catch {
+        throw new OrderStageError('network');
+      }
 
       const data: {
         orderId?: string;
         message?: string;
+        code?: string;
         issues?: { field: string; message: string }[];
       } = await response.json();
 
@@ -231,7 +252,7 @@ export default function OrderForm({
           setError(orderForm.checkFields);
           return;
         }
-        throw new Error(orderForm.genericError);
+        throw new OrderStageError('server', typeof data.code === 'string' ? data.code : undefined);
       }
 
       setOrderId(data.orderId ?? '');
@@ -240,7 +261,12 @@ export default function OrderForm({
       setFiles({ ultrasound: null, reference: null });
     } catch (err) {
       console.error('Order submit failed', err);
-      setError(orderForm.genericError);
+      if (err instanceof OrderStageError) {
+        const base = orderForm[err.stage === 'upload' ? 'uploadFailed' : err.stage === 'network' ? 'networkError' : 'serverError'];
+        setError(err.code ? `${base} ${orderForm.errorCode.replace('{code}', err.code)}` : base);
+      } else {
+        setError(orderForm.genericError);
+      }
     } finally {
       setLoading(false);
     }

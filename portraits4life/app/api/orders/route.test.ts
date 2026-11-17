@@ -8,6 +8,7 @@ vi.mock('@vercel/postgres', () => ({ sql: vi.fn() }));
 vi.mock('resend', () => ({ Resend: vi.fn() }));
 
 import { POST } from './route';
+import { sql } from '@vercel/postgres';
 import { CONSENT_VERSION } from '@/lib/consent';
 
 let client = 0;
@@ -70,5 +71,14 @@ describe('POST /api/orders stored photos', () => {
     const data = await response.json();
     expect(data.issues).toEqual([expect.objectContaining({ field: 'referencePath' })]);
     expect(head).not.toHaveBeenCalledWith('private/other-order.png');
+  });
+
+  it('answers a failed save with a request code the customer can quote', async () => {
+    head.mockResolvedValue({ size: 100, contentType: 'image/png' });
+    vi.mocked(sql).mockRejectedValueOnce(new Error('connection refused'));
+    const response = await POST(orderRequest(order()));
+    expect(response.status).toBe(500);
+    const data = await response.json();
+    expect(data.code).toMatch(/^[0-9a-f]{8}$/);
   });
 });

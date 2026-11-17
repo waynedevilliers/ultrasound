@@ -120,7 +120,7 @@ describe('OrderForm', () => {
     const { container } = render(<OrderForm />);
     submitWithPhoto(container);
     expect(await screen.findByRole('alert')).toHaveTextContent(
-      'The order could not be sent. Please try again.',
+      'No connection to the server.',
     );
   });
 
