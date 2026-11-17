@@ -48,6 +48,7 @@ class OrderStageError extends Error {
 
 type ServerReply = {
   reference?: string;
+  confirmationSent?: boolean;
   message?: string;
   code?: string;
   issues?: { field: string; message: string }[];
@@ -92,6 +93,10 @@ export default function OrderForm({
     if (error) summaryRef.current?.focus();
   }, [error]);
   const [reference, setReference] = useState('');
+  // The address the confirmation was sent to; null when the mail service did not accept it.
+  const [confirmationTo, setConfirmationTo] = useState<string | null>(null);
+  // The product of the sent order, so the success steps describe what really happens next.
+  const [submittedProduct, setSubmittedProduct] = useState<'digital' | 'canvas'>('digital');
 
   const [formData, setFormData] = useState({
     ...EMPTY_FORM,
@@ -307,7 +312,9 @@ export default function OrderForm({
       const confirmed = typeof data.reference === 'string' ? data.reference : '';
       if (!confirmed) throw new OrderStageError('server', requestCode);
       setReference(confirmed);
+      setConfirmationTo(data.confirmationSent === true ? formData.email.trim() : null);
       setSubmitted(true);
+      setSubmittedProduct(formData.product === 'canvas' ? 'canvas' : 'digital');
       setFormData(EMPTY_FORM);
       setFiles({ ultrasound: null, reference: null });
     } catch (err) {
@@ -334,10 +341,19 @@ export default function OrderForm({
     return (
       <OrderSuccess
         title={orderForm.successTitle}
-        submitted={orderForm.submitted}
-        orderIdLabel={orderForm.orderIdLabel}
+        referenceLabel={orderForm.referenceLabel}
         reference={reference}
-        contact={orderForm.contactWithin24h}
+        nextStepsTitle={orderForm.nextStepsTitle}
+        steps={[
+          orderForm.nextStep1,
+          orderForm.nextStep2,
+          submittedProduct === 'canvas' ? orderForm.nextStep3 : orderForm.nextStep3Digital,
+        ]}
+        confirmation={
+          confirmationTo ? orderForm.confirmationSent.replace('{email}', confirmationTo) : undefined
+        }
+        backHome={orderForm.backHome}
+        homeHref={`/${locale}`}
       />
     );
   }
