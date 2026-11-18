@@ -1,9 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import OrderSection from './OrderSection';
-
-const query = vi.hoisted(() => ({ search: '' }));
-vi.mock('next/navigation', () => ({ useSearchParams: () => new URLSearchParams(query.search) }));
+import type { FormatChoice } from '@/lib/format-param';
 
 // The real form is replaced by a button that reports a sent order; it shows the format it received.
 vi.mock('@/components/OrderForm', () => ({
@@ -30,6 +28,7 @@ const props = {
   title: 'Bestellen',
   thanksTitle: 'Danke',
   intro: 'Lade dein Ultraschallbild hoch.',
+  initialFormat: null as FormatChoice | null,
 };
 
 beforeEach(() => {
@@ -71,15 +70,14 @@ describe('OrderSection', () => {
   });
 
   it('passes the format from the order link to the form', () => {
-    query.search = 'format=40x40cm';
-    render(<OrderSection {...props} />);
+    render(
+      <OrderSection {...props} initialFormat={{ product: 'canvas', canvasSize: '40x40cm' }} />,
+    );
     expect(screen.getByTestId('format')).toHaveTextContent('"product":"canvas"');
     expect(screen.getByTestId('format')).toHaveTextContent('"canvasSize":"40x40cm"');
-    query.search = '';
   });
 
   it('has no format without an order link', () => {
-    query.search = '';
     render(<OrderSection {...props} />);
     expect(screen.getByTestId('format')).toHaveTextContent('null');
   });

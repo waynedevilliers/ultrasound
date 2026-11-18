@@ -5,7 +5,6 @@ import { getCopy } from '@/lib/copy';
 export type ActionVariant = 'primary' | 'secondary';
 type ActionLocale = 'de' | 'en';
 
-
 // One set of button styles for the whole site. Primary is filled, secondary is outlined.
 const base =
   'inline-flex items-center justify-center gap-2 rounded-lg px-8 py-3 font-bold text-center ' +
@@ -25,24 +24,54 @@ type ActionLinkProps = {
   variant?: ActionVariant;
   locale?: ActionLocale;
   className?: string;
+  // Off for links to pages that are heavy to load; the browser then fetches them only when clicked.
+  prefetch?: boolean;
   children: ReactNode;
 };
 
 // Internal paths use next/link (locale aware). Anchors and mailto use plain links.
 // External URLs open in a new tab with a visible icon and screen reader text.
-export default function ActionLink({ href, variant = 'primary', locale = 'de', className = '', children }: ActionLinkProps) {
+export default function ActionLink({
+  href,
+  variant = 'primary',
+  locale = 'de',
+  className = '',
+  prefetch,
+  children,
+}: ActionLinkProps) {
   const classes = buttonClasses(variant, className);
 
   if (href.startsWith('mailto:')) {
-    return <a href={href} className={classes} data-variant={variant}>{children}</a>;
+    return (
+      <a href={href} className={classes} data-variant={variant}>
+        {children}
+      </a>
+    );
   }
 
   if (/^(https?:)?\/\//.test(href)) {
     return (
-      <a href={href} target="_blank" rel="noopener noreferrer" className={classes} data-variant={variant}>
+      <a
+        href={href}
+        target="_blank"
+        rel="noopener noreferrer"
+        className={classes}
+        data-variant={variant}
+      >
         {children}
-        <svg className="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M14 4h6v6M20 4l-9 9M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4" />
+        <svg
+          className="h-4 w-4"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={2}
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M14 4h6v6M20 4l-9 9M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4"
+          />
         </svg>
         <span className="sr-only">{getCopy(locale).common.newTab}</span>
       </a>
@@ -50,8 +79,16 @@ export default function ActionLink({ href, variant = 'primary', locale = 'de', c
   }
 
   if (href.startsWith('#')) {
-    return <a href={href} className={classes} data-variant={variant}>{children}</a>;
+    return (
+      <a href={href} className={classes} data-variant={variant}>
+        {children}
+      </a>
+    );
   }
 
-  return <Link href={href} className={classes} data-variant={variant}>{children}</Link>;
+  return (
+    <Link href={href} prefetch={prefetch} className={classes} data-variant={variant}>
+      {children}
+    </Link>
+  );
 }
