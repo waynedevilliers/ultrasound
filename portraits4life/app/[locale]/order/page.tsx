@@ -24,7 +24,7 @@ export default async function OrderPage({
   searchParams,
 }: {
   params: Promise<{ locale: string }>;
-  searchParams: Promise<{ format?: string }>;
+  searchParams: Promise<{ format?: string | string[] }>;
 }) {
   const { locale } = await params;
   const { format } = await searchParams;
@@ -51,7 +51,7 @@ export default async function OrderPage({
             title={copy.order.title}
             thanksTitle={copy.order.thanks}
             intro={copy.orderPage.intro}
-            initialFormat={parseFormatParam(format)}
+            initialFormat={parseFormatParam(Array.isArray(format) ? format[0] : format)}
           />
 
           <OrderInfo locale={pageLocale} />
