@@ -257,7 +257,8 @@
     "newTab": "(öffnet in neuem Tab)",
     "week": "Woche",
     "weeks": "Wochen",
-    "rangeTo": "bis"
+    "rangeTo": "bis",
+    "orderNow": "Jetzt bestellen"
   },
   "orderPage": {
     "intro": "Lade dein Ultraschallbild hoch und sende mir deine Wünsche."

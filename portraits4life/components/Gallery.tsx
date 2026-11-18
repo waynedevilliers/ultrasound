@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { getCopy, localeOf } from '@/lib/copy';
+import ActionLink from '@/components/ActionLink';
 
 // TODO(client): the original ultrasound images for the "Vorher" side are still missing; placeholders are shown until they arrive.
 // Each pair shows the original (before) next to the artwork (after), at the same size.
@@ -17,7 +18,8 @@ type Enlarged = { src: string; alt: string };
 
 export default function Gallery() {
   const pathname = usePathname();
-  const { gallery } = getCopy(localeOf(pathname));
+  const pageLocale = localeOf(pathname);
+  const { gallery, common } = getCopy(pageLocale);
   const [enlarged, setEnlarged] = useState<Enlarged | null>(null);
   // The image that opened the enlarged view gets the focus back when it closes.
   const openedFrom = useRef<HTMLElement | null>(null);
@@ -134,6 +136,11 @@ export default function Gallery() {
 
         <div className="mt-12 text-center">
           <p className="text-xl text-copy">{gallery.caption}</p>
+        </div>
+        <div className="mt-8 text-center">
+          <ActionLink href={`/${pageLocale}/order`} variant="secondary">
+            {common.orderNow}
+          </ActionLink>
         </div>
       </div>
     </section>

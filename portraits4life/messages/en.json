@@ -257,7 +257,8 @@
     "newTab": "(opens in new tab)",
     "week": "week",
     "weeks": "weeks",
-    "rangeTo": "to"
+    "rangeTo": "to",
+    "orderNow": "Order now"
   },
   "orderPage": {
     "intro": "Upload your ultrasound image and send me your wishes."

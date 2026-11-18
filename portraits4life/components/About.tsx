@@ -1,8 +1,10 @@
 import { getCopy } from '@/lib/copy';
+import ActionLink from '@/components/ActionLink';
 
 // TODO(client): replace the draft text with the artist's own story, and add the photo when it arrives.
 export default function About({ locale }: { locale: string }) {
-  const { about } = getCopy(locale === 'de' ? 'de' : 'en');
+  const pageLocale = locale === 'de' ? 'de' : 'en';
+  const { about, common } = getCopy(pageLocale);
 
   return (
     <section id="ueber-mich" className="section-y bg-surface">
@@ -22,6 +24,11 @@ export default function About({ locale }: { locale: string }) {
               {paragraph}
             </p>
           ))}
+        </div>
+        <div className="md:col-span-2 text-center">
+          <ActionLink href={`/${pageLocale}/order`} variant="secondary">
+            {common.orderNow}
+          </ActionLink>
         </div>
       </div>
     </section>
