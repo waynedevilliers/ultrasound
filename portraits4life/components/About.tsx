@@ -1,3 +1,4 @@
+import Image from 'next/image';
 import { getCopy } from '@/lib/copy';
 import ActionLink from '@/components/ActionLink';
 
@@ -9,12 +10,14 @@ export default function About({ locale }: { locale: string }) {
   return (
     <section id="ueber-mich" className="section-y bg-surface">
       <div className="container-site grid gap-10 md:grid-cols-2 md:items-center">
-        <div
-          role="img"
-          aria-label={about.photoAlt}
-          className="flex aspect-[4/5] max-h-[480px] items-center justify-center rounded-lg border border-line bg-surface-muted p-6 text-center text-copy shadow-lg"
-        >
-          {about.photoPlaceholder}
+        <div className="relative aspect-[4/5] max-h-[480px] overflow-hidden rounded-lg border border-line shadow-lg">
+          <Image
+            src="/images/about_us/luise.avif"
+            alt={about.photoAlt}
+            fill
+            sizes="(min-width: 768px) 50vw, 100vw"
+            className="object-cover"
+          />
         </div>
 
         <div>
