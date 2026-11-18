@@ -1,14 +1,8 @@
-import { Geist, Geist_Mono, Playfair_Display } from 'next/font/google';
+import { Geist, Playfair_Display } from 'next/font/google';
 
 // Fonts are self-hosted at build time by next/font: no requests to Google at runtime.
 const geistSans = Geist({
   variable: '--font-geist-sans',
-  subsets: ['latin'],
-  display: 'swap',
-});
-
-const geistMono = Geist_Mono({
-  variable: '--font-geist-mono',
   subsets: ['latin'],
   display: 'swap',
 });
@@ -20,4 +14,4 @@ const playfairDisplay = Playfair_Display({
   display: 'swap',
 });
 
-export const fontClassNames = `${geistSans.variable} ${geistMono.variable} ${playfairDisplay.variable} h-full antialiased`;
+export const fontClassNames = `${geistSans.variable} ${playfairDisplay.variable} h-full antialiased`;
