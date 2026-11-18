@@ -1,8 +1,5 @@
-'use client';
-
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
-import { getCopy, localeOf } from '@/lib/copy';
+import { getCopy, type Locale } from '@/lib/copy';
 import { formatPrice } from '@/lib/price';
 import { canvasSizes, digitalProduct, isDigitalAvailable } from '@/content/products';
 import { canvasDeliveryText, deliverySentence, digitalDeliveryText } from '@/lib/delivery';
@@ -12,9 +9,7 @@ import InfoCard from '@/components/InfoCard';
 // TODO(client): confirm payment methods and delivery times before launch.
 // TODO(client): confirm the canvas feature list (neutral placeholders, no product claims yet).
 // TODO(client): confirm the alt texts and captions for the canvas photos.
-export default function PricingTiers() {
-  const pathname = usePathname();
-  const locale = localeOf(pathname);
+export default function PricingTiers({ locale }: { locale: Locale }) {
   const { pricing } = getCopy(locale);
   const orderPath = `/${locale}/order`;
   // Non-breaking spaces keep a size such as "30 × 30 cm" on one line.

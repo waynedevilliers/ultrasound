@@ -11,20 +11,21 @@ import FAQ from './FAQ';
 import ContactSection from './ContactSection';
 
 const pathname = { value: '/de' };
+const localeNow = () => pathname.value.startsWith('/en') ? 'en' : 'de';
 vi.mock('next/navigation', () => ({ usePathname: () => pathname.value }));
 
 function Landing() {
   return (
     <>
-      <Hero />
-      <FactsBox />
-      <IntroSection />
+      <Hero locale={localeNow()} />
+      <FactsBox locale={localeNow()} />
+      <IntroSection locale={localeNow()} />
       <Gallery />
-      <HowItWorks />
-      <PricingTiers />
+      <HowItWorks locale={localeNow()} />
+      <PricingTiers locale={localeNow()} />
       <About locale={pathname.value.slice(1)} />
       <FAQ />
-      <ContactSection />
+      <ContactSection locale={localeNow()} />
     </>
   );
 }

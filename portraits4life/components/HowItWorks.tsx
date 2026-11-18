@@ -1,17 +1,12 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
-import { getCopy, localeOf } from '@/lib/copy';
+import { getCopy, type Locale } from '@/lib/copy';
 import { isDigitalAvailable } from '@/content/products';
 import InfoCard from '@/components/InfoCard';
 import ActionLink from '@/components/ActionLink';
 
 // TODO(client): approve the three step titles and descriptions (DE and EN; the wording is new).
 // TODO(client): confirm the payment order (paid after the image is checked) before launch.
-export default function HowItWorks() {
-  const pathname = usePathname();
-  const pageLocale = localeOf(pathname);
-  const { howItWorks, common } = getCopy(pageLocale);
+export default function HowItWorks({ locale }: { locale: Locale }) {
+  const { howItWorks, common } = getCopy(locale);
   // While the digital file is not sold, the last step names only the canvas.
   const steps = isDigitalAvailable()
     ? howItWorks.steps
@@ -41,7 +36,7 @@ export default function HowItWorks() {
 
         <p className="mt-10 text-center text-base text-copy">{howItWorks.paymentNote}</p>
         <div className="mt-8 text-center">
-          <ActionLink href={`/${pageLocale}/order`} variant="secondary">
+          <ActionLink href={`/${locale}/order`} variant="secondary">
             {common.orderNow}
           </ActionLink>
         </div>

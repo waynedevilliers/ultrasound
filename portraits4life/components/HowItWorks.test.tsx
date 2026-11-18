@@ -6,7 +6,7 @@ vi.mock('next/navigation', () => ({ usePathname: () => '/de' }));
 
 describe('HowItWorks', () => {
   it('numbers the three steps and shows the new step 1 text and the payment line', () => {
-    render(<HowItWorks />);
+    render(<HowItWorks locale="de" />);
     expect(screen.getAllByRole('listitem')).toHaveLength(3);
     expect(screen.getByText('Lade ein gut erkennbares Ultraschallbild hoch.')).toBeInTheDocument();
     expect(screen.getByText('Du bezahlst erst, nachdem ich dein Bild geprüft habe. Die Lieferzeit beginnt mit dem Zahlungseingang.')).toBeInTheDocument();

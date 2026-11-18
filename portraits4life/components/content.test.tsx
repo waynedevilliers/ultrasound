@@ -6,6 +6,7 @@ import Gallery from './Gallery';
 import IntroSection from './IntroSection';
 
 const path = { current: '/en' };
+const localeNow = () => path.current.startsWith('/en') ? 'en' : 'de';
 vi.mock('next/navigation', () => ({ usePathname: () => path.current }));
 vi.mock('next/image', () => ({
   default: (props: Record<string, unknown>) => {
@@ -18,7 +19,7 @@ vi.mock('next/image', () => ({
 describe('Hero and intro copy', () => {
   it('renders the supporting line exactly once (English)', () => {
     path.current = '/en';
-    render(<Hero />);
+    render(<Hero locale={localeNow()} />);
     // The digital file is not sold, so the line names only the canvas.
     expect(
       screen.getAllByText(
@@ -29,7 +30,7 @@ describe('Hero and intro copy', () => {
 
   it('renders the supporting line exactly once (German)', () => {
     path.current = '/de';
-    render(<Hero />);
+    render(<Hero locale={localeNow()} />);
     expect(
       screen.getAllByText(
         'Ich verwandle das Ultraschallbild deines Babys in ein farbenfrohes Kunstwerk auf Leinwand.',
@@ -41,7 +42,7 @@ describe('Hero and intro copy', () => {
     path.current = '/de';
     digitalProduct.available = true;
     try {
-      render(<Hero />);
+      render(<Hero locale={localeNow()} />);
       expect(
         screen.getAllByText(
           'Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk, digital oder auf Leinwand.',
@@ -56,8 +57,8 @@ describe('Hero and intro copy', () => {
     path.current = '/de';
     render(
       <>
-        <Hero />
-        <IntroSection />
+        <Hero locale={localeNow()} />
+        <IntroSection locale={localeNow()} />
       </>,
     );
     expect(
@@ -71,7 +72,7 @@ describe('Hero and intro copy', () => {
 describe('image alt texts', () => {
   it('hero image has a German alt text on German pages', () => {
     path.current = '/de';
-    render(<Hero />);
+    render(<Hero locale={localeNow()} />);
     expect(
       screen.getByAltText('Künstlerisch bearbeitetes Ultraschallbild als Beispiel'),
     ).toBeInTheDocument();
@@ -79,7 +80,7 @@ describe('image alt texts', () => {
 
   it('hero image has an English alt text on English pages', () => {
     path.current = '/en';
-    render(<Hero />);
+    render(<Hero locale={localeNow()} />);
     expect(
       screen.getByAltText('Example of an artistically enhanced ultrasound image'),
     ).toBeInTheDocument();

@@ -1,9 +1,6 @@
-'use client';
-
 import Image from 'next/image';
 import ActionLink from '@/components/ActionLink';
-import { usePathname } from 'next/navigation';
-import { getCopy, localeOf } from '@/lib/copy';
+import { getCopy, type Locale } from '@/lib/copy';
 import { isDigitalAvailable, lowestPrice } from '@/content/products';
 import { formatPrice } from '@/lib/price';
 
@@ -24,9 +21,7 @@ const check = (
 // TODO(client): benefit point 1 now reads "individuell künstlerisch gestaltet" / "individually designed as a piece of art" (digital work, no manual claim); approve the wording.
 // Phones: headline, supporting line, order button, price line, image, benefit points, examples button.
 // Desktop: text column on the left (headline, supporting line, benefits, buttons, price), image on the right.
-export default function Hero() {
-  const pathname = usePathname();
-  const locale = localeOf(pathname);
+export default function Hero({ locale }: { locale: Locale }) {
   const isDE = locale === 'de';
   const { hero } = getCopy(locale);
   // While the digital file is not sold, the texts name only the canvas. The digital wording is kept for later.

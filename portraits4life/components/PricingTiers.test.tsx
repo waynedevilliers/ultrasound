@@ -7,7 +7,7 @@ vi.mock('next/navigation', () => ({ usePathname: () => '/de' }));
 
 describe('PricingTiers', () => {
   it('shows one card per format with the new titles and a non-breaking size', () => {
-    render(<PricingTiers />);
+    render(<PricingTiers locale="de" />);
     // The digital file is not sold, so it has no card.
     expect(screen.queryByRole('heading', { name: 'Digitale Datei (JPG)' })).toBeNull();
     const canvas = screen.getByRole('heading', { level: 3, name: /^Leinwanddruck 30 × 30 cm$/ });
@@ -16,7 +16,7 @@ describe('PricingTiers', () => {
   });
 
   it('links each card to the order form with its format', () => {
-    render(<PricingTiers />);
+    render(<PricingTiers locale="de" />);
     const links = screen.getAllByRole('link', { name: 'Dieses Format bestellen' });
     expect(links.map((link) => link.getAttribute('href'))).toEqual([
       '/de/order?format=30x30cm',
@@ -26,14 +26,14 @@ describe('PricingTiers', () => {
   });
 
   it('shows two product photos', () => {
-    render(<PricingTiers />);
+    render(<PricingTiers locale="de" />);
     expect(screen.getAllByRole('img')).toHaveLength(2);
   });
 
   it('shows the digital card again when the digital file is made available', () => {
     digitalProduct.available = true;
     try {
-      render(<PricingTiers />);
+      render(<PricingTiers locale="de" />);
       expect(
         screen.getByRole('heading', { level: 3, name: 'Digitale Datei (JPG)' }),
       ).toBeInTheDocument();
