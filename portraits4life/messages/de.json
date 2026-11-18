@@ -116,15 +116,15 @@
       "description": "Ich verwandle das Ultraschallbild deines Babys in ein farbenfrohes Kunstwerk auf Leinwand. Individuell gestaltet, auf Wunsch mit Namen und Schwangerschaftswoche."
     },
     "order": {
-      "title": "Bestellen – Portraits 4 Life",
+      "title": "Bestellen | Portraits 4 Life",
       "description": "Ultraschallbild hochladen und Bestellung aufgeben."
     },
     "impressum": {
-      "title": "Impressum – Portraits 4 Life",
+      "title": "Impressum | Portraits 4 Life",
       "description": "Angaben zum Anbieter von Portraits 4 Life."
     },
     "datenschutz": {
-      "title": "Datenschutz – Portraits 4 Life",
+      "title": "Datenschutz | Portraits 4 Life",
       "description": "Informationen zum Umgang mit personenbezogenen Daten."
     }
   },
@@ -179,7 +179,7 @@
         "id": "ultrasound",
         "title": "Ultraschallportraits",
         "items": [
-          "Wähle ein klares Ultraschallbild - Profilaufnahmen funktionieren am besten",
+          "Wähle ein klares Ultraschallbild, Profilaufnahmen funktionieren am besten",
           "Ich benachrichtige dich innerhalb von 2 Werktagen, ob das Bild verwendbar ist",
           "Falls nicht geeignet, kannst du kostenlos ein anderes Bild senden. Es entstehen dir keine Kosten."
         ]
