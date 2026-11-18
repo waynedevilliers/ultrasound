@@ -1,7 +1,7 @@
 import { canvasSizes, CURRENCY, digitalProduct, isDigitalAvailable } from '@/content/products';
 
 // Structured data (schema.org). Built from escaped data only, and kept in one place.
-export const ORGANIZATION_EMAIL = 'portraits4life.art@gmail.com';
+const ORGANIZATION_EMAIL = 'portraits4life.art@gmail.com';
 
 export function organizationJsonLd(siteUrl?: string): Record<string, unknown> {
   return {

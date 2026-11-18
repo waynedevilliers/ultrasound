@@ -3,7 +3,7 @@ import type { ReactNode } from 'react';
 import { getCopy } from '@/lib/copy';
 
 export type ActionVariant = 'primary' | 'secondary';
-export type ActionLocale = 'de' | 'en';
+type ActionLocale = 'de' | 'en';
 
 
 // One set of button styles for the whole site. Primary is filled, secondary is outlined.

@@ -33,7 +33,6 @@ export const canvasProduct = {
   sizes: canvasSizes,
 } as const;
 
-export type ProductId = 'digital' | 'canvas';
 export type CanvasSizeId = (typeof canvasSizes)[number]['id'];
 
 export const canvasSizeIds = canvasSizes.map((size) => size.id) as CanvasSizeId[];
