@@ -111,6 +111,7 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Terms for the digital file (private use only): wording to be confirmed.
 - Order info section (O6): does this site offer Individualportraits and Paarportraits, or only ultrasound art? If only ultrasound art, rows 2 and 3 and the second upload go (texts kept under docs/). The payment row says "Nach der Bestätigung", while the rest of the site says "nach Zahlungseingang"; the owner should pick one timing.
 - Order form: is the form a binding paid order (the button must read "Zahlungspflichtig bestellen") or a request (the button reads "Bild senden und anfragen")? The button stays "Jetzt bestellen" until the owner answers.
+- Benefit point 2 ("Auf Leinwand gedruckt, fertig zum Aufhängen" / "Printed on canvas, ready to hang"): confirm against the canvas the print shop delivers, including whether hanging hardware is part of it.
 
 ## 2026-11-14: Order form fixes after the step 11 review
 
@@ -592,4 +593,3 @@ One line per step, added as each step lands.
 - Step 0: Audit against the Salon77 guide (`docs/reviews/2026-11-11-audit.md`).
 - Step 1: Foundation, complete. CLAUDE.md standards, decisions log, env and editor configs, fonts via next/font with display swap, one site palette, button and section variables, TODO(client) markers on missing client content (grep TODO(client) for the list).
 - Sticky menu bar, one primary button per page, content container, facts box and layout rules come in later steps.
-- Benefit point 2 ("Auf Leinwand gedruckt, fertig zum Aufhängen" / "Printed on canvas, ready to hang"): confirm against the canvas the print shop delivers, including whether hanging hardware is part of it.
