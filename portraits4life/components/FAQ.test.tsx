@@ -12,7 +12,7 @@ describe('FAQ', () => {
     const user = userEvent.setup();
     render(<FAQ />);
     const question = screen.getByRole('button', { name: 'Wie lange dauert die Bearbeitung?' });
-    const answer = screen.getByText(/Die digitale Bearbeitung dauert/);
+    const answer = screen.getByText(/Der Leinwanddruck dauert/);
     expect(question).toHaveAttribute('aria-expanded', 'false');
     expect(answer).not.toBeVisible();
 
@@ -28,7 +28,9 @@ describe('FAQ', () => {
   it('shows English questions on the English site', () => {
     pathname.value = '/en';
     render(<FAQ />);
-    expect(screen.getByRole('button', { name: 'How long does the artwork take?' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'How long does the artwork take?' }),
+    ).toBeInTheDocument();
   });
 
   it('builds the delivery answer from the product file', async () => {
@@ -37,7 +39,7 @@ describe('FAQ', () => {
     render(<FAQ />);
     await user.click(screen.getByRole('button', { name: 'Wie lange dauert die Bearbeitung?' }));
     expect(
-      screen.getByText('Die digitale Bearbeitung dauert 1 Woche. Der Leinwanddruck dauert 1 bis 2 Wochen nach Zahlungseingang.'),
+      screen.getByText('Der Leinwanddruck dauert 1 bis 2 Wochen nach Zahlungseingang.'),
     ).toBeInTheDocument();
   });
 });

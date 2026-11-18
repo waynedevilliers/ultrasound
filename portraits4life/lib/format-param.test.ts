@@ -1,8 +1,18 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, describe, expect, it } from 'vitest';
+import { digitalProduct } from '@/content/products';
 import { parseFormatParam } from './format-param';
 
+afterEach(() => {
+  digitalProduct.available = false;
+});
+
 describe('parseFormatParam', () => {
-  it('reads digital', () => {
+  it('ignores digital while the digital file is not sold', () => {
+    expect(parseFormatParam('digital')).toBeNull();
+  });
+
+  it('reads digital again when it is made available', () => {
+    digitalProduct.available = true;
     expect(parseFormatParam('digital')).toEqual({ product: 'digital' });
   });
 

@@ -4,11 +4,18 @@ import Image from 'next/image';
 import ActionLink from '@/components/ActionLink';
 import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
-import { lowestPrice } from '@/content/products';
+import { isDigitalAvailable, lowestPrice } from '@/content/products';
 import { formatPrice } from '@/lib/price';
 
 const check = (
-  <svg className="h-5 w-5 shrink-0 text-brand" fill="none" stroke="currentColor" strokeWidth={2.2} viewBox="0 0 24 24" aria-hidden="true">
+  <svg
+    className="h-5 w-5 shrink-0 text-brand"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth={2.2}
+    viewBox="0 0 24 24"
+    aria-hidden="true"
+  >
     <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
   </svg>
 );
@@ -22,6 +29,11 @@ export default function Hero() {
   const locale = localeOf(pathname);
   const isDE = locale === 'de';
   const { hero } = getCopy(locale);
+  // While the digital file is not sold, the texts name only the canvas. The digital wording is kept for later.
+  const supporting = isDigitalAvailable() ? hero.supporting : hero.supportingCanvas;
+  const benefits = isDigitalAvailable()
+    ? hero.benefits
+    : hero.benefits.map((benefit, index) => (index === 1 ? hero.benefitCanvas : benefit));
   const priceLine = hero.priceLine.replace('{price}', formatPrice(lowestPrice(), locale));
 
   // Earlier phone layout, kept as an option and NOT in use (commented out).
@@ -40,11 +52,11 @@ export default function Hero() {
             </h1>
 
             <p className="text-[1.125rem] min-[600px]:text-[1.25rem] text-body leading-relaxed max-w-[640px] mb-6">
-              {hero.supporting}
+              {supporting}
             </p>
 
             <ul className="mb-8 space-y-2">
-              {hero.benefits.map((benefit) => (
+              {benefits.map((benefit) => (
                 <li key={benefit} className="flex items-center gap-3 text-base text-body">
                   {check}
                   <span>{benefit}</span>
@@ -93,11 +105,11 @@ export default function Hero() {
             </h1>
 
             <p className="text-[1.125rem] min-[600px]:text-[1.25rem] text-body leading-relaxed max-w-[640px] mb-0 lg:mb-6">
-              {hero.supporting}
+              {supporting}
             </p>
 
             <ul className="mb-0 lg:mb-8 space-y-2 max-lg:order-6">
-              {hero.benefits.map((benefit) => (
+              {benefits.map((benefit) => (
                 <li key={benefit} className="flex items-center gap-3 text-base text-body">
                   {check}
                   <span>{benefit}</span>
@@ -111,7 +123,11 @@ export default function Hero() {
                   {hero.cta_order}
                 </ActionLink>
               </div>
-              <ActionLink href={isDE ? '/de#beispiele' : '/en#beispiele'} variant="secondary" className="max-lg:order-7">
+              <ActionLink
+                href={isDE ? '/de#beispiele' : '/en#beispiele'}
+                variant="secondary"
+                className="max-lg:order-7"
+              >
                 {hero.cta_examples}
               </ActionLink>
             </div>

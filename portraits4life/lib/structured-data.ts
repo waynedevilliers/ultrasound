@@ -1,4 +1,4 @@
-import { canvasSizes, CURRENCY, digitalProduct } from '@/content/products';
+import { canvasSizes, CURRENCY, digitalProduct, isDigitalAvailable } from '@/content/products';
 
 // Structured data (schema.org). Built from escaped data only, and kept in one place.
 export const ORGANIZATION_EMAIL = 'portraits4life.art@gmail.com';
@@ -13,16 +13,25 @@ export function organizationJsonLd(siteUrl?: string): Record<string, unknown> {
   };
 }
 
-export function productJsonLd(name: string, description: string, locale: 'de' | 'en' = 'de'): Record<string, unknown> {
+export function productJsonLd(
+  name: string,
+  description: string,
+  locale: 'de' | 'en' = 'de',
+): Record<string, unknown> {
   const de = locale === 'de';
+  const digitalOffers = isDigitalAvailable()
+    ? [
+        {
+          '@type': 'Offer',
+          name: de ? 'Digitales JPEG' : 'Digital JPEG',
+          priceCurrency: CURRENCY,
+          price: String(digitalProduct.price),
+          availability: 'https://schema.org/InStock',
+        },
+      ]
+    : [];
   const offers = [
-    {
-      '@type': 'Offer',
-      name: de ? 'Digitales JPEG' : 'Digital JPEG',
-      priceCurrency: CURRENCY,
-      price: String(digitalProduct.price),
-      availability: 'https://schema.org/InStock',
-    },
+    ...digitalOffers,
     ...canvasSizes.map((size) => ({
       '@type': 'Offer',
       name: `${de ? 'Leinwand' : 'Canvas'} ${size.widthCm} × ${size.heightCm} cm`,

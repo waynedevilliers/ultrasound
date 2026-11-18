@@ -1,6 +1,15 @@
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { digitalProduct } from '@/content/products';
 import { orderSubmitSchema } from './order-schema';
 import { CONSENT_VERSION } from './consent';
+
+// The field rules are tested with the digital file on sale; the availability tests turn it off.
+beforeEach(() => {
+  digitalProduct.available = true;
+});
+afterEach(() => {
+  digitalProduct.available = false;
+});
 
 const base = {
   name: 'Ann',

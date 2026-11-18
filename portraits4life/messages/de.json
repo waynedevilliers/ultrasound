@@ -19,6 +19,8 @@
     "headline": "ULTRASOUND ART",
     "cta_order": "Jetzt bestellen",
     "supporting": "Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk, digital oder auf Leinwand.",
+    "supportingCanvas": "Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk auf Leinwand.",
+    "benefitCanvas": "Als Leinwanddruck",
     "imageAlt": "Künstlerisch bearbeitetes Ultraschallbild als Beispiel",
     "benefits": [
       "Jedes Bild individuell künstlerisch gestaltet",
@@ -44,6 +46,10 @@
         "description": "Du bekommst deinen Druck oder die digitale Datei."
       }
     ],
+    "canvasOnlyStep": {
+      "title": "Leinwand erhalten",
+      "description": "Du bekommst deinen Leinwanddruck."
+    },
     "paymentNote": "Du bezahlst erst, nachdem ich dein Bild geprüft habe. Die Lieferzeit beginnt mit dem Zahlungseingang."
   },
   "pricing": {
@@ -64,6 +70,7 @@
     "orderFormat": "Dieses Format bestellen",
     "payment": "Bezahlung: PayPal, Überweisung, Kreditkarte",
     "deliveryLine": "Lieferzeit: digital {digital}, Leinwand {canvas} nach Zahlungseingang",
+    "deliveryLineCanvas": "Lieferzeit: Leinwand {canvas} nach Zahlungseingang",
     "imageAlt": {
       "canvasGallery": "Ultraschallbild als Leinwanddruck in einer Galerie-Wand",
       "canvasPortrait": "Ultraschallbild als Leinwand-Porträt mit Neonlicht",
@@ -135,7 +142,7 @@
     "items": [
       {
         "question": "Wie lange dauert die Bearbeitung?",
-        "answer": "Die digitale Bearbeitung dauert {digital}. Der Leinwanddruck dauert {canvas} nach Zahlungseingang."
+        "answer": "Der Leinwanddruck dauert {canvas} nach Zahlungseingang."
       },
       {
         "question": "Welche Bildformate kann ich hochladen?",
@@ -253,10 +260,12 @@
     "label": "Die wichtigsten Fakten",
     "formats": "Formate",
     "formatsValue": "Digital oder Leinwand ({sizes} cm)",
+    "formatsValueCanvas": "Leinwand ({sizes} cm)",
     "price": "Preis",
     "priceValue": "Ab {price}",
     "delivery": "Lieferzeit",
     "deliveryValue": "Digital {digital}, Leinwand {canvas} nach Zahlungseingang",
+    "deliveryValueCanvas": "Leinwand {canvas} nach Zahlungseingang",
     "payment": "Bezahlung",
     "paymentValue": "PayPal, Überweisung, Kreditkarte",
     "optional": "Optional",

@@ -11,6 +11,10 @@ import { POST } from './route';
 import { sql } from '@vercel/postgres';
 import { Resend } from 'resend';
 import { CONSENT_VERSION } from '@/lib/consent';
+import { digitalProduct } from '@/content/products';
+
+// The order tests send digital orders; the digital file is switched on for them.
+digitalProduct.available = true;
 
 let client = 0;
 

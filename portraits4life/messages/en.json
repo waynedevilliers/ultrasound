@@ -19,6 +19,8 @@
     "headline": "ULTRASOUND ART",
     "cta_order": "Order now",
     "supporting": "I turn your child's ultrasound image into a colourful work of art, as a digital file or on canvas.",
+    "supportingCanvas": "I turn your child's ultrasound image into a colourful work of art on canvas.",
+    "benefitCanvas": "As a canvas print",
     "imageAlt": "Example of an artistically enhanced ultrasound image",
     "benefits": [
       "Every image individually designed as a piece of art",
@@ -44,6 +46,10 @@
         "description": "You get your print or the digital file."
       }
     ],
+    "canvasOnlyStep": {
+      "title": "Receive your canvas",
+      "description": "You receive your canvas print."
+    },
     "paymentNote": "You pay only after I have checked your image. The delivery time starts with the payment."
   },
   "pricing": {
@@ -64,6 +70,7 @@
     "orderFormat": "Order this format",
     "payment": "Payment: PayPal, bank transfer, credit card",
     "deliveryLine": "Delivery: digital {digital}, canvas {canvas} after payment",
+    "deliveryLineCanvas": "Delivery: canvas {canvas} after payment",
     "imageAlt": {
       "canvasGallery": "Ultrasound artwork as a canvas print in a gallery wall",
       "canvasPortrait": "Ultrasound portrait on canvas with neon light",
@@ -135,7 +142,7 @@
     "items": [
       {
         "question": "How long does the artwork take?",
-        "answer": "Digital artwork takes {digital}. Canvas prints take {canvas} after payment."
+        "answer": "Canvas prints take {canvas} after payment."
       },
       {
         "question": "Which image formats can I upload?",
@@ -253,10 +260,12 @@
     "label": "Key facts",
     "formats": "Formats",
     "formatsValue": "Digital or canvas ({sizes} cm)",
+    "formatsValueCanvas": "Canvas ({sizes} cm)",
     "price": "Price",
     "priceValue": "From {price}",
     "delivery": "Delivery",
     "deliveryValue": "Digital {digital}, canvas {canvas} after payment",
+    "deliveryValueCanvas": "Canvas {canvas} after payment",
     "payment": "Payment",
     "paymentValue": "PayPal, bank transfer, credit card",
     "optional": "Optional",

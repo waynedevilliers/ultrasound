@@ -22,7 +22,7 @@ import { createRequestCode } from '@/lib/request-code';
 const EMPTY_FORM = {
   name: '',
   email: '',
-  product: 'digital',
+  product: 'canvas',
   canvasSize: '30x30cm',
   childName: '',
   weeksInWomb: '',
@@ -102,7 +102,7 @@ export default function OrderForm({
   // The address the confirmation was sent to; null when the mail service did not accept it.
   const [confirmationTo, setConfirmationTo] = useState<string | null>(null);
   // The product of the sent order, so the success steps describe what really happens next.
-  const [submittedProduct, setSubmittedProduct] = useState<'digital' | 'canvas'>('digital');
+  const [submittedProduct, setSubmittedProduct] = useState<'digital' | 'canvas'>('canvas');
   useEffect(() => {
     if (!submitted) return;
     onSentChange?.(`${orderForm.successTitle} ${orderForm.referenceLabel} ${reference}`);
@@ -111,7 +111,7 @@ export default function OrderForm({
 
   const [formData, setFormData] = useState({
     ...EMPTY_FORM,
-    product: initialFormat?.product ?? 'digital',
+    product: initialFormat?.product ?? 'canvas',
     canvasSize: initialFormat?.product === 'canvas' ? initialFormat.canvasSize : '30x30cm',
   });
 
