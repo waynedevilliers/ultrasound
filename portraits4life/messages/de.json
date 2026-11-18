@@ -247,7 +247,8 @@
     "networkError": "Keine Verbindung zum Server. Bitte prüfe deine Internetverbindung und versuche es erneut.",
     "serverError": "Die Bestellung konnte gerade nicht gespeichert werden. Bitte versuche es später noch einmal.",
     "tooManyRequests": "Zu viele Versuche. Bitte warte ein paar Minuten und versuche es dann erneut.",
-    "errorCode": "(Fehlercode: {code})"
+    "errorCode": "(Fehlercode: {code})",
+    "honeypotLabel": "Website"
   },
   "common": {
     "home": "Startseite",

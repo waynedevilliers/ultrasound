@@ -247,7 +247,8 @@
     "networkError": "No connection to the server. Please check your internet connection and try again.",
     "serverError": "The order could not be saved just now. Please try again later.",
     "tooManyRequests": "Too many attempts. Please wait a few minutes and try again.",
-    "errorCode": "(Error code: {code})"
+    "errorCode": "(Error code: {code})",
+    "honeypotLabel": "Website"
   },
   "common": {
     "home": "Home",
