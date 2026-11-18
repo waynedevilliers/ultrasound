@@ -7,6 +7,7 @@ import { deliverySentence } from '@/lib/delivery';
 import { formatPrice } from '@/lib/price';
 import { getCopy, localeOf } from '@/lib/copy';
 import InfoCard from '@/components/InfoCard';
+import ActionLink from '@/components/ActionLink';
 
 const icon = (path: string) => (
   <svg
@@ -27,6 +28,7 @@ export default function FactsBox() {
   const locale = localeOf(pathname);
   const copy = getCopy(locale);
   const f = copy.facts;
+  const orderHref = `/${locale}/order`;
   // "30 × 30, 40 × 40 oder 50 × 50": the list of sizes, with the word for "or" in the page language.
   const sizes = new Intl.ListFormat(locale === 'de' ? 'de' : 'en', {
     style: 'long',
@@ -80,6 +82,11 @@ export default function FactsBox() {
             </InfoCard>
           ))}
         </dl>
+        <div className="mt-8 text-center">
+          <ActionLink href={orderHref} variant="secondary">
+            {copy.common.orderNow}
+          </ActionLink>
+        </div>
       </div>
     </section>
   );
