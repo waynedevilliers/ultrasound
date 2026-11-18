@@ -1,6 +1,6 @@
 ---
 name: performance
-description: Measures and explains the loading speed of the Portraits 4 Life website on a phone. Use after images are added or changed, after adding anything external, and before launch. Read only: reports findings, never changes code.
+description: "Measures and explains the loading speed of the Portraits 4 Life website on a phone. Use after images are added or changed, after adding anything external, and before launch. Read only: reports findings, never changes code."
 tools: Read, Grep, Glob, Bash, Write
 ---
 
