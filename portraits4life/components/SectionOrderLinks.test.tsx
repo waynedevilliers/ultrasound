@@ -26,9 +26,17 @@ describe('section order links', () => {
     }
   });
 
-  it('links to the English order page on English pages', () => {
+  it('links to the English order page in each section on English pages', () => {
     path.current = '/en';
-    render(<HowItWorks />);
-    expect(screen.getByRole('link', { name: 'Order now' })).toHaveAttribute('href', '/en/order');
+    for (const element of [
+      <About key="a" locale="en" />,
+      <FactsBox key="f" />,
+      <HowItWorks key="h" />,
+      <Gallery key="g" />,
+    ]) {
+      const { unmount } = render(element);
+      expect(screen.getByRole('link', { name: 'Order now' })).toHaveAttribute('href', '/en/order');
+      unmount();
+    }
   });
 });
