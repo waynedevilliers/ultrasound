@@ -11,7 +11,7 @@ import FAQ from './FAQ';
 import ContactSection from './ContactSection';
 
 const pathname = { value: '/de' };
-const localeNow = () => pathname.value.startsWith('/en') ? 'en' : 'de';
+const localeNow = (): 'en' | 'de' => (pathname.value.startsWith('/en') ? 'en' : 'de');
 vi.mock('next/navigation', () => ({ usePathname: () => pathname.value }));
 
 function Landing() {

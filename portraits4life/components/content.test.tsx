@@ -6,7 +6,7 @@ import Gallery from './Gallery';
 import IntroSection from './IntroSection';
 
 const path = { current: '/en' };
-const localeNow = () => path.current.startsWith('/en') ? 'en' : 'de';
+const localeNow = (): 'en' | 'de' => (path.current.startsWith('/en') ? 'en' : 'de');
 vi.mock('next/navigation', () => ({ usePathname: () => path.current }));
 vi.mock('next/image', () => ({
   default: (props: Record<string, unknown>) => {
