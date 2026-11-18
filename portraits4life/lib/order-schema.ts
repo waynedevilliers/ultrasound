@@ -3,14 +3,9 @@ import { canvasSizeIds } from '@/content/products';
 import { CONSENT_VERSION } from '@/lib/consent';
 import { isDigitalAvailable } from '@/content/products';
 
-export const MAX_IMAGE_BYTES = 15 * 1024 * 1024;
-export const ALLOWED_IMAGE_TYPES = [
-  'image/jpeg',
-  'image/png',
-  'image/webp',
-  'image/heic',
-  'image/heif',
-];
+import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/image-rules';
+
+export { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES };
 
 const optionalText = (max: number) => z.string().trim().max(max).default('');
 
@@ -76,7 +71,6 @@ export const orderFieldsSchema = z
       });
     }
   });
-
 
 // Checks an uploaded file on the server. Returns an error message, or null when valid.
 export function validateImageFile(

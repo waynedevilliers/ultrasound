@@ -4,19 +4,19 @@ import { useEffect, useId, useRef, useState } from 'react';
 import { formatOptions } from '@/lib/format-options';
 import { isCanvasSizeId } from '@/content/products';
 import { buttonClasses } from '@/components/ActionLink';
-import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/order-schema';
+import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/image-rules';
 import { usePathname } from 'next/navigation';
 import type { FormatChoice } from '@/lib/format-param';
 import { getCopy, localeOf } from '@/lib/copy';
 import Link from 'next/link';
 import { routeHref, routes } from '@/content/routes';
-import { upload } from '@vercel/blob/client';
 import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 import UploadArea from '@/components/UploadArea';
 import OrderSuccess from '@/components/OrderSuccess';
 import { CONSENT_VERSION } from '@/lib/consent';
 import { IMAGE_FORMAT_LIST } from '@/lib/image-formats';
 import { createRequestCode } from '@/lib/request-code';
+import { upload } from '@vercel/blob/client';
 
 // Empty values for every field except product and size, which may come from the URL.
 const EMPTY_FORM = {
