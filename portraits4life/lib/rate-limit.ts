@@ -1,7 +1,7 @@
 // Fixed-window rate limiter kept in memory. It is per server instance, so it
 // is a basic guard against bursts, not a hard global limit.
 const WINDOW_MS = 15 * 60 * 1000;
-export const DEFAULT_MAX_REQUESTS = 5;
+const DEFAULT_MAX_REQUESTS = 5;
 
 const hits = new Map<string, number[]>();
 

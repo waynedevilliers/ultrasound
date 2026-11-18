@@ -77,7 +77,6 @@ export const orderFieldsSchema = z
     }
   });
 
-export type OrderFields = z.infer<typeof orderFieldsSchema>;
 
 // Checks an uploaded file on the server. Returns an error message, or null when valid.
 export function validateImageFile(

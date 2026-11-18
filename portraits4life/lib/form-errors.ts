@@ -1,5 +1,5 @@
 // Field keys the order form can show an error for. Server field names that differ are aliased.
-export const ORDER_FORM_FIELDS = [
+const ORDER_FORM_FIELDS = [
   'name',
   'email',
   'product',
