@@ -24,7 +24,7 @@ function Landing() {
       <HowItWorks locale={localeNow()} />
       <PricingTiers locale={localeNow()} />
       <About locale={pathname.value.slice(1)} />
-      <FAQ />
+      <FAQ locale={localeNow()} />
       <ContactSection locale={localeNow()} />
     </>
   );

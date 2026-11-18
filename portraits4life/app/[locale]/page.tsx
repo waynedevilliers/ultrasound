@@ -15,7 +15,11 @@ import JsonLd from '@/components/JsonLd';
 import { pageMetadata, seoCopy, SITE_URL } from '@/lib/metadata';
 import { organizationJsonLd, productJsonLd } from '@/lib/structured-data';
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const { locale } = await params;
   return pageMetadata({ locale, path: '', ...seoCopy(locale, 'home') });
 }
@@ -46,13 +50,13 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
           <About locale={pageLocale} />
         </Reveal>
         <Reveal>
-          <FAQ />
+          <FAQ locale={pageLocale} />
         </Reveal>
         <Reveal>
           <ContactSection locale={pageLocale} />
         </Reveal>
       </main>
-      <Footer />
+      <Footer locale={pageLocale} />
     </div>
   );
 }

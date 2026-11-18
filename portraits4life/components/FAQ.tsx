@@ -1,17 +1,14 @@
 'use client';
 
 import { useId, useState } from 'react';
-import { usePathname } from 'next/navigation';
-import { getCopy, localeOf } from '@/lib/copy';
+import { getCopy, type Locale } from '@/lib/copy';
 import { routeHref, routes } from '@/content/routes';
 import { canvasDeliveryText, digitalDeliveryText } from '@/lib/delivery';
 import { IMAGE_FORMAT_LIST } from '@/lib/image-formats';
 
 // TODO(client): the new question about an unsuitable image is a draft answer; confirm it.
 // TODO(client): the questions and answers are drafts. Confirm each answer (shipping, preview, refund, file requirements) with the client; see docs/faq-client-review.md. No FAQPage structured data until they are confirmed.
-export default function FAQ() {
-  const pathname = usePathname();
-  const locale = localeOf(pathname);
+export default function FAQ({ locale }: { locale: Locale }) {
   const baseId = useId();
   const [openIndex, setOpenIndex] = useState<number | null>(null);
   const contactRoute = routes.find((route) => route.id === 'contact');
@@ -22,7 +19,9 @@ export default function FAQ() {
   return (
     <section id="faq" className="section-y bg-surface">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <h2 className="font-display heading-xl font-bold text-center mb-16 text-ink">{faq.title}</h2>
+        <h2 className="font-display heading-xl font-bold text-center mb-16 text-ink">
+          {faq.title}
+        </h2>
 
         <div className="space-y-4">
           {faq.items.map((item, index) => {
@@ -46,11 +45,20 @@ export default function FAQ() {
                       stroke="currentColor"
                       viewBox="0 0 24 24"
                     >
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        strokeWidth={2}
+                        d="M19 14l-7 7m0 0l-7-7m7 7V3"
+                      />
                     </svg>
                   </button>
                 </h3>
-                <div id={panelId} hidden={!isOpen} className="px-6 py-4 bg-surface border-t border-line">
+                <div
+                  id={panelId}
+                  hidden={!isOpen}
+                  className="px-6 py-4 bg-surface border-t border-line"
+                >
                   <p className="text-copy leading-relaxed">
                     {item.answer
                       .replace('{digital}', digitalDeliveryText(locale))

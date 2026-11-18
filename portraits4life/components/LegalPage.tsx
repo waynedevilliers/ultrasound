@@ -28,16 +28,15 @@ export default function LegalPage({ locale, page }: { locale: string; page: Lega
       <Header />
       <Breadcrumb
         label={common.breadcrumb}
-        items={[
-          { label: homeLabel, href: `/${locale}` },
-          { label: copy.title },
-        ]}
+        items={[{ label: homeLabel, href: `/${locale}` }, { label: copy.title }]}
       />
       <main className="flex-1 max-w-3xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-16">
-        <h1 className="font-display text-3xl sm:text-4xl font-bold mb-6 text-ink break-words">{copy.title}</h1>
+        <h1 className="font-display text-3xl sm:text-4xl font-bold mb-6 text-ink break-words">
+          {copy.title}
+        </h1>
         <p className="text-copy leading-relaxed">{copy.intro}</p>
       </main>
-      <Footer />
+      <Footer locale={locale === 'de' ? 'de' : 'en'} />
     </div>
   );
 }
