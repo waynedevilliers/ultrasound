@@ -94,6 +94,7 @@ export default function Header() {
               alt="Portraits 4 Life"
               width={48}
               height={48}
+              priority
               className="w-full h-full object-contain"
             />
           </div>
