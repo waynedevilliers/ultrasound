@@ -13,8 +13,8 @@ describe('section order links', () => {
     path.current = '/de';
     for (const element of [
       <About key="a" locale="de" />,
-      <FactsBox key="f" />,
-      <HowItWorks key="h" />,
+      <FactsBox key="f" locale="de" />,
+      <HowItWorks key="h" locale="de" />,
       <Gallery key="g" />,
     ]) {
       const { unmount } = render(element);
@@ -30,8 +30,8 @@ describe('section order links', () => {
     path.current = '/en';
     for (const element of [
       <About key="a" locale="en" />,
-      <FactsBox key="f" />,
-      <HowItWorks key="h" />,
+      <FactsBox key="f" locale="en" />,
+      <HowItWorks key="h" locale="en" />,
       <Gallery key="g" />,
     ]) {
       const { unmount } = render(element);

@@ -3,6 +3,11 @@ import { fontClassNames } from '@/lib/fonts';
 
 const SUPPORTED_LOCALES = ['de', 'en'];
 
+// Both languages are built ahead of time as static pages.
+export function generateStaticParams() {
+  return SUPPORTED_LOCALES.map((locale) => ({ locale }));
+}
+
 export default async function LocaleLayout({
   children,
   params,

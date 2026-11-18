@@ -1,14 +1,9 @@
-'use client';
-
-import { usePathname } from 'next/navigation';
 import ActionLink from '@/components/ActionLink';
-import { getCopy, localeOf } from '@/lib/copy';
+import { getCopy, type Locale } from '@/lib/copy';
 import { routeHref, routes } from '@/content/routes';
 
 // TODO(client): approve the closing text and the question line (DE and EN).
-export default function ContactSection() {
-  const pathname = usePathname();
-  const locale = localeOf(pathname);
+export default function ContactSection({ locale }: { locale: Locale }) {
   const { contact } = getCopy(locale);
   const orderRoute = routes.find((route) => route.id === 'order');
   const orderHref = orderRoute ? routeHref(locale, orderRoute) : `/${locale}/order`;

@@ -9,8 +9,8 @@ describe('intro section', () => {
   it('shows "Auf Wunsch mit Namen" once, in the hero benefit points only', () => {
     render(
       <>
-        <Hero />
-        <IntroSection />
+        <Hero locale="de" />
+        <IntroSection locale="de" />
       </>,
     );
     const matches = screen.getAllByText(/Auf Wunsch mit Namen/);

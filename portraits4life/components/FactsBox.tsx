@@ -1,11 +1,8 @@
-'use client';
-
 import type { ReactNode } from 'react';
-import { usePathname } from 'next/navigation';
 import { canvasSizes, isDigitalAvailable, lowestPrice } from '@/content/products';
 import { deliverySentence } from '@/lib/delivery';
 import { formatPrice } from '@/lib/price';
-import { getCopy, localeOf } from '@/lib/copy';
+import { getCopy, type Locale } from '@/lib/copy';
 import InfoCard from '@/components/InfoCard';
 import ActionLink from '@/components/ActionLink';
 
@@ -23,9 +20,7 @@ const icon = (path: string) => (
 );
 
 // Key facts for a parent at a glance. Prices, sizes and delivery come from content/products.ts.
-export default function FactsBox() {
-  const pathname = usePathname();
-  const locale = localeOf(pathname);
+export default function FactsBox({ locale }: { locale: Locale }) {
   const copy = getCopy(locale);
   const f = copy.facts;
   const orderHref = `/${locale}/order`;

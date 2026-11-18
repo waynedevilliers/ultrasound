@@ -22,6 +22,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function Home({ params }: { params: Promise<{ locale: string }> }) {
   const { locale } = await params;
+  const pageLocale = locale === 'en' ? 'en' : 'de';
   const copy = seoCopy(locale, 'home');
   return (
     <div className="min-h-screen flex flex-col">
@@ -29,26 +30,26 @@ export default async function Home({ params }: { params: Promise<{ locale: strin
       <JsonLd data={productJsonLd(copy.title, copy.description, locale === 'en' ? 'en' : 'de')} />
       <Header />
       <main className="flex-1">
-        <Hero />
-        <FactsBox />
-        <IntroSection />
+        <Hero locale={pageLocale} />
+        <FactsBox locale={pageLocale} />
+        <IntroSection locale={pageLocale} />
         <Reveal>
           <Gallery />
         </Reveal>
         <Reveal>
-          <HowItWorks />
+          <HowItWorks locale={pageLocale} />
         </Reveal>
         <Reveal>
-          <PricingTiers />
+          <PricingTiers locale={pageLocale} />
         </Reveal>
         <Reveal>
-          <About locale={locale} />
+          <About locale={pageLocale} />
         </Reveal>
         <Reveal>
           <FAQ />
         </Reveal>
         <Reveal>
-          <ContactSection />
+          <ContactSection locale={pageLocale} />
         </Reveal>
       </main>
       <Footer />

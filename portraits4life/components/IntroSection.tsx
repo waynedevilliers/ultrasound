@@ -1,18 +1,13 @@
-'use client';
-
 import Image from 'next/image';
-import { usePathname } from 'next/navigation';
 import ActionLink from '@/components/ActionLink';
-import { getCopy, localeOf } from '@/lib/copy';
+import { getCopy, type Locale } from '@/lib/copy';
 
 // The emotional text below the hero, ending with the primary order button.
 // Desktop: text column on the left, image on the right. Mobile: title, image, text, button.
 // TODO(client): approve the intro title and wording; the title is new.
 // TODO(client): the first paragraph says the editing is digital (no manual claim); approve the wording.
 // TODO(client), high priority: photo of a finished canvas on a wall for this section. The image shown is a placeholder from the existing examples.
-export default function IntroSection() {
-  const pathname = usePathname();
-  const locale = localeOf(pathname);
+export default function IntroSection({ locale }: { locale: Locale }) {
   const isDE = locale === 'de';
   const { intro, hero } = getCopy(locale);
 
