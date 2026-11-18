@@ -4,6 +4,20 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 ---
 
+## 2026-11-18: Digital file not sold for now
+
+- **Status:** done
+- **Decision:** The digital file is not sold for now. It stays in `content/products.ts` with `available: false`. The format cards, order options, prices, structured data and facts show only the canvas sizes. The order form defaults to canvas, and the order schema refuses a digital order while the file is not sold. Setting `available` back to `true` brings it back everywhere, with its previous wording.
+- **Why:** Whoever has the file can print it anywhere, so it would undercut the canvases.
+- **Considered:** Deleting the product. Rejected: keeping the data makes it easy to offer again later.
+
+## 2026-11-18: Tone of voice: sell the feeling
+
+- **Status:** done
+- **Decision:** The site never talks down the original ultrasound printout. It sells the feeling: the first picture of the child gets a place of honour at home.
+- **Why:** The owner's direction for the new copy. The black and white printout is where the artwork starts, not something to criticise.
+- **Considered:** Contrasting the printout with the canvas. Rejected: it runs down something parents already value.
+
 ## 2026-11-17: Order error handling and request codes
 
 - **Status:** done; to be checked on a preview
@@ -93,7 +107,6 @@ Questions the owner has not answered yet. Remove an item and log the answer as a
 - Impressum and Datenschutz: legal entity and contact details needed (TODO(client)).
 - Order form: attachments or upload-and-link: answered by the photo decision (2026-11-14, Step 11 part B): upload-and-link.
 - Prices: final prices for 40 × 40 and 50 × 50 after real print quotes (provisional now: 109 € and 129 €).
-- Is the digital file sold at all, or canvases only?
 - Is shipping within Germany included in the price?
 - Terms for the digital file (private use only): wording to be confirmed.
 - Order info section (O6): does this site offer Individualportraits and Paarportraits, or only ultrasound art? If only ultrasound art, rows 2 and 3 and the second upload go (texts kept under docs/). The payment row says "Nach der Bestätigung", while the rest of the site says "nach Zahlungseingang"; the owner should pick one timing.
@@ -579,3 +592,4 @@ One line per step, added as each step lands.
 - Step 0: Audit against the Salon77 guide (`docs/reviews/2026-11-11-audit.md`).
 - Step 1: Foundation, complete. CLAUDE.md standards, decisions log, env and editor configs, fonts via next/font with display swap, one site palette, button and section variables, TODO(client) markers on missing client content (grep TODO(client) for the list).
 - Sticky menu bar, one primary button per page, content container, facts box and layout rules come in later steps.
+- Benefit point 2 ("Auf Leinwand gedruckt, fertig zum Aufhängen" / "Printed on canvas, ready to hang"): confirm against the canvas the print shop delivers, including whether hanging hardware is part of it.
