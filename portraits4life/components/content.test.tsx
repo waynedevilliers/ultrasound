@@ -32,7 +32,7 @@ describe('Hero and intro copy', () => {
     render(<Hero />);
     expect(
       screen.getAllByText(
-        'Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk auf Leinwand.',
+        'Ich verwandle das Ultraschallbild deines Babys in ein farbenfrohes Kunstwerk auf Leinwand.',
       ),
     ).toHaveLength(1);
   });
@@ -62,7 +62,7 @@ describe('Hero and intro copy', () => {
     );
     expect(
       screen.getAllByText(
-        /Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern\./,
+        /Die ersten Einblicke in das kleine Wunder unter deinem Herzen sind etwas ganz Besonderes\./,
       ),
     ).toHaveLength(1);
   });

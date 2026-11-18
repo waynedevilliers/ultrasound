@@ -27,7 +27,11 @@ export default function FactsBox() {
   const locale = localeOf(pathname);
   const copy = getCopy(locale);
   const f = copy.facts;
-  const sizes = canvasSizes.map((size) => `${size.widthCm}×${size.heightCm}`).join(', ');
+  // "30 × 30, 40 × 40 oder 50 × 50": the list of sizes, with the word for "or" in the page language.
+  const sizes = new Intl.ListFormat(locale === 'de' ? 'de' : 'en', {
+    style: 'long',
+    type: 'disjunction',
+  }).format(canvasSizes.map((size) => `${size.widthCm} × ${size.heightCm}`));
 
   const facts: { label: string; value: string; icon: ReactNode }[] = [
     {

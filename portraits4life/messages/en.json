@@ -77,14 +77,18 @@
       "canvasSizes": "Comparison of canvas sizes 30, 40 and 50 cm"
     },
     "from": "from",
-    "canvasItems": ["Printed on canvas", "Delivery after payment"]
+    "canvasItems": [
+      "Printed on canvas",
+      "Delivery after payment"
+    ]
   },
   "contact": {
     "title": "Ready for your artwork?",
     "email": "portraits4life.art@gmail.com",
     "description": "Upload your ultrasound image. I check it and get back to you.",
     "cta": "Order now",
-    "questions": "Questions? Write to me:"
+    "questions": "Questions? Write to me:",
+    "lead": "Because the most beautiful memories deserve a place of honour."
   },
   "footer": {
     "contactUs": "Write to me",
