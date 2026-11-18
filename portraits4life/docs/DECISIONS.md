@@ -4,6 +4,14 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 ---
 
+## 2026-11-18: Accepted risk: picomatch advisory (no patched release)
+
+- **Status:** open (accepted risk; recheck when a patched release exists)
+- **Decision:** The high advisory GHSA-fc5q-39xc-vjpf (ReDoS in picomatch) stays. Its only path is through `@parcel/watcher`, which is installed transitively by the production dependency `next-intl`, although the watcher is used only for development and build tooling. No code in this project passes user input to picomatch. The newest picomatch on npm (4.0.7) is still flagged, so there is no patched version to move to. A top-level override was tried and reverted: it did not clear the audit and it rewrote the lockfile (about 130 `libc` lines removed, plus a separate `zod` finding under `@vercel/blob`).
+- **Why:** Clearing it would mean a breaking change or a lockfile rewrite with no security gain.
+- **Recheck:** when `npm view picomatch version` or the advisory shows a fixed release, or when `@parcel/watcher` or next-intl drops the dependency.
+- **Considered:** Overriding picomatch at the top level. Rejected for the reasons above.
+
 ## 2026-11-18: Digital file not sold for now
 
 - **Status:** done
