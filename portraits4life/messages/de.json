@@ -285,13 +285,10 @@
   },
   "customerEmail": {
     "subject": "Bestellung bestätigt: Portraits 4 Life",
-    "heading": "Danke für deine Bestellung!",
     "greeting": "Hallo {name},",
-    "intro": "ich habe deine Bestellung erhalten und prüfe dein Bild in Kürze.",
-    "reference": "Referenz:",
     "product": "Produkt:",
     "delivery": "Voraussichtliche Lieferzeit:",
-    "contact": "Ich melde mich innerhalb von 2 Werktagen bei dir, um zu bestätigen, dass dein Bild für den Druck geeignet ist.",
+    "contact": "Bei Fragen schreib mir einfach an {email}.",
     "signoff": "Herzliche Grüße,",
     "team": "Portraits 4 Life Team"
   }

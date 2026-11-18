@@ -238,14 +238,16 @@ describe('POST /api/orders logging and email', () => {
     await POST(orderRequest(order({ locale: 'de' })));
     const customerEmail = send.mock.calls[1][0];
     expect(customerEmail.subject).toBe('Bestellung bestätigt: Portraits 4 Life');
-    expect(customerEmail.html).toContain('Danke für deine Bestellung!');
+    expect(customerEmail.text).toContain('Danke, dein Bild ist bei mir angekommen!');
+    expect(customerEmail.replyTo).toBe('portraits4life.art@gmail.com');
   });
 
   it('sends the customer email in English for an English page', async () => {
     await POST(orderRequest(order({ locale: 'en' })));
     const customerEmail = send.mock.calls[1][0];
     expect(customerEmail.subject).toBe('Order confirmed: Portraits 4 Life');
-    expect(customerEmail.html).toContain('Thank you for your order!');
+    expect(customerEmail.text).toContain('Thank you, your image has arrived!');
+    expect(customerEmail.html).toBeUndefined();
   });
 
   it('still answers 201 when sending throws', async () => {

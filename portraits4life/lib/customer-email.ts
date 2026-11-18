@@ -1,9 +1,6 @@
 import { canvasSizes } from '@/content/products';
 import { getCopy, type Locale } from '@/lib/copy';
 import { canvasDeliveryText, digitalDeliveryText } from '@/lib/delivery';
-import { escapeHtml } from '@/lib/escape-html';
-
-// The confirmation email to the customer. It is written in the language of the page the order was made on.
 
 // Product name in the page language, for example "Canvas print 30 × 30 cm".
 export function productName(
@@ -23,25 +20,38 @@ export function deliveryText(locale: Locale, product: 'digital' | 'canvas'): str
   return product === 'digital' ? digitalDeliveryText(locale) : canvasDeliveryText(locale);
 }
 
+// The confirmation email to the customer: plain text, in the language of the page the order was made on.
+// The steps and the heading are the same words as on the success page.
 export function buildCustomerEmail(input: {
   locale: Locale;
   name: string;
   reference: string;
-  product: string;
+  product: 'digital' | 'canvas';
+  productLabel: string;
   delivery: string;
-}): { subject: string; html: string } {
-  const { customerEmail } = getCopy(input.locale);
-  const row = (label: string, value: string) =>
-    `<p><strong>${escapeHtml(label)}</strong> ${escapeHtml(value)}</p>`;
-  const html = `
-    <h2>${escapeHtml(customerEmail.heading)}</h2>
-    <p>${escapeHtml(customerEmail.greeting.replace('{name}', input.name))}</p>
-    <p>${escapeHtml(customerEmail.intro)}</p>
-    ${row(customerEmail.reference, input.reference)}
-    ${row(customerEmail.product, input.product)}
-    ${row(customerEmail.delivery, input.delivery)}
-    <p>${escapeHtml(customerEmail.contact)}</p>
-    <p>${escapeHtml(customerEmail.signoff)}<br/>${escapeHtml(customerEmail.team)}</p>
-  `;
-  return { subject: customerEmail.subject, html };
+  contactEmail: string;
+}): { subject: string; text: string } {
+  const copy = getCopy(input.locale);
+  const { customerEmail, orderForm } = copy;
+  const lastStep = input.product === 'canvas' ? orderForm.nextStep3 : orderForm.nextStep3Digital;
+  const lines = [
+    customerEmail.greeting.replace('{name}', input.name),
+    '',
+    orderForm.successTitle,
+    '',
+    `${orderForm.referenceLabel} ${input.reference}`,
+    `${customerEmail.product} ${input.productLabel}`,
+    `${customerEmail.delivery} ${input.delivery}`,
+    '',
+    orderForm.nextStepsTitle,
+    `1. ${orderForm.nextStep1}`,
+    `2. ${orderForm.nextStep2}`,
+    `3. ${lastStep}`,
+    '',
+    customerEmail.contact.replace('{email}', input.contactEmail),
+    '',
+    customerEmail.signoff,
+    customerEmail.team,
+  ];
+  return { subject: customerEmail.subject, text: lines.join('\n') };
 }

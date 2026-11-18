@@ -6,6 +6,8 @@ import { buildCustomerEmail, deliveryText, productName } from '@/lib/customer-em
 import { clientKey } from '@/lib/client-key';
 import { head } from '@vercel/blob';
 import { Resend } from 'resend';
+
+type MailMessage = Parameters<Resend['emails']['send']>[0];
 import { NextRequest, NextResponse } from 'next/server';
 import { canvasSizes, type CanvasSizeId } from '@/content/products';
 import { escapeHtml } from '@/lib/escape-html';
@@ -184,12 +186,13 @@ export async function POST(request: NextRequest) {
     }
     const subject = `New Order ${reference} - ${order.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`;
     const from = process.env.ORDER_FROM_EMAIL || DEFAULT_FROM;
+    const contactEmail = process.env.ORDER_EMAIL || DEFAULT_ORDER_EMAIL;
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Emails are sent after the order is saved. A failed email is logged, not shown to the visitor.
     const adminEmail = {
       from,
-      to: process.env.ORDER_EMAIL || DEFAULT_ORDER_EMAIL,
+      to: contactEmail,
       replyTo: order.email,
       subject,
       html: orderEmailHtml(order, reference, links),
@@ -198,13 +201,22 @@ export async function POST(request: NextRequest) {
       locale: order.locale,
       name: order.name,
       reference,
-      product: productName(order.locale, order.product, order.canvasSize),
+      product: order.product,
+      productLabel: productName(order.locale, order.product, order.canvasSize),
       delivery: deliveryText(order.locale, order.product),
+      contactEmail,
     });
-    const customerEmail = { from, to: order.email, subject: customer.subject, html: customer.html };
+    // Replies to the customer's confirmation go to our address.
+    const customerEmail = {
+      from,
+      to: order.email,
+      replyTo: contactEmail,
+      subject: customer.subject,
+      text: customer.text,
+    };
 
     // Returns whether the email was accepted, so the visitor is only told about a confirmation that is on its way.
-    const sendMail = async (email: typeof customerEmail): Promise<boolean> => {
+    const sendMail = async (email: MailMessage): Promise<boolean> => {
       try {
         const sent = await resend.emails.send(email);
         if (sent.error) {
