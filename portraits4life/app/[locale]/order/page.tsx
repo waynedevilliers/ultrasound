@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Header from '@/components/Header';
-import OrderForm from '@/components/OrderForm';
+import OrderSection from '@/components/OrderSection';
 import OrderInfo from '@/components/OrderInfo';
 import Footer from '@/components/Footer';
 import Breadcrumb from '@/components/Breadcrumb';
@@ -10,7 +10,11 @@ import { pageMetadata, seoCopy, SITE_URL } from '@/lib/metadata';
 import { breadcrumbJsonLd, organizationJsonLd } from '@/lib/structured-data';
 import { parseFormatParam } from '@/lib/format-param';
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const { locale } = await params;
   return pageMetadata({ locale, path: '/order', ...seoCopy(locale, 'order') });
 }
@@ -38,16 +42,16 @@ export default async function OrderPage({
         />
       )}
       <Header />
-      <main className="flex-1 section-y bg-canvas">
+      {/* Top spacing comes from the breadcrumb only; the bottom keeps the standard section space. */}
+      <main className="flex-1 bg-canvas pb-10 sm:pb-20 lg:pb-32">
         <Breadcrumb label={copy.common.breadcrumb} items={[home, { label: copy.common.order }]} />
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
-          <h1 className="font-display heading-xl font-bold mb-4 text-ink text-center">{copy.order.title}</h1>
-
-          <p className="text-center text-copy mb-12 max-w-2xl mx-auto">{copy.orderPage.intro}</p>
-
-          <div className="bg-surface rounded-lg shadow-lg p-8 mb-12">
-            <OrderForm initialFormat={parseFormatParam(format)} />
-          </div>
+          <OrderSection
+            title={copy.order.title}
+            thanksTitle={copy.order.thanks}
+            intro={copy.orderPage.intro}
+            initialFormat={parseFormatParam(format)}
+          />
 
           <OrderInfo />
         </div>

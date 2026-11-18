@@ -86,7 +86,8 @@
     "legalNav": "Rechtliches"
   },
   "order": {
-    "title": "Bestellen"
+    "title": "Bestellen",
+    "thanks": "Danke"
   },
   "legal": {
     "impressum": {
@@ -161,7 +162,7 @@
     "moreLink": "Schreib mir"
   },
   "orderInfo": {
-    "title": "Informationen",
+    "title": "Gut zu wissen",
     "sections": [
       {
         "id": "ultrasound",

@@ -8,6 +8,12 @@ vi.mock('@vercel/blob/client', () => ({
   upload: vi.fn(async (path: string) => ({ pathname: `${path}/stored.png` })),
 }));
 
+// jsdom has no matchMedia or scrolling; the success view uses both.
+window.matchMedia = vi
+  .fn()
+  .mockReturnValue({ matches: false }) as unknown as typeof window.matchMedia;
+Element.prototype.scrollIntoView = vi.fn();
+
 function photoInput(container: HTMLElement) {
   return container.querySelector('#ultrasoundImage') as HTMLInputElement;
 }
@@ -441,5 +447,20 @@ describe('OrderForm submit errors', () => {
     expect(await screen.findByText(/P4L-261117-K7QM$/)).toBeInTheDocument();
     expect(screen.queryByText(/#42/)).toBeNull();
     expect(screen.queryByRole('alert')).toBeNull();
+  });
+});
+
+describe('OrderForm success focus', () => {
+  it('announces the success message and moves focus to it', async () => {
+    stubServer(
+      async () =>
+        new Response(JSON.stringify({ success: true, reference: 'P4L-261117-K7QM' }), {
+          status: 201,
+        }),
+    );
+    const { container } = render(<OrderForm />);
+    submitWithPhoto(container);
+    const region = await screen.findByRole('region', { name: /Thank you, your image has arrived/ });
+    expect(region).toHaveFocus();
   });
 });
