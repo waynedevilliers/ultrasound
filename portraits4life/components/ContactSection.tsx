@@ -14,11 +14,16 @@ export default function ContactSection() {
   const orderHref = orderRoute ? routeHref(locale, orderRoute) : `/${locale}/order`;
 
   return (
-    <section id="kontakt" aria-labelledby="kontakt-title" className="section-y bg-gradient-to-r from-dark-deep to-dark-alt">
+    <section
+      id="kontakt"
+      aria-labelledby="kontakt-title"
+      className="section-y bg-gradient-to-r from-dark-deep to-dark-alt"
+    >
       <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
         <h2 id="kontakt-title" className="font-display heading-xl font-bold mb-6 text-white">
           {contact.title}
         </h2>
+        <p className="text-lg text-on-dark-soft mb-4">{contact.lead}</p>
 
         <p className="text-xl text-on-dark-soft mb-8">{contact.description}</p>
 

@@ -19,8 +19,8 @@
     "headline": "ULTRASOUND ART",
     "cta_order": "Jetzt bestellen",
     "supporting": "Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk, digital oder auf Leinwand.",
-    "supportingCanvas": "Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk auf Leinwand.",
-    "benefitCanvas": "Als Leinwanddruck",
+    "supportingCanvas": "Ich verwandle das Ultraschallbild deines Babys in ein farbenfrohes Kunstwerk auf Leinwand.",
+    "benefitCanvas": "Auf Leinwand gedruckt, fertig zum Aufhängen",
     "imageAlt": "Künstlerisch bearbeitetes Ultraschallbild als Beispiel",
     "benefits": [
       "Jedes Bild individuell künstlerisch gestaltet",
@@ -48,7 +48,7 @@
     ],
     "canvasOnlyStep": {
       "title": "Leinwand erhalten",
-      "description": "Du bekommst deinen Leinwanddruck."
+      "description": "Dein Kunstwerk kommt als Leinwanddruck zu dir nach Hause."
     },
     "paymentNote": "Du bezahlst erst, nachdem ich dein Bild geprüft habe. Die Lieferzeit beginnt mit dem Zahlungseingang."
   },
@@ -77,14 +77,18 @@
       "canvasSizes": "Vergleich der Leinwandgrößen 30, 40 und 50 cm"
     },
     "from": "ab",
-    "canvasItems": ["Druck auf Leinwand", "Lieferung nach Zahlungseingang"]
+    "canvasItems": [
+      "Druck auf Leinwand",
+      "Lieferung nach Zahlungseingang"
+    ]
   },
   "contact": {
     "title": "Bereit für dein Kunstwerk?",
     "email": "portraits4life.art@gmail.com",
     "description": "Lade dein Ultraschallbild hoch. Ich prüfe es und melde mich bei dir.",
     "cta": "Jetzt bestellen",
-    "questions": "Fragen? Schreib mir:"
+    "questions": "Fragen? Schreib mir:",
+    "lead": "Weil die schönsten Erinnerungen einen Ehrenplatz verdienen."
   },
   "footer": {
     "contactUs": "Schreib mir",
@@ -108,8 +112,8 @@
   },
   "seo": {
     "home": {
-      "title": "Portraits 4 Life – Ultraschallbilder als Kunstwerk",
-      "description": "Künstlerisch bearbeitete Ultraschallbilder, gedruckt auf Leinwand. Ein besonderes Andenken für werdende Eltern."
+      "title": "Ultraschallbild als Kunstwerk auf Leinwand | Portraits 4 Life",
+      "description": "Ich verwandle das Ultraschallbild deines Babys in ein farbenfrohes Kunstwerk auf Leinwand. Individuell gestaltet, auf Wunsch mit Namen und Schwangerschaftswoche."
     },
     "order": {
       "title": "Bestellen – Portraits 4 Life",
@@ -135,7 +139,7 @@
     "beforeAlt": "Originales Ultraschallbild, folgt in Kürze",
     "fullSizeAlt": "Vollbild",
     "close": "Schließen",
-    "caption": "Sieh die Schönheit in jedem Detail."
+    "caption": "Vom Ultraschallbild zum kleinen Kunstwerk."
   },
   "faq": {
     "title": "Häufig gestellte Fragen",
@@ -260,7 +264,7 @@
     "label": "Die wichtigsten Fakten",
     "formats": "Formate",
     "formatsValue": "Digital oder Leinwand ({sizes} cm)",
-    "formatsValueCanvas": "Leinwand ({sizes} cm)",
+    "formatsValueCanvas": "Leinwand in {sizes} cm",
     "price": "Preis",
     "priceValue": "Ab {price}",
     "delivery": "Lieferzeit",
@@ -273,16 +277,17 @@
   },
   "intro": {
     "paragraphs": [
-      "Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern. Lass dir die allererste Aufnahme deines Kindes verewigen! Ich bearbeite das Ultraschallbild künstlerisch und hebe es farblich hervor.",
-      "Auf Leinwand gedruckt, hast du nicht nur eine wunderschöne Erinnerung, sondern auch eine moderne, anschauliche Deko für deine Wohnung."
+      "Die ersten Einblicke in das kleine Wunder unter deinem Herzen sind etwas ganz Besonderes. Oft bleiben sie ein kleiner Ausdruck im Mutterpass oder in einer Erinnerungskiste.",
+      "Ich verwandle dein Ultraschallbild in ein liebevoll gestaltetes Kunstwerk auf Leinwand: individuell, farbenfroh und mit viel Liebe zum Detail.",
+      "So bekommt das erste Bild deines Babys einen Ehrenplatz in eurem Zuhause und wird zu einer Erinnerung, die euch ein Leben lang begleitet."
     ],
-    "title": "Die erste Aufnahme deines Kindes",
+    "title": "Das erste Bild verdient einen besonderen Platz",
     "imageAlt": "Ein farbig bearbeitetes Ultraschallbild als Kunstwerk"
   },
   "about": {
     "title": "Über mich",
     "paragraphs": [
-      "Hinter Portraits 4 Life steckt ein kleines Atelier mit einer Idee: Die erste Aufnahme eines Kindes verdient mehr als ein graues Blatt Papier.",
+      "Hinter Portraits 4 Life steckt ein kleines Atelier mit einer Idee: Die erste Aufnahme eines Kindes verdient einen Ehrenplatz.",
       "Jedes Bild wird individuell digital gestaltet. Die Farben folgen den Konturen des Ultraschalls, damit die Aufnahme klar und warm wirkt."
     ],
     "photoPlaceholder": "Foto folgt",
