@@ -61,7 +61,7 @@ export default function Hero({ locale }: { locale: Locale }) {
 
             <div className="flex flex-col sm:flex-row gap-4 mb-4">
               <div id="hero-order" className="inline-flex">
-                <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
+                <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary" prefetch={false}>
                   {hero.cta_order}
                 </ActionLink>
                 </div>
@@ -115,7 +115,11 @@ export default function Hero({ locale }: { locale: Locale }) {
 
             <div className="contents lg:flex lg:flex-row lg:gap-4 lg:mb-4">
               <div id="hero-order" className="inline-flex max-lg:order-3">
-                <ActionLink href={isDE ? '/de/order' : '/en/order'} variant="primary">
+                <ActionLink
+                  href={isDE ? '/de/order' : '/en/order'}
+                  variant="primary"
+                  prefetch={false}
+                >
                   {hero.cta_order}
                 </ActionLink>
               </div>

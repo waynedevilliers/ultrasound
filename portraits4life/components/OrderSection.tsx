@@ -1,22 +1,21 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
-import { useSearchParams } from 'next/navigation';
 import OrderForm from '@/components/OrderForm';
-import { parseFormatParam } from '@/lib/format-param';
+import type { FormatChoice } from '@/lib/format-param';
 
 // The heading, the intro line and the form. After a sent order the heading says thanks and the intro is hidden.
 export default function OrderSection({
   title,
   thanksTitle,
   intro,
+  initialFormat,
 }: {
   title: string;
   thanksTitle: string;
   intro: string;
+  initialFormat: FormatChoice | null;
 }) {
-  // The format comes from the order link (?format=...), read in the browser so the page can be static.
-  const initialFormat = parseFormatParam(useSearchParams().get('format'));
   // Empty until an order is sent. The live region below is mounted from the start, so the change is announced.
   const [announcement, setAnnouncement] = useState('');
   const sent = announcement !== '';
