@@ -10,7 +10,7 @@ describe('FAQ', () => {
   it('opens and closes an answer and reports the state to assistive technology', async () => {
     pathname.value = '/de';
     const user = userEvent.setup();
-    render(<FAQ />);
+    render(<FAQ locale={pathname.value.startsWith('/en') ? 'en' : 'de'} />);
     const question = screen.getByRole('button', { name: 'Wie lange dauert die Bearbeitung?' });
     const answer = screen.getByText(/Der Leinwanddruck dauert/);
     expect(question).toHaveAttribute('aria-expanded', 'false');
@@ -27,7 +27,7 @@ describe('FAQ', () => {
 
   it('shows English questions on the English site', () => {
     pathname.value = '/en';
-    render(<FAQ />);
+    render(<FAQ locale={pathname.value.startsWith('/en') ? 'en' : 'de'} />);
     expect(
       screen.getByRole('button', { name: 'How long does the artwork take?' }),
     ).toBeInTheDocument();
@@ -36,7 +36,7 @@ describe('FAQ', () => {
   it('builds the delivery answer from the product file', async () => {
     pathname.value = '/de';
     const user = userEvent.setup();
-    render(<FAQ />);
+    render(<FAQ locale={pathname.value.startsWith('/en') ? 'en' : 'de'} />);
     await user.click(screen.getByRole('button', { name: 'Wie lange dauert die Bearbeitung?' }));
     expect(
       screen.getByText('Der Leinwanddruck dauert 1 bis 2 Wochen nach Zahlungseingang.'),

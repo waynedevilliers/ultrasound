@@ -28,7 +28,8 @@ export default async function OrderPage({
 }) {
   const { locale } = await params;
   const { format } = await searchParams;
-  const copy = getCopy(locale === 'de' ? 'de' : 'en');
+  const pageLocale = locale === 'de' ? 'de' : 'en';
+  const copy = getCopy(pageLocale);
   const home = { label: copy.common.home, href: `/${locale}` };
   return (
     <div className="min-h-screen flex flex-col">
@@ -53,10 +54,10 @@ export default async function OrderPage({
             initialFormat={parseFormatParam(format)}
           />
 
-          <OrderInfo />
+          <OrderInfo locale={pageLocale} />
         </div>
       </main>
-      <Footer />
+      <Footer locale={pageLocale} />
     </div>
   );
 }
