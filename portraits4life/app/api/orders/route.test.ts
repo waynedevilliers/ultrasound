@@ -94,6 +94,8 @@ describe('POST /api/orders logging and email', () => {
 
   beforeEach(() => {
     process.env.ORDER_LINK_SECRET = 'test-link-secret';
+    process.env.ORDER_EMAIL = 'portraits4life.art@gmail.com';
+    process.env.ORDER_FROM_EMAIL = 'orders@example.com';
     head.mockReset();
     vi.mocked(sql).mockReset();
     errorSpy = vi.spyOn(console, 'error').mockImplementation(() => {});
@@ -225,6 +227,30 @@ describe('POST /api/orders logging and email', () => {
     send.mockResolvedValueOnce({ data: null, error: { name: 'x', message: 'y', statusCode: 422 } });
     const refused = await (await POST(orderRequest(order()))).json();
     expect(refused.confirmationSent).toBe(false);
+  });
+
+  it('refuses the order in production when the mail settings are missing, and saves nothing', async () => {
+    const env = process.env.NODE_ENV;
+    delete process.env.ORDER_EMAIL;
+    (process.env as Record<string, string>).NODE_ENV = 'production';
+    try {
+      const response = await POST(orderRequest(order()));
+      expect(response.status).toBe(500);
+      expect(sql).not.toHaveBeenCalled();
+      expect(String(errorSpy.mock.calls.at(-1)?.[0])).toMatch(
+        /^\[order [0-9a-f]{8}\] config failed: /,
+      );
+    } finally {
+      (process.env as Record<string, string>).NODE_ENV = env;
+      process.env.ORDER_EMAIL = 'portraits4life.art@gmail.com';
+    }
+  });
+
+  it('does not refuse outside production when a mail setting is missing', async () => {
+    delete process.env.ORDER_FROM_EMAIL;
+    const response = await POST(orderRequest(order()));
+    expect(response.status).toBe(201);
+    process.env.ORDER_FROM_EMAIL = 'orders@example.com';
   });
 
   it('keeps a saved order successful when the photo links cannot be made', async () => {

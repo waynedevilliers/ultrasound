@@ -11,10 +11,10 @@ export async function GET(request: NextRequest) {
     expires: searchParams.get('exp'),
     sig: searchParams.get('sig'),
   };
-  if (!verifyFileLink(input, process.env.ORDER_LINK_SECRET)) {
-    return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
-  }
   try {
+    if (!verifyFileLink(input, process.env.ORDER_LINK_SECRET)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 });
+    }
     const result = await get(input.pathname as string, { access: 'private' });
     if (!result || result.statusCode !== 200) {
       return NextResponse.json({ error: 'Not found' }, { status: 404 });

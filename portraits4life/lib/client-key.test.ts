@@ -8,8 +8,14 @@ function request(headers: Record<string, string>) {
 }
 
 describe('clientKey', () => {
-  it('uses the first forwarded address', () => {
-    expect(clientKey(request({ 'x-forwarded-for': '203.0.113.5, 10.0.0.1' }))).toBe('203.0.113.5');
+  it('uses the last forwarded address, the one the trusted proxy added', () => {
+    expect(clientKey(request({ 'x-forwarded-for': '203.0.113.5, 10.0.0.1' }))).toBe('10.0.0.1');
+  });
+
+  it('ignores addresses the visitor put in front, so they cannot change their key', () => {
+    expect(clientKey(request({ 'x-forwarded-for': '1.2.3.4, 5.6.7.8, 10.0.0.1' }))).toBe(
+      '10.0.0.1',
+    );
   });
 
   it('falls back to the real IP header', () => {

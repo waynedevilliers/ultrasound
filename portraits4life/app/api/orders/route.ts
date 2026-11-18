@@ -15,8 +15,6 @@ import { isRateLimited } from '@/lib/rate-limit';
 import { orderSubmitSchema, validateStoredImage, type OrderSubmit } from '@/lib/order-schema';
 import { buildFileLink } from '@/lib/signed-link';
 
-const DEFAULT_FROM = 'onboarding@resend.dev';
-const DEFAULT_ORDER_EMAIL = 'portraits4life.art@gmail.com';
 const LINK_TTL_MS = 30 * 24 * 60 * 60 * 1000;
 // TODO(client): set SITE_URL to the live domain so links stay stable; otherwise the request address is used.
 
@@ -127,6 +125,19 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    // In production the mail settings must be set. Without them an order would be saved and its emails lost,
+    // so the order is refused before anything is saved.
+    if (
+      process.env.NODE_ENV === 'production' &&
+      (!process.env.ORDER_FROM_EMAIL || !process.env.ORDER_EMAIL)
+    ) {
+      logOrderFailure(requestId, 'config', new Error('ORDER_FROM_EMAIL or ORDER_EMAIL is not set'));
+      return NextResponse.json(
+        { success: false, message: 'Failed to process order', code: requestId },
+        { status: 500 },
+      );
+    }
+
     step = 'save';
     // A reference that is already taken is replaced and the save is tried again.
     const { reference } = await withReference(
@@ -185,8 +196,8 @@ export async function POST(request: NextRequest) {
       logOrderFailure(requestId, 'links', linkError);
     }
     const subject = `New Order ${reference} - ${order.product === 'canvas' ? 'Canvas Print' : 'Digital JPEG'}`;
-    const from = process.env.ORDER_FROM_EMAIL || DEFAULT_FROM;
-    const contactEmail = process.env.ORDER_EMAIL || DEFAULT_ORDER_EMAIL;
+    const from = process.env.ORDER_FROM_EMAIL ?? '';
+    const contactEmail = process.env.ORDER_EMAIL ?? '';
     const resend = new Resend(process.env.RESEND_API_KEY);
 
     // Emails are sent after the order is saved. A failed email is logged, not shown to the visitor.

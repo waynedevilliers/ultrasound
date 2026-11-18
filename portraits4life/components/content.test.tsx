@@ -88,11 +88,16 @@ describe('image alt texts', () => {
   it('gallery images have localised alt texts and a sizes attribute', () => {
     path.current = '/en';
     const { container } = render(<Gallery />);
+    // The image sits inside a button, which is labelled with the description.
     expect(
-      screen.getByAltText('Artistically enhanced ultrasound image, example 1'),
+      screen.getByRole('button', {
+        name: 'Enlarge image: Artistically enhanced ultrasound image, example 1',
+      }),
     ).toBeInTheDocument();
     expect(
-      screen.getByAltText('Artistically enhanced ultrasound image, example 2'),
+      screen.getByRole('button', {
+        name: 'Enlarge image: Artistically enhanced ultrasound image, example 2',
+      }),
     ).toBeInTheDocument();
     container.querySelectorAll('img').forEach((img) => {
       expect(img.getAttribute('data-sizes')).toContain('vw');
@@ -103,7 +108,9 @@ describe('image alt texts', () => {
     path.current = '/de';
     render(<Gallery />);
     expect(
-      screen.getByAltText('Künstlerisch bearbeitetes Ultraschallbild, Beispiel 1'),
+      screen.getByRole('button', {
+        name: 'Bild vergrößern: Künstlerisch bearbeitetes Ultraschallbild, Beispiel 1',
+      }),
     ).toBeInTheDocument();
   });
 });
