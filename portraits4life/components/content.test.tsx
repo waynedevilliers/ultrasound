@@ -22,7 +22,7 @@ describe('Hero and intro copy', () => {
     // The digital file is not sold, so the line names only the canvas.
     expect(
       screen.getAllByText(
-        "I turn your child's ultrasound image into a colourful work of art on canvas.",
+        "I turn your baby's ultrasound image into a colourful piece of art on canvas.",
       ),
     ).toHaveLength(1);
   });
