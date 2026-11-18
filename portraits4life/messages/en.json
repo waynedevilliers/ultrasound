@@ -116,15 +116,15 @@
       "description": "I turn your baby's ultrasound image into a colourful work of art on canvas. Individually designed, with name and week of pregnancy on request."
     },
     "order": {
-      "title": "Order – Portraits 4 Life",
+      "title": "Order | Portraits 4 Life",
       "description": "Upload your ultrasound image and place your order."
     },
     "impressum": {
-      "title": "Legal Notice – Portraits 4 Life",
+      "title": "Legal Notice | Portraits 4 Life",
       "description": "Provider information for Portraits 4 Life."
     },
     "datenschutz": {
-      "title": "Privacy Policy – Portraits 4 Life",
+      "title": "Privacy Policy | Portraits 4 Life",
       "description": "How personal data is handled."
     }
   },
@@ -179,7 +179,7 @@
         "id": "ultrasound",
         "title": "Ultrasound Portraits",
         "items": [
-          "Choose a clear ultrasound image - profile views work best",
+          "Choose a clear ultrasound image; profile views work best",
           "I notify you within 2 working days if the image is usable",
           "If it is not suitable, you can send another image free of charge. It costs you nothing."
         ]

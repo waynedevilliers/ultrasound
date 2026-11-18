@@ -45,4 +45,9 @@ describe('landing page copy', () => {
     render(<Landing />);
     expect(screen.queryByText(/by hand|handmade/i)).toBeNull();
   });
+
+  it('no longer shows the old intro sentence on the landing page', () => {
+    render(<Landing />);
+    expect(screen.queryByText(/Schnee von gestern/)).toBeNull();
+  });
 });
