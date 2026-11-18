@@ -1,35 +1,29 @@
 # Portraits 4 Life
 
-A bilingual (German/English) Next.js application for ordering artistic ultrasound image enhancements and canvas prints. Customers submit ultrasound images, which are enhanced and printed on canvas or delivered as digital JPEGs.
-
-**Live:** https://portraits4life.vercel.app
+A bilingual (German/English) Next.js application for ordering artistic ultrasound images printed on canvas. Parents upload an ultrasound image, which is enhanced and printed on canvas.
 
 ## Features
 
-- Bilingual Support - German and English with automatic locale routing
-- Order Management - Customers place orders with image uploads
-- Email Notifications - Admin + customer confirmation emails via Resend
-- File Storage - Vercel Blob for image storage
-- Database - Vercel Postgres for order data
-- Responsive Design - Tailwind CSS with mobile-first approach
-- API Endpoints - POST orders, GET order by ID
+- **Bilingual:** German (default) and English, routed under `/de` and `/en`
+- **Ordering:** a form with photo upload straight to private storage, consent checkboxes and shipping address for canvas
+- **Email:** an admin email with signed photo links, and a plain-text confirmation to the customer
+- **Storage:** Vercel Blob (private). Photos are served only through signed links that expire after 30 days
+- **Database:** Vercel Postgres (Neon) for order data
+- **Coming-soon mode:** `COMING_SOON=true` shows a holding page and blocks crawling
 
-## Tech Stack
+## Tech stack
 
-- **Framework:** Next.js 16.2.9 (App Router)
-- **Language:** TypeScript
-- **Styling:** Tailwind CSS + shadcn/ui
-- **i18n:** next-intl
-- **Database:** Vercel Postgres
-- **File Storage:** Vercel Blob
-- **Email:** Resend
-- **Deployment:** Vercel
+- Next.js 16 (App Router), React 19, TypeScript (strict)
+- Tailwind CSS 4 with design tokens in `app/globals.css`
+- Zod for validation, Resend for email, Vercel Blob and Postgres for storage
+- Vitest and Testing Library for unit tests, Playwright for end-to-end tests
 
-## Quick Start
+## Getting started
 
 ### Prerequisites
-- Node.js 18+
-- npm or yarn
+
+- Node.js 22 (see `.nvmrc`)
+- npm
 
 ### Installation
 
@@ -37,16 +31,23 @@ A bilingual (German/English) Next.js application for ordering artistic ultrasoun
 npm install
 ```
 
-### Environment Setup
+### Environment variables
 
-Create `.env.development.local`:
+Copy `.env.example` to `.env.development.local` and fill in the values. The variables are:
 
-```env
-POSTGRES_URL=your_postgres_url
-RESEND_API_KEY=your_resend_api_key
-BLOB_READ_WRITE_TOKEN=your_blob_token
-BLOB_STORE_ID=your_blob_store_id
-```
+| Variable | Purpose |
+| --- | --- |
+| `POSTGRES_URL` | Postgres connection string (set by Vercel when a Postgres store is connected) |
+| `BLOB_READ_WRITE_TOKEN` | Vercel Blob token for photo uploads |
+| `RESEND_API_KEY` | Resend key for the order emails |
+| `ORDER_LINK_SECRET` | Secret that signs the photo links in the admin email |
+| `CRON_SECRET` | Secret that the daily cleanup job must present |
+| `SITE_URL` | Public address of the site, used for absolute links |
+| `ORDER_EMAIL` | Where the admin order email goes |
+| `ORDER_FROM_EMAIL` | Sender address for all order emails (must be a verified sender in production) |
+| `COMING_SOON` | `true` shows the holding page instead of the site |
+
+In production, an order is refused before it is saved if `ORDER_EMAIL` or `ORDER_FROM_EMAIL` is missing.
 
 ### Development
 
@@ -55,141 +56,136 @@ npm run dev
 # Open http://localhost:3000
 ```
 
-### Build & Production
+### Database setup
+
+```bash
+npm run db:init
+```
+
+The script creates the `orders` table if it is missing and adds any newer columns. It is safe to run again. It reads `POSTGRES_URL` from `.env.development.local`.
+
+### Build and production
 
 ```bash
 npm run build
 npm run start
 ```
 
-## Project Structure
+## Scripts
+
+| Script | What it does |
+| --- | --- |
+| `npm run lint` | ESLint |
+| `npm run type-check` | TypeScript without emitting files |
+| `npm test` | Unit and component tests (Vitest) |
+| `npm run e2e` | End-to-end tests (Playwright, builds and starts the site) |
+| `npm run build` | Production build |
+| `npm run db:init` | Creates or updates the database tables |
+| `npm run mobile-check -- <url>` | Measures the phone view and saves screenshots (see below) |
+
+## Project structure
 
 ```
 app/
-├── [locale]/
-│   ├── layout.tsx          # Root layout with locale provider
+├── [locale]/               # German and English pages
+│   ├── layout.tsx          # Root layout, language check
 │   ├── page.tsx            # Landing page
-│   └── order/
-│       └── page.tsx        # Order/Bestellen page
+│   ├── order/page.tsx      # Order page
+│   └── coming-soon/        # Holding page used while COMING_SOON=true
 ├── api/
-│   ├── orders/
-│   │   ├── route.ts        # POST orders, receives form + files
-│   │   └── [id]/route.ts   # GET order by ID
-messages/
-├── de.json                 # German translations
-└── en.json                 # English translations
-components/
-├── Header.tsx              # Navigation + language switcher
-├── Hero.tsx                # Hero section with CTA
-├── HowItWorks.tsx          # 3-step process section
-├── PricingTiers.tsx        # Products & pricing
-├── OrderForm.tsx           # Order form with file uploads
-├── Footer.tsx              # Footer with contact info
-└── ...
-lib/
-└── db.ts                   # Database functions
+│   ├── orders/route.ts     # POST an order
+│   ├── orders/upload/      # Token for a direct photo upload
+│   ├── orders/files/       # Serves one private photo to a valid signed link
+│   └── cron/cleanup/       # Daily deletion of photos older than 30 days
+components/                 # Page sections and the order form
+content/                    # Products, prices, delivery times and routes
+lib/                        # Validation, emails, links, metadata, helpers
+messages/                   # German and English text
+scripts/init-db.js          # Database setup (npm run db:init)
+e2e/                        # Playwright tests
 ```
 
-## API Endpoints
+## API
 
 ### POST `/api/orders`
 
-Submit a new order with files.
+Creates an order. The photos are uploaded first to private storage, and the order carries only their storage paths.
 
-**Request:**
+**Request (JSON):**
+
+```json
+{
+  "name": "string",
+  "email": "string",
+  "product": "canvas",
+  "canvasSize": "30x30cm",
+  "childName": "optional string",
+  "weeksInWomb": "optional string",
+  "specialRequests": "optional string",
+  "locale": "de",
+  "requestCode": "8 hex characters, from the browser",
+  "ultrasoundPath": "orders/...",
+  "referencePath": "optional orders/...",
+  "consent": { "processing": true, "rights": true, "showcase": false, "version": "..." },
+  "shippingFullName": "...",
+  "shippingStreet": "...",
+  "shippingCity": "...",
+  "shippingState": "...",
+  "shippingPostalCode": "...",
+  "shippingCountry": "..."
+}
 ```
-Content-Type: multipart/form-data
 
-name: string
-email: string
-product: "digital" | "canvas"
-canvasSize?: string (for canvas)
-childName?: string
-weeksInWomb?: string
-specialRequests?: string
-ultrasoundImage: File (required)
-referenceImage?: File
-shippingFullName?: string (for canvas)
-shippingStreet?: string (for canvas)
-shippingCity?: string (for canvas)
-shippingState?: string (for canvas)
-shippingPostalCode?: string (for canvas)
-shippingCountry?: string (for canvas)
-```
+Digital orders are refused while the digital file is not sold (see `content/products.ts`).
 
-**Response:**
+**Response (201):**
+
 ```json
 {
   "success": true,
-  "orderId": 1,
+  "reference": "P4L-261117-K7QM",
+  "confirmationSent": true,
   "message": "Order submitted successfully"
 }
 ```
 
-There is no public endpoint to read orders. Orders are read from the database and the admin emails.
+Failures return `{ "success": false, "message": "...", "code": "..." }` with a request code the customer can quote. The server logs the failed step under that code, never the customer's details.
 
-## Email Workflow
+Requests are limited to five per visitor per 15 minutes.
 
-When an order is placed:
+### POST `/api/orders/upload`
 
-1. **Admin Notification** - portraits4life.art@gmail.com, wrdevilliers@gmail.com
-   - Order details, customer info
-   - Clickable links to uploaded images
-   - Used to start artwork immediately
+Issues a short-lived token so the browser can upload a photo straight to private storage. Accepts JPG, PNG, WebP and HEIC up to 15 MB, in the `orders/` folder only. Limited to 20 requests per visitor per 15 minutes.
 
-2. **Customer Confirmation** - customer's email
-   - Order confirmation with ID
-   - Expected delivery timeframe
-   - Next steps
+### GET `/api/orders/files`
 
-## Deployment
+Serves one private photo. It needs a valid, unexpired signature in the link from the admin email.
 
-Deployed on **Vercel** with automatic deployments on `main` branch push.
+### GET `/api/cron/cleanup`
 
-### Required Environment Variables (Vercel)
+Run daily by Vercel (see `vercel.json`). Deletes order photos older than 30 days. It needs `Authorization: Bearer <CRON_SECRET>`.
 
-- `POSTGRES_URL` - Vercel Postgres connection string
-- `RESEND_API_KEY` - Email service API key
-- `BLOB_READ_WRITE_TOKEN` - Vercel Blob storage token
-- `BLOB_STORE_ID` - Blob store identifier
+There is no public endpoint to read orders. Orders are read from the database and the admin email.
 
-Set these in Vercel Project Settings > Environment Variables.
+## Emails
 
-## Development Workflow
+When an order is saved:
 
-1. Create feature branch - `git checkout -b feature/description`
-2. Make changes - Edit code
-3. Test locally - `npm run dev`
-4. Build check - `npm run build`
-5. Commit - `git commit -m "description"`
-6. Push - `git push origin feature/description`
-7. Deploy - Merge to main (Vercel auto-deploys)
+1. **Admin email** to `ORDER_EMAIL`, with the order details and signed links to the photos (valid 30 days). The reply-to is the customer's address.
+2. **Customer confirmation** to the customer, in the language of the page: the reference, the product, the expected delivery time and the three next steps. The reply-to is `ORDER_EMAIL`.
 
-## Mobile Check
+If an email cannot be sent, the order is still saved and the customer still sees success. The failure is logged.
 
-Measures the phone view (375 x 667 and 320 x 568) and saves key screens. Start the dev server or the built site first, then:
+## Database
 
-```bash
-npm run mobile-check -- http://localhost:3000
-```
-
-The script (`scripts/mobile-check.mjs`, Chromium only) checks the landing and order pages in German and English. It writes `docs/reviews/mobile/result.json` (page height, sideways scrolling, what is above the fold, small tap targets, close tap targets, small text, overlaps in the sticky bar, primary order buttons on screen) and seven screenshots. The folder is git-ignored. Text that is intentionally small can be marked with `data-small-ok`.
-
-## Code Quality
-
-- Type Safety - Full TypeScript coverage
-- Efficient - Minimal dependencies, optimized bundle
-- Clean - No dead code, console logs removed
-- Bilingual - All user-facing text translated
-
-## Database Schema
+The table is created and updated by `scripts/init-db.js` (`npm run db:init`):
 
 ```sql
 CREATE TABLE orders (
   id SERIAL PRIMARY KEY,
   name VARCHAR(255) NOT NULL,
   email VARCHAR(255) NOT NULL,
-  product VARCHAR(50) CHECK (product IN ('digital', 'canvas')),
+  product VARCHAR(50) NOT NULL,
   canvas_size VARCHAR(50),
   child_name VARCHAR(255),
   weeks_in_womb VARCHAR(50),
@@ -197,36 +193,49 @@ CREATE TABLE orders (
   ultrasound_image_url TEXT,
   reference_image_url TEXT,
   shipping_address JSONB,
+  consent_showcase BOOLEAN DEFAULT FALSE,
+  consent_version VARCHAR(50),
+  consent_at TIMESTAMP,
   status VARCHAR(50) DEFAULT 'pending',
+  reference VARCHAR(32),          -- P4L-YYMMDD-XXXX, unique
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
-
-CREATE INDEX idx_orders_email ON orders(email);
-CREATE INDEX idx_orders_status ON orders(status);
-CREATE INDEX idx_orders_created_at ON orders(created_at DESC);
 ```
 
-## Internationalization
+Indexes: email, status, created time, and a unique index on `reference`.
 
-**Supported Languages:**
-- German (de)
-- English (en)
+## Deployment
 
-**Default:** German (`/de/`)
+Deployed on **Vercel**. Pushes to `main` deploy to production. Set the environment variables in Vercel Project Settings, under Environment Variables, for each environment that needs them. Preview deployments need the same order-related variables as production to send orders.
 
-Translations in `messages/{locale}.json`. Access via `usePathname()` to detect current locale.
+## Development workflow
 
-## File Upload Security
+1. Create a branch: `git checkout -b feat/description` (or `fix/`, `chore/`, `docs/`, `test/`)
+2. Make the change and run `npm test`, `npm run lint`, `npm run type-check` and `npm run build`
+3. Commit with a Conventional Commit message, for example `feat(order): ...`
+4. Push and open a pull request into `main`
 
-- Max file size: 15MB
-- Accepted types: Image files (jpg, png, etc.)
-- Storage: Vercel Blob (public access for email delivery)
-- Cleanup: Not implemented (files persist indefinitely)
+## Mobile check
 
-## Contact & Support
+Measures the phone view (375 x 667 and 320 x 568) and saves key screens. Start the dev server or the built site first, then:
 
-Business Email: portraits4life.art@gmail.com
-Alternative: wrdevilliers@gmail.com
+```bash
+npm run mobile-check -- http://localhost:3000
+```
 
-Built for new parents and their precious memories.
+The script writes `docs/reviews/mobile/result.json` and screenshots. That folder is git-ignored.
+
+## Text and languages
+
+All visible text is in `messages/de.json` and `messages/en.json`. Both files must have the same keys (a test checks this). Product data (prices, sizes, delivery times) is in `content/products.ts`.
+
+## Files and privacy
+
+- Photos are stored privately, not publicly, and are served only through signed links.
+- Photos are deleted automatically 30 days after upload by the daily cleanup job.
+- Order data is kept in the database. Its retention period is still to be decided.
+
+## Contact
+
+Business email: portraits4life.art@gmail.com
