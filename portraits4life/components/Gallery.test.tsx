@@ -32,4 +32,13 @@ describe('Gallery enlarged view', () => {
     fireEvent.click(screen.getByRole('button', { name: 'Close' }));
     expect(screen.queryByRole('dialog')).toBeNull();
   });
+
+  it('keeps the focus on the close button while the dialog is open (Tab)', () => {
+    render(<Gallery />);
+    fireEvent.click(firstButton());
+    const close = screen.getByRole('button', { name: 'Close' });
+    const notPrevented = fireEvent.keyDown(document, { key: 'Tab' });
+    expect(notPrevented).toBe(false);
+    expect(close).toHaveFocus();
+  });
 });

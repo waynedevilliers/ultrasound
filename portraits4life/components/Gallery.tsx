@@ -37,6 +37,12 @@ export default function Gallery() {
     if (!enlarged) return;
     closeButton.current?.focus();
     const onKey = (event: KeyboardEvent) => {
+      // The close button is the only control in the dialog, so Tab keeps the focus on it.
+      if (event.key === 'Tab') {
+        event.preventDefault();
+        closeButton.current?.focus();
+        return;
+      }
       if (event.key !== 'Escape') return;
       setEnlarged(null);
       openedFrom.current?.focus();
