@@ -64,6 +64,7 @@
     "orderFormat": "Order this format",
     "payment": "Payment: PayPal, bank transfer, credit card",
     "deliveryLine": "Delivery: digital {digital}, canvas {canvas} after payment",
+    "deliveryLineCanvas": "Delivery: canvas {canvas} after payment",
     "imageAlt": {
       "canvasGallery": "Ultrasound artwork as a canvas print in a gallery wall",
       "canvasPortrait": "Ultrasound portrait on canvas with neon light",
@@ -135,7 +136,7 @@
     "items": [
       {
         "question": "How long does the artwork take?",
-        "answer": "Digital artwork takes {digital}. Canvas prints take {canvas} after payment."
+        "answer": "Canvas prints take {canvas} after payment."
       },
       {
         "question": "Which image formats can I upload?",
@@ -253,10 +254,12 @@
     "label": "Key facts",
     "formats": "Formats",
     "formatsValue": "Digital or canvas ({sizes} cm)",
+    "formatsValueCanvas": "Canvas ({sizes} cm)",
     "price": "Price",
     "priceValue": "From {price}",
     "delivery": "Delivery",
     "deliveryValue": "Digital {digital}, canvas {canvas} after payment",
+    "deliveryValueCanvas": "Canvas {canvas} after payment",
     "payment": "Payment",
     "paymentValue": "PayPal, bank transfer, credit card",
     "optional": "Optional",

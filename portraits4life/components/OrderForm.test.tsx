@@ -23,6 +23,16 @@ function smallPng() {
 }
 
 // Submits the form with a photo chosen, the way a visitor would after filling it in.
+const SHIPPING = [
+  ['shippingFullName', 'Ann Test'],
+  ['shippingStreet', 'Hauptstraße 1'],
+  ['shippingCity', 'Berlin'],
+  ['shippingState', 'Berlin'],
+  ['shippingPostalCode', '10115'],
+  ['shippingCountry', 'Germany'],
+];
+
+// Submits the form with a photo chosen, the way a visitor would after filling it in.
 function submitWithPhoto(container: HTMLElement) {
   fireEvent.change(container.querySelector('input[name="name"]') as HTMLInputElement, {
     target: { value: 'Ann' },
@@ -32,6 +42,11 @@ function submitWithPhoto(container: HTMLElement) {
   });
   fireEvent.click(container.querySelector('#consentProcessing') as HTMLElement);
   fireEvent.click(container.querySelector('#consentRights') as HTMLElement);
+  // The canvas is the default product, so the shipping address is asked for too.
+  for (const [id, value] of SHIPPING) {
+    const field = container.querySelector(`#${id}`) as HTMLInputElement | null;
+    if (field) fireEvent.change(field, { target: { value } });
+  }
   fireEvent.change(photoInput(container), { target: { files: [smallPng()] } });
   fireEvent.submit(container.querySelector('form') as HTMLFormElement);
 }
@@ -45,18 +60,18 @@ afterEach(() => {
 });
 
 describe('OrderForm', () => {
-  it('lists the products with their prices and shows shipping only for a canvas size', () => {
+  it('lists the canvas sizes only and shows the shipping address for a canvas', () => {
     const { container } = render(<OrderForm />);
     const list = container.querySelector('#format') as HTMLSelectElement;
     expect(Array.from(list.options).map((o) => o.textContent)).toEqual(
       formatOptions('en').map((o) => o.label),
     );
-    expect(container.querySelector('#shippingStreet')).toBeNull();
+    expect(list.options).toHaveLength(3);
+    expect(list.value).toBe('30x30cm');
+    expect(container.querySelector('#shippingStreet')).not.toBeNull();
     fireEvent.change(list, { target: { value: '40x40cm' } });
     expect(list.value).toBe('40x40cm');
     expect(container.querySelector('#shippingStreet')).not.toBeNull();
-    fireEvent.change(list, { target: { value: 'digital' } });
-    expect(container.querySelector('#shippingStreet')).toBeNull();
   });
 
   it('rejects an upload over 15 MB and marks the photo field', () => {
@@ -376,19 +391,6 @@ describe('OrderForm submit errors', () => {
     submitWithPhoto(container);
     expect(await screen.findByText(/ann@example\.com/)).toBeInTheDocument();
     expect(screen.getByText(/spam folder/i)).toBeInTheDocument();
-  });
-
-  it('describes the file delivery after a digital order', async () => {
-    stubServer(
-      async () =>
-        new Response(JSON.stringify({ success: true, reference: 'P4L-261117-K7QM' }), {
-          status: 201,
-        }),
-    );
-    const { container } = render(<OrderForm />);
-    submitWithPhoto(container);
-    expect(await screen.findByText(/receive the file by email/)).toBeInTheDocument();
-    expect(screen.queryByText(/canvas is printed/)).toBeNull();
   });
 
   it('describes the printing after a canvas order', async () => {

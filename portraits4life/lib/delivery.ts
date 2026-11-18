@@ -1,4 +1,4 @@
-import { canvasProduct, digitalProduct } from '@/content/products';
+import { canvasProduct, digitalProduct, isDigitalAvailable } from '@/content/products';
 import { getCopy } from '@/lib/copy';
 
 // Delivery times as text, built from content/products.ts. The words come from messages.
@@ -14,4 +14,16 @@ export function canvasDeliveryText(locale: 'de' | 'en'): string {
   const max: number = canvasProduct.deliveryWeeksMax;
   if (min === max) return `${min} ${min === 1 ? common.week : common.weeks}`;
   return `${min} ${common.rangeTo} ${max} ${common.weeks}`;
+}
+
+// A delivery sentence that names only the products that are sold. Without the digital file it uses
+// the canvas-only sentence; with it, the sentence that names both.
+export function deliverySentence(
+  locale: 'de' | 'en',
+  withDigital: string,
+  canvasOnly: string,
+): string {
+  const canvas = canvasDeliveryText(locale);
+  if (!isDigitalAvailable()) return canvasOnly.replace('{canvas}', canvas);
+  return withDigital.replace('{digital}', digitalDeliveryText(locale)).replace('{canvas}', canvas);
 }

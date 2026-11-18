@@ -1,5 +1,6 @@
 import { CONSENT_VERSION } from './consent';
-import { describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { digitalProduct } from '@/content/products';
 import {
   MAX_IMAGE_BYTES,
   orderFieldsSchema,
@@ -7,6 +8,14 @@ import {
   validateImageFile,
   validateStoredImage,
 } from './order-schema';
+
+// The field rules are tested with the digital file on sale; the availability tests turn it off.
+beforeEach(() => {
+  digitalProduct.available = true;
+});
+afterEach(() => {
+  digitalProduct.available = false;
+});
 
 const digital = {
   name: 'Anna',
@@ -123,5 +132,23 @@ describe('validateStoredImage', () => {
     expect(validateStoredImage({ size: 10, contentType: 'application/pdf' })).toBe(
       'Image must be JPG, PNG, WebP or HEIC',
     );
+  });
+});
+
+describe('digital availability', () => {
+  it('refuses a digital order while the digital file is not sold', () => {
+    digitalProduct.available = false;
+    expect(orderFieldsSchema.safeParse(digital).success).toBe(false);
+  });
+
+  it('accepts a digital order again when the digital file is made available', () => {
+    digitalProduct.available = false;
+    digitalProduct.available = true;
+    expect(orderFieldsSchema.safeParse(digital).success).toBe(true);
+  });
+
+  it('accepts a canvas order while the digital file is not sold', () => {
+    digitalProduct.available = false;
+    expect(orderFieldsSchema.safeParse(canvas).success).toBe(true);
   });
 });

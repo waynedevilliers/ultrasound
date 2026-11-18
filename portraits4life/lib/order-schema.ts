@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { canvasSizeIds } from '@/content/products';
 import { CONSENT_VERSION } from '@/lib/consent';
+import { isDigitalAvailable } from '@/content/products';
 
 export const MAX_IMAGE_BYTES = 15 * 1024 * 1024;
 export const ALLOWED_IMAGE_TYPES = [
@@ -26,7 +27,10 @@ export const orderFieldsSchema = z
   .object({
     name: z.string().trim().min(1).max(100),
     email: z.email().max(254),
-    product: z.enum(['digital', 'canvas']),
+    // The digital file is refused while it is not sold.
+    product: z
+      .enum(['digital', 'canvas'])
+      .refine((product) => product !== 'digital' || isDigitalAvailable(), 'Product not available'),
     canvasSize: z.string().default(''),
     childName: optionalText(60),
     weeksInWomb: z

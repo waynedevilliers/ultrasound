@@ -3,7 +3,12 @@ import { pageMetadata, seoCopy } from './metadata';
 import { breadcrumbJsonLd, organizationJsonLd, productJsonLd, safeJsonLd } from './structured-data';
 
 describe('pageMetadata', () => {
-  const meta = pageMetadata({ locale: 'de', path: '/order', title: 'Bestellen', description: 'Beschreibung' });
+  const meta = pageMetadata({
+    locale: 'de',
+    path: '/order',
+    title: 'Bestellen',
+    description: 'Beschreibung',
+  });
 
   it('sets title and description', () => {
     expect(meta.title).toBe('Bestellen');
@@ -36,12 +41,17 @@ describe('seo copy', () => {
 describe('structured data', () => {
   it('organization has name and email', () => {
     const org = organizationJsonLd();
-    expect(org).toMatchObject({ '@type': 'Organization', name: 'Portraits 4 Life', email: 'portraits4life.art@gmail.com' });
+    expect(org).toMatchObject({
+      '@type': 'Organization',
+      name: 'Portraits 4 Life',
+      email: 'portraits4life.art@gmail.com',
+    });
   });
 
-  it('product has one digital offer and one offer per canvas size', () => {
-    const product = productJsonLd('Ultrasound art', 'desc') as { offers: unknown[] };
-    expect(product.offers).toHaveLength(4);
+  it('product has one offer per canvas size and no digital offer while the digital file is not sold', () => {
+    const product = productJsonLd('Ultrasound art', 'desc') as { offers: { name: string }[] };
+    expect(product.offers).toHaveLength(3);
+    expect(product.offers.some((offer) => offer.name.includes('JPEG'))).toBe(false);
   });
 
   it('breadcrumb items are numbered in order', () => {

@@ -4,8 +4,8 @@ import Image from 'next/image';
 import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
 import { formatPrice } from '@/lib/price';
-import { canvasSizes, digitalProduct } from '@/content/products';
-import { canvasDeliveryText, digitalDeliveryText } from '@/lib/delivery';
+import { canvasSizes, digitalProduct, isDigitalAvailable } from '@/content/products';
+import { canvasDeliveryText, deliverySentence, digitalDeliveryText } from '@/lib/delivery';
 import ActionLink from '@/components/ActionLink';
 import InfoCard from '@/components/InfoCard';
 
@@ -20,7 +20,7 @@ export default function PricingTiers() {
   // Non-breaking spaces keep a size such as "30 × 30 cm" on one line.
   const sizeLabel = (widthCm: number, heightCm: number) => `${widthCm} × ${heightCm} cm`;
 
-  // Canvas sizes first, the digital file last.
+  // Canvas sizes first, the digital file last. The digital file is only listed while it is sold.
   const formats = [
     ...canvasSizes.map((size) => ({
       key: size.id,
@@ -30,14 +30,18 @@ export default function PricingTiers() {
       items: pricing.canvasItems,
       href: `${orderPath}?format=${size.id}`,
     })),
-    {
-      key: digitalProduct.id,
-      title: pricing.digital.title,
-      price: formatPrice(digitalProduct.price, locale),
-      delivery: pricing.digital.delivery.replace('{time}', digitalDeliveryText(locale)),
-      items: pricing.digital.items,
-      href: `${orderPath}?format=${digitalProduct.id}`,
-    },
+    ...(isDigitalAvailable()
+      ? [
+          {
+            key: digitalProduct.id,
+            title: pricing.digital.title,
+            price: formatPrice(digitalProduct.price, locale),
+            delivery: pricing.digital.delivery.replace('{time}', digitalDeliveryText(locale)),
+            items: pricing.digital.items,
+            href: `${orderPath}?format=${digitalProduct.id}`,
+          },
+        ]
+      : []),
   ];
 
   const images = [
@@ -48,7 +52,9 @@ export default function PricingTiers() {
   return (
     <section id="pricing" className="section-y bg-canvas">
       <div className="container-site">
-        <h2 className="font-display heading-xl font-bold text-center mb-16 text-ink">{pricing.title}</h2>
+        <h2 className="font-display heading-xl font-bold text-center mb-16 text-ink">
+          {pricing.title}
+        </h2>
 
         <div className="grid gap-6 md:grid-cols-2 mb-16">
           {images.map((image) => (
@@ -64,7 +70,7 @@ export default function PricingTiers() {
           ))}
         </div>
 
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="grid gap-6 md:grid-cols-3">
           {formats.map((format) => (
             <InfoCard key={format.key} variant="bordered" className="flex flex-col">
               <h3 className="text-2xl font-bold text-ink mb-2">{format.title}</h3>
@@ -91,11 +97,7 @@ export default function PricingTiers() {
 
         <div className="mt-10 space-y-2 text-center text-copy">
           <p>{pricing.payment}</p>
-          <p>
-            {pricing.deliveryLine
-              .replace('{digital}', digitalDeliveryText(locale))
-              .replace('{canvas}', canvasDeliveryText(locale))}
-          </p>
+          <p>{deliverySentence(locale, pricing.deliveryLine, pricing.deliveryLineCanvas)}</p>
         </div>
       </div>
     </section>
