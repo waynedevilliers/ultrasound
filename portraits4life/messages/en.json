@@ -19,6 +19,8 @@
     "headline": "ULTRASOUND ART",
     "cta_order": "Order now",
     "supporting": "I turn your child's ultrasound image into a colourful work of art, as a digital file or on canvas.",
+    "supportingCanvas": "I turn your child's ultrasound image into a colourful work of art on canvas.",
+    "benefitCanvas": "As a canvas print",
     "imageAlt": "Example of an artistically enhanced ultrasound image",
     "benefits": [
       "Every image individually designed as a piece of art",
@@ -44,6 +46,10 @@
         "description": "You get your print or the digital file."
       }
     ],
+    "canvasOnlyStep": {
+      "title": "Receive your canvas",
+      "description": "You receive your canvas print."
+    },
     "paymentNote": "You pay only after I have checked your image. The delivery time starts with the payment."
   },
   "pricing": {

@@ -2,6 +2,7 @@
 
 import { usePathname } from 'next/navigation';
 import { getCopy, localeOf } from '@/lib/copy';
+import { isDigitalAvailable } from '@/content/products';
 import InfoCard from '@/components/InfoCard';
 
 // TODO(client): approve the three step titles and descriptions (DE and EN; the wording is new).
@@ -9,14 +10,20 @@ import InfoCard from '@/components/InfoCard';
 export default function HowItWorks() {
   const pathname = usePathname();
   const { howItWorks } = getCopy(localeOf(pathname));
+  // While the digital file is not sold, the last step names only the canvas.
+  const steps = isDigitalAvailable()
+    ? howItWorks.steps
+    : howItWorks.steps.map((step, index) => (index === 2 ? howItWorks.canvasOnlyStep : step));
 
   return (
     <section id="so-funktionierts" className="section-y bg-canvas">
       <div className="container-site">
-        <h2 className="font-display heading-xl font-bold text-center mb-20 text-ink">{howItWorks.title}</h2>
+        <h2 className="font-display heading-xl font-bold text-center mb-20 text-ink">
+          {howItWorks.title}
+        </h2>
 
         <ol className="grid gap-8 md:grid-cols-3">
-          {howItWorks.steps.map((step, index) => (
+          {steps.map((step, index) => (
             <InfoCard as="li" key={step.title}>
               <span
                 aria-hidden="true"

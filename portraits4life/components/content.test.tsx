@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import Hero from './Hero';
+import { digitalProduct } from '@/content/products';
 import Gallery from './Gallery';
 import IntroSection from './IntroSection';
 
@@ -18,19 +19,52 @@ describe('Hero and intro copy', () => {
   it('renders the supporting line exactly once (English)', () => {
     path.current = '/en';
     render(<Hero />);
-    expect(screen.getAllByText("I turn your child's ultrasound image into a colourful work of art, as a digital file or on canvas.")).toHaveLength(1);
+    // The digital file is not sold, so the line names only the canvas.
+    expect(
+      screen.getAllByText(
+        "I turn your child's ultrasound image into a colourful work of art on canvas.",
+      ),
+    ).toHaveLength(1);
   });
 
   it('renders the supporting line exactly once (German)', () => {
     path.current = '/de';
     render(<Hero />);
-    expect(screen.getAllByText('Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk, digital oder auf Leinwand.')).toHaveLength(1);
+    expect(
+      screen.getAllByText(
+        'Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk auf Leinwand.',
+      ),
+    ).toHaveLength(1);
+  });
+
+  it('brings back the digital wording when the digital file is made available', () => {
+    path.current = '/de';
+    digitalProduct.available = true;
+    try {
+      render(<Hero />);
+      expect(
+        screen.getAllByText(
+          'Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk, digital oder auf Leinwand.',
+        ),
+      ).toHaveLength(1);
+    } finally {
+      digitalProduct.available = false;
+    }
   });
 
   it('shows the intro sentence once, in the intro section only', () => {
     path.current = '/de';
-    render(<><Hero /><IntroSection /></>);
-    expect(screen.getAllByText(/Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern\./)).toHaveLength(1);
+    render(
+      <>
+        <Hero />
+        <IntroSection />
+      </>,
+    );
+    expect(
+      screen.getAllByText(
+        /Ein schwarz-weißes Ultraschallbild im Miniformat ist Schnee von gestern\./,
+      ),
+    ).toHaveLength(1);
   });
 });
 
@@ -38,20 +72,28 @@ describe('image alt texts', () => {
   it('hero image has a German alt text on German pages', () => {
     path.current = '/de';
     render(<Hero />);
-    expect(screen.getByAltText('Künstlerisch bearbeitetes Ultraschallbild als Beispiel')).toBeInTheDocument();
+    expect(
+      screen.getByAltText('Künstlerisch bearbeitetes Ultraschallbild als Beispiel'),
+    ).toBeInTheDocument();
   });
 
   it('hero image has an English alt text on English pages', () => {
     path.current = '/en';
     render(<Hero />);
-    expect(screen.getByAltText('Example of an artistically enhanced ultrasound image')).toBeInTheDocument();
+    expect(
+      screen.getByAltText('Example of an artistically enhanced ultrasound image'),
+    ).toBeInTheDocument();
   });
 
   it('gallery images have localised alt texts and a sizes attribute', () => {
     path.current = '/en';
     const { container } = render(<Gallery />);
-    expect(screen.getByAltText('Artistically enhanced ultrasound image, example 1')).toBeInTheDocument();
-    expect(screen.getByAltText('Artistically enhanced ultrasound image, example 2')).toBeInTheDocument();
+    expect(
+      screen.getByAltText('Artistically enhanced ultrasound image, example 1'),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByAltText('Artistically enhanced ultrasound image, example 2'),
+    ).toBeInTheDocument();
     container.querySelectorAll('img').forEach((img) => {
       expect(img.getAttribute('data-sizes')).toContain('vw');
     });
@@ -60,6 +102,8 @@ describe('image alt texts', () => {
   it('gallery images have German alt texts on German pages', () => {
     path.current = '/de';
     render(<Gallery />);
-    expect(screen.getByAltText('Künstlerisch bearbeitetes Ultraschallbild, Beispiel 1')).toBeInTheDocument();
+    expect(
+      screen.getByAltText('Künstlerisch bearbeitetes Ultraschallbild, Beispiel 1'),
+    ).toBeInTheDocument();
   });
 });

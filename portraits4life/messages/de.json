@@ -19,6 +19,8 @@
     "headline": "ULTRASOUND ART",
     "cta_order": "Jetzt bestellen",
     "supporting": "Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk, digital oder auf Leinwand.",
+    "supportingCanvas": "Ich verwandle das Ultraschallbild deines Kindes in ein farbiges Kunstwerk auf Leinwand.",
+    "benefitCanvas": "Als Leinwanddruck",
     "imageAlt": "Künstlerisch bearbeitetes Ultraschallbild als Beispiel",
     "benefits": [
       "Jedes Bild individuell künstlerisch gestaltet",
@@ -44,6 +46,10 @@
         "description": "Du bekommst deinen Druck oder die digitale Datei."
       }
     ],
+    "canvasOnlyStep": {
+      "title": "Leinwand erhalten",
+      "description": "Du bekommst deinen Leinwanddruck."
+    },
     "paymentNote": "Du bezahlst erst, nachdem ich dein Bild geprüft habe. Die Lieferzeit beginnt mit dem Zahlungseingang."
   },
   "pricing": {
