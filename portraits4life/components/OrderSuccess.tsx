@@ -1,9 +1,9 @@
 import ActionLink from '@/components/ActionLink';
-import InfoCard from '@/components/InfoCard';
+
+// The one heading of the success state; the form and the section use this id to focus and scroll to it.
+export const SUCCESS_HEADING_ID = 'order-success-heading';
 
 type OrderSuccessProps = {
-  // Names the success region for assistive technology.
-  headingId: string;
   title: string;
   referenceLabel: string;
   reference: string;
@@ -17,7 +17,6 @@ type OrderSuccessProps = {
 
 // The message after a sent order. It uses the shared card and the site's own colors, not a status color.
 export default function OrderSuccess({
-  headingId,
   title,
   referenceLabel,
   reference,
@@ -28,7 +27,7 @@ export default function OrderSuccess({
   homeHref,
 }: OrderSuccessProps) {
   return (
-    <InfoCard className="mx-auto max-w-2xl text-center">
+    <div className="mx-auto text-center">
       <div className="mx-auto mb-6 flex h-12 w-12 items-center justify-center rounded-full bg-brand-tint text-brand-strong">
         <svg
           aria-hidden="true"
@@ -43,25 +42,31 @@ export default function OrderSuccess({
           <path d="M5 12.5l4.5 4.5L19 7.5" />
         </svg>
       </div>
-      <h2 id={headingId} className="font-display heading-xl font-bold text-ink mb-6">
+      <h1
+        id={SUCCESS_HEADING_ID}
+        tabIndex={-1}
+        className="font-display heading-xl font-bold text-ink mb-6 outline-none focus-visible:outline-2 focus-visible:outline-brand"
+      >
         {title}
-      </h2>
-      <p className="text-base text-body mb-4">
-        <strong className="font-bold text-ink">{referenceLabel}</strong>{' '}
-        <span className="whitespace-nowrap">{reference}</span>
-      </p>
-      {confirmation && <p className="text-base text-body mb-6">{confirmation}</p>}
-      <div className="mx-auto mb-8 max-w-md text-left">
-        <p className="mb-3 text-base font-bold text-ink">{nextStepsTitle}</p>
-        <ol className="list-decimal space-y-3 pl-6 text-base text-body">
-          {steps.map((step) => (
-            <li key={step}>{step}</li>
-          ))}
-        </ol>
+      </h1>
+      <div className="mx-auto max-w-[560px]">
+        <p className="text-base text-body mb-4">
+          <strong className="font-bold text-ink">{referenceLabel}</strong>{' '}
+          <span className="whitespace-nowrap">{reference}</span>
+        </p>
+        {confirmation && <p className="text-base text-body mb-6">{confirmation}</p>}
+        <div className="mx-auto mb-8 max-w-md text-left">
+          <p className="mb-3 text-base font-bold text-ink">{nextStepsTitle}</p>
+          <ol className="list-decimal space-y-3 pl-6 text-base text-body">
+            {steps.map((step) => (
+              <li key={step}>{step}</li>
+            ))}
+          </ol>
+        </div>
       </div>
       <ActionLink href={homeHref} variant="secondary">
         {backHome}
       </ActionLink>
-    </InfoCard>
+    </div>
   );
 }

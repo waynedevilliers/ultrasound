@@ -49,12 +49,11 @@ export default async function OrderPage({
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 pt-8">
           <OrderSection
             title={copy.order.title}
-            thanksTitle={copy.order.thanks}
             intro={copy.orderPage.intro}
             initialFormat={parseFormatParam(Array.isArray(format) ? format[0] : format)}
-          />
-
-          <OrderInfo locale={pageLocale} />
+          >
+            <OrderInfo locale={pageLocale} />
+          </OrderSection>
         </div>
       </main>
       <Footer locale={pageLocale} />

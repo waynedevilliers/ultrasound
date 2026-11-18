@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useId, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { formatOptions } from '@/lib/format-options';
 import { isCanvasSizeId } from '@/content/products';
 import { buttonClasses } from '@/components/ActionLink';
@@ -12,7 +12,7 @@ import Link from 'next/link';
 import { routeHref, routes } from '@/content/routes';
 import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 import UploadArea from '@/components/UploadArea';
-import OrderSuccess from '@/components/OrderSuccess';
+import OrderSuccess, { SUCCESS_HEADING_ID } from '@/components/OrderSuccess';
 import { CONSENT_VERSION } from '@/lib/consent';
 import { IMAGE_FORMAT_LIST } from '@/lib/image-formats';
 import { createRequestCode } from '@/lib/request-code';
@@ -93,8 +93,6 @@ export default function OrderForm({
   // Screen readers announce the summary (role=alert); focus moves there after a failed submit.
   const summaryRef = useRef<HTMLDivElement>(null);
   // After sending, focus moves to the success message. The page scrolls to it once its layout has changed.
-  const successRef = useRef<HTMLDivElement>(null);
-  const successHeadingId = useId();
   useEffect(() => {
     if (error) summaryRef.current?.focus();
   }, [error]);
@@ -106,7 +104,7 @@ export default function OrderForm({
   useEffect(() => {
     if (!submitted) return;
     onSentChange?.(`${orderForm.successTitle} ${orderForm.referenceLabel} ${reference}`);
-    successRef.current?.focus({ preventScroll: true });
+    document.getElementById(SUCCESS_HEADING_ID)?.focus({ preventScroll: true });
   }, [submitted, onSentChange, orderForm.successTitle, orderForm.referenceLabel, reference]);
 
   const [formData, setFormData] = useState({
@@ -350,33 +348,22 @@ export default function OrderForm({
 
   if (submitted) {
     return (
-      <div
-        ref={successRef}
-        role="region"
-        aria-labelledby={successHeadingId}
-        tabIndex={-1}
-        className="mx-auto max-w-2xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-brand"
-      >
-        <OrderSuccess
-          headingId={successHeadingId}
-          title={orderForm.successTitle}
-          referenceLabel={orderForm.referenceLabel}
-          reference={reference}
-          nextStepsTitle={orderForm.nextStepsTitle}
-          steps={[
-            orderForm.nextStep1,
-            orderForm.nextStep2,
-            submittedProduct === 'canvas' ? orderForm.nextStep3 : orderForm.nextStep3Digital,
-          ]}
-          confirmation={
-            confirmationTo
-              ? orderForm.confirmationSent.replace('{email}', confirmationTo)
-              : undefined
-          }
-          backHome={orderForm.backHome}
-          homeHref={`/${locale}`}
-        />
-      </div>
+      <OrderSuccess
+        title={orderForm.successTitle}
+        referenceLabel={orderForm.referenceLabel}
+        reference={reference}
+        nextStepsTitle={orderForm.nextStepsTitle}
+        steps={[
+          orderForm.nextStep1,
+          orderForm.nextStep2,
+          submittedProduct === 'canvas' ? orderForm.nextStep3 : orderForm.nextStep3Digital,
+        ]}
+        confirmation={
+          confirmationTo ? orderForm.confirmationSent.replace('{email}', confirmationTo) : undefined
+        }
+        backHome={orderForm.backHome}
+        homeHref={`/${locale}`}
+      />
     );
   }
 

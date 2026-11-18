@@ -1,27 +1,37 @@
+import React from 'react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen } from '@testing-library/react';
 import OrderSection from './OrderSection';
 import type { FormatChoice } from '@/lib/format-param';
 
-// The real form is replaced by a button that reports a sent order; it shows the format it received.
+// The real form is replaced by a button that reports a sent order; after sending it shows the success
+// heading the real form shows, and the format it received.
 vi.mock('@/components/OrderForm', () => ({
-  default: ({
+  default: function FakeOrderForm({
     onSentChange,
     initialFormat,
   }: {
     onSentChange: (announcement: string) => void;
     initialFormat: unknown;
-  }) => (
-    <>
-      <span data-testid="format">{JSON.stringify(initialFormat)}</span>
-      <button
-        type="button"
-        onClick={() => onSentChange('Danke, dein Bild ist angekommen. Referenz P4L-261117-K7QM')}
-      >
-        send
-      </button>
-    </>
-  ),
+  }) {
+    const [sent, setSent] = React.useState(false);
+    return sent ? (
+      <h1 id="order-success-heading">Danke, dein Bild ist bei mir angekommen!</h1>
+    ) : (
+      <>
+        <span data-testid="format">{JSON.stringify(initialFormat)}</span>
+        <button
+          type="button"
+          onClick={() => {
+            setSent(true);
+            onSentChange('Danke, dein Bild ist angekommen. Referenz P4L-261117-K7QM');
+          }}
+        >
+          send
+        </button>
+      </>
+    );
+  },
 }));
 
 const props = {
@@ -50,10 +60,11 @@ describe('OrderSection', () => {
     expect(screen.getByRole('status')).toHaveTextContent('');
   });
 
-  it('changes the heading to thanks and hides the intro after sending', () => {
+  it('shows only the success heading after sending, and hides the intro', () => {
     render(<OrderSection {...props} />);
     fireEvent.click(screen.getByRole('button', { name: 'send' }));
-    expect(screen.getByRole('heading', { level: 1, name: 'Danke' })).toBeInTheDocument();
+    expect(screen.getAllByRole('heading', { level: 1 })).toHaveLength(1);
+    expect(screen.getByRole('heading', { level: 1 })).toHaveTextContent('Danke, dein Bild');
     expect(screen.queryByText(props.intro)).toBeNull();
   });
 

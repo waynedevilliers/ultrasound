@@ -3,7 +3,6 @@ import { render, screen, within } from '@testing-library/react';
 import OrderSuccess from './OrderSuccess';
 
 const props = {
-  headingId: 'h-success',
   title: 'Danke, dein Bild ist bei mir angekommen!',
   referenceLabel: 'Deine Referenz:',
   reference: 'P4L-261117-K7QM',
@@ -14,9 +13,9 @@ const props = {
 };
 
 describe('OrderSuccess', () => {
-  it('shows the title as a second-level heading', () => {
+  it('shows the title as the page heading (h1) with the success id', () => {
     render(<OrderSuccess {...props} />);
-    expect(screen.getByRole('heading', { level: 2, name: props.title })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { level: 1, name: props.title })).toBeInTheDocument();
   });
 
   it('shows the reference, not the running number', () => {

@@ -453,7 +453,7 @@ describe('OrderForm submit errors', () => {
 });
 
 describe('OrderForm success focus', () => {
-  it('announces the success message and moves focus to it', async () => {
+  it('moves focus to the success heading', async () => {
     stubServer(
       async () =>
         new Response(JSON.stringify({ success: true, reference: 'P4L-261117-K7QM' }), {
@@ -462,7 +462,10 @@ describe('OrderForm success focus', () => {
     );
     const { container } = render(<OrderForm />);
     submitWithPhoto(container);
-    const region = await screen.findByRole('region', { name: /Thank you, your image has arrived/ });
-    expect(region).toHaveFocus();
+    const heading = await screen.findByRole('heading', {
+      level: 1,
+      name: /Thank you, your image has arrived/,
+    });
+    expect(heading).toHaveFocus();
   });
 });
