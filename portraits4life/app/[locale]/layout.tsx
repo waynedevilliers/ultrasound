@@ -1,6 +1,7 @@
+import { notFound } from 'next/navigation';
 import { fontClassNames } from '@/lib/fonts';
-import { isComingSoon } from '@/lib/site-mode';
-import ComingSoon from '@/components/ComingSoon';
+
+const SUPPORTED_LOCALES = ['de', 'en'];
 
 export default async function LocaleLayout({
   children,
@@ -10,11 +11,11 @@ export default async function LocaleLayout({
   params: Promise<{ locale: string }>;
 }) {
   const { locale } = await params;
+  // Only the two supported languages exist; any other address is not found.
+  if (!SUPPORTED_LOCALES.includes(locale)) notFound();
   return (
     <html lang={locale} className={fontClassNames} suppressHydrationWarning>
-      <body className="min-h-full flex flex-col bg-surface">
-        {isComingSoon() ? <ComingSoon locale={locale} /> : children}
-      </body>
+      <body className="min-h-full flex flex-col bg-surface">{children}</body>
     </html>
   );
 }
