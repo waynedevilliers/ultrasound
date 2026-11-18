@@ -385,7 +385,7 @@ export default function OrderForm({
     <form onSubmit={handleSubmit} noValidate className="space-y-6 max-w-2xl">
       <div className="absolute left-[-9999px] h-0 overflow-hidden" aria-hidden="true">
         <label>
-          Website
+          {orderForm.honeypotLabel}
           <input type="text" name="website" tabIndex={-1} autoComplete="off" />
         </label>
       </div>
@@ -400,7 +400,7 @@ export default function OrderForm({
         </div>
       )}
 
-      <p className="text-sm text-copy">{orderForm.requiredNote}</p>
+      <p className="text-base text-copy">{orderForm.requiredNote}</p>
 
       {/* Basic Fields */}
       <div>
@@ -499,7 +499,7 @@ export default function OrderForm({
       {/* Shipping Address (Canvas Only) */}
       {formData.product === 'canvas' && (
         <div className="border-t pt-6">
-          <h3 className="text-lg font-bold mb-4">{orderForm.shippingHeading}</h3>
+          <h2 className="text-lg font-bold mb-4">{orderForm.shippingHeading}</h2>
 
           <div>
             <label
@@ -704,7 +704,7 @@ export default function OrderForm({
           />
           <span>{orderForm.consentShowcase}</span>
         </label>
-        <p className="text-sm text-copy">{orderForm.withdrawalNote}</p>
+        <p className="text-base text-copy">{orderForm.withdrawalNote}</p>
       </div>
 
       {/* Submit Button */}
@@ -720,7 +720,7 @@ export default function OrderForm({
       {/* TODO(client): confirm the trust text and the legal wording of the privacy line before launch. */}
       <div className="space-y-3 text-center">
         <p className="text-base text-body">{orderForm.trustNote}</p>
-        <p className="text-sm text-copy">
+        <p className="text-base text-copy">
           {orderForm.privacyBefore}{' '}
           <Link
             href={privacyHref}

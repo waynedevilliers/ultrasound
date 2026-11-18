@@ -44,7 +44,7 @@ export default function UploadArea({
       <span id={labelId} className="block text-base font-medium text-body mb-2">
         {labelText}
       </span>
-      {hint && <p className="text-sm text-copy mb-2">{hint}</p>}
+      {hint && <p className="text-base text-copy mb-2">{hint}</p>}
 
       <input
         ref={inputRef}
@@ -61,11 +61,22 @@ export default function UploadArea({
         htmlFor={id}
         className="flex min-h-24 cursor-pointer flex-col items-center justify-center gap-2 rounded-lg border-2 border-dashed border-field bg-surface p-4 text-center transition hover:border-brand peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-brand"
       >
-        <svg className="h-8 w-8 text-brand" fill="none" stroke="currentColor" strokeWidth={1.8} viewBox="0 0 24 24" aria-hidden="true">
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3" />
+        <svg
+          className="h-8 w-8 text-brand"
+          fill="none"
+          stroke="currentColor"
+          strokeWidth={1.8}
+          viewBox="0 0 24 24"
+          aria-hidden="true"
+        >
+          <path
+            strokeLinecap="round"
+            strokeLinejoin="round"
+            d="M12 16V4m0 0l-4 4m4-4l4 4M4 16v3a1 1 0 001 1h14a1 1 0 001-1v-3"
+          />
         </svg>
         <span className="font-semibold text-brand-strong">{copy.choose}</span>
-        <span className="text-sm text-copy">{copy.formats}</span>
+        <span className="text-base text-copy">{copy.formats}</span>
       </label>
 
       {file && (
