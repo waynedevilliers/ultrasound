@@ -28,15 +28,23 @@ function measure() {
   const visible = (el) => {
     if (el.closest('[inert]')) return false;
     const cs = getComputedStyle(el);
-    if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0) return false;
+    if (cs.display === 'none' || cs.visibility === 'hidden' || parseFloat(cs.opacity) === 0)
+      return false;
     const r = el.getBoundingClientRect();
     return r.width > 1 && r.height > 1;
   };
   const selectorOf = (el) => {
-    const cls = typeof el.className === 'string' && el.className ? '.' + el.className.trim().split(/\s+/)[0] : '';
+    const cls =
+      typeof el.className === 'string' && el.className
+        ? '.' + el.className.trim().split(/\s+/)[0]
+        : '';
     return el.tagName.toLowerCase() + (el.id ? '#' + el.id : '') + cls;
   };
-  const textOf = (el) => (el.innerText || el.value || el.getAttribute('aria-label') || '').trim().replace(/\s+/g, ' ').slice(0, 50);
+  const textOf = (el) =>
+    (el.innerText || el.value || el.getAttribute('aria-label') || '')
+      .trim()
+      .replace(/\s+/g, ' ')
+      .slice(0, 50);
   const vw = window.innerWidth;
   const vh = window.innerHeight;
 
@@ -44,15 +52,31 @@ function measure() {
   const wide = [...document.querySelectorAll('body *')]
     .filter((el) => visible(el) && el.getBoundingClientRect().right > vw + 1)
     .slice(0, 5)
-    .map((el) => ({ selector: selectorOf(el), right: Math.round(el.getBoundingClientRect().right) }));
+    .map((el) => ({
+      selector: selectorOf(el),
+      right: Math.round(el.getBoundingClientRect().right),
+    }));
   const sideways = { scrolls: document.documentElement.scrollWidth > vw, widerThanViewport: wide };
 
   // Above the fold: headline, supporting line, order button, part of the image.
   const h1 = document.querySelector('h1');
-  const inside = (el) => { if (!el) return false; const r = el.getBoundingClientRect(); return r.top >= 0 && r.bottom <= vh && visible(el); };
+  const inside = (el) => {
+    if (!el) return false;
+    const r = el.getBoundingClientRect();
+    return r.top >= 0 && r.bottom <= vh && visible(el);
+  };
   const supporting = document.querySelector('h1 ~ p');
-  const orderVisible = [...document.querySelectorAll('[data-variant="primary"]')].find((el) => visible(el) && el.getBoundingClientRect().top < vh && el.getBoundingClientRect().bottom > 0);
-  const image = [...document.querySelectorAll('img')].find((img) => visible(img) && img.getBoundingClientRect().width > 50 && img.getBoundingClientRect().top < vh && img.getBoundingClientRect().bottom > 0);
+  const orderVisible = [...document.querySelectorAll('[data-variant="primary"]')].find(
+    (el) =>
+      visible(el) && el.getBoundingClientRect().top < vh && el.getBoundingClientRect().bottom > 0,
+  );
+  const image = [...document.querySelectorAll('img')].find(
+    (img) =>
+      visible(img) &&
+      img.getBoundingClientRect().width > 50 &&
+      img.getBoundingClientRect().top < vh &&
+      img.getBoundingClientRect().bottom > 0,
+  );
   const aboveFold = {
     h1: inside(h1),
     supportingLine: inside(supporting),
@@ -61,24 +85,39 @@ function measure() {
   };
 
   // Tap targets: links, buttons and form controls.
-  const targets = [...document.querySelectorAll('a[href], button, input:not([type=hidden]), select, textarea, [role="button"]')].filter(visible);
+  const targets = [
+    ...document.querySelectorAll(
+      'a[href], button, input:not([type=hidden]), select, textarea, [role="button"]',
+    ),
+  ].filter(visible);
   const smallTargets = targets
     .map((el) => ({ el, r: el.getBoundingClientRect() }))
     .filter(({ r }) => r.width < 44 || r.height < 44)
     .slice(0, 60)
-    .map(({ el, r }) => ({ text: textOf(el), selector: selectorOf(el), width: Math.round(r.width), height: Math.round(r.height) }));
+    .map(({ el, r }) => ({
+      text: textOf(el),
+      selector: selectorOf(el),
+      width: Math.round(r.width),
+      height: Math.round(r.height),
+    }));
 
   // Targets closer than 8px (not counting an element inside another).
   const closeTargets = [];
   const rects = targets.map((el) => ({ el, r: el.getBoundingClientRect() }));
   for (let i = 0; i < rects.length && closeTargets.length < 40; i++) {
     for (let j = i + 1; j < rects.length && closeTargets.length < 40; j++) {
-      const a = rects[i], b = rects[j];
+      const a = rects[i],
+        b = rects[j];
       if (a.el.contains(b.el) || b.el.contains(a.el)) continue;
       const gapX = Math.max(a.r.left - b.r.right, b.r.left - a.r.right);
       const gapY = Math.max(a.r.top - b.r.bottom, b.r.top - a.r.bottom);
       const gap = Math.max(gapX, gapY);
-      if (gap < 8) closeTargets.push({ a: textOf(a.el) || selectorOf(a.el), b: textOf(b.el) || selectorOf(b.el), gap: Math.round(gap) });
+      if (gap < 8)
+        closeTargets.push({
+          a: textOf(a.el) || selectorOf(a.el),
+          b: textOf(b.el) || selectorOf(b.el),
+          gap: Math.round(gap),
+        });
     }
   }
 
@@ -99,19 +138,25 @@ function measure() {
     const items = [...bar.querySelectorAll('*')].filter(visible);
     for (let i = 0; i < items.length && overlaps.length < 20; i++) {
       for (let j = i + 1; j < items.length && overlaps.length < 20; j++) {
-        const a = items[i], b = items[j];
+        const a = items[i],
+          b = items[j];
         if (a.contains(b) || b.contains(a)) continue;
-        const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+        const ra = a.getBoundingClientRect(),
+          rb = b.getBoundingClientRect();
         const w = Math.min(ra.right, rb.right) - Math.max(ra.left, rb.left);
         const h = Math.min(ra.bottom, rb.bottom) - Math.max(ra.top, rb.top);
-        if (w > 1 && h > 1) overlaps.push({ a: textOf(a) || selectorOf(a), b: textOf(b) || selectorOf(b) });
+        if (w > 1 && h > 1)
+          overlaps.push({ a: textOf(a) || selectorOf(a), b: textOf(b) || selectorOf(b) });
       }
     }
   }
 
   // Primary order buttons visible in the first screen.
   const primaryInFirstScreen = [...document.querySelectorAll('[data-variant="primary"]')]
-    .filter((el) => visible(el) && el.getBoundingClientRect().top < vh && el.getBoundingClientRect().bottom > 0)
+    .filter(
+      (el) =>
+        visible(el) && el.getBoundingClientRect().top < vh && el.getBoundingClientRect().bottom > 0,
+    )
     .map((el) => ({ text: textOf(el), href: el.getAttribute('href') || '' }));
 
   return {
@@ -149,7 +194,11 @@ async function main() {
         const page = await browser.newPage({ viewport: size });
         await page.goto(baseUrl + p.path, { waitUntil: 'load' });
         await page.waitForTimeout(800);
-        runs.push({ page: p.path, size: `${size.width}x${size.height}`, ...(await page.evaluate(measure)) });
+        runs.push({
+          page: p.path,
+          size: `${size.width}x${size.height}`,
+          ...(await page.evaluate(measure)),
+        });
         await page.close();
       }
     }
@@ -163,7 +212,10 @@ async function main() {
       if (action.prepare) await action.prepare(page);
       const file = `${name}.png`;
       if (action.element) {
-        await page.locator(action.element).first().screenshot({ path: join(outDir, file) });
+        await page
+          .locator(action.element)
+          .first()
+          .screenshot({ path: join(outDir, file) });
       } else {
         await page.screenshot({ path: join(outDir, file), fullPage: Boolean(action.fullPage) });
       }
@@ -202,7 +254,9 @@ async function main() {
 
     const result = { generatedAt: new Date().toISOString(), baseUrl, runs, screenshots: shots };
     await writeFile(join(outDir, 'result.json'), JSON.stringify(result, null, 2) + '\n');
-    console.log(`Wrote ${runs.length} measurements and ${shots.length} screenshots to docs/reviews/mobile/`);
+    console.log(
+      `Wrote ${runs.length} measurements and ${shots.length} screenshots to docs/reviews/mobile/`,
+    );
     for (const run of runs) {
       console.log(
         `${run.page} ${run.size}: height ${run.pageHeight}px, sideways ${run.sideways.scrolls ? 'YES' : 'no'}, ` +

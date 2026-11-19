@@ -17,13 +17,17 @@ describe('formatOptions', () => {
     digitalProduct.available = true;
     const options = formatOptions('de');
     expect(options.map((o) => o.value)).toEqual([...canvasSizes.map((s) => s.id), 'digital']);
-    expect(options[options.length - 1].label).toBe(`Digitale Datei (JPG), ${formatPrice(digitalProduct.price, 'de')}`);
+    expect(options[options.length - 1].label).toBe(
+      `Digitale Datei (JPG), ${formatPrice(digitalProduct.price, 'de')}`,
+    );
   });
 
   it('uses the English canvas names and prices', () => {
     const options = formatOptions('en');
     const first = canvasSizes[0];
-    expect(options[0].label).toBe(`Canvas print ${first.widthCm}\u00a0×\u00a0${first.heightCm}\u00a0cm, ${formatPrice(first.price, 'en')}`);
+    expect(options[0].label).toBe(
+      `Canvas print ${first.widthCm}\u00a0×\u00a0${first.heightCm}\u00a0cm, ${formatPrice(first.price, 'en')}`,
+    );
   });
 
   it('takes every canvas price from the product file', () => {

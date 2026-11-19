@@ -8,7 +8,9 @@ for (const path of pages) {
     const response = await page.goto(path);
     expect(response?.status()).toBe(200);
     await expect(page.locator('h1')).toHaveCount(1);
-    const overflow = await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth);
+    const overflow = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
     expect(overflow).toBeLessThanOrEqual(0);
   });
 }
@@ -19,7 +21,12 @@ test('mobile menu opens, navigates and closes', async ({ page, isMobile }) => {
   const toggle = page.locator('nav button[aria-controls]');
   await toggle.click();
   await expect(toggle).toHaveAttribute('aria-expanded', 'true');
-  await page.getByRole('navigation', { name: 'Main menu' }).locator('ul').last().locator('a[href="/en/order"]').click();
+  await page
+    .getByRole('navigation', { name: 'Main menu' })
+    .locator('ul')
+    .last()
+    .locator('a[href="/en/order"]')
+    .click();
   await expect(page).toHaveURL(/\/en\/order$/);
 });
 
@@ -27,7 +34,9 @@ for (const path of ['/en', '/en/order']) {
   test(`${path} has no axe violations (WCAG 2.2 AA)`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(path);
-    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze();
     expect(results.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
   });
 }
@@ -55,14 +64,20 @@ test('landing page has exactly one primary action', async ({ page, isMobile }) =
   }
 });
 
-test('order page has exactly one primary action (the submit button)', async ({ page, isMobile }) => {
+test('order page has exactly one primary action (the submit button)', async ({
+  page,
+  isMobile,
+}) => {
   test.skip(isMobile, 'desktop project only');
   await page.goto('/en/order');
   await expect(page.locator('[data-variant="primary"]')).toHaveCount(1);
   await expect(page.locator('button[type="submit"][data-variant="primary"]')).toHaveCount(1);
 });
 
-test('small logo in the bar fades in after the big logo scrolls away', async ({ page, isMobile }) => {
+test('small logo in the bar fades in after the big logo scrolls away', async ({
+  page,
+  isMobile,
+}) => {
   test.skip(isMobile, 'desktop project only');
   await page.emulateMedia({ reducedMotion: 'reduce' });
   await page.goto('/en');
@@ -72,7 +87,10 @@ test('small logo in the bar fades in after the big logo scrolls away', async ({ 
   await expect(compact).toHaveCSS('opacity', '1');
 });
 
-test('hero shows heading, supporting line and primary button without scrolling (375x667)', async ({ page, isMobile }) => {
+test('hero shows heading, supporting line and primary button without scrolling (375x667)', async ({
+  page,
+  isMobile,
+}) => {
   test.skip(!isMobile, 'mobile project only');
   await page.goto('/en');
   const heading = page.locator('h1');
@@ -92,13 +110,19 @@ test('the root address opens the German site', async ({ page, isMobile }) => {
   await expect(page.locator('html')).toHaveAttribute('lang', 'de');
 });
 
-test('private order photos are not served without a valid signed link', async ({ request, isMobile }) => {
+test('private order photos are not served without a valid signed link', async ({
+  request,
+  isMobile,
+}) => {
   test.skip(isMobile, 'desktop project only');
   const response = await request.get('/api/orders/files?p=orders/ultrasound-x&exp=1&sig=bad');
   expect(response.status()).toBe(403);
 });
 
-test('the photo cleanup job refuses calls without the cron secret', async ({ request, isMobile }) => {
+test('the photo cleanup job refuses calls without the cron secret', async ({
+  request,
+  isMobile,
+}) => {
   test.skip(isMobile, 'desktop project only');
   const response = await request.get('/api/cron/cleanup');
   expect(response.status()).toBe(403);
@@ -106,14 +130,29 @@ test('the photo cleanup job refuses calls without the cron secret', async ({ req
 
 test('the order endpoint rejects a request that is not JSON', async ({ request, isMobile }) => {
   test.skip(isMobile, 'desktop project only');
-  const response = await request.post('/api/orders', { data: 'not json', headers: { 'Content-Type': 'text/plain' } });
+  const response = await request.post('/api/orders', {
+    data: 'not json',
+    headers: { 'Content-Type': 'text/plain' },
+  });
   expect(response.status()).toBe(400);
 });
 
-const linkPages = ['/en', '/de', '/en/order', '/de/order', '/en/impressum', '/de/impressum', '/de/datenschutz', '/en/datenschutz'];
+const linkPages = [
+  '/en',
+  '/de',
+  '/en/order',
+  '/de/order',
+  '/en/impressum',
+  '/de/impressum',
+  '/de/datenschutz',
+  '/en/datenschutz',
+];
 
 for (const path of linkPages) {
-  test(`every link on ${path} works (internal, anchors, mailto, external)`, async ({ page, isMobile }) => {
+  test(`every link on ${path} works (internal, anchors, mailto, external)`, async ({
+    page,
+    isMobile,
+  }) => {
     test.skip(isMobile, 'desktop project only');
     await page.goto(path);
     const links = await page.$$eval('a[href]', (anchors) =>
@@ -122,7 +161,7 @@ for (const path of linkPages) {
         target: a.getAttribute('target'),
         rel: a.getAttribute('rel') ?? '',
         hasId: (id: string) => Boolean(document.getElementById(id)),
-      }))
+      })),
     );
     const broken: string[] = [];
     for (const link of links) {
@@ -130,13 +169,20 @@ for (const path of linkPages) {
         if (!link.href.includes('@')) broken.push(`bad mailto: ${link.href}`);
       } else if (link.href.startsWith('#')) {
         const id = link.href.slice(1);
-        const exists = await page.evaluate((target) => Boolean(document.getElementById(target)), id);
+        const exists = await page.evaluate(
+          (target) => Boolean(document.getElementById(target)),
+          id,
+        );
         if (!exists) broken.push(`missing anchor target: ${link.href}`);
       } else if (link.href.startsWith('/')) {
         const response = await page.request.get(link.href.split('#')[0]);
         if (response.status() !== 200) broken.push(`${link.href} -> ${response.status()}`);
       } else if (/^https?:\/\//.test(link.href)) {
-        if (link.target !== '_blank' || !link.rel.includes('noopener') || !link.rel.includes('noreferrer')) {
+        if (
+          link.target !== '_blank' ||
+          !link.rel.includes('noopener') ||
+          !link.rel.includes('noreferrer')
+        ) {
           broken.push(`external link without safe attributes: ${link.href}`);
         }
       }
@@ -145,10 +191,22 @@ for (const path of linkPages) {
   });
 }
 
-const seoPages = ['/en', '/de', '/en/order', '/de/order', '/en/impressum', '/de/impressum', '/en/datenschutz', '/de/datenschutz'];
+const seoPages = [
+  '/en',
+  '/de',
+  '/en/order',
+  '/de/order',
+  '/en/impressum',
+  '/de/impressum',
+  '/en/datenschutz',
+  '/de/datenschutz',
+];
 
 for (const path of seoPages) {
-  test(`${path} has title, description, canonical, alternates and organization data`, async ({ page, isMobile }) => {
+  test(`${path} has title, description, canonical, alternates and organization data`, async ({
+    page,
+    isMobile,
+  }) => {
     test.skip(isMobile, 'desktop project only');
     await page.goto(path);
     await expect(page).toHaveTitle(/\S/);
@@ -156,16 +214,27 @@ for (const path of seoPages) {
     await expect(page.locator('link[rel="canonical"]')).toHaveCount(1);
     await expect(page.locator('link[rel="alternate"][hreflang="de"]')).toHaveCount(1);
     await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(1);
-    const jsonLd = await page.$$eval('script[type="application/ld+json"]', (scripts) => scripts.map((s) => s.textContent ?? ''));
+    const jsonLd = await page.$$eval('script[type="application/ld+json"]', (scripts) =>
+      scripts.map((s) => s.textContent ?? ''),
+    );
     expect(jsonLd.some((text) => text.includes('"Organization"'))).toBe(true);
   });
 }
 
-for (const path of ['/de', '/de/order', '/en/impressum', '/de/impressum', '/en/datenschutz', '/de/datenschutz']) {
+for (const path of [
+  '/de',
+  '/de/order',
+  '/en/impressum',
+  '/de/impressum',
+  '/en/datenschutz',
+  '/de/datenschutz',
+]) {
   test(`${path} has no axe violations (WCAG 2.2 AA)`, async ({ page }) => {
     await page.emulateMedia({ reducedMotion: 'reduce' });
     await page.goto(path);
-    const results = await new AxeBuilder({ page }).withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa']).analyze();
+    const results = await new AxeBuilder({ page })
+      .withTags(['wcag2a', 'wcag2aa', 'wcag21aa', 'wcag22aa'])
+      .analyze();
     expect(results.violations.map((v) => `${v.id}: ${v.help}`)).toEqual([]);
   });
 }
@@ -174,8 +243,12 @@ test('order page heading and intro are in one language per locale', async ({ pag
   test.skip(isMobile, 'desktop project only');
   await page.goto('/en/order');
   await expect(page.locator('h1')).toHaveText('Order');
-  await expect(page.getByText('Upload your ultrasound image and send me your wishes.')).toBeVisible();
+  await expect(
+    page.getByText('Upload your ultrasound image and send me your wishes.'),
+  ).toBeVisible();
   await page.goto('/de/order');
   await expect(page.locator('h1')).toHaveText('Bestellen');
-  await expect(page.getByText('Lade dein Ultraschallbild hoch und sende mir deine Wünsche.')).toBeVisible();
+  await expect(
+    page.getByText('Lade dein Ultraschallbild hoch und sende mir deine Wünsche.'),
+  ).toBeVisible();
 });

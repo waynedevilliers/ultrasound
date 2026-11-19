@@ -10,7 +10,9 @@ describe('security headers', () => {
     expect(find(headers, 'X-Content-Type-Options')).toBe('nosniff');
     expect(find(headers, 'X-Frame-Options')).toBe('DENY');
     expect(find(headers, 'Referrer-Policy')).toBe('strict-origin-when-cross-origin');
-    expect(find(headers, 'Strict-Transport-Security')).toBe('max-age=63072000; includeSubDomains; preload');
+    expect(find(headers, 'Strict-Transport-Security')).toBe(
+      'max-age=63072000; includeSubDomains; preload',
+    );
     expect(find(headers, 'Permissions-Policy')).toContain('camera=()');
     expect(find(headers, 'Permissions-Policy')).toContain('interest-cohort=()');
   });
@@ -40,7 +42,14 @@ describe('security headers', () => {
   it('loads no external hosts except the Vercel upload addresses', () => {
     const csp = buildContentSecurityPolicy();
     const hosts = csp.match(/https?:\/\/[^\s;]+/g) ?? [];
-    expect(hosts.every((h) => h === 'https://vercel.com' || h.endsWith('.vercel-storage.com') || h === 'https://blob.vercel-storage.com')).toBe(true);
+    expect(
+      hosts.every(
+        (h) =>
+          h === 'https://vercel.com' ||
+          h.endsWith('.vercel-storage.com') ||
+          h === 'https://blob.vercel-storage.com',
+      ),
+    ).toBe(true);
   });
 
   it('allows photo uploads to Vercel Blob and nothing else new', () => {

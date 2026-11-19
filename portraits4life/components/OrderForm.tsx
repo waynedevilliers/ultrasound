@@ -3,12 +3,7 @@
 import { useEffect, useRef, useState } from 'react';
 import { formatOptions } from '@/lib/format-options';
 import { isCanvasSizeId } from '@/content/products';
-import {
-  DEFAULT_SHIPPING_COUNTRY,
-  isShippingCountry,
-  postalCodeIsValid,
-  shippingCountries,
-} from '@/content/shipping';
+import { shippingCountries } from '@/content/shipping';
 import { buttonClasses } from '@/components/ActionLink';
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/image-rules';
 import { usePathname } from 'next/navigation';
@@ -19,64 +14,29 @@ import { routeHref, routes } from '@/content/routes';
 import { clearFieldError, fieldErrorsFromIssues } from '@/lib/form-errors';
 import UploadArea from '@/components/UploadArea';
 import OrderSuccess, { SUCCESS_HEADING_ID } from '@/components/OrderSuccess';
-import { CONSENT_VERSION } from '@/lib/consent';
+import {
+  CheckboxField,
+  Field,
+  FieldError,
+  TextField,
+  fieldClass,
+  invalidProps,
+} from '@/components/FormFields';
 import { IMAGE_FORMAT_LIST } from '@/lib/image-formats';
 import { createRequestCode } from '@/lib/request-code';
+import {
+  EMPTY_FORM,
+  OrderStageError,
+  buildOrderPayload,
+  findMissingFields,
+  readReply,
+  type OrderConsent,
+  type OrderFormData,
+} from '@/lib/order-submit';
 import { upload } from '@vercel/blob/client';
 
-// Empty values for every field except product and size, which may come from the URL.
-const EMPTY_FORM = {
-  name: '',
-  email: '',
-  product: 'canvas',
-  canvasSize: '30x30cm',
-  childName: '',
-  weeksInWomb: '',
-  specialRequests: '',
-  shippingStreet: '',
-  shippingCity: '',
-  shippingPostalCode: '',
-  shippingCountry: DEFAULT_SHIPPING_COUNTRY as string,
-  deliverToOther: false as boolean,
-  shippingRecipient: '',
-} as const;
+type PhotoType = 'ultrasound' | 'reference';
 
-// A failed step of the submit, so the message can say what went wrong.
-// 'invalid' is a rejected order that names no field (such as a bot check); 'rate' is too many attempts.
-class OrderStageError extends Error {
-  constructor(
-    public stage: 'upload' | 'network' | 'server' | 'invalid' | 'rate',
-    public code?: string,
-  ) {
-    super(stage);
-  }
-}
-
-type ServerReply = {
-  reference?: string;
-  confirmationSent?: boolean;
-  message?: string;
-  code?: string;
-  issues?: { field: string; message: string }[];
-};
-
-// Reads the reply body. A body that cannot be read is a failure, never a success: on a successful
-// response it means the confirmation is missing; on an error response (for example a gateway page)
-// the error status is enough to report, so the reply is treated as empty.
-async function readReply(response: Response, requestCode: string): Promise<ServerReply> {
-  try {
-    return (await response.json()) as ServerReply;
-  } catch (error) {
-    if (response.ok) {
-      throw new OrderStageError(error instanceof TypeError ? 'network' : 'server', requestCode);
-    }
-    return {};
-  }
-}
-
-// Shared style for text inputs, selects and the message field. min-h-11 keeps every field at least 44px tall for touch.
-const fieldClass =
-  'w-full min-h-11 px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent';
 export default function OrderForm({
   initialFormat = null,
   onSentChange,
@@ -98,7 +58,11 @@ export default function OrderForm({
   // Errors for single fields, keyed by field name; cleared when the field changes.
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
   // Consent boxes, unticked by default. Only processing and rights are required.
-  const [consent, setConsent] = useState({ processing: false, rights: false, showcase: false });
+  const [consent, setConsent] = useState<OrderConsent>({
+    processing: false,
+    rights: false,
+    showcase: false,
+  });
   // Screen readers announce the summary (role=alert); focus moves there after a failed submit.
   const summaryRef = useRef<HTMLDivElement>(null);
   // After sending, focus moves to the success message. The page scrolls to it once its layout has changed.
@@ -116,26 +80,16 @@ export default function OrderForm({
     document.getElementById(SUCCESS_HEADING_ID)?.focus({ preventScroll: true });
   }, [submitted, onSentChange, orderForm.successTitle, orderForm.referenceLabel, reference]);
 
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<OrderFormData>({
     ...EMPTY_FORM,
     product: initialFormat?.product ?? 'canvas',
     canvasSize: initialFormat?.product === 'canvas' ? initialFormat.canvasSize : '30x30cm',
   });
 
-  const [files, setFiles] = useState({
-    ultrasound: null as File | null,
-    reference: null as File | null,
+  const [files, setFiles] = useState<Record<PhotoType, File | null>>({
+    ultrasound: null,
+    reference: null,
   });
-
-  // Spread onto an input: marks it invalid and links it to its message.
-  const invalid = (key: string) =>
-    fieldErrors[key] ? { 'aria-invalid': true, 'aria-describedby': `${key}-error` } : {};
-  const fieldError = (key: string) =>
-    fieldErrors[key] ? (
-      <p id={`${key}-error`} className="mt-1 text-base text-danger-text">
-        {fieldErrors[key]}
-      </p>
-    ) : null;
 
   // The product list sets both the product and the canvas size.
   const formatValue = formData.product === 'canvas' ? formData.canvasSize : 'digital';
@@ -164,34 +118,28 @@ export default function OrderForm({
     setFieldErrors((prev) => clearFieldError(prev, name));
   };
 
-  const handleFileChange = (
-    e: React.ChangeEvent<HTMLInputElement>,
-    type: 'ultrasound' | 'reference',
-  ) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>, type: PhotoType) => {
     const file = e.target.files?.[0];
     if (!file) return;
-    if (file.size > MAX_IMAGE_BYTES) {
-      setError(orderForm.fileTooLarge);
-      setFieldErrors((prev) => ({ ...prev, [type]: orderForm.fileTooLarge }));
-      e.target.value = '';
-      return;
-    }
-    if (!ALLOWED_IMAGE_TYPES.includes(file.type)) {
-      setError(orderForm.fileType);
-      setFieldErrors((prev) => ({ ...prev, [type]: orderForm.fileType }));
+    const problem =
+      file.size > MAX_IMAGE_BYTES
+        ? orderForm.fileTooLarge
+        : !ALLOWED_IMAGE_TYPES.includes(file.type)
+          ? orderForm.fileType
+          : '';
+    if (problem) {
+      setError(problem);
+      setFieldErrors((prev) => ({ ...prev, [type]: problem }));
       e.target.value = '';
       return;
     }
     setError('');
     setFieldErrors((prev) => clearFieldError(prev, type));
-    setFiles((prev) => ({
-      ...prev,
-      [type]: file,
-    }));
+    setFiles((prev) => ({ ...prev, [type]: file }));
   };
 
   // Removes a chosen photo and its error.
-  const handleRemoveFile = (type: 'ultrasound' | 'reference') => {
+  const handleRemoveFile = (type: PhotoType) => {
     setFiles((prev) => ({ ...prev, [type]: null }));
     setFieldErrors((prev) => clearFieldError(prev, type));
   };
@@ -230,28 +178,7 @@ export default function OrderForm({
 
     try {
       // Required fields are checked here too, so an empty submit marks every missing field.
-      const required: string[] = ['name', 'email'];
-      if (formData.product === 'canvas') {
-        required.push('shippingStreet', 'shippingCity', 'shippingPostalCode');
-        if (formData.deliverToOther) required.push('shippingRecipient');
-      }
-      const values = formData as unknown as Record<string, string>;
-      const missing: Record<string, string> = {};
-      for (const key of required) {
-        if (!values[key].trim()) missing[key] = orderForm.requiredField;
-      }
-      if (formData.email.trim() && !formData.email.includes('@'))
-        missing.email = orderForm.fieldInvalid;
-      if (
-        formData.product === 'canvas' &&
-        isShippingCountry(formData.shippingCountry) &&
-        formData.shippingPostalCode.trim() !== '' &&
-        !postalCodeIsValid(formData.shippingCountry, formData.shippingPostalCode.trim())
-      )
-        missing.shippingPostalCode = orderForm.fieldInvalid;
-      if (!files.ultrasound) missing.ultrasound = orderForm.ultrasoundRequired;
-      if (!consent.processing) missing.consentProcessing = orderForm.consentRequired;
-      if (!consent.rights) missing.consentRights = orderForm.consentRequired;
+      const missing = findMissingFields(formData, files.ultrasound !== null, consent, orderForm);
       if (Object.keys(missing).length > 0) {
         setFieldErrors(missing);
         setError(orderForm.checkFields);
@@ -270,36 +197,13 @@ export default function OrderForm({
         ? await uploadPhoto(files.reference, 'reference', requestCode)
         : '';
 
-      const payload = {
-        name: formData.name,
-        email: formData.email,
-        product: formData.product,
-        childName: formData.childName,
-        weeksInWomb: formData.weeksInWomb,
-        specialRequests: formData.specialRequests,
-        consent: {
-          processing: true,
-          rights: true,
-          showcase: consent.showcase,
-          version: CONSENT_VERSION,
-        },
+      const payload = buildOrderPayload(formData, consent, {
         website: honeypot,
         requestCode,
         locale,
         ultrasoundPath,
         referencePath,
-        ...(formData.product === 'canvas'
-          ? {
-              canvasSize: formData.canvasSize,
-              shippingStreet: formData.shippingStreet,
-              shippingCity: formData.shippingCity,
-              shippingPostalCode: formData.shippingPostalCode,
-              shippingCountry: formData.shippingCountry,
-              deliverToOther: formData.deliverToOther,
-              shippingRecipient: formData.shippingRecipient,
-            }
-          : {}),
-      };
+      });
 
       let response: Response;
       try {
@@ -380,6 +284,14 @@ export default function OrderForm({
     );
   }
 
+  // Props shared by the text fields: value and error come from the form state by field name.
+  const text = (id: keyof OrderFormData) => ({
+    id,
+    value: String(formData[id]),
+    onChange: handleChange,
+    error: fieldErrors[id],
+  });
+
   return (
     // noValidate: the browser's own required-field bubbles would hide our field messages.
     <form onSubmit={handleSubmit} noValidate className="space-y-6 max-w-2xl">
@@ -405,16 +317,18 @@ export default function OrderForm({
       {/* Section: Dein Kunstwerk */}
       <div className="space-y-6">
         <h2 className="text-lg font-bold">{orderForm.artworkHeading}</h2>
-        <div>
-          <label className="block text-base font-medium text-body mb-2" htmlFor="format">
-            {orderForm.productLabel}
-          </label>
+        <Field
+          id="format"
+          label={orderForm.productLabel}
+          error={fieldErrors[formatErrorKey]}
+          errorId={formatErrorKey}
+        >
           <select
             id="format"
             name="format"
             value={formatValue}
             onChange={handleFormatChange}
-            {...invalid(formatErrorKey)}
+            {...invalidProps(formatErrorKey, fieldErrors[formatErrorKey])}
             className={fieldClass}
           >
             {options.map((option) => (
@@ -428,10 +342,8 @@ export default function OrderForm({
               {orderForm.priceLabel.replace('{price}', selectedPrice)}
             </p>
           )}
-          {fieldError(formatErrorKey)}
-        </div>
+        </Field>
 
-        {/* File Uploads */}
         <div>
           <UploadArea
             id="ultrasoundImage"
@@ -441,104 +353,51 @@ export default function OrderForm({
             copy={uploadCopy}
             required
             hint={orderForm.uploadTip}
-            inputProps={invalid('ultrasound')}
-            errorNode={fieldError('ultrasound')}
+            inputProps={invalidProps('ultrasound', fieldErrors.ultrasound)}
+            errorNode={<FieldError id="ultrasound" error={fieldErrors.ultrasound} />}
             onChange={(e) => handleFileChange(e, 'ultrasound')}
             onRemove={() => handleRemoveFile('ultrasound')}
           />
         </div>
 
-        <div>
-          <label className="block text-base font-medium text-body mb-2" htmlFor="childName">
-            {orderForm.childNameLabel}
-          </label>
-          <input
-            id="childName"
-            {...invalid('childName')}
-            type="text"
-            name="childName"
-            value={formData.childName}
-            onChange={handleChange}
-            className={fieldClass}
-          />
-          {fieldError('childName')}
-        </div>
+        <TextField {...text('childName')} label={orderForm.childNameLabel} />
+        <TextField
+          {...text('weeksInWomb')}
+          label={orderForm.weeksLabel}
+          type="number"
+          min={1}
+          max={42}
+          inputMode="numeric"
+        />
 
-        <div>
-          <label className="block text-base font-medium text-body mb-2" htmlFor="weeksInWomb">
-            {orderForm.weeksLabel}
-          </label>
-          <input
-            id="weeksInWomb"
-            {...invalid('weeksInWomb')}
-            type="number"
-            min={1}
-            max={42}
-            inputMode="numeric"
-            name="weeksInWomb"
-            value={formData.weeksInWomb}
-            onChange={handleChange}
-            className={fieldClass}
-          />
-          {fieldError('weeksInWomb')}
-        </div>
-
-        {/* Special Requests */}
-        <div>
-          <label className="block text-base font-medium text-body mb-2" htmlFor="specialRequests">
-            {orderForm.specialRequests}
-          </label>
+        <Field
+          id="specialRequests"
+          label={orderForm.specialRequests}
+          error={fieldErrors.specialRequests}
+        >
           <textarea
             id="specialRequests"
-            {...invalid('specialRequests')}
+            {...invalidProps('specialRequests', fieldErrors.specialRequests)}
             name="specialRequests"
             value={formData.specialRequests}
             onChange={handleChange}
             rows={4}
             className={fieldClass}
           />
-          {fieldError('specialRequests')}
-        </div>
+        </Field>
       </div>
 
       {/* Section: Deine Kontaktdaten */}
       <div className="space-y-6 border-t pt-6">
         <h2 className="text-lg font-bold">{orderForm.contactHeading}</h2>
-        <div>
-          <label className="block text-base font-medium text-body mb-2" htmlFor="name">
-            {orderForm.nameLabel}
-          </label>
-          <input
-            id="name"
-            {...invalid('name')}
-            type="text"
-            name="name"
-            autoComplete="name"
-            value={formData.name}
-            onChange={handleChange}
-            required
-            className={fieldClass}
-          />
-          {fieldError('name')}
-        </div>
-
-        <div>
-          <label className="block text-base font-medium text-body mb-2" htmlFor="email">
-            {orderForm.emailLabel}
-          </label>
-          <input
-            id="email"
-            {...invalid('email')}
-            type="email"
-            name="email"
-            autoComplete="email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-            className={fieldClass}
-          />
-          {fieldError('email')}
-        </div>
+        <TextField {...text('name')} label={orderForm.nameLabel} autoComplete="name" required />
+        <TextField
+          {...text('email')}
+          label={orderForm.emailLabel}
+          type="email"
+          autoComplete="email"
+          required
+        />
       </div>
 
       {/* Shipping Address (Canvas Only) */}
@@ -546,73 +405,39 @@ export default function OrderForm({
         <div className="border-t pt-6">
           <h2 className="text-lg font-bold mb-4">{orderForm.shippingHeading}</h2>
 
-          <div>
-            <label className="block text-base font-medium text-body mb-2" htmlFor="shippingStreet">
-              {orderForm.shippingStreet}
-            </label>
-            <input
-              id="shippingStreet"
-              {...invalid('shippingStreet')}
-              type="text"
-              name="shippingStreet"
-              autoComplete="street-address"
-              value={formData.shippingStreet}
-              onChange={handleChange}
-              required
-              className={fieldClass}
-            />
-            {fieldError('shippingStreet')}
-          </div>
+          <TextField
+            {...text('shippingStreet')}
+            label={orderForm.shippingStreet}
+            autoComplete="street-address"
+            required
+          />
 
           <div className="mt-4 grid grid-cols-[1fr_2fr] gap-4">
-            <div>
-              <label
-                className="block text-base font-medium text-body mb-2"
-                htmlFor="shippingPostalCode"
-              >
-                {orderForm.shippingPostalCode}
-              </label>
-              <input
-                id="shippingPostalCode"
-                {...invalid('shippingPostalCode')}
-                type="text"
-                name="shippingPostalCode"
-                inputMode="numeric"
-                maxLength={5}
-                autoComplete="postal-code"
-                value={formData.shippingPostalCode}
-                onChange={handleChange}
-                required
-                className={fieldClass}
-              />
-              {fieldError('shippingPostalCode')}
-            </div>
-            <div>
-              <label className="block text-base font-medium text-body mb-2" htmlFor="shippingCity">
-                {orderForm.shippingCity}
-              </label>
-              <input
-                id="shippingCity"
-                {...invalid('shippingCity')}
-                type="text"
-                name="shippingCity"
-                autoComplete="address-level2"
-                value={formData.shippingCity}
-                onChange={handleChange}
-                required
-                className={fieldClass}
-              />
-              {fieldError('shippingCity')}
-            </div>
+            <TextField
+              {...text('shippingPostalCode')}
+              label={orderForm.shippingPostalCode}
+              inputMode="numeric"
+              maxLength={5}
+              autoComplete="postal-code"
+              required
+            />
+            <TextField
+              {...text('shippingCity')}
+              label={orderForm.shippingCity}
+              autoComplete="address-level2"
+              required
+            />
           </div>
 
-          <div className="mt-4">
-            <label className="block text-base font-medium text-body mb-2" htmlFor="shippingCountry">
-              {orderForm.shippingCountry}
-            </label>
+          <Field
+            id="shippingCountry"
+            label={orderForm.shippingCountry}
+            error={fieldErrors.shippingCountry}
+            className="mt-4"
+          >
             <select
               id="shippingCountry"
-              {...invalid('shippingCountry')}
+              {...invalidProps('shippingCountry', fieldErrors.shippingCountry)}
               name="shippingCountry"
               autoComplete="country-name"
               value={formData.shippingCountry}
@@ -625,96 +450,62 @@ export default function OrderForm({
                 </option>
               ))}
             </select>
-            {fieldError('shippingCountry')}
-          </div>
+          </Field>
 
-          <label className="mt-6 flex min-h-11 items-start gap-3 py-2 text-base text-body">
-            <input
-              id="deliverToOther"
-              type="checkbox"
-              checked={formData.deliverToOther}
-              onChange={(e) =>
-                setFormData((prev) => ({ ...prev, deliverToOther: e.target.checked }))
-              }
-              className="mt-1 h-5 w-5 shrink-0 accent-brand"
-            />
-            <span>{orderForm.deliverToOtherLabel}</span>
-          </label>
+          <CheckboxField
+            id="deliverToOther"
+            checked={formData.deliverToOther}
+            onChange={(checked) => setFormData((prev) => ({ ...prev, deliverToOther: checked }))}
+            className="mt-6"
+            labelClassName="min-h-11 py-2"
+          >
+            {orderForm.deliverToOtherLabel}
+          </CheckboxField>
 
           {formData.deliverToOther && (
-            <div className="mt-4">
-              <label
-                className="block text-base font-medium text-body mb-2"
-                htmlFor="shippingRecipient"
-              >
-                {orderForm.shippingRecipientLabel}
-              </label>
-              <input
-                id="shippingRecipient"
-                {...invalid('shippingRecipient')}
-                type="text"
-                name="shippingRecipient"
-                autoComplete="shipping name"
-                value={formData.shippingRecipient}
-                onChange={handleChange}
-                required
-                className={fieldClass}
-              />
-              {fieldError('shippingRecipient')}
-            </div>
+            <TextField
+              {...text('shippingRecipient')}
+              label={orderForm.shippingRecipientLabel}
+              autoComplete="shipping name"
+              required
+              className="mt-4"
+            />
           )}
         </div>
       )}
 
       {/* Consent: unticked by default. The two required boxes must be ticked before the photo is sent. */}
       <div className="space-y-4 border-t pt-6">
-        <div>
-          <label className="flex items-start gap-3 text-base text-body">
-            <input
-              id="consentProcessing"
-              type="checkbox"
-              checked={consent.processing}
-              onChange={(e) => setConsent((prev) => ({ ...prev, processing: e.target.checked }))}
-              {...invalid('consentProcessing')}
-              className="mt-1 h-5 w-5 shrink-0 accent-brand"
-            />
-            <span>
-              {orderForm.consentProcessing.split('{link}')[0]}
-              <Link
-                href={privacyHref}
-                className="py-3 font-semibold text-brand-strong underline underline-offset-4"
-              >
-                {copy.legal.datenschutz.title}
-              </Link>
-              {orderForm.consentProcessing.split('{link}')[1]}
-            </span>
-          </label>
-          {fieldError('consentProcessing')}
-        </div>
-        <div>
-          <label className="flex items-start gap-3 text-base text-body">
-            <input
-              id="consentRights"
-              type="checkbox"
-              checked={consent.rights}
-              onChange={(e) => setConsent((prev) => ({ ...prev, rights: e.target.checked }))}
-              {...invalid('consentRights')}
-              className="mt-1 h-5 w-5 shrink-0 accent-brand"
-            />
-            <span>{orderForm.consentRights}</span>
-          </label>
-          {fieldError('consentRights')}
-        </div>
-        <label className="flex items-start gap-3 text-base text-body">
-          <input
-            id="consentShowcase"
-            type="checkbox"
-            checked={consent.showcase}
-            onChange={(e) => setConsent((prev) => ({ ...prev, showcase: e.target.checked }))}
-            className="mt-1 h-5 w-5 shrink-0 accent-brand"
-          />
-          <span>{orderForm.consentShowcase}</span>
-        </label>
+        <CheckboxField
+          id="consentProcessing"
+          checked={consent.processing}
+          onChange={(checked) => setConsent((prev) => ({ ...prev, processing: checked }))}
+          error={fieldErrors.consentProcessing}
+        >
+          {orderForm.consentProcessing.split('{link}')[0]}
+          <Link
+            href={privacyHref}
+            className="py-3 font-semibold text-brand-strong underline underline-offset-4"
+          >
+            {copy.legal.datenschutz.title}
+          </Link>
+          {orderForm.consentProcessing.split('{link}')[1]}
+        </CheckboxField>
+        <CheckboxField
+          id="consentRights"
+          checked={consent.rights}
+          onChange={(checked) => setConsent((prev) => ({ ...prev, rights: checked }))}
+          error={fieldErrors.consentRights}
+        >
+          {orderForm.consentRights}
+        </CheckboxField>
+        <CheckboxField
+          id="consentShowcase"
+          checked={consent.showcase}
+          onChange={(checked) => setConsent((prev) => ({ ...prev, showcase: checked }))}
+        >
+          {orderForm.consentShowcase}
+        </CheckboxField>
         <p className="text-base text-body">{orderForm.withdrawalNote}</p>
       </div>
 

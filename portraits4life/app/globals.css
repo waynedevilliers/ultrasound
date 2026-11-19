@@ -1,6 +1,4 @@
-@import "tailwindcss";
-@import "tw-animate-css";
-@import "shadcn/tailwind.css";
+@import 'tailwindcss';
 
 @custom-variant dark (&:is(.dark *));
 
@@ -205,20 +203,28 @@
     padding-inline: 1rem;
   }
   @media (min-width: 640px) {
-    .container-site { padding-inline: 1.5rem; }
+    .container-site {
+      padding-inline: 1.5rem;
+    }
   }
   @media (min-width: 1024px) {
-    .container-site { padding-inline: 2rem; }
+    .container-site {
+      padding-inline: 2rem;
+    }
   }
 
   .section-y {
     padding-block: var(--spacing-section-sm);
   }
   @media (min-width: 640px) {
-    .section-y { padding-block: var(--spacing-section); }
+    .section-y {
+      padding-block: var(--spacing-section);
+    }
   }
   @media (min-width: 1024px) {
-    .section-y { padding-block: var(--spacing-section-lg); }
+    .section-y {
+      padding-block: var(--spacing-section-lg);
+    }
   }
 
   .heading-xl {
@@ -240,7 +246,9 @@
 /* Scroll-in reveal: only when JavaScript runs and motion is allowed. Otherwise content is visible. */
 @media (scripting: enabled) and (prefers-reduced-motion: no-preference) {
   .reveal {
-    transition: opacity 0.6s ease, transform 0.6s ease;
+    transition:
+      opacity 0.6s ease,
+      transform 0.6s ease;
   }
   .reveal:not(.is-visible) {
     opacity: 0;

@@ -12,6 +12,6 @@ export default function sitemap(): MetadataRoute.Sitemap {
       alternates: {
         languages: Object.fromEntries(locales.map((l) => [l, `${origin}${routeHref(l, route)}`])),
       },
-    }))
+    })),
   );
 }

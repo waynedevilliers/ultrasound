@@ -1,5 +1,13 @@
 import { describe, expect, it } from 'vitest';
-import { allPrices, canvasProduct, canvasSizes, digitalProduct, highestPrice, isCanvasSizeId, lowestPrice } from './products';
+import {
+  allPrices,
+  canvasProduct,
+  canvasSizes,
+  digitalProduct,
+  highestPrice,
+  isCanvasSizeId,
+  lowestPrice,
+} from './products';
 
 describe('products', () => {
   it('every price is a positive whole-euro amount', () => {

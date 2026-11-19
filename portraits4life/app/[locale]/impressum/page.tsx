@@ -2,7 +2,11 @@ import type { Metadata } from 'next';
 import LegalPage from '@/components/LegalPage';
 import { pageMetadata, seoCopy } from '@/lib/metadata';
 
-export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ locale: string }>;
+}): Promise<Metadata> {
   const { locale } = await params;
   return pageMetadata({ locale, path: '/impressum', ...seoCopy(locale, 'impressum') });
 }

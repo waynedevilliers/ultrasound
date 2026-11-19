@@ -77,10 +77,7 @@
       "canvasSizes": "Vergleich der Leinwandgrößen 30, 40 und 50 cm"
     },
     "from": "ab",
-    "canvasItems": [
-      "Druck auf Leinwand",
-      "Lieferung nach Zahlungseingang"
-    ]
+    "canvasItems": ["Druck auf Leinwand", "Lieferung nach Zahlungseingang"]
   },
   "contact": {
     "title": "Bereit für dein Kunstwerk?",

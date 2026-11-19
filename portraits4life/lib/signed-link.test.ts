@@ -10,15 +10,21 @@ describe('signed file links', () => {
     const link = new URL(buildFileLink('https://example.com', path, future, SECRET));
     expect(
       verifyFileLink(
-        { pathname: link.searchParams.get('p'), expires: link.searchParams.get('exp'), sig: link.searchParams.get('sig') },
-        SECRET
-      )
+        {
+          pathname: link.searchParams.get('p'),
+          expires: link.searchParams.get('exp'),
+          sig: link.searchParams.get('sig'),
+        },
+        SECRET,
+      ),
     ).toBe(true);
   });
 
   it('rejects a link with a changed path', () => {
     const sig = signFileLink(path, future, SECRET);
-    expect(verifyFileLink({ pathname: 'orders/other.png', expires: String(future), sig }, SECRET)).toBe(false);
+    expect(
+      verifyFileLink({ pathname: 'orders/other.png', expires: String(future), sig }, SECRET),
+    ).toBe(false);
   });
 
   it('rejects an expired link', () => {
@@ -34,7 +40,9 @@ describe('signed file links', () => {
 
   it('rejects paths outside the orders folder', () => {
     const sig = signFileLink('../secrets.txt', future, SECRET);
-    expect(verifyFileLink({ pathname: '../secrets.txt', expires: String(future), sig }, SECRET)).toBe(false);
+    expect(
+      verifyFileLink({ pathname: '../secrets.txt', expires: String(future), sig }, SECRET),
+    ).toBe(false);
   });
 
   it('rejects missing parameters', () => {

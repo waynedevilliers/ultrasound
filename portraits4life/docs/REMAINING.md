@@ -16,10 +16,9 @@ Status as of 2026-11-19. Plan v3 steps 1 to 13 are built in code. Launch is not 
 ## Code, not started
 - Order and upload rate limits across server instances (the in-memory limit is per instance; needs a shared store).
 - A 429 from the upload token route shows "upload failed", not "too many attempts": @vercel/blob's upload() throws the same error for every token failure and drops the status.
-- Split components/OrderForm.tsx (large) and remove repeated markup.
-- Prettier: 65 files do not match the project config. Format in its own step (Prettier 3.9.10 is installed as a dev dependency).
-- knip (2026-11-19): unused file lib/utils.ts, 6 unused dependencies, 3 unused dev dependencies, dotenv used but not declared; knip.json has stale entries. Remove only with approval.
 - Duplicate DECISIONS dates: some entries dated 2026-11-15 were written on 2026-11-14.
+
+- Unused shadcn theme variables in app/globals.css (sidebar, chart, popover and similar); some, such as --radius, are still used. Remove only the unused ones, with approval.
 
 ## Open decisions
 - "Kontakt" menu label lands on a section headed "Bereit für dein Kunstwerk?". Keep or change.
@@ -32,6 +31,9 @@ Status as of 2026-11-19. Plan v3 steps 1 to 13 are built in code. Launch is not 
 - Field-level errors on the order form (Step 11) and the review fixes (PR #29, #30).
 - Image folders by section; reference screenshots moved out of the project (Step 12, PR #31).
 - middleware.ts renamed to proxy.ts (Next 16 convention).
+- Unused shadcn packages and files removed; dotenv declared; knip reports nothing.
+- OrderForm split into components/FormFields.tsx and lib/order-submit.ts.
+- Prettier applied to all code and config files; Markdown is excluded (.prettierignore).
 - A storage failure during the photo check returns a server error with the request code; only a missing photo returns "Upload missing".
 - Checked, not open: the upload token route has a rate limit; no visible text is hardcoded in components (only developer log messages); header keys howItWorks, about and faq are the labels for those routes in content/routes.ts (menu: false), so they stay.
 

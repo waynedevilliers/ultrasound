@@ -7,10 +7,16 @@ export type SecurityHeaderOptions = {
 
 // Next.js hydration and JSON-LD need inline scripts and styles. Accepted for now;
 // nonces are the later fix (see docs/DECISIONS.md).
-export function buildContentSecurityPolicy({ development = false }: SecurityHeaderOptions = {}): string {
+export function buildContentSecurityPolicy({
+  development = false,
+}: SecurityHeaderOptions = {}): string {
   const scriptSrc = ["'self'", "'unsafe-inline'", ...(development ? ["'unsafe-eval'"] : [])];
   // Photo uploads go from the browser straight to Vercel Blob (see components/OrderForm.tsx).
-  const blobHosts = ['https://vercel.com', 'https://blob.vercel-storage.com', 'https://*.blob.vercel-storage.com'];
+  const blobHosts = [
+    'https://vercel.com',
+    'https://blob.vercel-storage.com',
+    'https://*.blob.vercel-storage.com',
+  ];
   const connectSrc = ["'self'", ...blobHosts, ...(development ? ['ws:'] : [])];
   const directives: Record<string, string[]> = {
     'default-src': ["'self'"],
@@ -42,7 +48,10 @@ export function buildSecurityHeaders(options: SecurityHeaderOptions = {}): Secur
     },
   ];
   if (!options.development) {
-    headers.push({ key: 'Strict-Transport-Security', value: 'max-age=63072000; includeSubDomains; preload' });
+    headers.push({
+      key: 'Strict-Transport-Security',
+      value: 'max-age=63072000; includeSubDomains; preload',
+    });
   }
   return headers;
 }
