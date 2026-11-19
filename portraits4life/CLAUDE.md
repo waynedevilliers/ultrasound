@@ -54,3 +54,6 @@ Read `docs/DECISIONS.md` before changing design, colors, navigation or page stru
 - Before opening a pull request, run the reviewer subagent on the branch changes. Fix Critical and Important findings first.
 - The reviewer never changes code. The builder never skips the review.
 - Never run a second Claude Code session that writes to this folder while the builder is working. The reviewer runs as a subagent.
+
+## Agents
+- datenschutz: before launch, after adding any service, dependency, cookie or form field, after changing legal texts, and once a month. Any change that adds a service or form field is not done until the Datenschutz text covers it.
