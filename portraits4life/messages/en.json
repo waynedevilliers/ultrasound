@@ -224,7 +224,7 @@
     "fileType": "Only JPG, PNG, WebP or HEIC.",
     "ultrasoundRequired": "Please upload an ultrasound image.",
     "submitting": "Submitting...",
-    "submit": "Submit Order",
+    "submit": "Send image and request",
     "fieldInvalid": "Please check this field.",
     "checkFields": "Please check the highlighted fields.",
     "genericError": "The order could not be sent. Please try again.",
@@ -233,10 +233,8 @@
     "imageFormats": "{formats}, up to 15 MB",
     "removeImage": "Remove",
     "trustNote": "I check your image and get back to you by email. You pay only after that.",
-    "privacyBefore": "By submitting, you agree to the processing of your data as described in the",
-    "privacyAfter": ".",
     "requiredField": "Please fill in this field.",
-    "consentProcessing": "I agree that my ultrasound images and details are processed to create the artwork. I can withdraw this consent at any time. Details in the {link}.",
+    "consentProcessing": "I agree that my ultrasound image and details are processed to create the artwork. I can withdraw this consent at any time. Details in the {link}.",
     "consentRights": "I confirm that I own the image or have permission to have it used.",
     "consentShowcase": "I allow the finished artwork to be shown as an example on the website and on social media (optional).",
     "consentRequired": "Please confirm this consent.",
@@ -250,7 +248,8 @@
     "artworkHeading": "Your artwork",
     "contactHeading": "Your contact details",
     "deliverToOtherLabel": "Deliver to another person",
-    "shippingRecipientLabel": "Recipient name *"
+    "shippingRecipientLabel": "Recipient name *",
+    "uploadTip": "Tip: profile views work especially well."
   },
   "common": {
     "home": "Home",
@@ -302,7 +301,7 @@
     "text": "The site will be ready soon. Please check back."
   },
   "customerEmail": {
-    "subject": "Order confirmed: Portraits 4 Life",
+    "subject": "Request confirmed: Portraits 4 Life",
     "greeting": "Hi {name},",
     "product": "Product:",
     "delivery": "Expected delivery:",

@@ -44,7 +44,6 @@ export default function UploadArea({
       <span id={labelId} className="block text-base font-medium text-body mb-2">
         {labelText}
       </span>
-      {hint && <p className="text-base text-copy mb-2">{hint}</p>}
 
       <input
         ref={inputRef}
@@ -78,6 +77,7 @@ export default function UploadArea({
         <span className="font-semibold text-brand-strong">{copy.choose}</span>
         <span className="text-base text-copy">{copy.formats}</span>
       </label>
+      {hint && <p className="mt-2 text-base text-copy">{hint}</p>}
 
       {file && (
         <div className="mt-2 flex items-center justify-between gap-3 text-base text-body">

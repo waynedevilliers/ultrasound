@@ -429,6 +429,7 @@ export default function OrderForm({
             locale={locale}
             copy={uploadCopy}
             required
+            hint={orderForm.uploadTip}
             inputProps={invalid('ultrasound')}
             errorNode={fieldError('ultrasound')}
             onChange={(e) => handleFileChange(e, 'ultrasound')}
@@ -703,7 +704,7 @@ export default function OrderForm({
           />
           <span>{orderForm.consentShowcase}</span>
         </label>
-        <p className="text-base text-copy">{orderForm.withdrawalNote}</p>
+        <p className="text-base text-body">{orderForm.withdrawalNote}</p>
       </div>
 
       <button
@@ -718,16 +719,6 @@ export default function OrderForm({
       {/* TODO(client): confirm the trust text and the legal wording of the privacy line before launch. */}
       <div className="space-y-3 text-center">
         <p className="text-base text-body">{orderForm.trustNote}</p>
-        <p className="text-base text-copy">
-          {orderForm.privacyBefore}{' '}
-          <Link
-            href={privacyHref}
-            className="font-semibold text-brand-strong underline underline-offset-4"
-          >
-            {copy.legal.datenschutz.title}
-          </Link>{' '}
-          {orderForm.privacyAfter}
-        </p>
       </div>
     </form>
   );
