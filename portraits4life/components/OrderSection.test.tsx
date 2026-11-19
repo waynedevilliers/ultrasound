@@ -60,6 +60,17 @@ describe('OrderSection', () => {
     expect(screen.getByRole('status')).toHaveTextContent('');
   });
 
+  it('shows the information content before sending and hides it after sending', () => {
+    render(
+      <OrderSection {...props}>
+        <p>Gut zu wissen marker</p>
+      </OrderSection>,
+    );
+    expect(screen.getByText('Gut zu wissen marker')).toBeInTheDocument();
+    fireEvent.click(screen.getByRole('button', { name: 'send' }));
+    expect(screen.queryByText('Gut zu wissen marker')).toBeNull();
+  });
+
   it('shows only the success heading after sending, and hides the intro', () => {
     render(<OrderSection {...props} />);
     fireEvent.click(screen.getByRole('button', { name: 'send' }));
