@@ -3,13 +3,18 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { NextRequest } from 'next/server';
 
 const head = vi.hoisted(() => vi.fn());
-vi.mock('@vercel/blob', () => ({ head }));
+// The real error classes are kept, so the route can tell a missing photo from a storage failure.
+vi.mock('@vercel/blob', async (importOriginal) => ({
+  ...(await importOriginal<typeof import('@vercel/blob')>()),
+  head,
+}));
 vi.mock('@vercel/postgres', () => ({ sql: vi.fn() }));
 vi.mock('resend', () => ({ Resend: vi.fn() }));
 
 import { POST } from './route';
 import { sql } from '@vercel/postgres';
 import { Resend } from 'resend';
+import { BlobNotFoundError } from '@vercel/blob';
 import { CONSENT_VERSION } from '@/lib/consent';
 import { digitalProduct } from '@/content/products';
 
@@ -49,7 +54,7 @@ describe('POST /api/orders stored photos', () => {
   });
 
   it('names the upload field when the stored photo is missing', async () => {
-    head.mockRejectedValue(new Error('not found'));
+    head.mockRejectedValue(new BlobNotFoundError());
     const response = await POST(orderRequest(order()));
     expect(response.status).toBe(400);
     const data = await response.json();
@@ -143,12 +148,16 @@ describe('POST /api/orders logging and email', () => {
     expect(sql).not.toHaveBeenCalled();
   });
 
-  it('logs a failed photo lookup with the request code', async () => {
+  it('answers a storage failure during the photo check with a server error and the request code', async () => {
     head.mockRejectedValue(new Error('store unavailable'));
     const response = await POST(orderRequest(order()));
-    expect(response.status).toBe(400);
+    expect(response.status).toBe(500);
+    const data = await response.json();
+    expect(data.issues).toBeUndefined();
+    expect(data.code).toMatch(/^[0-9a-f]{8}$/);
     const line = String(errorSpy.mock.calls.at(-1)?.[0]);
     expect(line).toMatch(/^\[order [0-9a-f]{8}\] photo-check failed: Error: store unavailable$/);
+    expect(sql).not.toHaveBeenCalled();
   });
 
   it('saves the order, sends both emails and returns 201 with the order number', async () => {

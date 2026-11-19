@@ -5,7 +5,7 @@ import { shippingCountryLabel, type ShippingCountryCode } from '@/content/shippi
 import { withReference } from '@/lib/order-reference';
 import { buildCustomerEmail, deliveryText, productName } from '@/lib/customer-email';
 import { clientKey } from '@/lib/client-key';
-import { head } from '@vercel/blob';
+import { BlobNotFoundError, head } from '@vercel/blob';
 import { Resend } from 'resend';
 
 type MailMessage = Parameters<Resend['emails']['send']>[0];
@@ -115,13 +115,16 @@ export async function POST(request: NextRequest) {
       { field: 'ultrasoundPath', pathname: order.ultrasoundPath },
       { field: 'referencePath', pathname: order.referencePath },
     ].filter((photo) => photo.pathname !== '');
+    step = 'photo-check';
     for (const photo of photos) {
       let error: string | null;
       try {
         const meta = await head(photo.pathname);
         error = validateStoredImage({ size: meta.size, contentType: meta.contentType });
       } catch (lookupError) {
-        // Usually a visitor who never finished the upload; logged so a storage outage is visible too.
+        // Any other failure is a storage problem, not the visitor's: it becomes a 500 with the request code.
+        if (!(lookupError instanceof BlobNotFoundError)) throw lookupError;
+        // A visitor who never finished the upload; logged so it can be matched with the browser's code.
         logOrderFailure(requestId, 'photo-check', lookupError);
         error = 'Upload missing. Please upload the photo again.';
       }

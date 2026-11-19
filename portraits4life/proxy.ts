@@ -9,7 +9,8 @@ const handleI18nRouting = createMiddleware({
   localeDetection: false,
 });
 
-export function middleware(request: NextRequest) {
+// Next 16 calls this file convention proxy (formerly middleware). It runs before every matched request.
+export function proxy(request: NextRequest) {
   // Coming-soon mode: every site page is answered with the coming-soon page, so no site content is sent.
   if (isComingSoon()) {
     const url = request.nextUrl.clone();
