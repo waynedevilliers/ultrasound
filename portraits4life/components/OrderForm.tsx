@@ -389,98 +389,137 @@ export default function OrderForm({
 
       <p className="text-base text-copy">{orderForm.requiredNote}</p>
 
-      {/* Basic Fields */}
-      <div>
-        <label className="block text-base font-medium text-body mb-2" htmlFor="name">
-          {orderForm.nameLabel}
-        </label>
-        <input
-          id="name"
-          {...invalid('name')}
-          type="text"
-          name="name"
-          autoComplete="name"
-          value={formData.name}
-          onChange={handleChange}
-          required
-          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
-        />
-        {fieldError('name')}
+      {/* Section: Dein Kunstwerk */}
+      <div className="space-y-6">
+        <h2 className="text-lg font-bold">{orderForm.artworkHeading}</h2>
+        <div>
+          <label className="block text-base font-medium text-body mb-2" htmlFor="format">
+            {orderForm.productLabel}
+          </label>
+          <select
+            id="format"
+            name="format"
+            value={formatValue}
+            onChange={handleFormatChange}
+            {...invalid(formatErrorKey)}
+            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          >
+            {formatOptions(locale).map((option) => (
+              <option key={option.value} value={option.value}>
+                {option.label}
+              </option>
+            ))}
+          </select>
+          {fieldError(formatErrorKey)}
+        </div>
+
+        {/* File Uploads */}
+        <div>
+          <UploadArea
+            id="ultrasoundImage"
+            labelText={orderForm.ultrasoundLabel}
+            file={files.ultrasound}
+            locale={locale}
+            copy={uploadCopy}
+            required
+            inputProps={invalid('ultrasound')}
+            errorNode={fieldError('ultrasound')}
+            onChange={(e) => handleFileChange(e, 'ultrasound')}
+            onRemove={() => handleRemoveFile('ultrasound')}
+          />
+        </div>
+
+        <div>
+          <label className="block text-base font-medium text-body mb-2" htmlFor="childName">
+            {orderForm.childNameLabel}
+          </label>
+          <input
+            id="childName"
+            {...invalid('childName')}
+            type="text"
+            name="childName"
+            value={formData.childName}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          />
+          {fieldError('childName')}
+        </div>
+
+        <div>
+          <label className="block text-base font-medium text-body mb-2" htmlFor="weeksInWomb">
+            {orderForm.weeksLabel}
+          </label>
+          <input
+            id="weeksInWomb"
+            {...invalid('weeksInWomb')}
+            type="number"
+            min={1}
+            max={42}
+            inputMode="numeric"
+            name="weeksInWomb"
+            value={formData.weeksInWomb}
+            onChange={handleChange}
+            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          />
+          {fieldError('weeksInWomb')}
+        </div>
+
+        {/* Special Requests */}
+        <div>
+          <label className="block text-base font-medium text-body mb-2" htmlFor="specialRequests">
+            {orderForm.specialRequests}
+          </label>
+          <textarea
+            id="specialRequests"
+            {...invalid('specialRequests')}
+            name="specialRequests"
+            value={formData.specialRequests}
+            onChange={handleChange}
+            rows={4}
+            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          />
+          {fieldError('specialRequests')}
+        </div>
       </div>
 
-      <div>
-        <label className="block text-base font-medium text-body mb-2" htmlFor="email">
-          {orderForm.emailLabel}
-        </label>
-        <input
-          id="email"
-          {...invalid('email')}
-          type="email"
-          name="email"
-          autoComplete="email"
-          value={formData.email}
-          onChange={handleChange}
-          required
-          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
-        />
-        {fieldError('email')}
-      </div>
+      {/* Section: Deine Kontaktdaten */}
+      <div className="space-y-6 border-t pt-6">
+        <h2 className="text-lg font-bold">{orderForm.contactHeading}</h2>
+        <div>
+          <label className="block text-base font-medium text-body mb-2" htmlFor="name">
+            {orderForm.nameLabel}
+          </label>
+          <input
+            id="name"
+            {...invalid('name')}
+            type="text"
+            name="name"
+            autoComplete="name"
+            value={formData.name}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          />
+          {fieldError('name')}
+        </div>
 
-      <div>
-        <label className="block text-base font-medium text-body mb-2" htmlFor="format">
-          {orderForm.productLabel}
-        </label>
-        <select
-          id="format"
-          name="format"
-          value={formatValue}
-          onChange={handleFormatChange}
-          {...invalid(formatErrorKey)}
-          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
-        >
-          {formatOptions(locale).map((option) => (
-            <option key={option.value} value={option.value}>
-              {option.label}
-            </option>
-          ))}
-        </select>
-        {fieldError(formatErrorKey)}
-      </div>
-
-      {/* Optional Fields */}
-      <div>
-        <label className="block text-base font-medium text-body mb-2" htmlFor="childName">
-          {orderForm.childNameLabel}
-        </label>
-        <input
-          id="childName"
-          {...invalid('childName')}
-          type="text"
-          name="childName"
-          value={formData.childName}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
-        />
-        {fieldError('childName')}
-      </div>
-
-      <div>
-        <label className="block text-base font-medium text-body mb-2" htmlFor="weeksInWomb">
-          {orderForm.weeksLabel}
-        </label>
-        <input
-          id="weeksInWomb"
-          {...invalid('weeksInWomb')}
-          type="number"
-          min={1}
-          max={42}
-          inputMode="numeric"
-          name="weeksInWomb"
-          value={formData.weeksInWomb}
-          onChange={handleChange}
-          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
-        />
-        {fieldError('weeksInWomb')}
+        <div>
+          <label className="block text-base font-medium text-body mb-2" htmlFor="email">
+            {orderForm.emailLabel}
+          </label>
+          <input
+            id="email"
+            {...invalid('email')}
+            type="email"
+            name="email"
+            autoComplete="email"
+            value={formData.email}
+            onChange={handleChange}
+            required
+            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+          />
+          {fieldError('email')}
+        </div>
       </div>
 
       {/* Shipping Address (Canvas Only) */}
@@ -609,39 +648,6 @@ export default function OrderForm({
         </div>
       )}
 
-      {/* File Uploads */}
-      <div className="border-t pt-6">
-        <UploadArea
-          id="ultrasoundImage"
-          labelText={orderForm.ultrasoundLabel}
-          file={files.ultrasound}
-          locale={locale}
-          copy={uploadCopy}
-          required
-          inputProps={invalid('ultrasound')}
-          errorNode={fieldError('ultrasound')}
-          onChange={(e) => handleFileChange(e, 'ultrasound')}
-          onRemove={() => handleRemoveFile('ultrasound')}
-        />
-      </div>
-
-      {/* Special Requests */}
-      <div>
-        <label className="block text-base font-medium text-body mb-2" htmlFor="specialRequests">
-          {orderForm.specialRequests}
-        </label>
-        <textarea
-          id="specialRequests"
-          {...invalid('specialRequests')}
-          name="specialRequests"
-          value={formData.specialRequests}
-          onChange={handleChange}
-          rows={4}
-          className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
-        />
-        {fieldError('specialRequests')}
-      </div>
-
       {/* Consent: unticked by default. The two required boxes must be ticked before the photo is sent. */}
       <div className="space-y-4 border-t pt-6">
         <div>
@@ -694,7 +700,6 @@ export default function OrderForm({
         <p className="text-base text-copy">{orderForm.withdrawalNote}</p>
       </div>
 
-      {/* Submit Button */}
       <button
         type="submit"
         data-variant="primary"
