@@ -1,3 +1,4 @@
+import { getCopy } from '@/lib/copy';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import OrderForm from './OrderForm';
@@ -467,5 +468,34 @@ describe('OrderForm success focus', () => {
       name: /Thank you, your image has arrived/,
     });
     expect(heading).toHaveFocus();
+  });
+});
+
+describe('OrderForm sections', () => {
+  const follows = (a: Element, b: Element) =>
+    (a.compareDocumentPosition(b) & Node.DOCUMENT_POSITION_FOLLOWING) !== 0;
+
+  it('groups the artwork fields, then the contact fields, then the shipping address, in that order', () => {
+    const { container } = render(<OrderForm />);
+    const en = getCopy('en').orderForm;
+    const field = (sel: string) => container.querySelector(sel) as Element;
+    const artwork = screen.getByRole('heading', { level: 2, name: en.artworkHeading });
+    const contact = screen.getByRole('heading', { level: 2, name: en.contactHeading });
+    const shipping = screen.getByRole('heading', { level: 2, name: en.shippingHeading });
+    expect(follows(artwork, field('#format'))).toBe(true);
+    expect(follows(field('#format'), field('#ultrasoundImage'))).toBe(true);
+    expect(follows(field('#ultrasoundImage'), field('#childName'))).toBe(true);
+    expect(follows(field('#childName'), field('#weeksInWomb'))).toBe(true);
+    expect(follows(field('#weeksInWomb'), field('#specialRequests'))).toBe(true);
+    expect(follows(field('#specialRequests'), contact)).toBe(true);
+    expect(follows(contact, field('#name'))).toBe(true);
+    expect(follows(field('#name'), field('#email'))).toBe(true);
+    expect(follows(field('#email'), shipping)).toBe(true);
+    expect(follows(shipping, field('#shippingStreet'))).toBe(true);
+  });
+
+  it('has German headings for the sections', () => {
+    expect(getCopy('de').orderForm.artworkHeading).toBe('Dein Kunstwerk');
+    expect(getCopy('de').orderForm.contactHeading).toBe('Deine Kontaktdaten');
   });
 });
