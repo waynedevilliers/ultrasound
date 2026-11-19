@@ -16,7 +16,10 @@ export default function Breadcrumb({ items, label }: { items: Crumb[]; label: st
               </span>
             )}
             {item.href ? (
-              <Link href={item.href} className="underline underline-offset-4 hover:text-ink">
+              <Link
+                href={item.href}
+                className="inline-flex min-h-11 items-center underline underline-offset-4 hover:text-ink"
+              >
                 {item.label}
               </Link>
             ) : (

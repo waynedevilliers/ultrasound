@@ -139,7 +139,7 @@ export default function Header() {
             tabIndex={compact ? 0 : -1}
             // TODO(client): simplified logo that is readable at 32px; the name is shown for now.
             // Below lg the name is always visible; from lg it fades in once the big logo has scrolled away.
-            className={`absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 font-display text-base min-[360px]:text-lg sm:text-2xl font-bold text-ink whitespace-nowrap transition-opacity duration-200 motion-reduce:transition-none max-lg:opacity-100 ${compact ? 'opacity-100' : 'opacity-0'}`}
+            className={`absolute left-4 sm:left-6 lg:left-8 top-1/2 -translate-y-1/2 inline-flex min-h-11 items-center font-display text-base min-[360px]:text-lg sm:text-2xl font-bold text-ink whitespace-nowrap transition-opacity duration-200 motion-reduce:transition-none max-lg:opacity-100 ${compact ? 'opacity-100' : 'opacity-0'}`}
           >
             {copy.header.logo}
           </a>

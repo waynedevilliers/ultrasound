@@ -4,6 +4,20 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 ---
 
+## 2026-11-19: Legal texts are files in content/legal
+
+- **Status:** done (German Datenschutz); open for Impressum, AGB, Widerruf and the English versions
+- **Decision:** Long legal texts live in `content/legal/<page>.<locale>.md`, for example `datenschutz.de.md`. `lib/legal-text.tsx` reads them at build time and renders a small subset: `##` and `###` headings, paragraphs, `*` lists and plain URLs as links. The `#` title line is skipped because the page h1 comes from the messages. HTML comments are not shown, so `TODO(client)` notes stay in the file, and a section can be hidden by wrapping it in a comment (the Stripe section is hidden until Stripe is used). A page without a file shows its placeholder from `messages legal.*`.
+- **Why:** The client delivers the text as Markdown, and a lawyer will edit it. A text file is easier to review and diff than a long JSON string. No new dependency is needed for this subset.
+- **Considered:** A Markdown library such as react-markdown (rejected: a new dependency for five rules). Keeping the text in `messages/*.json` (rejected: hard to edit at this length).
+
+## 2026-11-19: Uploaded photos are deleted 30 days after upload
+
+- **Status:** done
+- **Decision:** The Datenschutz text says what the code does: the daily job `app/api/cron/cleanup` deletes each uploaded ultrasound photo 30 days after upload. The client's draft promised "90 days after the order is complete, or immediately if no order follows"; that was changed.
+- **Why:** A promised deletion that the code does not do is a privacy finding. The site has no order status that marks a job as complete, so "after completion" cannot be implemented yet.
+- **Considered:** Deleting after the job is complete (the owner's later option). It needs an admin step that sets an order to complete, and the cleanup job then deletes by that date. Revisit if 30 days turns out too short for the work.
+
 ## 2026-11-19: The order form is a request, not a binding order
 
 - **Status:** open (legal confirmation needed)

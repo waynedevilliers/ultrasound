@@ -55,14 +55,21 @@ export default function LanguageSwitch({
   }
 
   return (
-    <nav aria-label={header.switchLanguageLabel} className="flex items-center gap-2 text-base font-semibold">
+    <nav
+      aria-label={header.switchLanguageLabel}
+      className="flex items-center gap-2 text-base font-semibold"
+    >
       {(['de', 'en'] as const).map((code, index) => (
         <span key={code} className="flex items-center gap-2">
-          {index > 0 && <span aria-hidden="true" className={dark ? 'text-on-dark-soft' : 'text-field'}>|</span>}
+          {index > 0 && (
+            <span aria-hidden="true" className={dark ? 'text-on-dark-soft' : 'text-field'}>
+              |
+            </span>
+          )}
           {code === locale ? (
             <span
               aria-current="true"
-              className={`underline underline-offset-4 ${dark ? 'text-brand-on-dark' : 'text-brand-strong'}`}
+              className={`inline-flex min-h-11 min-w-11 items-center justify-center underline underline-offset-4 ${dark ? 'text-brand-on-dark' : 'text-brand-strong'}`}
             >
               {code.toUpperCase()}
             </span>
@@ -70,7 +77,7 @@ export default function LanguageSwitch({
             <button
               type="button"
               onClick={() => switchTo(code)}
-              className={`transition ${dark ? 'text-on-dark-soft hover:text-white' : 'text-copy hover:text-ink'}`}
+              className={`inline-flex min-h-11 min-w-11 items-center justify-center transition ${dark ? 'text-on-dark-soft hover:text-white' : 'text-copy hover:text-ink'}`}
             >
               {code.toUpperCase()}
             </button>

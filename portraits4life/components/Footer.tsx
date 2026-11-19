@@ -18,7 +18,10 @@ export default function Footer({ locale }: { locale: Locale }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-3 gap-8 mb-8">
           <div>
-            <Link href={isDE ? '/de' : '/en'} className="font-display text-2xl font-bold">
+            <Link
+              href={isDE ? '/de' : '/en'}
+              className="inline-flex min-h-11 items-center font-display text-2xl font-bold"
+            >
               Portraits 4 Life
             </Link>
           </div>
@@ -27,7 +30,7 @@ export default function Footer({ locale }: { locale: Locale }) {
             <p className="text-caption mb-4">{contactUs}</p>
             <a
               href="mailto:portraits4life.art@gmail.com"
-              className="text-brand-light hover:text-brand-on-dark transition"
+              className="inline-flex min-h-11 items-center text-brand-light hover:text-brand-on-dark transition"
             >
               portraits4life.art@gmail.com
             </a>
@@ -35,17 +38,18 @@ export default function Footer({ locale }: { locale: Locale }) {
 
           <div className="text-caption">
             <p>{copyright}</p>
-            <div className="mt-4">
+            {/* -ml-3 lines the text up with the column; the 44px tap area reaches into the margin. */}
+            <div className="mt-4 -ml-3">
               <LanguageSwitch tone="dark" />
             </div>
-            <nav aria-label={copy.footer.legalNav} className="mt-4 flex flex-col gap-2">
+            <nav aria-label={copy.footer.legalNav} className="mt-4 flex flex-col items-start gap-2">
               {footerRoutes()
                 .filter((route) => route.id === 'impressum' || route.id === 'datenschutz')
                 .map((route) => (
                   <Link
                     key={route.id}
                     href={routeHref(isDE ? 'de' : 'en', route)}
-                    className="hover:text-on-dark-soft transition"
+                    className="inline-flex min-h-11 items-center hover:text-on-dark-soft transition"
                   >
                     {route.id === 'impressum' ? legal.impressum.title : legal.datenschutz.title}
                   </Link>
