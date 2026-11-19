@@ -12,8 +12,14 @@ export default defineConfig({
     trace: 'retain-on-failure',
   },
   projects: [
-    { name: 'mobile-375', use: { ...devices['Desktop Chrome'], viewport: { width: 375, height: 667 }, isMobile: true } },
-    { name: 'desktop-1440', use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } } },
+    {
+      name: 'mobile-375',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 375, height: 667 }, isMobile: true },
+    },
+    {
+      name: 'desktop-1440',
+      use: { ...devices['Desktop Chrome'], viewport: { width: 1440, height: 900 } },
+    },
   ],
   webServer: {
     command: 'npm run build && npm run start',

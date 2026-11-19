@@ -2,10 +2,7 @@
   "ci": {
     "collect": {
       "startServerCommand": "SITE_URL=http://localhost:3000 npm run start",
-      "url": [
-        "http://localhost:3000/en",
-        "http://localhost:3000/en/order"
-      ],
+      "url": ["http://localhost:3000/en", "http://localhost:3000/en/order"],
       "numberOfRuns": 1,
       "settings": {
         "formFactor": "mobile",

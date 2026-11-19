@@ -1,0 +1,3 @@
+# Prose is not reformatted: legal texts, docs, reviews and agent definitions keep their line breaks.
+*.md
+package-lock.json

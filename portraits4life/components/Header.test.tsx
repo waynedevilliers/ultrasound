@@ -6,8 +6,16 @@ vi.mock('next/navigation', () => ({ usePathname: () => '/en' }));
 vi.mock('next/image', () => ({
   default: (props: Record<string, unknown>) => {
     const { src, alt, width, height, className } = props as Record<string, string | number>;
-    // eslint-disable-next-line @next/next/no-img-element -- test double for next/image
-    return <img src={String(src)} alt={String(alt)} width={width} height={height} className={String(className)} />;
+    return (
+      // eslint-disable-next-line @next/next/no-img-element -- test double for next/image
+      <img
+        src={String(src)}
+        alt={String(alt)}
+        width={width}
+        height={height}
+        className={String(className)}
+      />
+    );
   },
 }));
 
@@ -44,15 +52,23 @@ describe('Header menu bar', () => {
   it('closes when a link in the panel is clicked', () => {
     render(<Header />);
     fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
-    fireEvent.click(panelLinks().find((a) => a.getAttribute('href') === '/en/order') as HTMLElement);
-    expect(screen.getByRole('button', { name: 'Open menu' })).toHaveAttribute('aria-expanded', 'false');
+    fireEvent.click(
+      panelLinks().find((a) => a.getAttribute('href') === '/en/order') as HTMLElement,
+    );
+    expect(screen.getByRole('button', { name: 'Open menu' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
   });
 
   it('closes when the user clicks outside the menu', () => {
     render(<Header />);
     fireEvent.click(screen.getByRole('button', { name: 'Open menu' }));
     fireEvent.pointerDown(document.body);
-    expect(screen.getByRole('button', { name: 'Open menu' })).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByRole('button', { name: 'Open menu' })).toHaveAttribute(
+      'aria-expanded',
+      'false',
+    );
   });
 
   it('links point to the current locale and sections', () => {

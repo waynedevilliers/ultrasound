@@ -7,7 +7,7 @@ describe('Reveal', () => {
     render(
       <Reveal>
         <p>Scroll content</p>
-      </Reveal>
+      </Reveal>,
     );
     expect(screen.getByText('Scroll content')).toBeInTheDocument();
   });
@@ -16,7 +16,7 @@ describe('Reveal', () => {
     const { container } = render(
       <Reveal>
         <p>Content</p>
-      </Reveal>
+      </Reveal>,
     );
     expect(container.firstElementChild).toHaveClass('is-visible');
   });

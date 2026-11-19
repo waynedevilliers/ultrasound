@@ -18,7 +18,9 @@ describe('routes', () => {
   });
 
   it('puts legal pages in the footer, not the main menu', () => {
-    for (const route of footerRoutes().filter((r) => r.id === 'impressum' || r.id === 'datenschutz')) {
+    for (const route of footerRoutes().filter(
+      (r) => r.id === 'impressum' || r.id === 'datenschutz',
+    )) {
       expect(route.menu).toBe(false);
     }
   });

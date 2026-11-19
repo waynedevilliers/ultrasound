@@ -77,10 +77,7 @@
       "canvasSizes": "Comparison of canvas sizes 30, 40 and 50 cm"
     },
     "from": "from",
-    "canvasItems": [
-      "Printed on canvas",
-      "Delivery after payment"
-    ]
+    "canvasItems": ["Printed on canvas", "Delivery after payment"]
   },
   "contact": {
     "title": "Ready for your artwork?",
