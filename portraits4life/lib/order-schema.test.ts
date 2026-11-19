@@ -27,12 +27,12 @@ const canvas = {
   ...digital,
   product: 'canvas',
   canvasSize: '40x40cm',
-  shippingFullName: 'Anna Müller',
   shippingStreet: 'Hauptstraße 1',
   shippingCity: 'Berlin',
-  shippingState: '',
   shippingPostalCode: '10115',
-  shippingCountry: 'Germany',
+  shippingCountry: 'DE',
+  deliverToOther: false,
+  shippingRecipient: '',
 };
 
 describe('orderFieldsSchema', () => {
@@ -150,5 +150,38 @@ describe('digital availability', () => {
   it('accepts a canvas order while the digital file is not sold', () => {
     digitalProduct.available = false;
     expect(orderFieldsSchema.safeParse(canvas).success).toBe(true);
+  });
+});
+
+describe('shipping address', () => {
+  it('accepts a German address with a five-digit postal code', () => {
+    expect(orderFieldsSchema.safeParse(canvas).success).toBe(true);
+  });
+
+  it('refuses a postal code that is not five digits', () => {
+    expect(orderFieldsSchema.safeParse({ ...canvas, shippingPostalCode: '1234' }).success).toBe(
+      false,
+    );
+    expect(orderFieldsSchema.safeParse({ ...canvas, shippingPostalCode: 'ABCDE' }).success).toBe(
+      false,
+    );
+  });
+
+  it('refuses an unknown country', () => {
+    expect(orderFieldsSchema.safeParse({ ...canvas, shippingCountry: 'FR' }).success).toBe(false);
+  });
+
+  it('requires a recipient name when the order goes to another person', () => {
+    expect(
+      orderFieldsSchema.safeParse({ ...canvas, deliverToOther: true, shippingRecipient: '' })
+        .success,
+    ).toBe(false);
+    expect(
+      orderFieldsSchema.safeParse({
+        ...canvas,
+        deliverToOther: true,
+        shippingRecipient: 'Oma Gisela',
+      }).success,
+    ).toBe(true);
   });
 });

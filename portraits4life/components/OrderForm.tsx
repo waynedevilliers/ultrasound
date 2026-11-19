@@ -3,6 +3,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { formatOptions } from '@/lib/format-options';
 import { isCanvasSizeId } from '@/content/products';
+import {
+  DEFAULT_SHIPPING_COUNTRY,
+  isShippingCountry,
+  postalCodeIsValid,
+  shippingCountries,
+} from '@/content/shipping';
 import { buttonClasses } from '@/components/ActionLink';
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/image-rules';
 import { usePathname } from 'next/navigation';
@@ -27,12 +33,12 @@ const EMPTY_FORM = {
   childName: '',
   weeksInWomb: '',
   specialRequests: '',
-  shippingFullName: '',
   shippingStreet: '',
   shippingCity: '',
-  shippingState: '',
   shippingPostalCode: '',
-  shippingCountry: '',
+  shippingCountry: DEFAULT_SHIPPING_COUNTRY as string,
+  deliverToOther: false as boolean,
+  shippingRecipient: '',
 } as const;
 
 // A failed step of the submit, so the message can say what went wrong.
@@ -220,22 +226,23 @@ export default function OrderForm({
       // Required fields are checked here too, so an empty submit marks every missing field.
       const required: string[] = ['name', 'email'];
       if (formData.product === 'canvas') {
-        required.push(
-          'shippingFullName',
-          'shippingStreet',
-          'shippingCity',
-          'shippingState',
-          'shippingPostalCode',
-          'shippingCountry',
-        );
+        required.push('shippingStreet', 'shippingCity', 'shippingPostalCode');
+        if (formData.deliverToOther) required.push('shippingRecipient');
       }
-      const values = formData as Record<string, string>;
+      const values = formData as unknown as Record<string, string>;
       const missing: Record<string, string> = {};
       for (const key of required) {
         if (!values[key].trim()) missing[key] = orderForm.requiredField;
       }
       if (formData.email.trim() && !formData.email.includes('@'))
         missing.email = orderForm.fieldInvalid;
+      if (
+        formData.product === 'canvas' &&
+        isShippingCountry(formData.shippingCountry) &&
+        formData.shippingPostalCode.trim() !== '' &&
+        !postalCodeIsValid(formData.shippingCountry, formData.shippingPostalCode.trim())
+      )
+        missing.shippingPostalCode = orderForm.fieldInvalid;
       if (!files.ultrasound) missing.ultrasound = orderForm.ultrasoundRequired;
       if (!consent.processing) missing.consentProcessing = orderForm.consentRequired;
       if (!consent.rights) missing.consentRights = orderForm.consentRequired;
@@ -278,12 +285,12 @@ export default function OrderForm({
         ...(formData.product === 'canvas'
           ? {
               canvasSize: formData.canvasSize,
-              shippingFullName: formData.shippingFullName,
               shippingStreet: formData.shippingStreet,
               shippingCity: formData.shippingCity,
-              shippingState: formData.shippingState,
               shippingPostalCode: formData.shippingPostalCode,
               shippingCountry: formData.shippingCountry,
+              deliverToOther: formData.deliverToOther,
+              shippingRecipient: formData.shippingRecipient,
             }
           : {}),
       };
@@ -528,27 +535,6 @@ export default function OrderForm({
           <h2 className="text-lg font-bold mb-4">{orderForm.shippingHeading}</h2>
 
           <div>
-            <label
-              className="block text-base font-medium text-body mb-2"
-              htmlFor="shippingFullName"
-            >
-              {orderForm.shippingFullName}
-            </label>
-            <input
-              id="shippingFullName"
-              {...invalid('shippingFullName')}
-              type="text"
-              name="shippingFullName"
-              autoComplete="name"
-              value={formData.shippingFullName}
-              onChange={handleChange}
-              required
-              className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
-            />
-            {fieldError('shippingFullName')}
-          </div>
-
-          <div className="mt-4">
             <label className="block text-base font-medium text-body mb-2" htmlFor="shippingStreet">
               {orderForm.shippingStreet}
             </label>
@@ -566,7 +552,29 @@ export default function OrderForm({
             {fieldError('shippingStreet')}
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mt-4">
+          <div className="mt-4 grid grid-cols-[1fr_2fr] gap-4">
+            <div>
+              <label
+                className="block text-base font-medium text-body mb-2"
+                htmlFor="shippingPostalCode"
+              >
+                {orderForm.shippingPostalCode}
+              </label>
+              <input
+                id="shippingPostalCode"
+                {...invalid('shippingPostalCode')}
+                type="text"
+                name="shippingPostalCode"
+                inputMode="numeric"
+                maxLength={5}
+                autoComplete="postal-code"
+                value={formData.shippingPostalCode}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+              />
+              {fieldError('shippingPostalCode')}
+            </div>
             <div>
               <label className="block text-base font-medium text-body mb-2" htmlFor="shippingCity">
                 {orderForm.shippingCity}
@@ -584,67 +592,65 @@ export default function OrderForm({
               />
               {fieldError('shippingCity')}
             </div>
-            <div>
-              <label className="block text-base font-medium text-body mb-2" htmlFor="shippingState">
-                {orderForm.shippingState}
-              </label>
-              <input
-                id="shippingState"
-                {...invalid('shippingState')}
-                type="text"
-                name="shippingState"
-                autoComplete="address-level1"
-                value={formData.shippingState}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
-              />
-              {fieldError('shippingState')}
-            </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-4 mt-4">
-            <div>
-              <label
-                className="block text-base font-medium text-body mb-2"
-                htmlFor="shippingPostalCode"
-              >
-                {orderForm.shippingPostalCode}
-              </label>
-              <input
-                id="shippingPostalCode"
-                {...invalid('shippingPostalCode')}
-                type="text"
-                name="shippingPostalCode"
-                autoComplete="postal-code"
-                value={formData.shippingPostalCode}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
-              />
-              {fieldError('shippingPostalCode')}
-            </div>
-            <div>
-              <label
-                className="block text-base font-medium text-body mb-2"
-                htmlFor="shippingCountry"
-              >
-                {orderForm.shippingCountry}
-              </label>
-              <input
-                id="shippingCountry"
-                {...invalid('shippingCountry')}
-                type="text"
-                name="shippingCountry"
-                autoComplete="country-name"
-                value={formData.shippingCountry}
-                onChange={handleChange}
-                required
-                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
-              />
-              {fieldError('shippingCountry')}
-            </div>
+          <div className="mt-4">
+            <label className="block text-base font-medium text-body mb-2" htmlFor="shippingCountry">
+              {orderForm.shippingCountry}
+            </label>
+            <select
+              id="shippingCountry"
+              {...invalid('shippingCountry')}
+              name="shippingCountry"
+              autoComplete="country-name"
+              value={formData.shippingCountry}
+              onChange={handleChange}
+              className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+            >
+              {shippingCountries.map((country) => (
+                <option key={country.code} value={country.code}>
+                  {country.labels[locale]}
+                </option>
+              ))}
+            </select>
+            {fieldError('shippingCountry')}
           </div>
+
+          <label className="mt-6 flex items-start gap-3 text-base text-body">
+            <input
+              id="deliverToOther"
+              type="checkbox"
+              checked={formData.deliverToOther}
+              onChange={(e) =>
+                setFormData((prev) => ({ ...prev, deliverToOther: e.target.checked }))
+              }
+              className="mt-1 h-5 w-5 shrink-0 accent-brand"
+            />
+            <span>{orderForm.deliverToOtherLabel}</span>
+          </label>
+
+          {formData.deliverToOther && (
+            <div className="mt-4">
+              <label
+                className="block text-base font-medium text-body mb-2"
+                htmlFor="shippingRecipient"
+              >
+                {orderForm.shippingRecipientLabel}
+              </label>
+              <input
+                id="shippingRecipient"
+                {...invalid('shippingRecipient')}
+                type="text"
+                name="shippingRecipient"
+                autoComplete="shipping name"
+                value={formData.shippingRecipient}
+                onChange={handleChange}
+                required
+                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+              />
+              {fieldError('shippingRecipient')}
+            </div>
+          )}
         </div>
       )}
 
