@@ -74,6 +74,9 @@ async function readReply(response: Response, requestCode: string): Promise<Serve
   }
 }
 
+// Shared style for text inputs, selects and the message field. min-h-11 keeps every field at least 44px tall for touch.
+const fieldClass =
+  'w-full min-h-11 px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent';
 export default function OrderForm({
   initialFormat = null,
   onSentChange,
@@ -136,6 +139,9 @@ export default function OrderForm({
 
   // The product list sets both the product and the canvas size.
   const formatValue = formData.product === 'canvas' ? formData.canvasSize : 'digital';
+  // The select cuts long labels on small phones, so the price is repeated as text below it.
+  const options = formatOptions(locale);
+  const selectedPrice = options.find((option) => option.value === formatValue)?.price;
   // A size error from the server is shown on the same list.
   const formatErrorKey = fieldErrors.canvasSize ? 'canvasSize' : 'product';
   const handleFormatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -409,14 +415,19 @@ export default function OrderForm({
             value={formatValue}
             onChange={handleFormatChange}
             {...invalid(formatErrorKey)}
-            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+            className={fieldClass}
           >
-            {formatOptions(locale).map((option) => (
+            {options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>
             ))}
           </select>
+          {selectedPrice && (
+            <p className="mt-2 text-base text-copy" aria-live="polite" data-testid="selected-price">
+              {orderForm.priceLabel.replace('{price}', selectedPrice)}
+            </p>
+          )}
           {fieldError(formatErrorKey)}
         </div>
 
@@ -448,7 +459,7 @@ export default function OrderForm({
             name="childName"
             value={formData.childName}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+            className={fieldClass}
           />
           {fieldError('childName')}
         </div>
@@ -467,7 +478,7 @@ export default function OrderForm({
             name="weeksInWomb"
             value={formData.weeksInWomb}
             onChange={handleChange}
-            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+            className={fieldClass}
           />
           {fieldError('weeksInWomb')}
         </div>
@@ -484,7 +495,7 @@ export default function OrderForm({
             value={formData.specialRequests}
             onChange={handleChange}
             rows={4}
-            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+            className={fieldClass}
           />
           {fieldError('specialRequests')}
         </div>
@@ -506,7 +517,7 @@ export default function OrderForm({
             value={formData.name}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+            className={fieldClass}
           />
           {fieldError('name')}
         </div>
@@ -524,7 +535,7 @@ export default function OrderForm({
             value={formData.email}
             onChange={handleChange}
             required
-            className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+            className={fieldClass}
           />
           {fieldError('email')}
         </div>
@@ -548,7 +559,7 @@ export default function OrderForm({
               value={formData.shippingStreet}
               onChange={handleChange}
               required
-              className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+              className={fieldClass}
             />
             {fieldError('shippingStreet')}
           </div>
@@ -572,7 +583,7 @@ export default function OrderForm({
                 value={formData.shippingPostalCode}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+                className={fieldClass}
               />
               {fieldError('shippingPostalCode')}
             </div>
@@ -589,7 +600,7 @@ export default function OrderForm({
                 value={formData.shippingCity}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+                className={fieldClass}
               />
               {fieldError('shippingCity')}
             </div>
@@ -606,7 +617,7 @@ export default function OrderForm({
               autoComplete="country-name"
               value={formData.shippingCountry}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+              className={fieldClass}
             >
               {shippingCountries.map((country) => (
                 <option key={country.code} value={country.code}>
@@ -617,7 +628,7 @@ export default function OrderForm({
             {fieldError('shippingCountry')}
           </div>
 
-          <label className="mt-6 flex items-start gap-3 text-base text-body">
+          <label className="mt-6 flex min-h-11 items-start gap-3 py-2 text-base text-body">
             <input
               id="deliverToOther"
               type="checkbox"
@@ -647,7 +658,7 @@ export default function OrderForm({
                 value={formData.shippingRecipient}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent"
+                className={fieldClass}
               />
               {fieldError('shippingRecipient')}
             </div>
@@ -671,7 +682,7 @@ export default function OrderForm({
               {orderForm.consentProcessing.split('{link}')[0]}
               <Link
                 href={privacyHref}
-                className="font-semibold text-brand-strong underline underline-offset-4"
+                className="py-3 font-semibold text-brand-strong underline underline-offset-4"
               >
                 {copy.legal.datenschutz.title}
               </Link>

@@ -208,6 +208,7 @@
     "nameLabel": "Dein Name *",
     "emailLabel": "Deine E-Mail *",
     "productLabel": "Produkt *",
+    "priceLabel": "Preis: {price}",
     "productDigital": "Digitales JPEG",
     "productCanvas": "Leinwanddruck",
     "canvasSizeLabel": "Größe *",

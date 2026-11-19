@@ -158,6 +158,16 @@ describe('OrderForm', () => {
     expect(weeks).toHaveAttribute('inputmode', 'numeric');
     expect(screen.getByText('* Required field')).toBeInTheDocument();
   });
+  it('shows the price of the chosen format as text under the list', () => {
+    const { container } = render(<OrderForm />);
+    const [first, second] = formatOptions('en');
+    expect(screen.getByTestId('selected-price')).toHaveTextContent(`Price: ${first.price}`);
+    fireEvent.change(container.querySelector('#format') as HTMLSelectElement, {
+      target: { value: second.value },
+    });
+    expect(screen.getByTestId('selected-price')).toHaveTextContent(`Price: ${second.price}`);
+  });
+
   it('preselects the format from the order link', () => {
     const { container } = render(
       <OrderForm initialFormat={{ product: 'canvas', canvasSize: '50x50cm' }} />,

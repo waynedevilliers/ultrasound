@@ -6,14 +6,18 @@ import Breadcrumb from '@/components/Breadcrumb';
 import JsonLd from '@/components/JsonLd';
 import { SITE_URL } from '@/lib/metadata';
 import { breadcrumbJsonLd, organizationJsonLd } from '@/lib/structured-data';
+import { LegalText, readLegalText } from '@/lib/legal-text';
 
-// TODO(client): Impressum and Datenschutz text is a placeholder. Needs the operator's legal entity, address, contact and privacy details (see messages legal.*).
+// A page shows its text from content/legal/<page>.<locale>.md when that file exists (German Datenschutz so far),
+// otherwise the placeholder in messages legal.*.
+// TODO(client): Impressum (both languages) and the English Datenschutz are still placeholders.
 export type LegalKey = 'impressum' | 'datenschutz';
 
 export default function LegalPage({ locale, page }: { locale: string; page: LegalKey }) {
   const copy = (locale === 'de' ? de : en).legal[page];
   const common = (locale === 'de' ? de : en).common;
   const homeLabel = common.home;
+  const blocks = readLegalText(page, locale === 'de' ? 'de' : 'en');
   return (
     <div className="min-h-screen flex flex-col">
       <JsonLd data={organizationJsonLd(SITE_URL)} />
@@ -34,7 +38,11 @@ export default function LegalPage({ locale, page }: { locale: string; page: Lega
         <h1 className="font-display text-3xl sm:text-4xl font-bold mb-6 text-ink break-words">
           {copy.title}
         </h1>
-        <p className="text-copy leading-relaxed">{copy.intro}</p>
+        {blocks ? (
+          <LegalText blocks={blocks} />
+        ) : (
+          <p className="text-copy leading-relaxed">{copy.intro}</p>
+        )}
       </main>
       <Footer locale={locale === 'de' ? 'de' : 'en'} />
     </div>
