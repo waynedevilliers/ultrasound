@@ -1,38 +1,32 @@
 import { getCopy, type Locale } from '@/lib/copy';
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
+import Accordion from '@/components/Accordion';
 
+// Information for the order page. Its rows use the same accordion as the FAQ.
 export default function OrderInfo({ locale }: { locale: Locale }) {
   const { orderInfo } = getCopy(locale);
-  const infoSections = orderInfo.sections;
 
   return (
-    <div className="space-y-6">
-      <h2 className="text-3xl font-bold text-ink mb-8">{orderInfo.title}</h2>
-
-      <Accordion className="w-full border border-line rounded-lg">
-        {infoSections.map((section) => (
-          <AccordionItem key={section.id} value={section.id}>
-            <AccordionTrigger className="px-6 py-4 hover:bg-canvas">
-              {section.title}
-            </AccordionTrigger>
-            <AccordionContent className="px-6 py-4 bg-canvas">
-              <ul className="space-y-3">
-                {section.items.map((item, itemIdx) => (
-                  <li key={itemIdx} className="flex gap-3 text-body">
-                    <span className="text-brand mt-1">›</span>
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </AccordionContent>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </div>
+    <section className="mt-16">
+      <h2 className="font-display heading-xl font-bold text-center mb-16 text-ink">
+        {orderInfo.title}
+      </h2>
+      <Accordion
+        items={orderInfo.sections.map((section) => ({
+          question: section.title,
+          content: (
+            <ul className="space-y-3">
+              {section.items.map((item, itemIdx) => (
+                <li key={itemIdx} className="flex gap-3 text-base text-body">
+                  <span className="text-brand mt-1" aria-hidden="true">
+                    ›
+                  </span>
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          ),
+        }))}
+      />
+    </section>
   );
 }
