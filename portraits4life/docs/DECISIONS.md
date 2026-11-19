@@ -7,9 +7,10 @@ One entry per decision someone could later question. Each entry: date, status (`
 ## 2026-11-19: No shadcn; Prettier formats code, not prose
 
 - **Status:** done
-- **Decision:** The shadcn leftovers are removed (packages, `components.json`, `lib/utils.ts`, the two CSS imports); no shadcn component was in use. `dotenv` is a dev dependency because `scripts/init-db.js` needs it (it was only present through shadcn). Prettier formats all code and config files; `.prettierignore` excludes Markdown, so legal texts, docs and agent definitions keep their line breaks. knip ignores `prettier` and `tailwindcss`, which are used by the CLI and CSS, not by imports.
+- **Decision:** The shadcn packages, `components.json`, `lib/utils.ts` and the two shadcn CSS imports are removed; no shadcn component was in use. The shadcn theme variables in `app/globals.css` stay for now (some, such as `--radius`, are still used); removing the unused ones is open (see REMAINING). `dotenv` is a dev dependency because `scripts/init-db.js` needs it (it was only present through shadcn). Prettier formats all code and config files; `.prettierignore` excludes Markdown, so legal texts, docs and agent definitions keep their line breaks. knip ignores `prettier` and `tailwindcss`, which are used by the CLI and CSS, not by imports.
 - **Why:** knip findings; one formatting style for code. Built CSS was compared before and after: no rule used by the site changed.
 - **Considered:** Formatting Markdown too (rejected: it would rewrap the client's legal text and the reports).
+- **Lockfile:** npm 10 drops the `libc` lines of the sharp platform packages when it rewrites `package-lock.json`. They were restored by hand here. After any `npm install` or `npm uninstall`, check the lockfile diff for removed `libc` lines and restore them.
 
 ## 2026-11-19: middleware.ts renamed to proxy.ts
 

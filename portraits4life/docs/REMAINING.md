@@ -18,6 +18,8 @@ Status as of 2026-11-19. Plan v3 steps 1 to 13 are built in code. Launch is not 
 - A 429 from the upload token route shows "upload failed", not "too many attempts": @vercel/blob's upload() throws the same error for every token failure and drops the status.
 - Duplicate DECISIONS dates: some entries dated 2026-11-15 were written on 2026-11-14.
 
+- Unused shadcn theme variables in app/globals.css (sidebar, chart, popover and similar); some, such as --radius, are still used. Remove only the unused ones, with approval.
+
 ## Open decisions
 - "Kontakt" menu label lands on a section headed "Bereit für dein Kunstwerk?". Keep or change.
 - Closing button stays primary (the same primary button may repeat when it leads to the order page).

@@ -19,9 +19,11 @@ export const EMPTY_FORM = {
 } as const;
 
 export type OrderFormData = {
-  -readonly [K in keyof typeof EMPTY_FORM]: (typeof EMPTY_FORM)[K] extends boolean
-    ? boolean
-    : string;
+  -readonly [K in keyof typeof EMPTY_FORM]: K extends 'product'
+    ? 'canvas' | 'digital'
+    : (typeof EMPTY_FORM)[K] extends boolean
+      ? boolean
+      : string;
 };
 
 export type OrderConsent = { processing: boolean; rights: boolean; showcase: boolean };

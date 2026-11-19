@@ -86,12 +86,23 @@ describe('buildOrderPayload', () => {
 
   it('sends the shipping fields for a canvas, with the consent version', () => {
     const payload = buildOrderPayload(form(), { ...allConsent, showcase: true }, meta);
-    expect(payload).toMatchObject({
+    // Exact match, so a field that is dropped or added by mistake fails the test.
+    expect(payload).toEqual({
       name: 'Ann',
-      canvasSize: '30x30cm',
-      shippingPostalCode: '10115',
+      email: 'ann@example.com',
+      product: 'canvas',
+      childName: '',
+      weeksInWomb: '',
+      specialRequests: '',
       consent: { processing: true, rights: true, showcase: true, version: CONSENT_VERSION },
       ...meta,
+      canvasSize: '30x30cm',
+      shippingStreet: 'Hauptstraße 1',
+      shippingCity: 'Berlin',
+      shippingPostalCode: '10115',
+      shippingCountry: 'DE',
+      deliverToOther: false,
+      shippingRecipient: '',
     });
   });
 
