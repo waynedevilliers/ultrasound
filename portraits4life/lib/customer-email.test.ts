@@ -13,7 +13,7 @@ const base = {
 describe('buildCustomerEmail', () => {
   it('writes the German plain-text email for a German page', () => {
     const { subject, text } = buildCustomerEmail({ ...base, locale: 'de' });
-    expect(subject).toBe('Bestellung bestätigt: Portraits 4 Life');
+    expect(subject).toBe('Anfrage bestätigt: Portraits 4 Life');
     expect(text).toContain('Hallo Anna,');
     expect(text).toContain('Danke, dein Bild ist bei mir angekommen!');
     expect(text).toContain('Deine Referenz: P4L-261117-K7QM');
@@ -24,7 +24,7 @@ describe('buildCustomerEmail', () => {
 
   it('writes the English plain-text email for an English page', () => {
     const { subject, text } = buildCustomerEmail({ ...base, locale: 'en' });
-    expect(subject).toBe('Order confirmed: Portraits 4 Life');
+    expect(subject).toBe('Request confirmed: Portraits 4 Life');
     expect(text).toContain('Hi Anna,');
     expect(text).toContain('Thank you, your image has arrived!');
     expect(text).toContain(

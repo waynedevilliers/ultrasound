@@ -4,6 +4,14 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 ---
 
+## 2026-11-19: The order form is a request, not a binding order
+
+- **Status:** open (legal confirmation needed)
+- **Decision:** The form is a request. The submit button reads "Bild senden und anfragen" (English: "Send image and request"). The binding order and the payment come with the invoice, after the owner has approved the image. The success message and the confirmation email use "Anfrage" accordingly.
+- **Why:** The owner wants to check every image before anything is charged, so a request fits better than a paid order at this stage.
+- **Considered:** "Jetzt bestellen" (kept until this decision). Rejected for now: it promises an order before the image is approved.
+- **Open:** TODO(client): legal confirmation of the remaining consent wording.
+
 ## 2026-11-18: Accepted risk: picomatch advisory (no patched release)
 
 - **Status:** open (accepted risk; recheck when a patched release exists)

@@ -224,7 +224,7 @@
     "fileType": "Nur JPG, PNG, WebP oder HEIC.",
     "ultrasoundRequired": "Bitte lade ein Ultraschallbild hoch.",
     "submitting": "Wird eingereicht...",
-    "submit": "Jetzt bestellen",
+    "submit": "Bild senden und anfragen",
     "fieldInvalid": "Bitte prüfe dieses Feld.",
     "checkFields": "Bitte prüfe die markierten Felder.",
     "genericError": "Die Bestellung konnte nicht gesendet werden. Bitte versuche es noch einmal.",
@@ -233,10 +233,8 @@
     "imageFormats": "{formats}, maximal 15 MB",
     "removeImage": "Entfernen",
     "trustNote": "Ich prüfe dein Bild und melde mich per E-Mail. Du bezahlst erst danach.",
-    "privacyBefore": "Mit dem Absenden stimmst du der Verarbeitung deiner Daten gemäß der",
-    "privacyAfter": "zu.",
     "requiredField": "Bitte fülle dieses Feld aus.",
-    "consentProcessing": "Ich stimme zu, dass meine Ultraschallbilder und Angaben zur Erstellung des Kunstwerks verarbeitet werden. Ich kann diese Einwilligung jederzeit widerrufen. Details in der {link}.",
+    "consentProcessing": "Ich stimme zu, dass mein Ultraschallbild und Angaben zur Erstellung des Kunstwerks verarbeitet werden. Ich kann diese Einwilligung jederzeit widerrufen. Details in der {link}.",
     "consentRights": "Ich bestätige, dass ich das Bild selbst besitze oder die Erlaubnis habe, es verwenden zu lassen.",
     "consentShowcase": "Ich erlaube, dass das fertige Kunstwerk als Beispiel auf der Website und in sozialen Medien gezeigt wird (optional).",
     "consentRequired": "Bitte bestätige diese Zustimmung.",
@@ -250,7 +248,8 @@
     "artworkHeading": "Dein Kunstwerk",
     "contactHeading": "Deine Kontaktdaten",
     "deliverToOtherLabel": "An eine andere Person liefern",
-    "shippingRecipientLabel": "Name des Empfängers *"
+    "shippingRecipientLabel": "Name des Empfängers *",
+    "uploadTip": "Tipp: Profilaufnahmen eignen sich besonders gut."
   },
   "common": {
     "home": "Startseite",
@@ -302,7 +301,7 @@
     "text": "Die Seite ist bald so weit. Schau bald wieder vorbei."
   },
   "customerEmail": {
-    "subject": "Bestellung bestätigt: Portraits 4 Life",
+    "subject": "Anfrage bestätigt: Portraits 4 Life",
     "greeting": "Hallo {name},",
     "product": "Produkt:",
     "delivery": "Voraussichtliche Lieferzeit:",

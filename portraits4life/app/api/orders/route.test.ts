@@ -267,7 +267,7 @@ describe('POST /api/orders logging and email', () => {
   it('sends the customer email in German for a German page', async () => {
     await POST(orderRequest(order({ locale: 'de' })));
     const customerEmail = send.mock.calls[1][0];
-    expect(customerEmail.subject).toBe('Bestellung bestätigt: Portraits 4 Life');
+    expect(customerEmail.subject).toBe('Anfrage bestätigt: Portraits 4 Life');
     expect(customerEmail.text).toContain('Danke, dein Bild ist bei mir angekommen!');
     expect(customerEmail.replyTo).toBe('portraits4life.art@gmail.com');
   });
@@ -275,7 +275,7 @@ describe('POST /api/orders logging and email', () => {
   it('sends the customer email in English for an English page', async () => {
     await POST(orderRequest(order({ locale: 'en' })));
     const customerEmail = send.mock.calls[1][0];
-    expect(customerEmail.subject).toBe('Order confirmed: Portraits 4 Life');
+    expect(customerEmail.subject).toBe('Request confirmed: Portraits 4 Life');
     expect(customerEmail.text).toContain('Thank you, your image has arrived!');
     expect(customerEmail.html).toBeUndefined();
   });
