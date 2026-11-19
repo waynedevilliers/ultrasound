@@ -1,6 +1,4 @@
-'use client';
-
-import { useId, useState } from 'react';
+import Accordion from '@/components/Accordion';
 import { getCopy, type Locale } from '@/lib/copy';
 import { routeHref, routes } from '@/content/routes';
 import { canvasDeliveryText, digitalDeliveryText } from '@/lib/delivery';
@@ -9,8 +7,6 @@ import { IMAGE_FORMAT_LIST } from '@/lib/image-formats';
 // TODO(client): the new question about an unsuitable image is a draft answer; confirm it.
 // TODO(client): the questions and answers are drafts. Confirm each answer (shipping, preview, refund, file requirements) with the client; see docs/faq-client-review.md. No FAQPage structured data until they are confirmed.
 export default function FAQ({ locale }: { locale: Locale }) {
-  const baseId = useId();
-  const [openIndex, setOpenIndex] = useState<number | null>(null);
   const contactRoute = routes.find((route) => route.id === 'contact');
   const contactHref = contactRoute ? routeHref(locale, contactRoute) : `/${locale}#kontakt`;
 
@@ -23,53 +19,19 @@ export default function FAQ({ locale }: { locale: Locale }) {
           {faq.title}
         </h2>
 
-        <div className="space-y-4">
-          {faq.items.map((item, index) => {
-            const isOpen = openIndex === index;
-            const panelId = `${baseId}-answer-${index}`;
-            return (
-              <div key={index} className="border border-line rounded-lg overflow-hidden">
-                <h3>
-                  <button
-                    type="button"
-                    aria-expanded={isOpen}
-                    aria-controls={panelId}
-                    onClick={() => setOpenIndex(isOpen ? null : index)}
-                    className="w-full px-6 py-4 flex items-center justify-between bg-canvas hover:bg-surface-muted transition text-left"
-                  >
-                    <span className="text-lg font-semibold text-ink">{item.question}</span>
-                    <svg
-                      aria-hidden="true"
-                      className={`ml-4 w-6 h-6 shrink-0 text-brand-strong transition-transform motion-reduce:transition-none ${isOpen ? 'rotate-180' : ''}`}
-                      fill="none"
-                      stroke="currentColor"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        strokeWidth={2}
-                        d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                      />
-                    </svg>
-                  </button>
-                </h3>
-                <div
-                  id={panelId}
-                  hidden={!isOpen}
-                  className="px-6 py-4 bg-surface border-t border-line"
-                >
-                  <p className="text-copy leading-relaxed">
-                    {item.answer
-                      .replace('{digital}', digitalDeliveryText(locale))
-                      .replace('{canvas}', canvasDeliveryText(locale))
-                      .replace('{formats}', IMAGE_FORMAT_LIST[locale === 'de' ? 'de' : 'en'])}
-                  </p>
-                </div>
-              </div>
-            );
-          })}
-        </div>
+        <Accordion
+          items={faq.items.map((item) => ({
+            question: item.question,
+            content: (
+              <p className="text-copy leading-relaxed">
+                {item.answer
+                  .replace('{digital}', digitalDeliveryText(locale))
+                  .replace('{canvas}', canvasDeliveryText(locale))
+                  .replace('{formats}', IMAGE_FORMAT_LIST[locale === 'de' ? 'de' : 'en'])}
+              </p>
+            ),
+          }))}
+        />
 
         <div className="mt-16 p-8 bg-brand-soft rounded-lg border border-brand-edge text-center">
           <p className="text-body">
