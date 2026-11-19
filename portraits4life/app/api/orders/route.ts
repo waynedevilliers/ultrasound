@@ -17,6 +17,8 @@ import { orderSubmitSchema, validateStoredImage, type OrderSubmit } from '@/lib/
 import { buildFileLink } from '@/lib/signed-link';
 
 const LINK_TTL_MS = 30 * 24 * 60 * 60 * 1000;
+// head() retries outages for minutes; the photo check gives up sooner so the failure is logged and answered.
+const PHOTO_CHECK_TIMEOUT_MS = 8000;
 // TODO(client): set SITE_URL to the live domain so links stay stable; otherwise the request address is used.
 
 function productLabel(order: OrderSubmit): string {
@@ -119,7 +121,9 @@ export async function POST(request: NextRequest) {
     for (const photo of photos) {
       let error: string | null;
       try {
-        const meta = await head(photo.pathname);
+        const meta = await head(photo.pathname, {
+          abortSignal: AbortSignal.timeout(PHOTO_CHECK_TIMEOUT_MS),
+        });
         error = validateStoredImage({ size: meta.size, contentType: meta.contentType });
       } catch (lookupError) {
         // Any other failure is a storage problem, not the visitor's: it becomes a 500 with the request code.

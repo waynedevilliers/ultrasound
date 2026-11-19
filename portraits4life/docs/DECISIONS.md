@@ -4,6 +4,13 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 ---
 
+## 2026-11-19: middleware.ts renamed to proxy.ts
+
+- **Status:** done
+- **Decision:** The request handler for locale routing and coming-soon mode is `proxy.ts` with `export function proxy`, the Next 16 name for the middleware convention. Behaviour and matcher are unchanged. Proxy runs on the Node.js runtime by default; nothing here needed the edge runtime.
+- **Why:** The build warned that `middleware` is deprecated.
+- **Considered:** Keeping middleware.ts until a later Next release (rejected: the rename is one file and removes the warning).
+
 ## 2026-11-19: Legal texts are files in content/legal
 
 - **Status:** done (German Datenschutz); open for Impressum, AGB, Widerruf and the English versions

@@ -1,6 +1,6 @@
 # Remaining work
 
-Status as of 2026-11-15. Plan v3 steps 1 to 13 are built in code. Launch is not yet possible; these items are kept for later.
+Status as of 2026-11-19. Plan v3 steps 1 to 13 are built in code. Launch is not yet possible; these items are kept for later.
 
 ## Blocking launch (needs owner, client or deployment access)
 - Impressum and Datenschutz: operator details and retention for order data (TODO(client), see docs/legal-client-review.md).
@@ -18,7 +18,7 @@ Status as of 2026-11-15. Plan v3 steps 1 to 13 are built in code. Launch is not 
 - A 429 from the upload token route shows "upload failed", not "too many attempts": @vercel/blob's upload() throws the same error for every token failure and drops the status.
 - Split components/OrderForm.tsx (large) and remove repeated markup.
 - Prettier: 65 files do not match the project config. Format in its own step (Prettier 3.9.10 is installed as a dev dependency).
-- knip: unused files (components/ui/button.tsx, components/ui/tabs.tsx, lib/db.ts), unused exports and dependencies, dotenv used but not declared. Remove only with approval.
+- knip (2026-11-19): unused file lib/utils.ts, 6 unused dependencies, 3 unused dev dependencies, dotenv used but not declared; knip.json has stale entries. Remove only with approval.
 - Duplicate DECISIONS dates: some entries dated 2026-11-15 were written on 2026-11-14.
 
 ## Open decisions
@@ -53,7 +53,6 @@ Full audit: docs/reviews/2026-11-15-audit.md. Parked until the visual work is do
 - Landing not statically generated (no generateStaticParams).
 - next-intl is installed but copy is imported as JSON (lib/copy.ts); DECISIONS says next-intl.
 - README out of date (env names, Node version, branch names, removed endpoint).
-- Dead code from knip (components/ui/button.tsx, ui/tabs.tsx, lib/db.ts, unused exports and dependencies).
 - Test gaps: language switch, Gallery, PricingTiers.
 - Duplicate contact email in five places; language switch in Header and Footer.
 - Product JSON-LD lacks image and Offer url.

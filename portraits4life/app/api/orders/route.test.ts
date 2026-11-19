@@ -14,7 +14,7 @@ vi.mock('resend', () => ({ Resend: vi.fn() }));
 import { POST } from './route';
 import { sql } from '@vercel/postgres';
 import { Resend } from 'resend';
-import { BlobNotFoundError } from '@vercel/blob';
+import { BlobNotFoundError, BlobRequestAbortedError } from '@vercel/blob';
 import { CONSENT_VERSION } from '@/lib/consent';
 import { digitalProduct } from '@/content/products';
 
@@ -158,6 +158,17 @@ describe('POST /api/orders logging and email', () => {
     const line = String(errorSpy.mock.calls.at(-1)?.[0]);
     expect(line).toMatch(/^\[order [0-9a-f]{8}\] photo-check failed: Error: store unavailable$/);
     expect(sql).not.toHaveBeenCalled();
+  });
+
+  it('limits the photo check in time, so a storage outage is answered and logged', async () => {
+    head.mockRejectedValue(new BlobRequestAbortedError());
+    const response = await POST(orderRequest(order()));
+    expect(response.status).toBe(500);
+    expect(head).toHaveBeenCalledWith(
+      expect.any(String),
+      expect.objectContaining({ abortSignal: expect.any(AbortSignal) }),
+    );
+    expect(String(errorSpy.mock.calls.at(-1)?.[0])).toMatch(/photo-check failed/);
   });
 
   it('saves the order, sends both emails and returns 201 with the order number', async () => {
