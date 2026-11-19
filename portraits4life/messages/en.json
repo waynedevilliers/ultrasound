@@ -248,7 +248,9 @@
     "serverError": "The order could not be saved just now. Please try again later.",
     "tooManyRequests": "Too many attempts. Please wait a few minutes and try again.",
     "errorCode": "(Error code: {code})",
-    "honeypotLabel": "Website"
+    "honeypotLabel": "Website",
+    "artworkHeading": "Your artwork",
+    "contactHeading": "Your contact details"
   },
   "common": {
     "home": "Home",
