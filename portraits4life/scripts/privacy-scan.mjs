@@ -69,7 +69,9 @@ async function footerCheck(context, locale) {
 
 async function main() {
   try {
-    await fetch(origin, { signal: AbortSignal.timeout(5000) });
+    // fetch resolves on 4xx and 5xx too, so an error page must fail here as well.
+    const response = await fetch(origin, { signal: AbortSignal.timeout(5000) });
+    if (!response.ok) throw new Error(`HTTP ${response.status}`);
   } catch {
     console.error(
       `Not reachable: ${origin}. Build and start the site first (npm run build, npm run start).`,
@@ -94,7 +96,11 @@ async function main() {
           }
         });
         const url = `${origin}/${locale}${path}`;
-        await page.goto(url, { waitUntil: 'networkidle' });
+        const response = await page.goto(url, { waitUntil: 'networkidle' });
+        // An error page would be recorded as a clean scan, so stop instead.
+        if (!response?.ok()) {
+          throw new Error(`Could not load ${url} (status ${response?.status() ?? 'unknown'})`);
+        }
         const before = { cookies: cookieList(await context.cookies()), ...(await storage(page)) };
 
         // Use the language switch (the button for the other language), then record again.
