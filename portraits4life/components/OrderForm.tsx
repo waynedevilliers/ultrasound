@@ -716,7 +716,7 @@ export default function OrderForm({
         {loading ? orderForm.submitting : orderForm.submit}
       </button>
 
-      {/* TODO(client): confirm the trust text and the legal wording of the privacy line before launch. */}
+      {/* TODO(client): confirm the trust text and the legal wording of the consents before launch. */}
       <div className="space-y-3 text-center">
         <p className="text-base text-body">{orderForm.trustNote}</p>
       </div>
