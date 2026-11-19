@@ -1,6 +1,7 @@
 import { z } from 'zod';
 import { canvasSizeIds } from '@/content/products';
 import { CONSENT_VERSION } from '@/lib/consent';
+import { isShippingCountry, postalCodeIsValid } from '@/content/shipping';
 import { isDigitalAvailable } from '@/content/products';
 
 import { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES } from '@/lib/image-rules';
@@ -10,12 +11,12 @@ export { ALLOWED_IMAGE_TYPES, MAX_IMAGE_BYTES };
 const optionalText = (max: number) => z.string().trim().max(max).default('');
 
 const shippingSchema = z.object({
-  shippingFullName: z.string().trim().min(1).max(100),
   shippingStreet: z.string().trim().min(1).max(150),
   shippingCity: z.string().trim().min(1).max(100),
-  shippingState: optionalText(100),
   shippingPostalCode: z.string().trim().min(1).max(20),
   shippingCountry: z.string().trim().min(1).max(100),
+  deliverToOther: z.boolean().default(false),
+  shippingRecipient: optionalText(100),
 });
 
 export const orderFieldsSchema = z
@@ -45,12 +46,12 @@ export const orderFieldsSchema = z
     locale: z.enum(['de', 'en']).default('de'),
     // Honeypot: any value is accepted here so the route can refuse it with its own check.
     website: z.string().default(''),
-    shippingFullName: z.string().default(''),
     shippingStreet: z.string().default(''),
     shippingCity: z.string().default(''),
-    shippingState: z.string().default(''),
     shippingPostalCode: z.string().default(''),
     shippingCountry: z.string().default(''),
+    deliverToOther: z.boolean().default(false),
+    shippingRecipient: z.string().default(''),
   })
   .superRefine((value, ctx) => {
     if (value.product === 'canvas') {
@@ -62,6 +63,22 @@ export const orderFieldsSchema = z
         for (const issue of shipping.error.issues) {
           ctx.addIssue({ code: 'custom', path: issue.path, message: issue.message });
         }
+      }
+      if (!isShippingCountry(value.shippingCountry)) {
+        ctx.addIssue({ code: 'custom', path: ['shippingCountry'], message: 'Unknown country' });
+      } else if (!postalCodeIsValid(value.shippingCountry, value.shippingPostalCode)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['shippingPostalCode'],
+          message: 'Postal code is not valid for this country',
+        });
+      }
+      if (value.deliverToOther && value.shippingRecipient === '') {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['shippingRecipient'],
+          message: 'Recipient name is required',
+        });
       }
     } else if (value.canvasSize !== '') {
       ctx.addIssue({

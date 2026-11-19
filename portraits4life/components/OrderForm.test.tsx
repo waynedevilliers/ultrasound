@@ -25,12 +25,11 @@ function smallPng() {
 
 // Submits the form with a photo chosen, the way a visitor would after filling it in.
 const SHIPPING = [
-  ['shippingFullName', 'Ann Test'],
   ['shippingStreet', 'Hauptstraße 1'],
-  ['shippingCity', 'Berlin'],
-  ['shippingState', 'Berlin'],
   ['shippingPostalCode', '10115'],
-  ['shippingCountry', 'Germany'],
+  ['shippingCity', 'Berlin'],
+  ['shippingPostalCode', '10115'],
+  ['shippingCountry', 'DE'],
 ];
 
 // Submits the form with a photo chosen, the way a visitor would after filling it in.
@@ -406,12 +405,11 @@ describe('OrderForm submit errors', () => {
     );
     submitWithPhoto(container);
     for (const [id, value] of [
-      ['shippingFullName', 'Ann Test'],
       ['shippingStreet', 'Hauptstraße 1'],
-      ['shippingCity', 'Berlin'],
-      ['shippingState', 'Berlin'],
       ['shippingPostalCode', '10115'],
-      ['shippingCountry', 'Germany'],
+      ['shippingCity', 'Berlin'],
+      ['shippingPostalCode', '10115'],
+      ['shippingCountry', 'DE'],
     ]) {
       fireEvent.change(container.querySelector(`#${id}`) as HTMLInputElement, {
         target: { value },
@@ -497,5 +495,35 @@ describe('OrderForm sections', () => {
   it('has German headings for the sections', () => {
     expect(getCopy('de').orderForm.artworkHeading).toBe('Dein Kunstwerk');
     expect(getCopy('de').orderForm.contactHeading).toBe('Deine Kontaktdaten');
+  });
+});
+
+describe('OrderForm delivery address', () => {
+  it('shows the recipient field only when the order goes to another person', () => {
+    const { container } = render(
+      <OrderForm initialFormat={{ product: 'canvas', canvasSize: '30x30cm' }} />,
+    );
+    expect(container.querySelector('#shippingRecipient')).toBeNull();
+    fireEvent.click(container.querySelector('#deliverToOther') as HTMLElement);
+    expect(container.querySelector('#shippingRecipient')).not.toBeNull();
+    fireEvent.click(container.querySelector('#deliverToOther') as HTMLElement);
+    expect(container.querySelector('#shippingRecipient')).toBeNull();
+  });
+
+  it('has no state field and no full-name field in the address', () => {
+    const { container } = render(
+      <OrderForm initialFormat={{ product: 'canvas', canvasSize: '30x30cm' }} />,
+    );
+    expect(container.querySelector('#shippingState')).toBeNull();
+    expect(container.querySelector('#shippingFullName')).toBeNull();
+  });
+
+  it('asks for a five-digit postal code with a numeric keyboard', () => {
+    const { container } = render(
+      <OrderForm initialFormat={{ product: 'canvas', canvasSize: '30x30cm' }} />,
+    );
+    const postal = container.querySelector('#shippingPostalCode') as HTMLInputElement;
+    expect(postal).toHaveAttribute('inputmode', 'numeric');
+    expect(postal).toHaveAttribute('maxlength', '5');
   });
 });

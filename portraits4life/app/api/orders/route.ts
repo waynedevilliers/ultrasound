@@ -1,6 +1,7 @@
 import { sql } from '@vercel/postgres';
 import { logOrderFailure } from '@/lib/order-log';
 import { createRequestCode, isRequestCode } from '@/lib/request-code';
+import { shippingCountryLabel, type ShippingCountryCode } from '@/content/shipping';
 import { withReference } from '@/lib/order-reference';
 import { buildCustomerEmail, deliveryText, productName } from '@/lib/customer-email';
 import { clientKey } from '@/lib/client-key';
@@ -26,6 +27,11 @@ function productLabel(order: OrderSubmit): string {
   return 'Digital JPEG';
 }
 
+// The recipient of a canvas: the name given for another person, otherwise the customer's own name.
+function shippingRecipient(order: OrderSubmit): string {
+  return order.deliverToOther ? order.shippingRecipient : order.name;
+}
+
 function orderEmailHtml(
   order: OrderSubmit,
   reference: string,
@@ -33,13 +39,15 @@ function orderEmailHtml(
 ): string {
   const row = (label: string, value: string) =>
     `<p><strong>${escapeHtml(label)}:</strong> ${escapeHtml(value)}</p>`;
+  // German address format: recipient, street, "PLZ Ort", country.
+  const recipient = shippingRecipient(order);
   const shipping =
     order.product === 'canvas'
       ? `<h3>Shipping Address</h3>
-         <p>${escapeHtml(order.shippingFullName)}<br/>
+         <p>${escapeHtml(recipient)}<br/>
          ${escapeHtml(order.shippingStreet)}<br/>
-         ${escapeHtml(order.shippingCity)}, ${escapeHtml(order.shippingState)} ${escapeHtml(order.shippingPostalCode)}<br/>
-         ${escapeHtml(order.shippingCountry)}</p>`
+         ${escapeHtml(order.shippingPostalCode)} ${escapeHtml(order.shippingCity)}<br/>
+         ${escapeHtml(shippingCountryLabel(order.shippingCountry as ShippingCountryCode, 'de'))}</p>`
       : '';
   return `
     <h2>New Order Received</h2>
@@ -159,10 +167,9 @@ export async function POST(request: NextRequest) {
         ${JSON.stringify(
           order.product === 'canvas'
             ? {
-                fullName: order.shippingFullName,
+                recipient: shippingRecipient(order),
                 street: order.shippingStreet,
                 city: order.shippingCity,
-                state: order.shippingState,
                 postalCode: order.shippingPostalCode,
                 country: order.shippingCountry,
               }

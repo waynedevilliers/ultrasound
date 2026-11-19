@@ -214,11 +214,9 @@
     "childNameLabel": "Child's name (optional)",
     "weeksLabel": "Week of pregnancy (optional)",
     "shippingHeading": "Shipping Address *",
-    "shippingFullName": "Full Name *",
-    "shippingStreet": "Street *",
-    "shippingCity": "City *",
-    "shippingState": "State *",
-    "shippingPostalCode": "Postal Code *",
+    "shippingStreet": "Street and house number *",
+    "shippingCity": "Town or city *",
+    "shippingPostalCode": "Postal code *",
     "shippingCountry": "Country *",
     "ultrasoundLabel": "Upload Ultrasound Image *",
     "specialRequests": "Special requests (optional)",
@@ -250,7 +248,9 @@
     "errorCode": "(Error code: {code})",
     "honeypotLabel": "Website",
     "artworkHeading": "Your artwork",
-    "contactHeading": "Your contact details"
+    "contactHeading": "Your contact details",
+    "deliverToOtherLabel": "Deliver to another person",
+    "shippingRecipientLabel": "Recipient name *"
   },
   "common": {
     "home": "Home",
