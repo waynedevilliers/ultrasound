@@ -4,6 +4,7 @@ Status as of 2026-11-15. Plan v3 steps 1 to 13 are built in code. Launch is not 
 
 ## Blocking launch (needs owner, client or deployment access)
 - Impressum and Datenschutz: operator details and retention for order data (TODO(client), see docs/legal-client-review.md).
+- German Datenschutz (`content/legal/datenschutz.de.md`) still shows placeholders: Stand date, owner name, phone, the Neon database section, the print shop. A test in `lib/legal-text.test.tsx` lists them. The English Datenschutz and both Impressum pages are still placeholder text.
 - SITE_URL set on Vercel to the live domain (canonical links, sitemap, structured data).
 - Sender domain verified with Resend; ORDER_FROM_EMAIL and ORDER_EMAIL set.
 - Order flow tested end to end: upload, email, database (needs a deployment and credentials).

@@ -17,7 +17,7 @@ export default function LegalPage({ locale, page }: { locale: string; page: Lega
   const copy = (locale === 'de' ? de : en).legal[page];
   const common = (locale === 'de' ? de : en).common;
   const homeLabel = common.home;
-  const blocks = readLegalText(page, locale);
+  const blocks = readLegalText(page, locale === 'de' ? 'de' : 'en');
   return (
     <div className="min-h-screen flex flex-col">
       <JsonLd data={organizationJsonLd(SITE_URL)} />

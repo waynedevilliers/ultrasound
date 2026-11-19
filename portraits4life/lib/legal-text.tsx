@@ -1,6 +1,7 @@
 import { existsSync, readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import type { ReactNode } from 'react';
+import type { Locale } from '@/lib/copy';
 
 // Long legal texts (Datenschutz, later AGB and Widerruf) live as Markdown-style files in content/legal/,
 // one per page and language, for example content/legal/datenschutz.de.md. Only a small subset is used:
@@ -50,7 +51,10 @@ export function parseLegalText(source: string): LegalBlock[] {
 }
 
 // Reads the legal text for a page and language, or null when there is none yet.
-export function readLegalText(page: string, locale: string): LegalBlock[] | null {
+export function readLegalText(
+  page: 'impressum' | 'datenschutz',
+  locale: Locale,
+): LegalBlock[] | null {
   const file = join(process.cwd(), 'content/legal', `${page}.${locale}.md`);
   if (!existsSync(file)) return null;
   return parseLegalText(readFileSync(file, 'utf8'));

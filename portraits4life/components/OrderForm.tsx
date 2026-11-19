@@ -74,7 +74,7 @@ async function readReply(response: Response, requestCode: string): Promise<Serve
   }
 }
 
-// Shared style for text inputs and selects. min-h-11 keeps every field at least 44px tall for touch.
+// Shared style for text inputs, selects and the message field. min-h-11 keeps every field at least 44px tall for touch.
 const fieldClass =
   'w-full min-h-11 px-4 py-2 border border-field rounded-lg focus:ring-2 focus:ring-brand focus:border-transparent';
 export default function OrderForm({
@@ -140,7 +140,8 @@ export default function OrderForm({
   // The product list sets both the product and the canvas size.
   const formatValue = formData.product === 'canvas' ? formData.canvasSize : 'digital';
   // The select cuts long labels on small phones, so the price is repeated as text below it.
-  const selectedPrice = formatOptions(locale).find((option) => option.value === formatValue)?.price;
+  const options = formatOptions(locale);
+  const selectedPrice = options.find((option) => option.value === formatValue)?.price;
   // A size error from the server is shown on the same list.
   const formatErrorKey = fieldErrors.canvasSize ? 'canvasSize' : 'product';
   const handleFormatChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
@@ -416,7 +417,7 @@ export default function OrderForm({
             {...invalid(formatErrorKey)}
             className={fieldClass}
           >
-            {formatOptions(locale).map((option) => (
+            {options.map((option) => (
               <option key={option.value} value={option.value}>
                 {option.label}
               </option>

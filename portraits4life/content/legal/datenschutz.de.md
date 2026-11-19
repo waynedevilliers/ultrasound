@@ -41,6 +41,8 @@ Vercel ist nach dem „EU-US Data Privacy Framework“ (DPF) zertifiziert. Die �
 <!-- TODO(client): Prüfen, ob die hochgeladenen Bilder bei Vercel (Vercel Blob) oder bei einem anderen Anbieter gespeichert werden. Falls ein anderer Anbieter: eigenen Abschnitt ergänzen. -->
 Hochgeladene Bilder werden in einem nicht öffentlichen Speicher von Vercel (Vercel Blob) abgelegt. Nur ich habe darauf Zugriff.
 
+Die Angaben aus dem Anfrageformular speichere ich in einer Datenbank des Anbieters Neon, die über Vercel eingebunden ist: [Anbieter, Anschrift, Übermittlungsgrundlage und Auftragsverarbeitung ergänzen].
+
 <!-- TODO(client): Die Angaben aus dem Anfrageformular werden in einer Datenbank bei Neon gespeichert (Neon, über Vercel eingebunden). Dafür fehlt ein eigener Abschnitt mit Anbieter, Anschrift, Zweck, Rechtsgrundlage, Übermittlungsgrundlage und AVV. -->
 
 ### Auftragsverarbeitung
@@ -183,15 +185,18 @@ Für den Versand der Bestätigung deiner Anfrage und der Benachrichtigung über 
 
 Diese Seite nutzt zur einheitlichen Darstellung Schriftarten, die lokal auf dem Server dieser Website gespeichert sind. Eine Verbindung zu Servern von Google oder anderen Anbietern findet dabei nicht statt.
 
-<!-- TODO(client): Die Website enthält zurzeit keine Links zu sozialen Netzwerken. Abschnitt entfernen oder die Links ergänzen. Gleiches gilt für „Social-Media-Kanälen“ unter „Veröffentlichung als Beispiel“. -->
+<!-- TODO(client): Die Website enthält zurzeit keine Links zu sozialen Netzwerken. Abschnitt entfernen oder die Links ergänzen. „Veröffentlichung als Beispiel“ nennt soziale Medien weiter, weil die Einwilligung im Formular sie nennt. -->
+<!-- Ausgeblendet, bis es Links zu sozialen Netzwerken gibt:
+
 ### Links zu sozialen Netzwerken
 
 Auf dieser Website verlinke ich auf meine Profile in sozialen Netzwerken. Es handelt sich um einfache Links, nicht um eingebettete Inhalte. Daten werden erst übertragen, wenn du einen Link anklickst und die Seite des jeweiligen Netzwerks aufrufst. Dort gilt die Datenschutzerklärung des jeweiligen Anbieters.
+-->
+
+<!-- TODO(client): Diesen Abschnitt erst veröffentlichen, wenn Stripe tatsächlich genutzt wird. Dann wieder als 6 nummerieren und Druck und Versand als 7. -->
+<!-- Ausgeblendet, bis Stripe genutzt wird:
 
 ## 6. Zahlungsabwicklung
-
-<!-- TODO(client): Diesen Abschnitt erst veröffentlichen, wenn Stripe tatsächlich genutzt wird. -->
-<!-- Ausgeblendet, bis Stripe genutzt wird:
 
 ### Stripe
 
@@ -204,7 +209,7 @@ Wenn du PayPal wählst, werden deine Zahlungsdaten im Rahmen der Zahlungsabwickl
 Die Zahlungsdaten werden ausschließlich zur Abwicklung der Zahlung verarbeitet. Ich selbst erhalte keine vollständigen Karten- oder Kontodaten.
 -->
 
-## 7. Druck und Versand
+## 6. Druck und Versand
 
 <!-- TODO(client): Name und Anschrift der Druckerei ergänzen, sobald feststeht, welche Druckerei genutzt wird und ob sie direkt an dich versendet. -->
 Für den Druck deiner Leinwand gebe ich dein fertiges Kunstwerk sowie, falls die Druckerei direkt an dich versendet, deinen Namen und deine Lieferadresse an folgende Druckerei weiter: [Name und Anschrift der Druckerei]. Rechtsgrundlage ist Art. 6 Abs. 1 lit. b DSGVO.

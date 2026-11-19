@@ -62,6 +62,23 @@ describe('readLegalText', () => {
     expect(text).not.toContain('Stripe');
   });
 
+  // Every [bracket] placeholder shown on the page is a launch blocker (see docs/REMAINING.md).
+  // A new placeholder must be added here and to that list; a filled one is removed from both.
+  it('shows only the known open placeholders', () => {
+    const text = (readLegalText('datenschutz', 'de') ?? [])
+      .flatMap((block) =>
+        block.type === 'p' ? block.lines : block.type === 'ul' ? block.items : [block.text],
+      )
+      .join('\n');
+    expect(text.match(/\[[^\]]+\]/g)).toEqual([
+      '[TT.MM.JJJJ]',
+      '[Anbieter, Anschrift, Übermittlungsgrundlage und Auftragsverarbeitung ergänzen]',
+      '[Vor- und Nachname]',
+      '[Telefonnummer]',
+      '[Name und Anschrift der Druckerei]',
+    ]);
+  });
+
   it('returns null when there is no file for the page and language', () => {
     expect(readLegalText('datenschutz', 'en')).toBeNull();
   });
