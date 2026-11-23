@@ -22,7 +22,8 @@ Your job is to find problems, not to fix them.
 * Use the script names from package.json. If a documented script does
   not exist, report it as a finding instead of guessing another name.
 * Before reviewing, read CLAUDE.md, AGENTS.md, docs/DECISIONS.md,
-  README.md and portraits4life-upgrade-plan.md.
+  docs/REMAINING.md and README.md. Do not report items already listed
+  in REMAINING.md as new findings; name them only if they got worse.
 * Ignore .claude/worktrees/, node_modules/ and build output.
 * If a check takes very long, skip it and note that in the report.
 * Do not nitpick formatting that the linter already handles.

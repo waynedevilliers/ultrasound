@@ -75,13 +75,21 @@ npm run start
 
 | Script | What it does |
 | --- | --- |
-| `npm run lint` | ESLint |
+| `npm run lint` | ESLint (zero warnings expected) |
 | `npm run type-check` | TypeScript without emitting files |
-| `npm test` | Unit and component tests (Vitest) |
-| `npm run e2e` | End-to-end tests (Playwright, builds and starts the site) |
+| `npm test -- run` | Unit and component tests (Vitest), once. Without `-- run` it watches |
+| `npm run e2e` | End-to-end tests (Playwright, Chromium at 375x667 and 1440x900, with axe). Builds and starts the site, or reuses a server already on port 3000 (stop it first to test a new build) |
 | `npm run build` | Production build |
+| `npm run audit` | npm audit of production dependencies, high and critical only |
+| `npm run knip` | Unused files, exports and dependencies (config in `knip.json`) |
+| `npm run jscpd` | Copy-paste detection |
+| `npm run lighthouse` | Lighthouse CI budgets (config in `lighthouserc.json`; needs a build) |
+| `npx prettier --check .` | Formatting check. Markdown is excluded (`.prettierignore`) |
 | `npm run db:init` | Creates or updates the database tables |
 | `npm run mobile-check -- <url>` | Measures the phone view and saves screenshots (see below) |
+| `npm run privacy-scan -- <url>` | Lists cookies, storage and outside requests of the running site (used by the datenschutz agent) |
+
+All scripts need Node 22: run `nvm use` first. On Node 20 the tests fail with `ERR_REQUIRE_ESM`.
 
 ## Project structure
 
@@ -91,19 +99,52 @@ app/
 │   ├── layout.tsx          # Root layout, language check
 │   ├── page.tsx            # Landing page
 │   ├── order/page.tsx      # Order page
+│   ├── datenschutz/, impressum/  # Legal pages
 │   └── coming-soon/        # Holding page used while COMING_SOON=true
+├── sitemap.ts, robots.ts   # Built from content/routes.ts
 ├── api/
 │   ├── orders/route.ts     # POST an order
 │   ├── orders/upload/      # Token for a direct photo upload
 │   ├── orders/files/       # Serves one private photo to a valid signed link
 │   └── cron/cleanup/       # Daily deletion of photos older than 30 days
-components/                 # Page sections and the order form
-content/                    # Products, prices, delivery times and routes
-lib/                        # Validation, emails, links, metadata, helpers
-messages/                   # German and English text
-scripts/init-db.js          # Database setup (npm run db:init)
-e2e/                        # Playwright tests
+i18n.ts                     # next-intl request config
+proxy.ts                    # Locale routing and coming-soon mode (Next 16 name for middleware)
+components/                 # Page sections, the order form and its field components
+content/                    # Data, not prose: products, prices, routes, shipping countries
+content/legal/              # Legal texts as Markdown, one file per page and language
+lib/                        # Validation, emails, signed links, metadata, security headers, helpers
+messages/                   # All visible text, German and English
+scripts/                    # Database setup, mobile check, privacy scan
+e2e/                        # Playwright tests (one spec file)
+docs/                       # DECISIONS.md, REMAINING.md, client review notes, reviews/
+.claude/                    # Agents, commands and permissions for Claude Code
 ```
+
+## Project documents
+
+| File | What it holds |
+| --- | --- |
+| `CLAUDE.md` and `AGENTS.md` | Rules for Claude Code: workflow, constraints, code, tests, review, agents |
+| `docs/DECISIONS.md` | One entry per decision (date, status, decision, why, considered). Read before changing design, colours, navigation or page structure |
+| `docs/REMAINING.md` | Next steps, launch blockers and open work |
+| `docs/reviews/` | Reports written by the agents |
+| `content/legal/*.md` | Legal texts. `<!-- TODO(client) -->` comments are not shown on the page |
+
+Search for `TODO(client)` and `PLACEHOLDER(client)` to list what the client still has to provide.
+
+## Agents (Claude Code)
+
+The agents in `.claude/agents/` are read only. Each writes one report to `docs/reviews/` and never changes code.
+
+| Agent | When to run it |
+| --- | --- |
+| `reviewer` | Before every pull request, and for full audits |
+| `visual-checker` | After layout or styling changes |
+| `mobile-view` | After layout, navigation or styling changes, and before a pull request that touches them |
+| `performance` | After images or anything external change, and before launch |
+| `datenschutz` | Before launch, after adding a service, dependency, cookie or form field, after changing legal texts, and once a month |
+
+The command `/client-list` writes a short German message with everything the client still has to provide.
 
 ## API
 
@@ -127,16 +168,17 @@ Creates an order. The photos are uploaded first to private storage, and the orde
   "ultrasoundPath": "orders/...",
   "referencePath": "optional orders/...",
   "consent": { "processing": true, "rights": true, "showcase": false, "version": "..." },
-  "shippingFullName": "...",
+  "website": "honeypot, must stay empty",
   "shippingStreet": "...",
   "shippingCity": "...",
-  "shippingState": "...",
   "shippingPostalCode": "...",
-  "shippingCountry": "..."
+  "shippingCountry": "DE",
+  "deliverToOther": false,
+  "shippingRecipient": "required when deliverToOther is true"
 }
 ```
 
-Digital orders are refused while the digital file is not sold (see `content/products.ts`).
+The shipping fields are sent for a canvas only. The postal code is checked against the country (`content/shipping.ts`). Digital orders are refused while the digital file is not sold (see `content/products.ts`). The browser builds this body in `lib/order-submit.ts`; the server checks it with the Zod schema in `lib/order-schema.ts`.
 
 **Response (201):**
 
@@ -149,13 +191,13 @@ Digital orders are refused while the digital file is not sold (see `content/prod
 }
 ```
 
-Failures return `{ "success": false, "message": "...", "code": "..." }` with a request code the customer can quote. The server logs the failed step under that code, never the customer's details.
+Failures return `{ "success": false, "message": "..." }`. A 400 for invalid data adds `issues` (field and message per problem). A 500 adds `code`, the request code the customer can quote; the server logs the failed step under that code, never the customer's details. A 429 (too many requests) has neither.
 
 Requests are limited to five per visitor per 15 minutes.
 
 ### POST `/api/orders/upload`
 
-Issues a short-lived token so the browser can upload a photo straight to private storage. Accepts JPG, PNG, WebP and HEIC up to 15 MB, in the `orders/` folder only. Limited to 20 requests per visitor per 15 minutes.
+Issues a short-lived token so the browser can upload a photo straight to private storage. Accepts JPG, PNG, WebP, HEIC and HEIF up to 15 MB, in the `orders/` folder only. Limited to 20 requests per visitor per 15 minutes.
 
 ### GET `/api/orders/files`
 
@@ -197,13 +239,12 @@ CREATE TABLE orders (
   consent_version VARCHAR(50),
   consent_at TIMESTAMP,
   status VARCHAR(50) DEFAULT 'pending',
-  reference VARCHAR(32),          -- P4L-YYMMDD-XXXX, unique
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
 ```
 
-Indexes: email, status, created time, and a unique index on `reference`.
+Columns added later with `ALTER TABLE` (the script adds them if missing): `reference VARCHAR(32)` (P4L-YYMMDD-XXXX) and the consent columns. Indexes: email, status, created time, and a unique index on `reference`.
 
 ## Deployment
 
@@ -211,10 +252,22 @@ Deployed on **Vercel**. Pushes to `main` deploy to production. Set the environme
 
 ## Development workflow
 
-1. Create a branch: `git checkout -b feat/description` (or `fix/`, `chore/`, `docs/`, `test/`)
-2. Make the change and run `npm test`, `npm run lint`, `npm run type-check` and `npm run build`
-3. Commit with a Conventional Commit message, for example `feat(order): ...`
-4. Push and open a pull request into `main`
+1. Update `main` (`git pull --ff-only`), then create a branch: `git checkout -b feat/description` (or `fix/`, `chore/`, `docs/`, `test/`, `style/`, `refactor/`)
+2. Make the change and run `npm run lint`, `npm run type-check`, `npm test -- run` and `npm run build`. Run `npm run e2e` when layout, navigation or the order flow changed
+3. Commit with a Conventional Commit message with a scope, for example `feat(order): ...`. One commit per step
+4. Run the `reviewer` agent on the branch and fix Critical and Important findings
+5. Merge `main` into the branch if it moved on (never rebase a pushed branch), push, and open a pull request into `main`
+6. CI runs lint-and-types, test, audit and e2e on the pull request. Merge when all are green
+
+After `npm install` or `npm uninstall`, check the `package-lock.json` diff for removed `libc` lines and restore them (see DECISIONS, 2026-11-19).
+
+## Coming-soon mode
+
+With `COMING_SOON=true` (set in Vercel for Production only), `proxy.ts` shows the holding page at `/{locale}/coming-soon` for every page and robots blocks crawling. API routes keep working. Leave it empty locally.
+
+## Legal texts
+
+Long legal texts are Markdown files in `content/legal/<page>.<locale>.md`, rendered at build time by `lib/legal-text.tsx` (headings, paragraphs, lists, links). HTML comments are hidden, so a section can be switched off by wrapping it in a comment. A page without a file shows its placeholder from the message files. A test lists the open placeholders in the German Datenschutz.
 
 ## Mobile check
 
@@ -235,6 +288,9 @@ All visible text is in `messages/de.json` and `messages/en.json`. Both files mus
 - Photos are stored privately, not publicly, and are served only through signed links.
 - Photos are deleted automatically 30 days after upload by the daily cleanup job.
 - Order data is kept in the database. Its retention period is still to be decided.
+- Fonts are self-hosted at build time with `next/font`; apart from the photo upload, which goes from the browser straight to Vercel Blob (`*.blob.vercel-storage.com`), the site makes no request to another domain.
+- Security headers (CSP, HSTS and others) come from `lib/security-headers.ts`.
+- Logs carry the request code and the failed step, never the customer's details.
 
 ## Contact
 
