@@ -38,6 +38,7 @@ Use `/client-list` for a ready-to-send German message. The detailed questions ar
 - Unused template SVGs in `public/` (file, globe, next, vercel, window). Remove with approval.
 - The contact email is typed in `components/Footer.tsx`, `lib/structured-data.ts` and the message files; it should come from one place.
 - The admin order email (to the owner) is English only; the customer confirmation is in the page language. Ask the owner whether the admin email should be German.
+- Components read text through `getCopy()` in `lib/copy.ts` (the message JSON imported directly), not through next-intl's `useTranslations`/`getTranslations`; next-intl is used only for routing. DECISIONS (2026-11-11, text split) and CLAUDE.md say next-intl. Decide: switch to the next-intl API, or record `getCopy` as the decision.
 - Product JSON-LD lacks image and Offer url.
 - Test gaps: language switch end to end.
 - Outdated packages: TypeScript, ESLint 9, Vitest 4, React, next-intl (majors need their own step).
@@ -50,5 +51,5 @@ Use `/client-list` for a ready-to-send German message. The detailed questions ar
 ## Done since the 2026-11-19 list
 - README updated (API body, scripts, documents, agents, workflow, coming-soon mode, legal texts).
 - Stale root docs removed (INSTRUCTIONS.md, PROJECT_STATUS.md, TEST_GUIDE.md); the repo-root CLAUDE.md now points to this folder.
-- Rechecked from the 2026-11-15 audit, now fixed: the CSP allows the upload to Vercel Blob; the Gallery enlarged view is a dialog that closes with Escape; no `onboarding@resend.dev` fallback; order copy uses "du"; the unused `order.info` block is gone; pages are statically generated (`generateStaticParams` in the locale layout); the upload token route has a rate limit; Client Components are only the interactive ones (Header, LanguageSwitch, Gallery, OrderForm and its parts).
+- Rechecked from the 2026-11-15 audit, now fixed: the CSP allows the upload to Vercel Blob; the Gallery enlarged view is a dialog that closes with Escape; no `onboarding@resend.dev` fallback; order copy uses "du"; the unused `order.info` block is gone; pages are statically generated (`generateStaticParams` in the locale layout); the upload token route has a rate limit; Client Components are only the interactive ones (Header, LanguageSwitch, Gallery, Accordion, Reveal, OrderSection, UploadArea, OrderForm and its parts).
 - Earlier: middleware.ts renamed to proxy.ts; unused shadcn packages removed and knip clean; OrderForm split into components/FormFields.tsx and lib/order-submit.ts; Prettier applied; a storage failure during the photo check returns a server error with the request code.

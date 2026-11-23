@@ -78,7 +78,7 @@ npm run start
 | `npm run lint` | ESLint (zero warnings expected) |
 | `npm run type-check` | TypeScript without emitting files |
 | `npm test -- run` | Unit and component tests (Vitest), once. Without `-- run` it watches |
-| `npm run e2e` | End-to-end tests (Playwright, Chromium at 375x667 and 1440x900, with axe). Builds and starts the site |
+| `npm run e2e` | End-to-end tests (Playwright, Chromium at 375x667 and 1440x900, with axe). Builds and starts the site, or reuses a server already on port 3000 (stop it first to test a new build) |
 | `npm run build` | Production build |
 | `npm run audit` | npm audit of production dependencies, high and critical only |
 | `npm run knip` | Unused files, exports and dependencies (config in `knip.json`) |
@@ -99,13 +99,15 @@ app/
 │   ├── layout.tsx          # Root layout, language check
 │   ├── page.tsx            # Landing page
 │   ├── order/page.tsx      # Order page
-│   └── coming-soon/        # Holding page used while COMING_SOON=true
 │   ├── datenschutz/, impressum/  # Legal pages
+│   └── coming-soon/        # Holding page used while COMING_SOON=true
+├── sitemap.ts, robots.ts   # Built from content/routes.ts
 ├── api/
 │   ├── orders/route.ts     # POST an order
 │   ├── orders/upload/      # Token for a direct photo upload
 │   ├── orders/files/       # Serves one private photo to a valid signed link
 │   └── cron/cleanup/       # Daily deletion of photos older than 30 days
+i18n.ts                     # next-intl request config
 proxy.ts                    # Locale routing and coming-soon mode (Next 16 name for middleware)
 components/                 # Page sections, the order form and its field components
 content/                    # Data, not prose: products, prices, routes, shipping countries
@@ -189,13 +191,13 @@ The shipping fields are sent for a canvas only. The postal code is checked again
 }
 ```
 
-Failures return `{ "success": false, "message": "...", "code": "..." }` with a request code the customer can quote. The server logs the failed step under that code, never the customer's details.
+Failures return `{ "success": false, "message": "..." }`. A 400 for invalid data adds `issues` (field and message per problem). A 500 adds `code`, the request code the customer can quote; the server logs the failed step under that code, never the customer's details. A 429 (too many requests) has neither.
 
 Requests are limited to five per visitor per 15 minutes.
 
 ### POST `/api/orders/upload`
 
-Issues a short-lived token so the browser can upload a photo straight to private storage. Accepts JPG, PNG, WebP and HEIC up to 15 MB, in the `orders/` folder only. Limited to 20 requests per visitor per 15 minutes.
+Issues a short-lived token so the browser can upload a photo straight to private storage. Accepts JPG, PNG, WebP, HEIC and HEIF up to 15 MB, in the `orders/` folder only. Limited to 20 requests per visitor per 15 minutes.
 
 ### GET `/api/orders/files`
 
@@ -237,13 +239,12 @@ CREATE TABLE orders (
   consent_version VARCHAR(50),
   consent_at TIMESTAMP,
   status VARCHAR(50) DEFAULT 'pending',
-  reference VARCHAR(32),          -- P4L-YYMMDD-XXXX, unique
   created_at TIMESTAMP DEFAULT NOW(),
   updated_at TIMESTAMP DEFAULT NOW()
 );
 ```
 
-Indexes: email, status, created time, and a unique index on `reference`.
+Columns added later with `ALTER TABLE` (the script adds them if missing): `reference VARCHAR(32)` (P4L-YYMMDD-XXXX) and the consent columns. Indexes: email, status, created time, and a unique index on `reference`.
 
 ## Deployment
 
@@ -287,7 +288,7 @@ All visible text is in `messages/de.json` and `messages/en.json`. Both files mus
 - Photos are stored privately, not publicly, and are served only through signed links.
 - Photos are deleted automatically 30 days after upload by the daily cleanup job.
 - Order data is kept in the database. Its retention period is still to be decided.
-- Fonts are self-hosted at build time with `next/font`; the site makes no request to another domain.
+- Fonts are self-hosted at build time with `next/font`; apart from the photo upload, which goes from the browser straight to Vercel Blob (`*.blob.vercel-storage.com`), the site makes no request to another domain.
 - Security headers (CSP, HSTS and others) come from `lib/security-headers.ts`.
 - Logs carry the request code and the failed step, never the customer's details.
 
