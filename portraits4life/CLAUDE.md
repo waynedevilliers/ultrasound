@@ -5,7 +5,7 @@
 Read `docs/DECISIONS.md` before changing design, colors, navigation or page structure. Do not undo a recorded decision unless the owner asks.
 
 ## Workflow
-- One step at a time. After each step: screenshots at 390x844 and 1440x900 for every page touched, plus a list of changed files. Then stop and wait.
+- One step at a time. After each step: screenshots at 375x667 and 1440x900 for every page touched, plus a list of changed files. Then stop and wait.
 - Owner replies "ok" = commit and push that step. "revert" = discard that step only.
 - The owner may ask for several steps in one pull request. Each step is still its own commit.
 - One branch per task, from an up-to-date `main`: `feat/`, `fix/`, `chore/`, `docs/`, `test/`, `style/`, `refactor/`. Conventional Commits with scopes, for example `feat(hero): ...`. One commit per step.

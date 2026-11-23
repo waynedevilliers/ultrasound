@@ -127,7 +127,7 @@ One entry per decision someone could later question. Each entry: date, status (`
 ## 2026-11-11: Workflow
 
 - **Status:** done
-- **Decision:** One step at a time. After each step: screenshots at 390x844 and 1440x900, a list of changed files, then stop. "ok" = commit and push. "revert" = discard that step.
+- **Decision:** One step at a time. After each step: screenshots at 375x667 and 1440x900 (the sizes Playwright, the mobile check and the agents use; 390x844 until 2026-11-23), a list of changed files, then stop. "ok" = commit and push. "revert" = discard that step.
 - **Why:** Owner request. Screenshots are the proof that a step is done.
 - **Considered:** Several steps per commit. Rejected, because a revert must affect one step only.
 
