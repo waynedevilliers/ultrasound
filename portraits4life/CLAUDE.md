@@ -38,7 +38,7 @@ Read `docs/DECISIONS.md` before changing design, colors, navigation or page stru
 - Security headers come from `lib/security-headers.ts`. Add a host to the CSP only when a feature needs it, and log it in DECISIONS.
 - No personal data in logs, URLs or error replies. Failures carry a short request code (`lib/request-code.ts`).
 - Uploads stay in private storage and are served only through signed, expiring links (`lib/signed-link.ts`). Deletion periods promised in the Datenschutz text are implemented in code.
-- If a required secret or setting is missing in production, fail closed: refuse the request and save nothing (as `app/api/orders/route.ts` does for the mail settings).
+- If a required secret or setting is missing in production, fail closed: check it before anything is saved, then refuse the request. `app/api/orders/route.ts` does this for `ORDER_FROM_EMAIL` and `ORDER_EMAIL`; `RESEND_API_KEY` and `ORDER_LINK_SECRET` are still checked after the save (open, see `docs/REMAINING.md`). New code checks every required setting first.
 - No request to another domain without consent. Embeds load only after a click.
 - Secrets only in `.env*.local` and on the host. Only `.env.example` is committed.
 

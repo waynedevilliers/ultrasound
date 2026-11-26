@@ -34,6 +34,7 @@ Use `/client-list` for a ready-to-send German message. The detailed questions ar
 - Order and upload rate limits across server instances (the in-memory limit is per instance; needs a shared store).
 - A 429 from the upload token route shows "upload failed", not "too many attempts": @vercel/blob's upload() throws the same error for every token failure and drops the status.
 - An order is saved before the link secret is read; without `ORDER_LINK_SECRET` the order is kept but its admin email has no links. Setting the secret (step 2) avoids it.
+- `RESEND_API_KEY` is not checked before the save. Without it, `new Resend()` throws after the order is stored: the visitor gets an error, no email goes out, a resubmit creates a duplicate order, and the log names the step `links`. Fix: check `RESEND_API_KEY` and `ORDER_LINK_SECRET` in production next to the mail settings, before the save, with a route test.
 - Unused shadcn theme variables in app/globals.css (sidebar, chart, popover and similar); some, such as --radius, are still used. Remove only the unused ones, with approval.
 - Unused template SVGs in `public/` (file, globe, next, vercel, window). Remove with approval.
 - The contact email is typed in `components/Footer.tsx`, `lib/structured-data.ts` and the message files; it should come from one place.

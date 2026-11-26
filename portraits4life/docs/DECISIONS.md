@@ -4,6 +4,13 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 ---
 
+## 2026-11-26: CLAUDE.md review: screenshots, security rules, label case
+
+- **Status:** done
+- **Decision:** Screenshots at 375x667 and 1440x900 are required for every visual change only; steps that change only docs, config or code without a visible effect list the changed files instead. This narrows "2026-11-11: Workflow". CLAUDE.md gets a "Validation, security and privacy" section that describes what the order route does (Zod, honeypot, rate limit, escaped emails, request codes, signed links, CSP, fail closed on missing settings). German UI labels capitalise only the first word and nouns (`Jetzt bestellen`), as in `messages/de.json`. Sessions start from `docs/local/NEXT_SESSION.md` if it exists; `docs/REMAINING.md` wins when they disagree.
+- **Why:** Owner review of CLAUDE.md. Stale or contradicting lines (screenshots for docs-only steps, "no Lighthouse" while CI runs it, "Step 2", "lowercase") and security rules that only the reviewer's checklist held.
+- **Considered:** Fixing the missing `RESEND_API_KEY` check in the same branch (rejected: this branch is docs only; listed in REMAINING).
+
 ## 2026-11-26: Agent reports and session notes stay local
 
 - **Status:** done
@@ -134,7 +141,7 @@ One entry per decision someone could later question. Each entry: date, status (`
 ## 2026-11-11: Workflow
 
 - **Status:** done
-- **Decision:** One step at a time. After each step: screenshots at 375x667 and 1440x900 (the sizes Playwright, the mobile check and the agents use; 390x844 until 2026-11-23), a list of changed files, then stop. "ok" = commit and push. "revert" = discard that step.
+- **Decision:** One step at a time. After each step: screenshots at 375x667 and 1440x900 (the sizes Playwright, the mobile check and the agents use; 390x844 until 2026-11-23; for visual changes only since 2026-11-26), a list of changed files, then stop. "ok" = commit and push. "revert" = discard that step.
 - **Why:** Owner request. Screenshots are the proof that a step is done.
 - **Considered:** Several steps per commit. Rejected, because a revert must affect one step only.
 
