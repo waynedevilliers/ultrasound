@@ -117,7 +117,7 @@ messages/                   # All visible text, German and English
 scripts/                    # Database setup, mobile check, privacy scan
 e2e/                        # Playwright tests (one spec file)
 docs/                       # DECISIONS.md, REMAINING.md, client review notes, reviews/
-.claude/                    # Agents, commands and permissions for Claude Code
+.claude/                    # Agents and commands for Claude Code (settings stay local)
 ```
 
 ## Project documents
@@ -127,7 +127,8 @@ docs/                       # DECISIONS.md, REMAINING.md, client review notes, r
 | `CLAUDE.md` and `AGENTS.md` | Rules for Claude Code: workflow, constraints, code, tests, review, agents |
 | `docs/DECISIONS.md` | One entry per decision (date, status, decision, why, considered). Read before changing design, colours, navigation or page structure |
 | `docs/REMAINING.md` | Next steps, launch blockers and open work |
-| `docs/reviews/` | Reports written by the agents |
+| `docs/reviews/` | Reports written by the agents. Local only (git-ignored); older reports stay tracked |
+| `docs/local/` | Local session notes (git-ignored), starting with `NEXT_SESSION.md` |
 | `content/legal/*.md` | Legal texts. `<!-- TODO(client) -->` comments are not shown on the page |
 
 Search for `TODO(client)` and `PLACEHOLDER(client)` to list what the client still has to provide.
