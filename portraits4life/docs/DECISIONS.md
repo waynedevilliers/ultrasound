@@ -4,6 +4,13 @@ One entry per decision someone could later question. Each entry: date, status (`
 
 ---
 
+## 2026-11-26: Agent reports and session notes stay local
+
+- **Status:** done
+- **Decision:** `docs/reviews/` (new agent reports), `docs/local/` (session notes), `.vscode/` and `.claude/settings.json` are git-ignored. Reports committed before this date stay tracked. Shared handover stays in `docs/REMAINING.md`, which is committed.
+- **Why:** Owner's choice. Reports and notes are working material, not project history. Salon77 does the same. The permissions file stays local until its allow list is narrowed.
+- **Considered:** Committing every report (rejected: they pile up in the history). Removing the tracked reports with `git rm --cached` (not done: they still document past steps).
+
 ## 2026-11-19: No shadcn; Prettier formats code, not prose
 
 - **Status:** done
