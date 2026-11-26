@@ -71,4 +71,5 @@ All agents are in `.claude/agents/`, read only, and write one report to `docs/re
 - Command `/client-list`: a German message for the client with every open TODO(client).
 
 ## Handover
+- Start every session by reading `docs/local/NEXT_SESSION.md` (local, git-ignored): where we left off and what to do first, across projects. Update it at the end of every session. Never commit it.
 - `docs/REMAINING.md` starts with the next steps. Update it at the end of every task.
