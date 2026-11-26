@@ -117,7 +117,7 @@ messages/                   # All visible text, German and English
 scripts/                    # Database setup, mobile check, privacy scan
 e2e/                        # Playwright tests (one spec file)
 docs/                       # DECISIONS.md, REMAINING.md, client review notes, reviews/
-.claude/                    # Agents, commands and permissions for Claude Code
+.claude/                    # Agents and commands for Claude Code (settings stay local)
 ```
 
 ## Project documents
